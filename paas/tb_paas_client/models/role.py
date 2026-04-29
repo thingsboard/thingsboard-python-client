@@ -38,14 +38,15 @@ class Role(BaseModel):
     id: Optional[RoleId] = Field(default=None, description="JSON object with the Role Id. Specify this field to update the Role. Referencing non-existing Role Id will cause error. Omit this field to create new Role.")
     created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the role creation, in milliseconds", serialization_alias="createdTime")
     additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the role. May include: 'description' (string).", serialization_alias="additionalInfo")
-    tenant_id: TenantId = Field(description="JSON object with Tenant Id.", serialization_alias="tenantId")
+    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id.", serialization_alias="tenantId")
     customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id. ", serialization_alias="customerId")
     name: StrictStr = Field(description="Role Name")
     type: RoleType = Field(description="Type of the role: generic or group")
-    permissions: Optional[Any] = None
+    permissions: Optional[Any] = Field(description="JSON object with the set of permissions. Structure is specific for role type")
+    excluded_permissions: Optional[Any] = Field(default=None, description="JSON object with the set of excluded permissions. Only applicable for generic roles. Structure is the same as permissions", serialization_alias="excludedPermissions")
     version: Optional[StrictInt] = None
     owner_id: Optional[EntityId] = Field(default=None, description="JSON object with Customer or Tenant Id", serialization_alias="ownerId")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "tenantId", "customerId", "name", "type", "permissions", "version", "ownerId"]
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "tenantId", "customerId", "name", "type", "permissions", "excludedPermissions", "version", "ownerId"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -121,6 +122,11 @@ class Role(BaseModel):
         if self.permissions is None and "permissions" in self.model_fields_set:
             _dict['permissions'] = None
 
+        # set to None if excluded_permissions (nullable) is None
+        # and model_fields_set contains the field
+        if self.excluded_permissions is None and "excluded_permissions" in self.model_fields_set:
+            _dict['excludedPermissions'] = None
+
         return _dict
 
     @classmethod
@@ -141,6 +147,7 @@ class Role(BaseModel):
             "name": obj.get("name"),
             "type": obj.get("type"),
             "permissions": obj.get("permissions"),
+            "excluded_permissions": obj.get("excludedPermissions"),
             "version": obj.get("version"),
             "owner_id": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None
         })

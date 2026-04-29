@@ -62,6 +62,7 @@
 | max_sms | int |  | [optional] |
 | max_created_alarms | int |  | [optional] |
 | max_generated_reports | int |  | [optional] |
+| max_ai_credits | int |  | [optional] |
 | tenant_server_rest_limits_configuration | str |  | [optional] |
 | customer_server_rest_limits_configuration | str |  | [optional] |
 | max_ws_sessions_per_tenant | int |  | [optional] |
@@ -103,6 +104,7 @@
 | intermediate_aggregation_interval_in_sec_for_cf | int |  | [optional] |
 | cf_reevaluation_check_interval | int |  | [optional] |
 | alarms_reevaluation_interval | int |  | [optional] |
+| ai_chat_requests_per_tenant_rate_limit | str |  | [optional] |
 
 ---
 

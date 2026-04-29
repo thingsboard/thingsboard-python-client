@@ -23,7 +23,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from tb_paas_client.models.direction import Direction
+from tb_paas_client.models.table_sort_direction import TableSortDirection
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -32,7 +32,7 @@ class TableSortOrder(BaseModel):
     TableSortOrder
     """ # noqa: E501
     column: Optional[StrictStr] = None
-    direction: Optional[Direction] = None
+    direction: Optional[TableSortDirection] = None
     __properties: ClassVar[List[str]] = ["column", "direction"]
 
     model_config = ConfigDict(

@@ -18,7 +18,7 @@ PageDataAsset client.get_edge_assets(edge_id: str, page_size: int, page: int, ty
 Asset client.get_tenant_asset_by_name(asset_name: str)  # Get Tenant Asset (getTenantAssetByName)
 PageDataAssetInfo client.get_tenant_asset_infos(page_size: int, page: int, type: Optional[str] = None, asset_profile_id: Optional[str] = None, text_search: Optional[str] = None, sort_property: Optional[str] = None, sort_order: Optional[str] = None)  # Get Tenant Asset Infos (getTenantAssetInfos)
 PageDataAsset client.get_tenant_assets(page_size: int, page: int, type: Optional[str] = None, text_search: Optional[str] = None, sort_property: Optional[str] = None, sort_order: Optional[str] = None)  # Get Tenant Assets (getTenantAssets)
-BulkImportResultAsset client.process_assets_bulk_import(bulk_import_request: BulkImportRequest)  # Import the bulk of assets (processAssetsBulkImport)
+BulkImportResultAsset client.process_asset_bulk_import(bulk_import_request: BulkImportRequest)  # Import the bulk of assets (processAssetBulkImport)
 Asset client.save_asset(asset: Asset, name_conflict_policy: Optional[NameConflictPolicy] = None, uniquify_separator: Optional[str] = None, uniquify_strategy: Optional[UniquifyStrategy] = None)  # Create Or Update Asset (saveAsset)
 Asset client.unassign_asset_from_customer(asset_id: str)  # Unassign asset from customer (unassignAssetFromCustomer)
 Asset client.unassign_asset_from_edge(edge_id: str, asset_id: str)  # Unassign asset from edge (unassignAssetFromEdge)
@@ -412,15 +412,15 @@ Returns a page of assets owned by tenant. You can specify parameters to filter t
 **PageDataAsset**
 
 
-## process_assets_bulk_import
+## process_asset_bulk_import
 
 ```python
-BulkImportResultAsset client.process_assets_bulk_import(bulk_import_request: BulkImportRequest)
+BulkImportResultAsset client.process_asset_bulk_import(bulk_import_request: BulkImportRequest)
 ```
 
 **POST** `/api/asset/bulk_import`
 
-Import the bulk of assets (processAssetsBulkImport)
+Import the bulk of assets (processAssetBulkImport)
 
 There's an ability to import the bulk of assets using the only .csv file.
 

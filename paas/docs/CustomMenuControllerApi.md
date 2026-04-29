@@ -5,7 +5,7 @@
 ```python
 CustomMenu client.create_custom_menu(custom_menu_info: CustomMenuInfo, assign_to_list: Optional[List[str]] = None, force: Optional[bool] = None)  # Create Custom Menu (createCustomMenu)
 CustomMenuDeleteResult client.delete_custom_menu(custom_menu_id: UUID, force: Optional[bool] = None)  # Delete custom menu (deleteCustomMenu)
-None client.get_custom_menu(if_none_match: Optional[str] = None)  # Get end-user Custom Menu configuration (getCustomMenu)
+CustomMenuConfig client.get_custom_menu(if_none_match: Optional[str] = None)  # Get end-user Custom Menu configuration (getCustomMenu)
 List[EntityInfo] client.get_custom_menu_assignee_list(custom_menu_id: UUID)  # Get Custom Menu assignee list (getCustomMenuAssigneeList)
 CustomMenuConfig client.get_custom_menu_config(custom_menu_id: UUID)  # Get Custom Menu configuration by id (getCustomMenuConfig)
 CustomMenuInfo client.get_custom_menu_info_by_id(custom_menu_id: UUID)  # Get Custom Menu Info (getCustomMenuInfoById)
@@ -70,7 +70,7 @@ Deletes the custom menu based on the provided Custom Menu Id. Referencing non-ex
 ## get_custom_menu
 
 ```python
-None client.get_custom_menu(if_none_match: Optional[str] = None)
+CustomMenuConfig client.get_custom_menu(if_none_match: Optional[str] = None)
 ```
 
 **GET** `/api/customMenu`
@@ -88,7 +88,7 @@ Fetch the Custom Menu configuration object for the authorized user. The custom m
 
 ### Return type
 
-None (empty response body)
+**CustomMenuConfig**
 
 
 ## get_custom_menu_assignee_list

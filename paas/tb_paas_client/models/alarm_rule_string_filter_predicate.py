@@ -25,7 +25,7 @@ from pydantic import ConfigDict, Field, StrictBool
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_paas_client.models.alarm_condition_value_string import AlarmConditionValueString
 from tb_paas_client.models.alarm_rule_key_filter_predicate import AlarmRuleKeyFilterPredicate
-from tb_paas_client.models.string_operation import StringOperation
+from tb_paas_client.models.alarm_rule_string_operation import AlarmRuleStringOperation
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -33,10 +33,10 @@ class AlarmRuleStringFilterPredicate(AlarmRuleKeyFilterPredicate):
     """
     AlarmRuleStringFilterPredicate
     """ # noqa: E501
-    ignore_case: Optional[StrictBool] = Field(default=None, serialization_alias="ignoreCase")
-    operation: StringOperation
+    operation: AlarmRuleStringOperation
     value: AlarmConditionValueString
-    __properties: ClassVar[List[str]] = ["type", "ignoreCase", "operation", "value"]
+    ignore_case: Optional[StrictBool] = Field(default=None, serialization_alias="ignoreCase")
+    __properties: ClassVar[List[str]] = ["type", "operation", "value", "ignoreCase"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -98,9 +98,9 @@ class AlarmRuleStringFilterPredicate(AlarmRuleKeyFilterPredicate):
 
         _obj = cls.model_validate({
             "type": obj.get("type"),
-            "ignore_case": obj.get("ignoreCase"),
             "operation": obj.get("operation"),
-            "value": AlarmConditionValueString.from_dict(obj["value"]) if obj.get("value") is not None else None
+            "value": AlarmConditionValueString.from_dict(obj["value"]) if obj.get("value") is not None else None,
+            "ignore_case": obj.get("ignoreCase")
         })
         return _obj
 

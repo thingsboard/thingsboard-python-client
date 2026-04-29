@@ -15,7 +15,7 @@
 | **additional_info** | **object** | Additional parameters of the entity group. May include: 'description' (string), 'isPublic' (boolean, whether this group is shared publicly), 'publicCustomerId' (string, UUID of the public customer associated with this group). | [optional] |
 | **configuration** | **object** | JSON with the configuration for UI components: list of columns, settings, actions, etc  | [optional] |
 | **version** | **int** |  | [optional] |
-| **owner_ids** | [**List[EntityGroupInfoOwnerIdsInner]**](EntityGroupInfoOwnerIdsInner.md) | List of the entity group owners. | |
+| **owner_ids** | [**List[EntityId]**](EntityId.md) |  | [optional] |
 | **edge_group_all** | **bool** | Indicates special edge group 'All' that contains all entities and can't be deleted. | [optional] [readonly] |
 | **group_all** | **bool** | Indicates special group 'All' that contains all entities and can't be deleted. | [optional] |
 | **tenant_id** | [**TenantId**](TenantId.md) |  | [optional] |
@@ -83,12 +83,6 @@
 ## Referenced Types
 
 > **EntityId types** (`AdminSettingsId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BillingCustomerId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CouponId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `ProductId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `SubscriptionAddonId`, `SubscriptionId`, `SubscriptionPlanId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
-
-#### EntityGroupInfoOwnerIdsInner
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| entity_type | EntityType |  |  |
-| id | UUID | ID of the entity, time-based UUID v1 |  |
 
 #### EntityType (enum)
 `TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)

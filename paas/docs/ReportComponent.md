@@ -233,7 +233,7 @@
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | column | str |  | [optional] |
-| direction | Direction |  | [optional] |
+| direction | TableSortDirection |  | [optional] |
 
 #### DataSource
 | Name | Type | Description | Notes |
@@ -326,35 +326,6 @@
 | legend_value_color | str |  | [optional] |
 | legend_show_total | bool |  | [optional] |
 
-#### ReportDoughnutChartSettings  *(extends ReportLatestChartSettings, sub_type=`horizontalDoughnutChart`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| layout | DoughnutLayout |  | [optional] |
-| clockwise | bool |  | [optional] |
-| total_value_font | Font |  | [optional] |
-| total_value_color | str |  | [optional] |
-
-#### ReportBarChartSettings  *(extends ReportLatestChartSettings, sub_type=`latestBarChart`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| axis_min | float |  | [optional] |
-| axis_max | float |  | [optional] |
-| axis_tick_label_font | Font |  | [optional] |
-| axis_tick_label_color | str |  | [optional] |
-| bar_settings | BarSeriesSettings |  | [optional] |
-
-#### ReportPieChartSettings  *(extends ReportLatestChartSettings, sub_type=`pieChart`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| show_label | bool |  | [optional] |
-| label_position | PieChartLabelPosition |  | [optional] |
-| label_font | Font |  | [optional] |
-| label_color | str |  | [optional] |
-| border_width | float |  | [optional] |
-| border_color | str |  | [optional] |
-| radius | float |  | [optional] |
-| clockwise | bool |  | [optional] |
-
 #### ReportTimeSeriesChartSettings
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
@@ -386,36 +357,7 @@
 | xaxis | TimeSeriesChartXAxisSettings |  | [optional] |
 | yaxes | Dict[str, TimeSeriesChartYAxisSettings] |  | [optional] |
 
-#### ReportBarChartWithLabelsSettings  *(extends ReportTimeSeriesChartSettings, sub_type=`barChartWithLabels`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| show_bar_label | bool |  | [optional] |
-| bar_label_font | Font |  | [optional] |
-| bar_label_color | str |  | [optional] |
-| show_bar_value | bool |  | [optional] |
-| bar_value_font | Font |  | [optional] |
-| bar_value_color | str |  | [optional] |
-| show_bar_border | bool |  | [optional] |
-| bar_border_width | float |  | [optional] |
-| bar_border_radius | float |  | [optional] |
-| bar_background_settings | ChartFillSettings |  | [optional] |
-| bar_units | str |  | [optional] |
-| bar_decimals | int |  | [optional] |
-
-#### ReportRangeChartSettings  *(extends ReportTimeSeriesChartSettings, sub_type=`rangeChart`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| range_colors | List[ColorRange] |  | [optional] |
-| out_of_range_color | str |  | [optional] |
-| show_range_thresholds | bool |  | [optional] |
-| range_threshold | TimeSeriesChartThreshold |  | [optional] |
-| fill_area | bool |  | [optional] |
-| fill_area_opacity | float |  | [optional] |
-| line_settings | LineSeriesSettings |  | [optional] |
-| range_units | str |  | [optional] |
-| range_decimals | int |  | [optional] |
-
-#### Direction (enum)
+#### TableSortDirection (enum)
 `ASC` | `DESC`
 
 #### DataSourceType (enum)
@@ -476,8 +418,8 @@
 | method_name | str |  | [optional] |
 | file_name | str |  | [optional] |
 | line_number | int |  | [optional] |
-| class_name | str |  | [optional] |
 | native_method | bool |  | [optional] |
+| class_name | str |  | [optional] |
 
 #### FontWeight (enum)
 `NORMAL` | `BOLD` | `ENUM_500`
@@ -669,27 +611,6 @@
 #### QuickTimeInterval (enum)
 `YESTERDAY` | `DAY_BEFORE_YESTERDAY` | `THIS_DAY_LAST_WEEK` | `PREVIOUS_WEEK` | `PREVIOUS_WEEK_ISO` | `PREVIOUS_MONTH` | `PREVIOUS_QUARTER` | `PREVIOUS_HALF_YEAR` | `PREVIOUS_YEAR` | `CURRENT_HOUR` | … (24 values total)
 
-#### BarSeriesSettings
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| show_border | bool |  | [optional] |
-| border_width | float |  | [optional] |
-| border_radius | float |  | [optional] |
-| bar_width | float |  | [optional] |
-| show_label | bool |  | [optional] |
-| label_position | ChartLabelPosition |  | [optional] |
-| label_font | Font |  | [optional] |
-| label_color | str |  | [optional] |
-| enable_label_background | bool |  | [optional] |
-| label_background | str |  | [optional] |
-| background_settings | ChartFillSettings |  | [optional] |
-
-#### PieChartLabelPosition (enum)
-`INSIDE` | `OUTSIDE`
-
-#### DoughnutLayout (enum)
-`DEFAULT` | `WITH_TOTAL`
-
 #### EntityType (enum)
 `TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
 
@@ -721,19 +642,11 @@
 #### TimeSeriesChartStateSourceType (enum)
 `CONSTANT` | `RANGE`
 
-#### ChartFillSettings
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| type | ChartFillType |  | [optional] |
-| opacity | float |  | [optional] |
-| gradient | ChartFillSettingsGradient |  | [optional] |
+#### IntervalType (enum)
+`MILLISECONDS` | `WEEK` | `WEEK_ISO` | `MONTH` | `QUARTER`
 
-#### ColorRange
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| var_from | float |  | [optional] |
-| to | float |  | [optional] |
-| color | str |  | [optional] |
+#### TimeSeriesChartSeriesType (enum)
+`LINE` | `BAR`
 
 #### LineSeriesSettings
 | Name | Type | Description | Notes |
@@ -755,11 +668,40 @@
 | point_size | float |  | [optional] |
 | fill_area_settings | ChartFillSettings |  | [optional] |
 
-#### IntervalType (enum)
-`MILLISECONDS` | `WEEK` | `WEEK_ISO` | `MONTH` | `QUARTER`
+#### BarSeriesSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| show_border | bool |  | [optional] |
+| border_width | float |  | [optional] |
+| border_radius | float |  | [optional] |
+| bar_width | float |  | [optional] |
+| show_label | bool |  | [optional] |
+| label_position | ChartLabelPosition |  | [optional] |
+| label_font | Font |  | [optional] |
+| label_color | str |  | [optional] |
+| enable_label_background | bool |  | [optional] |
+| label_background | str |  | [optional] |
+| background_settings | ChartFillSettings |  | [optional] |
+
+#### DataKeyComparisonSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| show_values_for_comparison | bool |  | [optional] |
+| comparison_values_label | str |  | [optional] |
+| color | str |  | [optional] |
+
+#### LineSeriesStepType (enum)
+`START` | `MIDDLE` | `END`
 
 #### ChartLabelPosition (enum)
 `TOP` | `BOTTOM`
+
+#### ChartFillSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | ChartFillType |  | [optional] |
+| opacity | float |  | [optional] |
+| gradient | ChartFillSettingsGradient |  | [optional] |
 
 #### ChartFillType (enum)
 `NONE` | `OPACITY` | `GRADIENT`
@@ -769,19 +711,6 @@
 |------|------|-------------|-------|
 | start | float |  | [optional] |
 | end | float |  | [optional] |
-
-#### LineSeriesStepType (enum)
-`START` | `MIDDLE` | `END`
-
-#### TimeSeriesChartSeriesType (enum)
-`LINE` | `BAR`
-
-#### DataKeyComparisonSettings
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| show_values_for_comparison | bool |  | [optional] |
-| comparison_values_label | str |  | [optional] |
-| color | str |  | [optional] |
 
 ---
 

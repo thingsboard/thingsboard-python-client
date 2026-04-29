@@ -24,13 +24,15 @@ ThingsboardClient wires:
   - _RetryingRESTClient for transparent HTTP 429 retry with exponential backoff
   - __getattr__ delegation to per-controller API classes via _CONTROLLER_MAP
 """
+
 import importlib
+
+from ._auth import _AuthManager
+from ._controller_map import _CONTROLLER_ATTR_MAP, _CONTROLLER_MAP
+from ._retry import _RetryingRESTClient
 from .api_client import ApiClient
 from .configuration import Configuration
 from .models.login_request import LoginRequest
-from ._auth import _AuthManager
-from ._retry import _RetryingRESTClient
-from ._controller_map import _CONTROLLER_MAP, _CONTROLLER_ATTR_MAP
 
 
 class ThingsboardClient:
@@ -120,6 +122,7 @@ class ThingsboardClient:
         # JWT eager login
         if username is not None:
             from .api.login_endpoint_api import LoginEndpointApi
+
             login_api = LoginEndpointApi(api_client)
             response = login_api.login(LoginRequest(username=username, password=password))
             auth_manager.on_login(username, password, response.token, response.refresh_token)
@@ -171,9 +174,7 @@ class ThingsboardClient:
             controller = self._get_or_create_controller(cls_name, module_path)
             return getattr(controller, name)
 
-        raise AttributeError(
-            f"'{type(self).__name__}' object has no attribute {name!r}"
-        )
+        raise AttributeError(f"'{type(self).__name__}' object has no attribute {name!r}")
 
     # ------------------------------------------------------------------
     # Token accessors

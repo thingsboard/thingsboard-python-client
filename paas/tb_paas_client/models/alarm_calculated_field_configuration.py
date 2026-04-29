@@ -23,7 +23,7 @@ import json
 
 from pydantic import ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from tb_paas_client.models.alarm_rule_definition import AlarmRuleDefinition
+from tb_paas_client.models.alarm_rule import AlarmRule
 from tb_paas_client.models.argument import Argument
 from tb_paas_client.models.calculated_field_configuration import CalculatedFieldConfiguration
 from tb_paas_client.models.output import Output
@@ -35,14 +35,14 @@ class AlarmCalculatedFieldConfiguration(CalculatedFieldConfiguration):
     AlarmCalculatedFieldConfiguration
     """ # noqa: E501
     arguments: Dict[str, Argument]
-    clear_rule: Optional[AlarmRuleDefinition] = Field(default=None, serialization_alias="clearRule")
-    create_rules: Dict[str, AlarmRuleDefinition] = Field(serialization_alias="createRules")
+    create_rules: Dict[str, AlarmRule] = Field(serialization_alias="createRules")
+    clear_rule: Optional[AlarmRule] = Field(default=None, serialization_alias="clearRule")
     propagate: Optional[StrictBool] = None
-    propagate_relation_types: Optional[List[StrictStr]] = Field(default=None, serialization_alias="propagateRelationTypes")
     propagate_to_owner: Optional[StrictBool] = Field(default=None, serialization_alias="propagateToOwner")
     propagate_to_owner_hierarchy: Optional[StrictBool] = Field(default=None, serialization_alias="propagateToOwnerHierarchy")
     propagate_to_tenant: Optional[StrictBool] = Field(default=None, serialization_alias="propagateToTenant")
-    __properties: ClassVar[List[str]] = ["type", "output", "arguments", "clearRule", "createRules", "propagate", "propagateRelationTypes", "propagateToOwner", "propagateToOwnerHierarchy", "propagateToTenant"]
+    propagate_relation_types: Optional[List[StrictStr]] = Field(default=None, serialization_alias="propagateRelationTypes")
+    __properties: ClassVar[List[str]] = ["output", "type", "arguments", "createRules", "clearRule", "propagate", "propagateToOwner", "propagateToOwnerHierarchy", "propagateToTenant", "propagateRelationTypes"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -98,9 +98,6 @@ class AlarmCalculatedFieldConfiguration(CalculatedFieldConfiguration):
                 if self.arguments[_key_arguments]:
                     _field_dict[_key_arguments] = self.arguments[_key_arguments].to_dict()
             _dict['arguments'] = _field_dict
-        # override the default output from pydantic by calling `to_dict()` of clear_rule
-        if self.clear_rule:
-            _dict['clearRule'] = self.clear_rule.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each value in create_rules (dict)
         _field_dict = {}
         if self.create_rules:
@@ -108,6 +105,9 @@ class AlarmCalculatedFieldConfiguration(CalculatedFieldConfiguration):
                 if self.create_rules[_key_create_rules]:
                     _field_dict[_key_create_rules] = self.create_rules[_key_create_rules].to_dict()
             _dict['createRules'] = _field_dict
+        # override the default output from pydantic by calling `to_dict()` of clear_rule
+        if self.clear_rule:
+            _dict['clearRule'] = self.clear_rule.to_dict()
         return _dict
 
     @classmethod
@@ -120,26 +120,26 @@ class AlarmCalculatedFieldConfiguration(CalculatedFieldConfiguration):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "type": obj.get("type"),
             "output": Output.from_dict(obj["output"]) if obj.get("output") is not None else None,
+            "type": obj.get("type"),
             "arguments": dict(
                 (_k, Argument.from_dict(_v))
                 for _k, _v in obj["arguments"].items()
             )
             if obj.get("arguments") is not None
             else None,
-            "clear_rule": AlarmRuleDefinition.from_dict(obj["clearRule"]) if obj.get("clearRule") is not None else None,
             "create_rules": dict(
-                (_k, AlarmRuleDefinition.from_dict(_v))
+                (_k, AlarmRule.from_dict(_v))
                 for _k, _v in obj["createRules"].items()
             )
             if obj.get("createRules") is not None
             else None,
+            "clear_rule": AlarmRule.from_dict(obj["clearRule"]) if obj.get("clearRule") is not None else None,
             "propagate": obj.get("propagate"),
-            "propagate_relation_types": obj.get("propagateRelationTypes"),
             "propagate_to_owner": obj.get("propagateToOwner"),
             "propagate_to_owner_hierarchy": obj.get("propagateToOwnerHierarchy"),
-            "propagate_to_tenant": obj.get("propagateToTenant")
+            "propagate_to_tenant": obj.get("propagateToTenant"),
+            "propagate_relation_types": obj.get("propagateRelationTypes")
         })
         return _obj
 

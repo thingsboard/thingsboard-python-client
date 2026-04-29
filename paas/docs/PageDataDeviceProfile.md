@@ -56,7 +56,6 @@
 | configuration | DeviceProfileConfiguration | JSON object of device profile configuration | [optional] |
 | transport_configuration | DeviceProfileTransportConfiguration | JSON object of device profile transport configuration | [optional] |
 | provision_configuration | DeviceProfileProvisionConfiguration | JSON object of provisioning strategy type per device profile | [optional] |
-| alarms | List[DeviceProfileAlarm] |  | [optional] |
 
 #### DeviceProfileConfiguration
 | Name | Type | Description | Notes |
@@ -127,29 +126,8 @@
 | certificate_reg_ex_pattern | str |  | [optional] |
 | allow_create_new_devices_by_x509_certificate | bool |  | [optional] |
 
-#### DeviceProfileAlarm
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| id | str | String value representing the alarm rule id | [optional] |
-| alarm_type | str | String value representing type of the alarm | [optional] |
-| create_rules | Dict[str, AlarmRule] | Complex JSON object representing create alarm rules. The unique create alarm rule can be created for each alarm severity type. There can be 5 create alarm rules configured per a single alarm type. See method implementation notes and AlarmRule model for more details | [optional] |
-| clear_rule | AlarmRule | JSON object representing clear alarm rule | [optional] |
-| propagate | bool | Propagation flag to specify if alarm should be propagated to parent entities of alarm originator | [optional] |
-| propagate_to_owner | bool | Propagation flag to specify if alarm should be propagated to the owner (tenant or customer) of alarm originator | [optional] |
-| propagate_to_owner_hierarchy | bool | Propagation flag to specify if alarm should be propagated to the owner (tenant or customer) and all parent owners in the customer hierarchy | [optional] |
-| propagate_to_tenant | bool | Propagation flag to specify if alarm should be propagated to the tenant entity | [optional] |
-| propagate_relation_types | List[str] | JSON array of relation types that should be used for propagation. By default, 'propagateRelationTypes' array is empty which means that the alarm will be propagated based on any relation type to parent entities. This parameter should be used only in case when 'propagate' parameter is set to true, otherwise, 'propagateRelationTypes' array will be ignored. | [optional] |
-
 #### EntityType (enum)
 `TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
-
-#### AlarmRule
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| condition | AlarmCondition | JSON object representing the alarm rule condition | [optional] |
-| alarm_details | str | String value representing the additional details for an alarm rule | [optional] |
-| dashboard_id | DashboardId | JSON object with the dashboard Id representing the reference to alarm details dashboard used by mobile application | [optional] |
-| schedule | AlarmSchedule | JSON object representing time interval during which the rule is active | [optional] |
 
 #### TransportPayloadTypeConfiguration
 | Name | Type | Description | Notes |
@@ -253,35 +231,6 @@
 |------|------|-------------|-------|
 | mappings | List[SnmpMapping] |  | [optional] |
 
-#### AlarmCondition
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| condition | List[AlarmConditionFilter] |  | [optional] |
-| spec | AlarmConditionSpec | JSON object representing alarm condition type | [optional] |
-
-#### AlarmSchedule
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| dynamic_value | DynamicValueString |  | [optional] |
-| type | AlarmScheduleType |  | [optional] |
-
-#### AnyTimeSchedule  *(extends AlarmSchedule, type=`ANY_TIME`)*
-*See AlarmSchedule for properties.*
-
-#### CustomTimeSchedule  *(extends AlarmSchedule, type=`CUSTOM`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| timezone | str |  | [optional] |
-| items | List[CustomTimeScheduleItem] |  | [optional] |
-
-#### SpecificTimeSchedule  *(extends AlarmSchedule, type=`SPECIFIC_TIME`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| days_of_week | List[int] |  | [optional] |
-| ends_on | int |  | [optional] |
-| starts_on | int |  | [optional] |
-| timezone | str |  | [optional] |
-
 #### ObjectAttributes
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
@@ -307,44 +256,6 @@
 #### SnmpCommunicationSpec (enum)
 `TELEMETRY_QUERYING` | `CLIENT_ATTRIBUTES_QUERYING` | `SHARED_ATTRIBUTES_SETTING` | `TO_DEVICE_RPC_REQUEST` | `TO_SERVER_RPC_REQUEST`
 
-#### AlarmConditionFilter
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| value_type | EntityKeyValueType | String representation of the type of the value | [optional] |
-| key | AlarmConditionFilterKey | JSON object for specifying alarm condition by specific key | [optional] |
-| predicate | KeyFilterPredicate | JSON object representing filter condition | [optional] |
-| value | object |  | [optional] |
-
-#### AlarmConditionSpec
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| type | str |  |  |
-
-#### DurationAlarmConditionSpec  *(extends AlarmConditionSpec, type=`DURATION`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| unit | TimeUnit | Duration time unit | [optional] |
-| predicate | FilterPredicateValueLong | Duration predicate | [optional] |
-
-#### RepeatingAlarmConditionSpec  *(extends AlarmConditionSpec, type=`REPEATING`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| predicate | FilterPredicateValueInteger | Repeating predicate | [optional] |
-
-#### SimpleAlarmConditionSpec  *(extends AlarmConditionSpec, type=`SIMPLE`)*
-*See AlarmConditionSpec for properties.*
-
-#### DynamicValueString
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| resolved_value | str |  | [optional] |
-| source_type | DynamicValueSourceType |  | [optional] |
-| source_attribute | str |  | [optional] |
-| inherit | bool |  | [optional] |
-
-#### AlarmScheduleType (enum)
-`ANY_TIME` | `SPECIFIC_TIME` | `CUSTOM`
-
 #### LwM2mVersion
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
@@ -357,143 +268,8 @@
 | key | str |  | [optional] |
 | data_type | DataType |  | [optional] |
 
-#### EntityKeyValueType (enum)
-`STRING` | `NUMERIC` | `BOOLEAN` | `DATE_TIME`
-
-#### AlarmConditionFilterKey
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| type | AlarmConditionKeyType | The key type | [optional] |
-| key | str | String value representing the key | [optional] |
-
-#### KeyFilterPredicate
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| type | str |  |  |
-
-#### BooleanFilterPredicate  *(extends KeyFilterPredicate, type=`BOOLEAN`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| operation | BooleanOperation |  | [optional] |
-| value | FilterPredicateValueBoolean | The value associated with the filter predicate | [optional] |
-
-#### ComplexFilterPredicate  *(extends KeyFilterPredicate, type=`COMPLEX`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| operation | ComplexOperation |  | [optional] |
-| predicates | List[KeyFilterPredicate] |  | [optional] |
-
-#### NumericFilterPredicate  *(extends KeyFilterPredicate, type=`NUMERIC`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| operation | NumericOperation |  | [optional] |
-| value | FilterPredicateValueDouble | The value associated with the filter predicate | [optional] |
-
-#### StringFilterPredicate  *(extends KeyFilterPredicate, type=`STRING`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| operation | StringOperation |  | [optional] |
-| value | FilterPredicateValueString | The value associated with the filter predicate | [optional] |
-| ignore_case | bool |  | [optional] |
-
-#### DynamicValueSourceType (enum)
-`CURRENT_TENANT` | `CURRENT_CUSTOMER` | `CURRENT_USER` | `CURRENT_DEVICE`
-
-#### CustomTimeScheduleItem
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| day_of_week | int |  | [optional] |
-| enabled | bool |  | [optional] |
-| ends_on | int |  | [optional] |
-| starts_on | int |  | [optional] |
-
 #### DataType (enum)
 `BOOLEAN` | `LONG` | `DOUBLE` | `STRING` | `JSON`
-
-#### AlarmConditionKeyType (enum)
-`ATTRIBUTE` | `TIME_SERIES` | `ENTITY_FIELD` | `CONSTANT`
-
-#### TimeUnit (enum)
-`NANOSECONDS` | `MICROSECONDS` | `MILLISECONDS` | `SECONDS` | `MINUTES` | `HOURS` | `DAYS`
-
-#### FilterPredicateValueLong
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| default_value | int |  | [optional] |
-| user_value | int |  | [optional] |
-| dynamic_value | DynamicValueLong |  | [optional] |
-
-#### FilterPredicateValueInteger
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| default_value | int |  | [optional] |
-| user_value | int |  | [optional] |
-| dynamic_value | DynamicValueInteger |  | [optional] |
-
-#### StringOperation (enum)
-`EQUAL` | `NOT_EQUAL` | `STARTS_WITH` | `ENDS_WITH` | `CONTAINS` | `NOT_CONTAINS` | `IN` | `NOT_IN`
-
-#### FilterPredicateValueString
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| default_value | str |  | [optional] |
-| user_value | str |  | [optional] |
-| dynamic_value | DynamicValueString |  | [optional] |
-
-#### NumericOperation (enum)
-`EQUAL` | `NOT_EQUAL` | `GREATER` | `LESS` | `GREATER_OR_EQUAL` | `LESS_OR_EQUAL`
-
-#### FilterPredicateValueDouble
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| default_value | float |  | [optional] |
-| user_value | float |  | [optional] |
-| dynamic_value | DynamicValueDouble |  | [optional] |
-
-#### BooleanOperation (enum)
-`EQUAL` | `NOT_EQUAL`
-
-#### FilterPredicateValueBoolean
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| default_value | bool |  | [optional] |
-| user_value | bool |  | [optional] |
-| dynamic_value | DynamicValueBoolean |  | [optional] |
-
-#### ComplexOperation (enum)
-`AND` | `OR`
-
-#### DynamicValueLong
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| resolved_value | int |  | [optional] |
-| source_type | DynamicValueSourceType |  | [optional] |
-| source_attribute | str |  | [optional] |
-| inherit | bool |  | [optional] |
-
-#### DynamicValueInteger
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| resolved_value | int |  | [optional] |
-| source_type | DynamicValueSourceType |  | [optional] |
-| source_attribute | str |  | [optional] |
-| inherit | bool |  | [optional] |
-
-#### DynamicValueDouble
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| resolved_value | float |  | [optional] |
-| source_type | DynamicValueSourceType |  | [optional] |
-| source_attribute | str |  | [optional] |
-| inherit | bool |  | [optional] |
-
-#### DynamicValueBoolean
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| resolved_value | bool |  | [optional] |
-| source_type | DynamicValueSourceType |  | [optional] |
-| source_attribute | str |  | [optional] |
-| inherit | bool |  | [optional] |
 
 ---
 

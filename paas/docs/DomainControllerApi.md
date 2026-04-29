@@ -4,11 +4,11 @@
 
 ```python
 None client.delete_domain(id: UUID)  # Delete Domain by ID (deleteDomain)
-DomainInfo client.get_cloud_domain_info_by_id(id: UUID)  # Get Domain info by Id (getCloudDomainInfoById)
+CloudDomainInfo client.get_cloud_domain_info_by_id(id: UUID)  # Get Domain info by Id (getCloudDomainInfoById)
 DomainInfo client.get_domain_info_by_id(id: UUID)  # Get Domain info by Id (getDomainInfoById)
 PageDataDomainInfo client.get_domain_infos(page_size: int, page: int, text_search: Optional[str] = None, sort_property: Optional[str] = None, sort_order: Optional[str] = None)  # Get Domain infos (getDomainInfos)
 Domain client.save_domain(domain: Domain, oauth2_client_ids: Optional[List[str]] = None)  # Save or Update Domain (saveDomain)
-None client.update_oauth2_clients(id: UUID, request_body: List[UUID])  # Update oauth2 clients (updateOauth2Clients)
+None client.update_domain_oauth2_clients(id: UUID, request_body: List[UUID])  # Update oauth2 clients (updateDomainOauth2Clients)
 ```
 
 
@@ -39,7 +39,7 @@ None (empty response body)
 ## get_cloud_domain_info_by_id
 
 ```python
-DomainInfo client.get_cloud_domain_info_by_id(id: UUID)
+CloudDomainInfo client.get_cloud_domain_info_by_id(id: UUID)
 ```
 
 **GET** `/api/domain/cloud/info/{id}`
@@ -57,7 +57,7 @@ Get Domain info by Id (getCloudDomainInfoById)
 
 ### Return type
 
-**DomainInfo**
+**CloudDomainInfo**
 
 
 ## get_domain_info_by_id
@@ -137,15 +137,15 @@ Create or update the Domain. When creating domain, platform generates Domain Id 
 **Domain**
 
 
-## update_oauth2_clients
+## update_domain_oauth2_clients
 
 ```python
-None client.update_oauth2_clients(id: UUID, request_body: List[UUID])
+None client.update_domain_oauth2_clients(id: UUID, request_body: List[UUID])
 ```
 
 **PUT** `/api/domain/{id}/oauth2Clients`
 
-Update oauth2 clients (updateOauth2Clients)
+Update oauth2 clients (updateDomainOauth2Clients)
 
 Update oauth2 clients for the specified domain.   Available for users with 'SYS_ADMIN' or 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
 

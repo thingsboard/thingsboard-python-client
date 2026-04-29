@@ -53,8 +53,8 @@
 | method_name | str |  | [optional] |
 | file_name | str |  | [optional] |
 | line_number | int |  | [optional] |
-| class_name | str |  | [optional] |
 | native_method | bool |  | [optional] |
+| class_name | str |  | [optional] |
 
 ---
 

@@ -9,7 +9,7 @@ PageDataOtaPackageInfo client.get_group_ota_packages(group_id: str, type: str, p
 OtaPackage client.get_ota_package_by_id(ota_package_id: str)  # Get OTA Package (getOtaPackageById)
 OtaPackageInfo client.get_ota_package_info_by_id(ota_package_id: str)  # Get OTA Package Info (getOtaPackageInfoById)
 PageDataOtaPackageInfo client.get_ota_packages(page_size: int, page: int, text_search: Optional[str] = None, sort_property: Optional[str] = None, sort_order: Optional[str] = None)  # Get OTA Package Infos (getOtaPackages)
-PageDataOtaPackageInfo client.get_ota_packages_by_device_profile_id_and_type(device_profile_id: str, type: str, page_size: int, page: int, text_search: Optional[str] = None, sort_property: Optional[str] = None, sort_order: Optional[str] = None)  # Get OTA Package Infos by Device Profile and Type (getOtaPackagesByDeviceProfileIdAndType)
+PageDataOtaPackageInfo client.get_ota_packages_by_device_profile_and_type(device_profile_id: str, type: str, page_size: int, page: int, text_search: Optional[str] = None, sort_property: Optional[str] = None, sort_order: Optional[str] = None)  # Get OTA Package Infos by Device Profile and Type (getOtaPackagesByDeviceProfileAndType)
 OtaPackageInfo client.save_ota_package_data(ota_package_id: str, checksum_algorithm: str, file: bytearray, checksum: Optional[str] = None)  # Save OTA Package data (saveOtaPackageData)
 OtaPackageInfo client.save_ota_package_info(save_ota_package_info_request: SaveOtaPackageInfoRequest)  # Create Or Update OTA Package Info (saveOtaPackageInfo)
 ```
@@ -169,15 +169,15 @@ Returns a page of OTA Package Info objects owned by tenant. You can specify para
 **PageDataOtaPackageInfo**
 
 
-## get_ota_packages_by_device_profile_id_and_type
+## get_ota_packages_by_device_profile_and_type
 
 ```python
-PageDataOtaPackageInfo client.get_ota_packages_by_device_profile_id_and_type(device_profile_id: str, type: str, page_size: int, page: int, text_search: Optional[str] = None, sort_property: Optional[str] = None, sort_order: Optional[str] = None)
+PageDataOtaPackageInfo client.get_ota_packages_by_device_profile_and_type(device_profile_id: str, type: str, page_size: int, page: int, text_search: Optional[str] = None, sort_property: Optional[str] = None, sort_order: Optional[str] = None)
 ```
 
 **GET** `/api/otaPackages/{deviceProfileId}/{type}`
 
-Get OTA Package Infos by Device Profile and Type (getOtaPackagesByDeviceProfileIdAndType)
+Get OTA Package Infos by Device Profile and Type (getOtaPackagesByDeviceProfileAndType)
 
 Returns a page of OTA Package Info objects owned by tenant. You can specify parameters to filter the results. The result is wrapped with PageData object that allows you to iterate over result set using pagination. See response schema for more details. OTA Package Info is a lightweight object that includes main information about the OTA Package excluding the heavyweight data.   Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
 

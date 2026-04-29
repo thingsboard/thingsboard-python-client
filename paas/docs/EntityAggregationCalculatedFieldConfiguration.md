@@ -10,10 +10,10 @@
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
 | **arguments** | [**Dict[str, Argument]**](Argument.md) |  | |
-| **interval** | [**AggInterval**](AggInterval.md) |  | |
 | **metrics** | [**Dict[str, AggMetric]**](AggMetric.md) |  | |
-| **produce_intermediate_result** | **bool** |  | [optional] |
+| **interval** | [**AggInterval**](AggInterval.md) |  | |
 | **watermark** | [**Watermark**](Watermark.md) |  | [optional] |
+| **produce_intermediate_result** | **bool** |  | [optional] |
 
 
 
@@ -24,8 +24,8 @@
 #### CalculatedFieldConfiguration
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| type | str |  |  |
 | output | Output |  | [optional] |
+| type | str |  |  |
 
 #### Argument
 | Name | Type | Description | Notes |
@@ -36,6 +36,14 @@
 | default_value | str |  | [optional] |
 | limit | int |  | [optional] |
 | time_window | int |  | [optional] |
+
+#### AggMetric
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| function | AggFunction |  | [optional] |
+| filter | str |  | [optional] |
+| input | AggInput |  | [optional] |
+| default_value | float |  | [optional] |
 
 #### AggInterval
 | Name | Type | Description | Notes |
@@ -91,14 +99,6 @@
 | tz | str |  |  |
 | offset_sec | int |  | [optional] |
 
-#### AggMetric
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| function | AggFunction |  | [optional] |
-| filter | str |  | [optional] |
-| input | AggInput |  | [optional] |
-| default_value | float |  | [optional] |
-
 #### Watermark
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
@@ -107,9 +107,9 @@
 #### Output
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
+| decimals_by_default | int |  | [optional] |
 | name | str |  | [optional] |
 | scope | AttributeScope |  | [optional] |
-| decimals_by_default | int |  | [optional] |
 | strategy | object |  | [optional] |
 | type | str |  |  |
 

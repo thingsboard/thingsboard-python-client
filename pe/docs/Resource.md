@@ -110,6 +110,8 @@
 
 * `AI_MODEL` (value: `'AI_MODEL'`)
 
+* `AI` (value: `'AI'`)
+
 * `API_KEY` (value: `'API_KEY'`)
 
 

@@ -21,9 +21,8 @@ import pprint
 import re  # noqa: F401
 import json
 
-from importlib import import_module
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing import Any, ClassVar, Dict, List, Optional
 from tb_paas_client.models.comparison_duration import ComparisonDuration
 from tb_paas_client.models.font import Font
 from tb_paas_client.models.legend_config import LegendConfig
@@ -37,11 +36,6 @@ from tb_paas_client.models.time_series_chart_x_axis_settings import TimeSeriesCh
 from tb_paas_client.models.time_series_chart_y_axis_settings import TimeSeriesChartYAxisSettings
 from typing import Optional, Set
 from typing_extensions import Self
-
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    from tb_paas_client.models.report_bar_chart_with_labels_settings import ReportBarChartWithLabelsSettings
-    from tb_paas_client.models.report_range_chart_settings import ReportRangeChartSettings
 
 class ReportTimeSeriesChartSettings(BaseModel):
     """
@@ -83,23 +77,6 @@ class ReportTimeSeriesChartSettings(BaseModel):
     )
 
 
-    # JSON field name that stores the object type
-    __discriminator_property_name: ClassVar[str] = 'subType'
-
-    # discriminator mappings
-    __discriminator_value_class_map: ClassVar[Dict[str, str]] = {
-        'barChartWithLabels': 'ReportBarChartWithLabelsSettings','rangeChart': 'ReportRangeChartSettings'
-    }
-
-    @classmethod
-    def get_discriminator_value(cls, obj: Dict[str, Any]) -> Optional[str]:
-        """Returns the discriminator value (object type) of the data"""
-        discriminator_value = obj[cls.__discriminator_property_name]
-        if discriminator_value:
-            return cls.__discriminator_value_class_map.get(discriminator_value)
-        else:
-            return None
-
     def to_str(self) -> str:
         """Returns the string representation of the model"""
         return pprint.pformat(self.model_dump(by_alias=False, mode='json'))
@@ -115,7 +92,7 @@ class ReportTimeSeriesChartSettings(BaseModel):
         return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Union[ReportBarChartWithLabelsSettings, ReportRangeChartSettings]]:
+    def from_json(cls, json_str: str) -> Optional[Self]:
         """Create an instance of ReportTimeSeriesChartSettings from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
@@ -201,17 +178,53 @@ class ReportTimeSeriesChartSettings(BaseModel):
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Dict[str, Any]) -> Optional[Union[ReportBarChartWithLabelsSettings, ReportRangeChartSettings]]:
+    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
         """Create an instance of ReportTimeSeriesChartSettings from a dict"""
-        # look up the object type based on discriminator mapping
-        object_type = cls.get_discriminator_value(obj)
-        if object_type ==  'ReportBarChartWithLabelsSettings':
-            return import_module("tb_paas_client.models.report_bar_chart_with_labels_settings").ReportBarChartWithLabelsSettings.from_dict(obj)
-        if object_type ==  'ReportRangeChartSettings':
-            return import_module("tb_paas_client.models.report_range_chart_settings").ReportRangeChartSettings.from_dict(obj)
+        if obj is None:
+            return None
 
-        raise ValueError("ReportTimeSeriesChartSettings failed to lookup discriminator value from " +
-                            json.dumps(obj) + ". Discriminator property name: " + cls.__discriminator_property_name +
-                            ", mapping: " + json.dumps(cls.__discriminator_value_class_map))
+        if not isinstance(obj, dict):
+            return cls.model_validate(obj)
+
+        _obj = cls.model_validate({
+            "show_title": obj.get("showTitle"),
+            "title": obj.get("title"),
+            "title_font": Font.from_dict(obj["titleFont"]) if obj.get("titleFont") is not None else None,
+            "title_color": obj.get("titleColor"),
+            "title_alignment": obj.get("titleAlignment"),
+            "thresholds": [TimeSeriesChartThreshold.from_dict(_item) for _item in obj["thresholds"]] if obj.get("thresholds") is not None else None,
+            "stack": obj.get("stack"),
+            "grid": TimeSeriesChartGridSettings.from_dict(obj["grid"]) if obj.get("grid") is not None else None,
+            "y_axes": dict(
+                (_k, TimeSeriesChartYAxisSettings.from_dict(_v))
+                for _k, _v in obj["yAxes"].items()
+            )
+            if obj.get("yAxes") is not None
+            else None,
+            "x_axis": TimeSeriesChartXAxisSettings.from_dict(obj["xAxis"]) if obj.get("xAxis") is not None else None,
+            "bar_width_settings": TimeSeriesChartBarWidthSettings.from_dict(obj["barWidthSettings"]) if obj.get("barWidthSettings") is not None else None,
+            "no_aggregation_bar_width_settings": TimeSeriesChartNoAggregationBarWidthSettings.from_dict(obj["noAggregationBarWidthSettings"]) if obj.get("noAggregationBarWidthSettings") is not None else None,
+            "states": [TimeSeriesChartStateSettings.from_dict(_item) for _item in obj["states"]] if obj.get("states") is not None else None,
+            "comparison_enabled": obj.get("comparisonEnabled"),
+            "time_for_comparison": obj.get("timeForComparison"),
+            "comparison_custom_interval_value": obj.get("comparisonCustomIntervalValue"),
+            "comparison_x_axis": TimeSeriesChartXAxisSettings.from_dict(obj["comparisonXAxis"]) if obj.get("comparisonXAxis") is not None else None,
+            "show_legend": obj.get("showLegend"),
+            "legend_column_title_font": Font.from_dict(obj["legendColumnTitleFont"]) if obj.get("legendColumnTitleFont") is not None else None,
+            "legend_column_title_color": obj.get("legendColumnTitleColor"),
+            "legend_label_font": Font.from_dict(obj["legendLabelFont"]) if obj.get("legendLabelFont") is not None else None,
+            "legend_label_color": obj.get("legendLabelColor"),
+            "legend_value_font": Font.from_dict(obj["legendValueFont"]) if obj.get("legendValueFont") is not None else None,
+            "legend_value_color": obj.get("legendValueColor"),
+            "legend_config": LegendConfig.from_dict(obj["legendConfig"]) if obj.get("legendConfig") is not None else None,
+            "xaxis": TimeSeriesChartXAxisSettings.from_dict(obj["xaxis"]) if obj.get("xaxis") is not None else None,
+            "yaxes": dict(
+                (_k, TimeSeriesChartYAxisSettings.from_dict(_v))
+                for _k, _v in obj["yaxes"].items()
+            )
+            if obj.get("yaxes") is not None
+            else None
+        })
+        return _obj
 
 

@@ -80,35 +80,6 @@
 | legend_value_color | str |  | [optional] |
 | legend_show_total | bool |  | [optional] |
 
-#### ReportDoughnutChartSettings  *(extends ReportLatestChartSettings, sub_type=`horizontalDoughnutChart`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| layout | DoughnutLayout |  | [optional] |
-| clockwise | bool |  | [optional] |
-| total_value_font | Font |  | [optional] |
-| total_value_color | str |  | [optional] |
-
-#### ReportBarChartSettings  *(extends ReportLatestChartSettings, sub_type=`latestBarChart`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| axis_min | float |  | [optional] |
-| axis_max | float |  | [optional] |
-| axis_tick_label_font | Font |  | [optional] |
-| axis_tick_label_color | str |  | [optional] |
-| bar_settings | BarSeriesSettings |  | [optional] |
-
-#### ReportPieChartSettings  *(extends ReportLatestChartSettings, sub_type=`pieChart`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| show_label | bool |  | [optional] |
-| label_position | PieChartLabelPosition |  | [optional] |
-| label_font | Font |  | [optional] |
-| label_color | str |  | [optional] |
-| border_width | float |  | [optional] |
-| border_color | str |  | [optional] |
-| radius | float |  | [optional] |
-| clockwise | bool |  | [optional] |
-
 #### ReportComponentSubType (enum)
 `DOUGHNUTCHART` | `HORIZONTALDOUGHNUTCHART` | `POINTCHART` | `BARCHART` | `PIECHART` | `LINECHART` | `LATESTBARCHART` | `RANGECHART` | `BARCHARTWITHLABELS` | `STATECHART` | … (11 values total)
 
@@ -205,27 +176,6 @@
 #### FontStyle (enum)
 `NORMAL` | `ITALIC`
 
-#### BarSeriesSettings
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| show_border | bool |  | [optional] |
-| border_width | float |  | [optional] |
-| border_radius | float |  | [optional] |
-| bar_width | float |  | [optional] |
-| show_label | bool |  | [optional] |
-| label_position | ChartLabelPosition |  | [optional] |
-| label_font | Font |  | [optional] |
-| label_color | str |  | [optional] |
-| enable_label_background | bool |  | [optional] |
-| label_background | str |  | [optional] |
-| background_settings | ChartFillSettings |  | [optional] |
-
-#### PieChartLabelPosition (enum)
-`INSIDE` | `OUTSIDE`
-
-#### DoughnutLayout (enum)
-`DEFAULT` | `WITH_TOTAL`
-
 #### History
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
@@ -243,16 +193,6 @@
 
 #### DataKeySettingsType (enum)
 `COLUMN` | `TIME_SERIES_CHART` | `DEFAULT`
-
-#### ChartLabelPosition (enum)
-`TOP` | `BOTTOM`
-
-#### ChartFillSettings
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| type | ChartFillType |  | [optional] |
-| opacity | float |  | [optional] |
-| gradient | ChartFillSettingsGradient |  | [optional] |
 
 #### Interval
 | Name | Type | Description | Notes |
@@ -301,6 +241,21 @@
 | point_size | float |  | [optional] |
 | fill_area_settings | ChartFillSettings |  | [optional] |
 
+#### BarSeriesSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| show_border | bool |  | [optional] |
+| border_width | float |  | [optional] |
+| border_radius | float |  | [optional] |
+| bar_width | float |  | [optional] |
+| show_label | bool |  | [optional] |
+| label_position | ChartLabelPosition |  | [optional] |
+| label_font | Font |  | [optional] |
+| label_color | str |  | [optional] |
+| enable_label_background | bool |  | [optional] |
+| label_background | str |  | [optional] |
+| background_settings | ChartFillSettings |  | [optional] |
+
 #### DataKeyComparisonSettings
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
@@ -310,15 +265,6 @@
 
 #### EntityType (enum)
 `TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
-
-#### ChartFillType (enum)
-`NONE` | `OPACITY` | `GRADIENT`
-
-#### ChartFillSettingsGradient
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| start | float |  | [optional] |
-| end | float |  | [optional] |
 
 #### IntervalType (enum)
 `MILLISECONDS` | `WEEK` | `WEEK_ISO` | `MONTH` | `QUARTER`
@@ -332,8 +278,27 @@
 #### ChartLineType (enum)
 `SOLID` | `DASHED` | `DOTTED`
 
+#### ChartLabelPosition (enum)
+`TOP` | `BOTTOM`
+
 #### ChartShape (enum)
 `EMPTYCIRCLE` | `CIRCLE` | `RECT` | `ROUNDRECT` | `TRIANGLE` | `DIAMOND` | `PIN` | `ARROW` | `NONE`
+
+#### ChartFillSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | ChartFillType |  | [optional] |
+| opacity | float |  | [optional] |
+| gradient | ChartFillSettingsGradient |  | [optional] |
+
+#### ChartFillType (enum)
+`NONE` | `OPACITY` | `GRADIENT`
+
+#### ChartFillSettingsGradient
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| start | float |  | [optional] |
+| end | float |  | [optional] |
 
 ---
 

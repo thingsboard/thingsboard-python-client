@@ -23,8 +23,8 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from tb_paas_client.models.asset_profile_id import AssetProfileId
 from tb_paas_client.models.dashboard_id import DashboardId
-from tb_paas_client.models.entity_id import EntityId
 from tb_paas_client.models.tenant_id import TenantId
 from typing import Optional, Set
 from typing_extensions import Self
@@ -33,7 +33,7 @@ class AssetProfileInfo(BaseModel):
     """
     AssetProfileInfo
     """ # noqa: E501
-    id: Optional[EntityId] = Field(default=None, description="JSON object with the entity Id. ")
+    id: Optional[AssetProfileId] = Field(default=None, description="JSON object with the Asset Profile Id.")
     name: Optional[StrictStr] = Field(default=None, description="Entity Name")
     image: Optional[StrictStr] = Field(default=None, description="Either URL or Base64 data of the icon. Used in the mobile application to visualize set of asset profiles in the grid view. ")
     default_dashboard_id: Optional[DashboardId] = Field(default=None, description="Reference to the dashboard. Used in the mobile application to open the default dashboard when user navigates to asset details.", serialization_alias="defaultDashboardId")
@@ -105,7 +105,7 @@ class AssetProfileInfo(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "id": EntityId.from_dict(obj["id"]) if obj.get("id") is not None else None,
+            "id": AssetProfileId.from_dict(obj["id"]) if obj.get("id") is not None else None,
             "name": obj.get("name"),
             "image": obj.get("image"),
             "default_dashboard_id": DashboardId.from_dict(obj["defaultDashboardId"]) if obj.get("defaultDashboardId") is not None else None,

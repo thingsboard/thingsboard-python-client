@@ -36,9 +36,9 @@ class ErrorComponentAllOfExceptionCauseStackTrace(BaseModel):
     method_name: Optional[StrictStr] = Field(default=None, serialization_alias="methodName")
     file_name: Optional[StrictStr] = Field(default=None, serialization_alias="fileName")
     line_number: Optional[StrictInt] = Field(default=None, serialization_alias="lineNumber")
-    class_name: Optional[StrictStr] = Field(default=None, serialization_alias="className")
     native_method: Optional[StrictBool] = Field(default=None, serialization_alias="nativeMethod")
-    __properties: ClassVar[List[str]] = ["classLoaderName", "moduleName", "moduleVersion", "methodName", "fileName", "lineNumber", "className", "nativeMethod"]
+    class_name: Optional[StrictStr] = Field(default=None, serialization_alias="className")
+    __properties: ClassVar[List[str]] = ["classLoaderName", "moduleName", "moduleVersion", "methodName", "fileName", "lineNumber", "nativeMethod", "className"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -102,8 +102,8 @@ class ErrorComponentAllOfExceptionCauseStackTrace(BaseModel):
             "method_name": obj.get("methodName"),
             "file_name": obj.get("fileName"),
             "line_number": obj.get("lineNumber"),
-            "class_name": obj.get("className"),
-            "native_method": obj.get("nativeMethod")
+            "native_method": obj.get("nativeMethod"),
+            "class_name": obj.get("className")
         })
         return _obj
 

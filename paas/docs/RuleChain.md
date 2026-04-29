@@ -12,7 +12,7 @@ A JSON value representing the rule chain.
 | **id** | [**RuleChainId**](RuleChainId.md) | JSON object with the Rule Chain Id. Specify this field to update the Rule Chain. Referencing non-existing Rule Chain Id will cause error. Omit this field to create new rule chain. | [optional] |
 | **created_time** | **int** | Timestamp of the rule chain creation, in milliseconds | [optional] [readonly] |
 | **additional_info** | **object** |  | [optional] |
-| **tenant_id** | [**TenantId**](TenantId.md) | JSON object with Tenant Id. | [readonly] |
+| **tenant_id** | [**TenantId**](TenantId.md) | JSON object with Tenant Id. | [optional] [readonly] |
 | **name** | **str** | Rule Chain name | |
 | **type** | [**RuleChainType**](RuleChainType.md) | Rule Chain type. 'EDGE' rule chains are processing messages on the edge devices only. | [optional] |
 | **first_rule_node_id** | [**RuleNodeId**](RuleNodeId.md) | JSON object with Rule Chain Id. Pointer to the first rule node that should receive all messages pushed to this rule chain. | [optional] |

@@ -20,11 +20,13 @@ the refresh_api_key_hook callback for the ThingsBoard Python client.
 This file lives in common/ and is copied verbatim into each edition package directory
 by generate-client.sh. Use only relative imports and stdlib; no edition-specific imports.
 """
+
 import base64
 import json
 import logging
 import threading
 import time
+
 import urllib3
 
 logger = logging.getLogger(__name__)
@@ -37,12 +39,14 @@ AVG_REQUEST_TIMEOUT_MS = 30_000
 # _TokenInfo
 # ---------------------------------------------------------------------------
 
+
 class _TokenInfo:
     """Immutable value object holding JWT token state.
 
     All timestamps are in milliseconds since epoch.
     clock_diff = iat_ms_from_server - local_now_ms at login time (may be negative).
     """
+
     __slots__ = ("token", "refresh_token", "token_exp_ts", "refresh_exp_ts", "clock_diff")
 
     def __init__(
@@ -55,9 +59,9 @@ class _TokenInfo:
     ):
         self.token = token
         self.refresh_token = refresh_token
-        self.token_exp_ts = token_exp_ts    # -1 means unknown / invalid
+        self.token_exp_ts = token_exp_ts  # -1 means unknown / invalid
         self.refresh_exp_ts = refresh_exp_ts  # -1 means unknown / invalid
-        self.clock_diff = clock_diff          # server_clock - local_clock offset in ms
+        self.clock_diff = clock_diff  # server_clock - local_clock offset in ms
 
 
 # Sentinel used before first login
@@ -67,6 +71,7 @@ _TokenInfo.EMPTY = _TokenInfo(None, None, -1, -1, 0)  # type: ignore[attr-define
 # ---------------------------------------------------------------------------
 # JWT helpers
 # ---------------------------------------------------------------------------
+
 
 def _parse_jwt_claim_ms(jwt: str, claim: str) -> int:
     """Decode JWT payload (base64url) and return the named claim value * 1000 (ms).
@@ -89,6 +94,7 @@ def _parse_jwt_claim_ms(jwt: str, claim: str) -> int:
 # ---------------------------------------------------------------------------
 # _AuthManager
 # ---------------------------------------------------------------------------
+
 
 class _AuthManager:
     """Manages JWT token state and implements the refresh_api_key_hook.
@@ -229,9 +235,7 @@ class _AuthManager:
             headers={"Content-Type": "application/json"},
         )
         if response.status != 200:
-            raise RuntimeError(
-                f"Auth request to {path} returned HTTP {response.status}"
-            )
+            raise RuntimeError(f"Auth request to {path} returned HTTP {response.status}")
         return json.loads(response.data)
 
     def _build_token_info(self, token: str, refresh_token: str) -> "_TokenInfo":

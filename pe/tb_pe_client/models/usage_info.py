@@ -57,7 +57,9 @@ class UsageInfo(BaseModel):
     max_alarms: Optional[StrictInt] = Field(default=None, serialization_alias="maxAlarms")
     reports: Optional[StrictInt] = None
     max_reports: Optional[StrictInt] = Field(default=None, serialization_alias="maxReports")
-    __properties: ClassVar[List[str]] = ["devices", "maxDevices", "assets", "maxAssets", "customers", "maxCustomers", "users", "maxUsers", "dashboards", "maxDashboards", "edges", "maxEdges", "transportMessages", "maxTransportMessages", "jsExecutions", "tbelExecutions", "maxJsExecutions", "maxTbelExecutions", "emails", "maxEmails", "sms", "maxSms", "smsEnabled", "alarms", "maxAlarms", "reports", "maxReports"]
+    ai_credits: Optional[StrictInt] = Field(default=None, serialization_alias="aiCredits")
+    max_ai_credits: Optional[StrictInt] = Field(default=None, serialization_alias="maxAiCredits")
+    __properties: ClassVar[List[str]] = ["devices", "maxDevices", "assets", "maxAssets", "customers", "maxCustomers", "users", "maxUsers", "dashboards", "maxDashboards", "edges", "maxEdges", "transportMessages", "maxTransportMessages", "jsExecutions", "tbelExecutions", "maxJsExecutions", "maxTbelExecutions", "emails", "maxEmails", "sms", "maxSms", "smsEnabled", "alarms", "maxAlarms", "reports", "maxReports", "aiCredits", "maxAiCredits"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -141,7 +143,9 @@ class UsageInfo(BaseModel):
             "alarms": obj.get("alarms"),
             "max_alarms": obj.get("maxAlarms"),
             "reports": obj.get("reports"),
-            "max_reports": obj.get("maxReports")
+            "max_reports": obj.get("maxReports"),
+            "ai_credits": obj.get("aiCredits"),
+            "max_ai_credits": obj.get("maxAiCredits")
         })
         return _obj
 
