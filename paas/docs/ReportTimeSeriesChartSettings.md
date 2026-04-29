@@ -37,37 +37,6 @@
 
 
 
-## Subtypes
-
-#### ReportBarChartWithLabelsSettings  *(sub_type=`barChartWithLabels`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| show_bar_label | bool |  | [optional] |
-| bar_label_font | Font |  | [optional] |
-| bar_label_color | str |  | [optional] |
-| show_bar_value | bool |  | [optional] |
-| bar_value_font | Font |  | [optional] |
-| bar_value_color | str |  | [optional] |
-| show_bar_border | bool |  | [optional] |
-| bar_border_width | float |  | [optional] |
-| bar_border_radius | float |  | [optional] |
-| bar_background_settings | ChartFillSettings |  | [optional] |
-| bar_units | str |  | [optional] |
-| bar_decimals | int |  | [optional] |
-
-#### ReportRangeChartSettings  *(sub_type=`rangeChart`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| range_colors | List[ColorRange] |  | [optional] |
-| out_of_range_color | str |  | [optional] |
-| show_range_thresholds | bool |  | [optional] |
-| range_threshold | TimeSeriesChartThreshold |  | [optional] |
-| fill_area | bool |  | [optional] |
-| fill_area_opacity | float |  | [optional] |
-| line_settings | LineSeriesSettings |  | [optional] |
-| range_units | str |  | [optional] |
-| range_decimals | int |  | [optional] |
-
 ## Referenced Types
 
 #### Font
@@ -199,40 +168,6 @@
 | show_total | bool |  | [optional] |
 | show_latest | bool |  | [optional] |
 
-#### ChartFillSettings
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| type | ChartFillType |  | [optional] |
-| opacity | float |  | [optional] |
-| gradient | ChartFillSettingsGradient |  | [optional] |
-
-#### ColorRange
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| var_from | float |  | [optional] |
-| to | float |  | [optional] |
-| color | str |  | [optional] |
-
-#### LineSeriesSettings
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| show_line | bool |  | [optional] |
-| step | bool |  | [optional] |
-| step_type | LineSeriesStepType |  | [optional] |
-| smooth | bool |  | [optional] |
-| line_type | ChartLineType |  | [optional] |
-| line_width | float |  | [optional] |
-| show_points | bool |  | [optional] |
-| show_point_label | bool |  | [optional] |
-| point_label_position | ChartLabelPosition |  | [optional] |
-| point_label_font | Font |  | [optional] |
-| point_label_color | str |  | [optional] |
-| enable_point_label_background | bool |  | [optional] |
-| point_label_background | str |  | [optional] |
-| point_shape | ChartShape |  | [optional] |
-| point_size | float |  | [optional] |
-| fill_area_settings | ChartFillSettings |  | [optional] |
-
 #### FontWeight (enum)
 `NORMAL` | `BOLD` | `ENUM_500`
 
@@ -269,21 +204,6 @@
 
 #### LegendPosition (enum)
 `TOP` | `BOTTOM` | `LEFT` | `RIGHT`
-
-#### ChartFillType (enum)
-`NONE` | `OPACITY` | `GRADIENT`
-
-#### ChartFillSettingsGradient
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| start | float |  | [optional] |
-| end | float |  | [optional] |
-
-#### LineSeriesStepType (enum)
-`START` | `MIDDLE` | `END`
-
-#### ChartLabelPosition (enum)
-`TOP` | `BOTTOM`
 
 ---
 

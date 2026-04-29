@@ -18,7 +18,10 @@ from typing import TYPE_CHECKING
 
 __all__ = [
     "AdminControllerApi",
+    "AiChatControllerApi",
     "AiModelControllerApi",
+    "AiSolutionControllerApi",
+    "AiToolControllerApi",
     "AlarmCommentControllerApi",
     "AlarmControllerApi",
     "AlarmRuleControllerApi",
@@ -103,7 +106,10 @@ __all__ = [
 
 if TYPE_CHECKING:
     from tb_pe_client.api.admin_controller_api import AdminControllerApi
+    from tb_pe_client.api.ai_chat_controller_api import AiChatControllerApi
     from tb_pe_client.api.ai_model_controller_api import AiModelControllerApi
+    from tb_pe_client.api.ai_solution_controller_api import AiSolutionControllerApi
+    from tb_pe_client.api.ai_tool_controller_api import AiToolControllerApi
     from tb_pe_client.api.alarm_comment_controller_api import AlarmCommentControllerApi
     from tb_pe_client.api.alarm_controller_api import AlarmControllerApi
     from tb_pe_client.api.alarm_rule_controller_api import AlarmRuleControllerApi
@@ -187,7 +193,10 @@ if TYPE_CHECKING:
 
 _API_CLASSES = {
     "AdminControllerApi": "tb_pe_client.api.admin_controller_api",
+    "AiChatControllerApi": "tb_pe_client.api.ai_chat_controller_api",
     "AiModelControllerApi": "tb_pe_client.api.ai_model_controller_api",
+    "AiSolutionControllerApi": "tb_pe_client.api.ai_solution_controller_api",
+    "AiToolControllerApi": "tb_pe_client.api.ai_tool_controller_api",
     "AlarmCommentControllerApi": "tb_pe_client.api.alarm_comment_controller_api",
     "AlarmControllerApi": "tb_pe_client.api.alarm_controller_api",
     "AlarmRuleControllerApi": "tb_pe_client.api.alarm_rule_controller_api",

@@ -21,13 +21,12 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from tb_paas_client.models.chart_fill_settings import ChartFillSettings
 from tb_paas_client.models.comparison_duration import ComparisonDuration
 from tb_paas_client.models.font import Font
 from tb_paas_client.models.legend_config import LegendConfig
-from tb_paas_client.models.report_time_series_chart_settings import ReportTimeSeriesChartSettings
 from tb_paas_client.models.text_alignment import TextAlignment
 from tb_paas_client.models.time_series_chart_bar_width_settings import TimeSeriesChartBarWidthSettings
 from tb_paas_client.models.time_series_chart_grid_settings import TimeSeriesChartGridSettings
@@ -39,10 +38,37 @@ from tb_paas_client.models.time_series_chart_y_axis_settings import TimeSeriesCh
 from typing import Optional, Set
 from typing_extensions import Self
 
-class ReportBarChartWithLabelsSettings(ReportTimeSeriesChartSettings):
+class ReportBarChartWithLabelsSettings(BaseModel):
     """
     ReportBarChartWithLabelsSettings
     """ # noqa: E501
+    show_title: Optional[StrictBool] = Field(default=None, serialization_alias="showTitle")
+    title: Optional[StrictStr] = None
+    title_font: Optional[Font] = Field(default=None, serialization_alias="titleFont")
+    title_color: Optional[StrictStr] = Field(default=None, serialization_alias="titleColor")
+    title_alignment: Optional[TextAlignment] = Field(default=None, serialization_alias="titleAlignment")
+    thresholds: Optional[List[TimeSeriesChartThreshold]] = None
+    stack: Optional[StrictBool] = None
+    grid: Optional[TimeSeriesChartGridSettings] = None
+    y_axes: Optional[Dict[str, TimeSeriesChartYAxisSettings]] = Field(default=None, serialization_alias="yAxes")
+    x_axis: Optional[TimeSeriesChartXAxisSettings] = Field(default=None, serialization_alias="xAxis")
+    bar_width_settings: Optional[TimeSeriesChartBarWidthSettings] = Field(default=None, serialization_alias="barWidthSettings")
+    no_aggregation_bar_width_settings: Optional[TimeSeriesChartNoAggregationBarWidthSettings] = Field(default=None, serialization_alias="noAggregationBarWidthSettings")
+    states: Optional[List[TimeSeriesChartStateSettings]] = None
+    comparison_enabled: Optional[StrictBool] = Field(default=None, serialization_alias="comparisonEnabled")
+    time_for_comparison: Optional[ComparisonDuration] = Field(default=None, serialization_alias="timeForComparison")
+    comparison_custom_interval_value: Optional[StrictInt] = Field(default=None, serialization_alias="comparisonCustomIntervalValue")
+    comparison_x_axis: Optional[TimeSeriesChartXAxisSettings] = Field(default=None, serialization_alias="comparisonXAxis")
+    show_legend: Optional[StrictBool] = Field(default=None, serialization_alias="showLegend")
+    legend_column_title_font: Optional[Font] = Field(default=None, serialization_alias="legendColumnTitleFont")
+    legend_column_title_color: Optional[StrictStr] = Field(default=None, serialization_alias="legendColumnTitleColor")
+    legend_label_font: Optional[Font] = Field(default=None, serialization_alias="legendLabelFont")
+    legend_label_color: Optional[StrictStr] = Field(default=None, serialization_alias="legendLabelColor")
+    legend_value_font: Optional[Font] = Field(default=None, serialization_alias="legendValueFont")
+    legend_value_color: Optional[StrictStr] = Field(default=None, serialization_alias="legendValueColor")
+    legend_config: Optional[LegendConfig] = Field(default=None, serialization_alias="legendConfig")
+    xaxis: Optional[TimeSeriesChartXAxisSettings] = None
+    yaxes: Optional[Dict[str, TimeSeriesChartYAxisSettings]] = None
     show_bar_label: Optional[StrictBool] = Field(default=None, serialization_alias="showBarLabel")
     bar_label_font: Optional[Font] = Field(default=None, serialization_alias="barLabelFont")
     bar_label_color: Optional[StrictStr] = Field(default=None, serialization_alias="barLabelColor")

@@ -35,10 +35,10 @@ class GeofencingCalculatedFieldConfiguration(CalculatedFieldConfiguration):
     GeofencingCalculatedFieldConfiguration
     """ # noqa: E501
     entity_coordinates: EntityCoordinates = Field(serialization_alias="entityCoordinates")
+    zone_groups: Dict[str, ZoneGroupConfiguration] = Field(serialization_alias="zoneGroups")
     scheduled_update_enabled: Optional[StrictBool] = Field(default=None, serialization_alias="scheduledUpdateEnabled")
     scheduled_update_interval: Optional[StrictInt] = Field(default=None, serialization_alias="scheduledUpdateInterval")
-    zone_groups: Dict[str, ZoneGroupConfiguration] = Field(serialization_alias="zoneGroups")
-    __properties: ClassVar[List[str]] = ["type", "output", "entityCoordinates", "scheduledUpdateEnabled", "scheduledUpdateInterval", "zoneGroups"]
+    __properties: ClassVar[List[str]] = ["output", "type", "entityCoordinates", "zoneGroups", "scheduledUpdateEnabled", "scheduledUpdateInterval"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -109,17 +109,17 @@ class GeofencingCalculatedFieldConfiguration(CalculatedFieldConfiguration):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "type": obj.get("type"),
             "output": Output.from_dict(obj["output"]) if obj.get("output") is not None else None,
+            "type": obj.get("type"),
             "entity_coordinates": EntityCoordinates.from_dict(obj["entityCoordinates"]) if obj.get("entityCoordinates") is not None else None,
-            "scheduled_update_enabled": obj.get("scheduledUpdateEnabled"),
-            "scheduled_update_interval": obj.get("scheduledUpdateInterval"),
             "zone_groups": dict(
                 (_k, ZoneGroupConfiguration.from_dict(_v))
                 for _k, _v in obj["zoneGroups"].items()
             )
             if obj.get("zoneGroups") is not None
-            else None
+            else None,
+            "scheduled_update_enabled": obj.get("scheduledUpdateEnabled"),
+            "scheduled_update_interval": obj.get("scheduledUpdateInterval")
         })
         return _obj
 

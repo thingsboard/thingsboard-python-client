@@ -24,7 +24,6 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_paas_client.models.alarm_condition import AlarmCondition
-from tb_paas_client.models.alarm_schedule import AlarmSchedule
 from tb_paas_client.models.dashboard_id import DashboardId
 from typing import Optional, Set
 from typing_extensions import Self
@@ -33,11 +32,10 @@ class AlarmRule(BaseModel):
     """
     AlarmRule
     """ # noqa: E501
-    condition: Optional[AlarmCondition] = Field(default=None, description="JSON object representing the alarm rule condition")
-    alarm_details: Optional[StrictStr] = Field(default=None, description="String value representing the additional details for an alarm rule", serialization_alias="alarmDetails")
-    dashboard_id: Optional[DashboardId] = Field(default=None, description="JSON object with the dashboard Id representing the reference to alarm details dashboard used by mobile application", serialization_alias="dashboardId")
-    schedule: Optional[AlarmSchedule] = Field(default=None, description="JSON object representing time interval during which the rule is active")
-    __properties: ClassVar[List[str]] = ["condition", "alarmDetails", "dashboardId", "schedule"]
+    condition: AlarmCondition
+    alarm_details: Optional[StrictStr] = Field(default=None, serialization_alias="alarmDetails")
+    dashboard_id: Optional[DashboardId] = Field(default=None, serialization_alias="dashboardId")
+    __properties: ClassVar[List[str]] = ["condition", "alarmDetails", "dashboardId"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -89,9 +87,6 @@ class AlarmRule(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of dashboard_id
         if self.dashboard_id:
             _dict['dashboardId'] = self.dashboard_id.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of schedule
-        if self.schedule:
-            _dict['schedule'] = self.schedule.to_dict()
         return _dict
 
     @classmethod
@@ -106,8 +101,7 @@ class AlarmRule(BaseModel):
         _obj = cls.model_validate({
             "condition": AlarmCondition.from_dict(obj["condition"]) if obj.get("condition") is not None else None,
             "alarm_details": obj.get("alarmDetails"),
-            "dashboard_id": DashboardId.from_dict(obj["dashboardId"]) if obj.get("dashboardId") is not None else None,
-            "schedule": AlarmSchedule.from_dict(obj["schedule"]) if obj.get("schedule") is not None else None
+            "dashboard_id": DashboardId.from_dict(obj["dashboardId"]) if obj.get("dashboardId") is not None else None
         })
         return _obj
 

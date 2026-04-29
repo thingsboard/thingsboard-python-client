@@ -41,8 +41,9 @@ class TaskResult(BaseModel):
     success: Optional[StrictBool] = None
     discarded: Optional[StrictBool] = None
     finish_ts: Optional[StrictInt] = Field(default=None, serialization_alias="finishTs")
+    error: Optional[StrictStr] = None
     job_type: StrictStr = Field(serialization_alias="jobType")
-    __properties: ClassVar[List[str]] = ["key", "success", "discarded", "finishTs", "jobType"]
+    __properties: ClassVar[List[str]] = ["key", "success", "discarded", "finishTs", "error", "jobType"]
 
     model_config = ConfigDict(
         populate_by_name=True,

@@ -3,12 +3,37 @@
 
 `tb_paas_client.models.ReportRangeChartSettings`
 
-**Extends:** **ReportTimeSeriesChartSettings**
-
 ## Properties
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
+| **show_title** | **bool** |  | [optional] |
+| **title** | **str** |  | [optional] |
+| **title_font** | [**Font**](Font.md) |  | [optional] |
+| **title_color** | **str** |  | [optional] |
+| **title_alignment** | [**TextAlignment**](TextAlignment.md) |  | [optional] |
+| **thresholds** | [**List[TimeSeriesChartThreshold]**](TimeSeriesChartThreshold.md) |  | [optional] |
+| **stack** | **bool** |  | [optional] |
+| **grid** | [**TimeSeriesChartGridSettings**](TimeSeriesChartGridSettings.md) |  | [optional] |
+| **y_axes** | [**Dict[str, TimeSeriesChartYAxisSettings]**](TimeSeriesChartYAxisSettings.md) |  | [optional] |
+| **x_axis** | [**TimeSeriesChartXAxisSettings**](TimeSeriesChartXAxisSettings.md) |  | [optional] |
+| **bar_width_settings** | [**TimeSeriesChartBarWidthSettings**](TimeSeriesChartBarWidthSettings.md) |  | [optional] |
+| **no_aggregation_bar_width_settings** | [**TimeSeriesChartNoAggregationBarWidthSettings**](TimeSeriesChartNoAggregationBarWidthSettings.md) |  | [optional] |
+| **states** | [**List[TimeSeriesChartStateSettings]**](TimeSeriesChartStateSettings.md) |  | [optional] |
+| **comparison_enabled** | **bool** |  | [optional] |
+| **time_for_comparison** | [**ComparisonDuration**](ComparisonDuration.md) |  | [optional] |
+| **comparison_custom_interval_value** | **int** |  | [optional] |
+| **comparison_x_axis** | [**TimeSeriesChartXAxisSettings**](TimeSeriesChartXAxisSettings.md) |  | [optional] |
+| **show_legend** | **bool** |  | [optional] |
+| **legend_column_title_font** | [**Font**](Font.md) |  | [optional] |
+| **legend_column_title_color** | **str** |  | [optional] |
+| **legend_label_font** | [**Font**](Font.md) |  | [optional] |
+| **legend_label_color** | **str** |  | [optional] |
+| **legend_value_font** | [**Font**](Font.md) |  | [optional] |
+| **legend_value_color** | **str** |  | [optional] |
+| **legend_config** | [**LegendConfig**](LegendConfig.md) |  | [optional] |
+| **xaxis** | [**TimeSeriesChartXAxisSettings**](TimeSeriesChartXAxisSettings.md) |  | [optional] |
+| **yaxes** | [**Dict[str, TimeSeriesChartYAxisSettings]**](TimeSeriesChartYAxisSettings.md) |  | [optional] |
 | **range_colors** | [**List[ColorRange]**](ColorRange.md) |  | [optional] |
 | **out_of_range_color** | **str** |  | [optional] |
 | **show_range_thresholds** | **bool** |  | [optional] |
@@ -23,43 +48,16 @@
 
 ## Referenced Types
 
-#### ReportTimeSeriesChartSettings
+#### Font
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| show_title | bool |  | [optional] |
-| title | str |  | [optional] |
-| title_font | Font |  | [optional] |
-| title_color | str |  | [optional] |
-| title_alignment | TextAlignment |  | [optional] |
-| thresholds | List[TimeSeriesChartThreshold] |  | [optional] |
-| stack | bool |  | [optional] |
-| grid | TimeSeriesChartGridSettings |  | [optional] |
-| y_axes | Dict[str, TimeSeriesChartYAxisSettings] |  | [optional] |
-| x_axis | TimeSeriesChartXAxisSettings |  | [optional] |
-| bar_width_settings | TimeSeriesChartBarWidthSettings |  | [optional] |
-| no_aggregation_bar_width_settings | TimeSeriesChartNoAggregationBarWidthSettings |  | [optional] |
-| states | List[TimeSeriesChartStateSettings] |  | [optional] |
-| comparison_enabled | bool |  | [optional] |
-| time_for_comparison | ComparisonDuration |  | [optional] |
-| comparison_custom_interval_value | int |  | [optional] |
-| comparison_x_axis | TimeSeriesChartXAxisSettings |  | [optional] |
-| show_legend | bool |  | [optional] |
-| legend_column_title_font | Font |  | [optional] |
-| legend_column_title_color | str |  | [optional] |
-| legend_label_font | Font |  | [optional] |
-| legend_label_color | str |  | [optional] |
-| legend_value_font | Font |  | [optional] |
-| legend_value_color | str |  | [optional] |
-| legend_config | LegendConfig |  | [optional] |
-| xaxis | TimeSeriesChartXAxisSettings |  | [optional] |
-| yaxes | Dict[str, TimeSeriesChartYAxisSettings] |  | [optional] |
+| size | float |  | [optional] |
+| weight | FontWeight |  | [optional] |
+| style | FontStyle |  | [optional] |
+| family | str |  | [optional] |
 
-#### ColorRange
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| var_from | float |  | [optional] |
-| to | float |  | [optional] |
-| color | str |  | [optional] |
+#### TextAlignment (enum)
+`CENTER` | `RIGHT` | `LEFT` | `JUSTIFY`
 
 #### TimeSeriesChartThreshold
 | Name | Type | Description | Notes |
@@ -88,37 +86,6 @@
 | enable_label_background | bool |  | [optional] |
 | label_background | str |  | [optional] |
 | yaxis_id | str |  | [optional] |
-
-#### LineSeriesSettings
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| show_line | bool |  | [optional] |
-| step | bool |  | [optional] |
-| step_type | LineSeriesStepType |  | [optional] |
-| smooth | bool |  | [optional] |
-| line_type | ChartLineType |  | [optional] |
-| line_width | float |  | [optional] |
-| show_points | bool |  | [optional] |
-| show_point_label | bool |  | [optional] |
-| point_label_position | ChartLabelPosition |  | [optional] |
-| point_label_font | Font |  | [optional] |
-| point_label_color | str |  | [optional] |
-| enable_point_label_background | bool |  | [optional] |
-| point_label_background | str |  | [optional] |
-| point_shape | ChartShape |  | [optional] |
-| point_size | float |  | [optional] |
-| fill_area_settings | ChartFillSettings |  | [optional] |
-
-#### Font
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| size | float |  | [optional] |
-| weight | FontWeight |  | [optional] |
-| style | FontStyle |  | [optional] |
-| family | str |  | [optional] |
-
-#### TextAlignment (enum)
-`CENTER` | `RIGHT` | `LEFT` | `JUSTIFY`
 
 #### TimeSeriesChartGridSettings
 | Name | Type | Description | Notes |
@@ -210,6 +177,39 @@
 | show_total | bool |  | [optional] |
 | show_latest | bool |  | [optional] |
 
+#### ColorRange
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| var_from | float |  | [optional] |
+| to | float |  | [optional] |
+| color | str |  | [optional] |
+
+#### LineSeriesSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| show_line | bool |  | [optional] |
+| step | bool |  | [optional] |
+| step_type | LineSeriesStepType |  | [optional] |
+| smooth | bool |  | [optional] |
+| line_type | ChartLineType |  | [optional] |
+| line_width | float |  | [optional] |
+| show_points | bool |  | [optional] |
+| show_point_label | bool |  | [optional] |
+| point_label_position | ChartLabelPosition |  | [optional] |
+| point_label_font | Font |  | [optional] |
+| point_label_color | str |  | [optional] |
+| enable_point_label_background | bool |  | [optional] |
+| point_label_background | str |  | [optional] |
+| point_shape | ChartShape |  | [optional] |
+| point_size | float |  | [optional] |
+| fill_area_settings | ChartFillSettings |  | [optional] |
+
+#### FontWeight (enum)
+`NORMAL` | `BOLD` | `ENUM_500`
+
+#### FontStyle (enum)
+`NORMAL` | `ITALIC`
+
 #### ValueSourceType (enum)
 `CONSTANT` | `LATESTKEY` | `ENTITY`
 
@@ -221,25 +221,6 @@
 
 #### ThresholdLabelPosition (enum)
 `START` | `MIDDLE` | `END` | `INSIDESTART` | `INSIDESTARTTOP` | `INSIDESTARTBOTTOM` | `INSIDEMIDDLE` | `INSIDEMIDDLETOP` | `INSIDEMIDDLEBOTTOM` | `INSIDEEND` | … (12 values total)
-
-#### LineSeriesStepType (enum)
-`START` | `MIDDLE` | `END`
-
-#### ChartLabelPosition (enum)
-`TOP` | `BOTTOM`
-
-#### ChartFillSettings
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| type | ChartFillType |  | [optional] |
-| opacity | float |  | [optional] |
-| gradient | ChartFillSettingsGradient |  | [optional] |
-
-#### FontWeight (enum)
-`NORMAL` | `BOLD` | `ENUM_500`
-
-#### FontStyle (enum)
-`NORMAL` | `ITALIC`
 
 #### AxisPosition (enum)
 `LEFT` | `RIGHT` | `TOP` | `BOTTOM`
@@ -260,6 +241,19 @@
 #### LegendPosition (enum)
 `TOP` | `BOTTOM` | `LEFT` | `RIGHT`
 
+#### LineSeriesStepType (enum)
+`START` | `MIDDLE` | `END`
+
+#### ChartLabelPosition (enum)
+`TOP` | `BOTTOM`
+
+#### ChartFillSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | ChartFillType |  | [optional] |
+| opacity | float |  | [optional] |
+| gradient | ChartFillSettingsGradient |  | [optional] |
+
 #### ChartFillType (enum)
 `NONE` | `OPACITY` | `GRADIENT`
 
@@ -274,7 +268,7 @@
 ### Conventions
 
 - **Package:** `tb_paas_client.models`
-- **Attribute access:** `obj.range_colors`, `obj.name`, etc.
+- **Attribute access:** `obj.show_title`, `obj.name`, etc.
 - **Serialize:** `obj.model_dump()` or `obj.model_dump(by_alias=True)` for camelCase JSON
 - **Deserialize:** `ReportRangeChartSettings.model_validate(data)` or `ReportRangeChartSettings.model_validate_json(json_str)`
 - **None fields:** Optional attributes default to `None`; accessing them never raises exceptions

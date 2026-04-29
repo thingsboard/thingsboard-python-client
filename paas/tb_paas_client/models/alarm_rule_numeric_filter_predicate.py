@@ -25,7 +25,7 @@ from pydantic import ConfigDict
 from typing import Any, ClassVar, Dict, List
 from tb_paas_client.models.alarm_condition_value_double import AlarmConditionValueDouble
 from tb_paas_client.models.alarm_rule_key_filter_predicate import AlarmRuleKeyFilterPredicate
-from tb_paas_client.models.numeric_operation import NumericOperation
+from tb_paas_client.models.alarm_rule_numeric_operation import AlarmRuleNumericOperation
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -33,7 +33,7 @@ class AlarmRuleNumericFilterPredicate(AlarmRuleKeyFilterPredicate):
     """
     AlarmRuleNumericFilterPredicate
     """ # noqa: E501
-    operation: NumericOperation
+    operation: AlarmRuleNumericOperation
     value: AlarmConditionValueDouble
     __properties: ClassVar[List[str]] = ["type", "operation", "value"]
 

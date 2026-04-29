@@ -33,7 +33,7 @@ class ReportTaskResult(TaskResult):
     ReportTaskResult
     """ # noqa: E501
     report: Optional[Report] = None
-    __properties: ClassVar[List[str]] = ["key", "success", "discarded", "finishTs", "jobType", "report"]
+    __properties: ClassVar[List[str]] = ["key", "success", "discarded", "finishTs", "error", "jobType", "report"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -98,6 +98,7 @@ class ReportTaskResult(TaskResult):
             "success": obj.get("success"),
             "discarded": obj.get("discarded"),
             "finish_ts": obj.get("finishTs"),
+            "error": obj.get("error"),
             "job_type": obj.get("jobType"),
             "report": Report.from_dict(obj["report"]) if obj.get("report") is not None else None
         })

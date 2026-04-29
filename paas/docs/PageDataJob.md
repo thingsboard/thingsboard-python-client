@@ -116,6 +116,7 @@
 | success | bool |  | [optional] |
 | discarded | bool |  | [optional] |
 | finish_ts | int |  | [optional] |
+| error | str |  | [optional] |
 | job_type | str |  |  |
 
 #### NotificationRequest

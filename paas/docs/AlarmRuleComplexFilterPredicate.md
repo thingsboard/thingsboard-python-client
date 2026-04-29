@@ -9,7 +9,7 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-| **operation** | [**ComplexOperation**](ComplexOperation.md) |  | [optional] |
+| **operation** | [**AlarmRuleComplexOperation**](AlarmRuleComplexOperation.md) |  | [optional] |
 | **predicates** | [**List[AlarmRuleKeyFilterPredicate]**](AlarmRuleKeyFilterPredicate.md) |  | [optional] |
 
 
@@ -21,7 +21,7 @@
 |------|------|-------------|-------|
 | type | str |  |  |
 
-#### ComplexOperation (enum)
+#### AlarmRuleComplexOperation (enum)
 `AND` | `OR`
 
 ---

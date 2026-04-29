@@ -18,9 +18,9 @@
 #### Output
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
+| decimals_by_default | int |  | [optional] |
 | name | str |  | [optional] |
 | scope | AttributeScope |  | [optional] |
-| decimals_by_default | int |  | [optional] |
 | strategy | object |  | [optional] |
 | type | str |  |  |
 

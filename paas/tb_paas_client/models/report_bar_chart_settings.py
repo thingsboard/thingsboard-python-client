@@ -21,20 +21,36 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field, StrictFloat, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from tb_paas_client.models.bar_series_settings import BarSeriesSettings
 from tb_paas_client.models.font import Font
 from tb_paas_client.models.legend_position import LegendPosition
-from tb_paas_client.models.report_latest_chart_settings import ReportLatestChartSettings
 from tb_paas_client.models.text_alignment import TextAlignment
 from typing import Optional, Set
 from typing_extensions import Self
 
-class ReportBarChartSettings(ReportLatestChartSettings):
+class ReportBarChartSettings(BaseModel):
     """
     ReportBarChartSettings
     """ # noqa: E501
+    show_title: Optional[StrictBool] = Field(default=None, serialization_alias="showTitle")
+    title: Optional[StrictStr] = None
+    title_font: Optional[Font] = Field(default=None, serialization_alias="titleFont")
+    title_color: Optional[StrictStr] = Field(default=None, serialization_alias="titleColor")
+    title_alignment: Optional[TextAlignment] = Field(default=None, serialization_alias="titleAlignment")
+    units: Optional[StrictStr] = None
+    decimals: Optional[StrictInt] = None
+    auto_scale: Optional[StrictBool] = Field(default=None, serialization_alias="autoScale")
+    sort_series: Optional[StrictBool] = Field(default=None, serialization_alias="sortSeries")
+    show_total: Optional[StrictBool] = Field(default=None, serialization_alias="showTotal")
+    show_legend: Optional[StrictBool] = Field(default=None, serialization_alias="showLegend")
+    legend_position: Optional[LegendPosition] = Field(default=None, serialization_alias="legendPosition")
+    legend_label_font: Optional[Font] = Field(default=None, serialization_alias="legendLabelFont")
+    legend_label_color: Optional[StrictStr] = Field(default=None, serialization_alias="legendLabelColor")
+    legend_value_font: Optional[Font] = Field(default=None, serialization_alias="legendValueFont")
+    legend_value_color: Optional[StrictStr] = Field(default=None, serialization_alias="legendValueColor")
+    legend_show_total: Optional[StrictBool] = Field(default=None, serialization_alias="legendShowTotal")
     axis_min: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, serialization_alias="axisMin")
     axis_max: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, serialization_alias="axisMax")
     axis_tick_label_font: Optional[Font] = Field(default=None, serialization_alias="axisTickLabelFont")

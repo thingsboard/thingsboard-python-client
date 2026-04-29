@@ -9,10 +9,10 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-| **apply_expression_to_resolved_arguments** | **bool** |  | [optional] |
 | **arguments** | [**Dict[str, Argument]**](Argument.md) |  | |
 | **expression** | **str** |  | [optional] |
 | **relation** | [**RelationPathLevel**](RelationPathLevel.md) |  | |
+| **apply_expression_to_resolved_arguments** | **bool** |  | [optional] |
 
 
 
@@ -23,8 +23,8 @@
 #### CalculatedFieldConfiguration
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| type | str |  |  |
 | output | Output |  | [optional] |
+| type | str |  |  |
 
 #### Argument
 | Name | Type | Description | Notes |
@@ -45,9 +45,9 @@
 #### Output
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
+| decimals_by_default | int |  | [optional] |
 | name | str |  | [optional] |
 | scope | AttributeScope |  | [optional] |
-| decimals_by_default | int |  | [optional] |
 | strategy | object |  | [optional] |
 | type | str |  |  |
 
@@ -132,7 +132,7 @@
 ### Conventions
 
 - **Package:** `tb_paas_client.models`
-- **Attribute access:** `obj.apply_expression_to_resolved_arguments`, `obj.name`, etc.
+- **Attribute access:** `obj.arguments`, `obj.name`, etc.
 - **Serialize:** `obj.model_dump()` or `obj.model_dump(by_alias=True)` for camelCase JSON
 - **Deserialize:** `PropagationCalculatedFieldConfiguration.model_validate(data)` or `PropagationCalculatedFieldConfiguration.model_validate_json(json_str)`
 - **None fields:** Optional attributes default to `None`; accessing them never raises exceptions

@@ -76,6 +76,8 @@
 
 * `TRENDZ_PUBLIC_SYNC` (value: `'TRENDZ_PUBLIC_SYNC'`)
 
+* `AI_CHAT_REQUESTS` (value: `'AI_CHAT_REQUESTS'`)
+
 
 
 ---

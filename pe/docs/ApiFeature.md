@@ -24,6 +24,8 @@
 
 * `REPORT` (value: `'REPORT'`)
 
+* `AI` (value: `'AI'`)
+
 
 
 ---

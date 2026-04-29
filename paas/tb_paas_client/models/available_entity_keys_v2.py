@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, StrictInt
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_paas_client.models.entity_type import EntityType
 from tb_paas_client.models.key_info import KeyInfo
@@ -32,10 +32,11 @@ class AvailableEntityKeysV2(BaseModel):
     """
     Contains unique time series and attribute key names discovered from entities matching a query, optionally including a sample value for each key.
     """ # noqa: E501
+    total_entities: StrictInt = Field(description="Total number of entities that matched the query filter.", serialization_alias="totalEntities")
     entity_types: List[EntityType] = Field(description="Set of entity types found among the matched entities.", serialization_alias="entityTypes")
     timeseries: Optional[List[KeyInfo]] = None
     attributes: Optional[Dict[str, List[KeyInfo]]] = Field(default=None, description="Map of attribute scope to the list of unique attribute keys available on the matched entities. Only scopes supported by the matched entity types are included. Omitted when attribute keys were not requested or when none of the requested scopes apply to the matched entity types.")
-    __properties: ClassVar[List[str]] = ["entityTypes", "timeseries", "attributes"]
+    __properties: ClassVar[List[str]] = ["totalEntities", "entityTypes", "timeseries", "attributes"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -109,6 +110,7 @@ class AvailableEntityKeysV2(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "total_entities": obj.get("totalEntities"),
             "entity_types": obj.get("entityTypes"),
             "timeseries": [KeyInfo.from_dict(_item) for _item in obj["timeseries"]] if obj.get("timeseries") is not None else None,
             "attributes": dict(

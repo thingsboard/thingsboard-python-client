@@ -45,7 +45,7 @@ class Device(BaseModel):
     name: Optional[StrictStr] = Field(default=None, description="Unique Device Name in scope of Tenant")
     type: Optional[StrictStr] = Field(default=None, description="Device Profile Name")
     label: Optional[StrictStr] = Field(default=None, description="Label that may be used in widgets")
-    device_profile_id: DeviceProfileId = Field(description="JSON object with Device Profile Id.", serialization_alias="deviceProfileId")
+    device_profile_id: Optional[DeviceProfileId] = Field(default=None, description="JSON object with Device Profile Id. If not provided, the type will be used to determine the profile. If neither deviceProfileId nor type is specified, the default device profile will be used.", serialization_alias="deviceProfileId")
     device_data: Optional[DeviceData] = Field(default=None, description="JSON object with content specific to type of transport in the device profile.", serialization_alias="deviceData")
     firmware_id: Optional[OtaPackageId] = Field(default=None, description="JSON object with Ota Package Id.", serialization_alias="firmwareId")
     software_id: Optional[OtaPackageId] = Field(default=None, description="JSON object with Ota Package Id.", serialization_alias="softwareId")

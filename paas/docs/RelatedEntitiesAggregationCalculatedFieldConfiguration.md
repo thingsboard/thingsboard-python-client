@@ -9,13 +9,13 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
+| **relation** | [**RelationPathLevel**](RelationPathLevel.md) |  | |
 | **arguments** | [**Dict[str, Argument]**](Argument.md) |  | |
 | **deduplication_interval_in_sec** | **int** |  | [optional] |
 | **metrics** | [**Dict[str, AggMetric]**](AggMetric.md) |  | |
-| **relation** | [**RelationPathLevel**](RelationPathLevel.md) |  | |
-| **scheduled_update_enabled** | **bool** |  | [optional] |
-| **scheduled_update_interval** | **int** |  | [optional] |
 | **use_latest_ts** | **bool** |  | [optional] |
+| **scheduled_update_interval** | **int** |  | [optional] |
+| **scheduled_update_enabled** | **bool** |  | [optional] |
 
 
 
@@ -26,8 +26,14 @@
 #### CalculatedFieldConfiguration
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| type | str |  |  |
 | output | Output |  | [optional] |
+| type | str |  |  |
+
+#### RelationPathLevel
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| direction | EntitySearchDirection |  |  |
+| relation_type | str |  |  |
 
 #### Argument
 | Name | Type | Description | Notes |
@@ -47,18 +53,12 @@
 | input | AggInput |  | [optional] |
 | default_value | float |  | [optional] |
 
-#### RelationPathLevel
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| direction | EntitySearchDirection |  |  |
-| relation_type | str |  |  |
-
 #### Output
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
+| decimals_by_default | int |  | [optional] |
 | name | str |  | [optional] |
 | scope | AttributeScope |  | [optional] |
-| decimals_by_default | int |  | [optional] |
 | strategy | object |  | [optional] |
 | type | str |  |  |
 
@@ -71,6 +71,9 @@
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | strategy | TimeSeriesOutputStrategy |  | [optional] |
+
+#### EntitySearchDirection (enum)
+`FROM` | `TO`
 
 #### CfArgumentDynamicSourceConfiguration
 | Name | Type | Description | Notes |
@@ -109,9 +112,6 @@
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | key | str |  | [optional] |
-
-#### EntitySearchDirection (enum)
-`FROM` | `TO`
 
 #### AttributeScope (enum)
 `CLIENT_SCOPE` | `SERVER_SCOPE` | `SHARED_SCOPE`
@@ -161,7 +161,7 @@
 ### Conventions
 
 - **Package:** `tb_paas_client.models`
-- **Attribute access:** `obj.arguments`, `obj.name`, etc.
+- **Attribute access:** `obj.relation`, `obj.name`, etc.
 - **Serialize:** `obj.model_dump()` or `obj.model_dump(by_alias=True)` for camelCase JSON
 - **Deserialize:** `RelatedEntitiesAggregationCalculatedFieldConfiguration.model_validate(data)` or `RelatedEntitiesAggregationCalculatedFieldConfiguration.model_validate_json(json_str)`
 - **None fields:** Optional attributes default to `None`; accessing them never raises exceptions

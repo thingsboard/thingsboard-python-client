@@ -55,7 +55,7 @@
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | column | str |  | [optional] |
-| direction | Direction |  | [optional] |
+| direction | TableSortDirection |  | [optional] |
 
 #### DataSource
 | Name | Type | Description | Notes |
@@ -95,7 +95,7 @@
 #### VerticalAlignment (enum)
 `BOTTOM` | `TOP` | `MIDDLE`
 
-#### Direction (enum)
+#### TableSortDirection (enum)
 `ASC` | `DESC`
 
 #### DataSourceType (enum)

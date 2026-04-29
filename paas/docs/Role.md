@@ -12,11 +12,12 @@ A JSON value representing the role.
 | **id** | [**RoleId**](RoleId.md) | JSON object with the Role Id. Specify this field to update the Role. Referencing non-existing Role Id will cause error. Omit this field to create new Role. | [optional] |
 | **created_time** | **int** | Timestamp of the role creation, in milliseconds | [optional] [readonly] |
 | **additional_info** | **object** | Additional parameters of the role. May include: 'description' (string). | [optional] |
-| **tenant_id** | [**TenantId**](TenantId.md) | JSON object with Tenant Id. | [readonly] |
+| **tenant_id** | [**TenantId**](TenantId.md) | JSON object with Tenant Id. | [optional] [readonly] |
 | **customer_id** | [**CustomerId**](CustomerId.md) | JSON object with Customer Id.  | [optional] [readonly] |
 | **name** | **str** | Role Name | |
 | **type** | [**RoleType**](RoleType.md) | Type of the role: generic or group | |
-| **permissions** | **object** |  | [optional] |
+| **permissions** | **object** | JSON object with the set of permissions. Structure is specific for role type | |
+| **excluded_permissions** | **object** | JSON object with the set of excluded permissions. Only applicable for generic roles. Structure is the same as permissions | [optional] |
 | **version** | **int** |  | [optional] |
 | **owner_id** | [**EntityId**](EntityId.md) | JSON object with Customer or Tenant Id | [optional] [readonly] |
 

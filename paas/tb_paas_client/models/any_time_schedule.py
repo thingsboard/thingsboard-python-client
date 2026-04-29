@@ -24,8 +24,6 @@ import json
 from pydantic import ConfigDict
 from typing import Any, ClassVar, Dict, List
 from tb_paas_client.models.alarm_schedule import AlarmSchedule
-from tb_paas_client.models.alarm_schedule_type import AlarmScheduleType
-from tb_paas_client.models.dynamic_value_string import DynamicValueString
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -33,7 +31,7 @@ class AnyTimeSchedule(AlarmSchedule):
     """
     AnyTimeSchedule
     """ # noqa: E501
-    __properties: ClassVar[List[str]] = ["dynamicValue", "type"]
+    __properties: ClassVar[List[str]] = ["type"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -79,9 +77,6 @@ class AnyTimeSchedule(AlarmSchedule):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of dynamic_value
-        if self.dynamic_value:
-            _dict['dynamicValue'] = self.dynamic_value.to_dict()
         return _dict
 
     @classmethod
@@ -94,7 +89,6 @@ class AnyTimeSchedule(AlarmSchedule):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "dynamic_value": DynamicValueString.from_dict(obj["dynamicValue"]) if obj.get("dynamicValue") is not None else None,
             "type": obj.get("type")
         })
         return _obj

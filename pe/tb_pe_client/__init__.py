@@ -37,7 +37,10 @@ except ImportError:
 
 if TYPE_CHECKING:
     from tb_pe_client.api.admin_controller_api import AdminControllerApi
+    from tb_pe_client.api.ai_chat_controller_api import AiChatControllerApi
     from tb_pe_client.api.ai_model_controller_api import AiModelControllerApi
+    from tb_pe_client.api.ai_solution_controller_api import AiSolutionControllerApi
+    from tb_pe_client.api.ai_tool_controller_api import AiToolControllerApi
     from tb_pe_client.api.alarm_comment_controller_api import AlarmCommentControllerApi
     from tb_pe_client.api.alarm_controller_api import AlarmControllerApi
     from tb_pe_client.api.alarm_rule_controller_api import AlarmRuleControllerApi
@@ -284,6 +287,7 @@ if TYPE_CHECKING:
     from tb_pe_client.models.chart_label_position import ChartLabelPosition
     from tb_pe_client.models.chart_line_type import ChartLineType
     from tb_pe_client.models.chart_shape import ChartShape
+    from tb_pe_client.models.chat_type import ChatType
     from tb_pe_client.models.check_pre_provisioned_devices_device_profile_provision_configuration import CheckPreProvisionedDevicesDeviceProfileProvisionConfiguration
     from tb_pe_client.models.checksum_algorithm import ChecksumAlgorithm
     from tb_pe_client.models.claim_request import ClaimRequest
@@ -902,6 +906,7 @@ if TYPE_CHECKING:
     from tb_pe_client.models.solution_export_response import SolutionExportResponse
     from tb_pe_client.models.solution_import_result import SolutionImportResult
     from tb_pe_client.models.solution_install_response import SolutionInstallResponse
+    from tb_pe_client.models.solution_step import SolutionStep
     from tb_pe_client.models.solution_template_level import SolutionTemplateLevel
     from tb_pe_client.models.solution_validation_result import SolutionValidationResult
     from tb_pe_client.models.specific_time_schedule import SpecificTimeSchedule
@@ -1064,7 +1069,10 @@ if TYPE_CHECKING:
 
 _LAZY_CLASSES = {
     "AdminControllerApi": "tb_pe_client.api.admin_controller_api",
+    "AiChatControllerApi": "tb_pe_client.api.ai_chat_controller_api",
     "AiModelControllerApi": "tb_pe_client.api.ai_model_controller_api",
+    "AiSolutionControllerApi": "tb_pe_client.api.ai_solution_controller_api",
+    "AiToolControllerApi": "tb_pe_client.api.ai_tool_controller_api",
     "AlarmCommentControllerApi": "tb_pe_client.api.alarm_comment_controller_api",
     "AlarmControllerApi": "tb_pe_client.api.alarm_controller_api",
     "AlarmRuleControllerApi": "tb_pe_client.api.alarm_rule_controller_api",
@@ -1311,6 +1319,7 @@ _LAZY_CLASSES = {
     "ChartLabelPosition": "tb_pe_client.models.chart_label_position",
     "ChartLineType": "tb_pe_client.models.chart_line_type",
     "ChartShape": "tb_pe_client.models.chart_shape",
+    "ChatType": "tb_pe_client.models.chat_type",
     "CheckPreProvisionedDevicesDeviceProfileProvisionConfiguration": "tb_pe_client.models.check_pre_provisioned_devices_device_profile_provision_configuration",
     "ChecksumAlgorithm": "tb_pe_client.models.checksum_algorithm",
     "ClaimRequest": "tb_pe_client.models.claim_request",
@@ -1929,6 +1938,7 @@ _LAZY_CLASSES = {
     "SolutionExportResponse": "tb_pe_client.models.solution_export_response",
     "SolutionImportResult": "tb_pe_client.models.solution_import_result",
     "SolutionInstallResponse": "tb_pe_client.models.solution_install_response",
+    "SolutionStep": "tb_pe_client.models.solution_step",
     "SolutionTemplateLevel": "tb_pe_client.models.solution_template_level",
     "SolutionValidationResult": "tb_pe_client.models.solution_validation_result",
     "SpecificTimeSchedule": "tb_pe_client.models.specific_time_schedule",

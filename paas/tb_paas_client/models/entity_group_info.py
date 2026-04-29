@@ -24,7 +24,6 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_paas_client.models.entity_group_id import EntityGroupId
-from tb_paas_client.models.entity_group_info_owner_ids_inner import EntityGroupInfoOwnerIdsInner
 from tb_paas_client.models.entity_id import EntityId
 from tb_paas_client.models.entity_type import EntityType
 from tb_paas_client.models.tenant_id import TenantId
@@ -43,7 +42,7 @@ class EntityGroupInfo(BaseModel):
     additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the entity group. May include: 'description' (string), 'isPublic' (boolean, whether this group is shared publicly), 'publicCustomerId' (string, UUID of the public customer associated with this group).", serialization_alias="additionalInfo")
     configuration: Optional[Any] = Field(default=None, description="JSON with the configuration for UI components: list of columns, settings, actions, etc ")
     version: Optional[StrictInt] = None
-    owner_ids: List[EntityGroupInfoOwnerIdsInner] = Field(description="List of the entity group owners.", serialization_alias="ownerIds")
+    owner_ids: Optional[List[EntityId]] = Field(default=None, serialization_alias="ownerIds")
     edge_group_all: Optional[StrictBool] = Field(default=None, description="Indicates special edge group 'All' that contains all entities and can't be deleted.", serialization_alias="edgeGroupAll")
     group_all: Optional[StrictBool] = Field(default=None, description="Indicates special group 'All' that contains all entities and can't be deleted.", serialization_alias="groupAll")
     tenant_id: Optional[TenantId] = Field(default=None, serialization_alias="tenantId")
@@ -150,7 +149,7 @@ class EntityGroupInfo(BaseModel):
             "additional_info": obj.get("additionalInfo"),
             "configuration": obj.get("configuration"),
             "version": obj.get("version"),
-            "owner_ids": [EntityGroupInfoOwnerIdsInner.from_dict(_item) for _item in obj["ownerIds"]] if obj.get("ownerIds") is not None else None,
+            "owner_ids": [EntityId.from_dict(_item) for _item in obj["ownerIds"]] if obj.get("ownerIds") is not None else None,
             "edge_group_all": obj.get("edgeGroupAll"),
             "group_all": obj.get("groupAll"),
             "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None

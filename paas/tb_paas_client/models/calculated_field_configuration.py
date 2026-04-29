@@ -42,9 +42,9 @@ class CalculatedFieldConfiguration(BaseModel):
     """
     CalculatedFieldConfiguration
     """ # noqa: E501
-    type: StrictStr
     output: Optional[Output] = None
-    __properties: ClassVar[List[str]] = ["type", "output"]
+    type: StrictStr
+    __properties: ClassVar[List[str]] = ["output", "type"]
 
     model_config = ConfigDict(
         populate_by_name=True,

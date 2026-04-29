@@ -29,7 +29,7 @@ The JSON object with device and credentials. See method description above for ex
 | name | str | Unique Device Name in scope of Tenant | [optional] |
 | type | str | Device Profile Name | [optional] |
 | label | str | Label that may be used in widgets | [optional] |
-| device_profile_id | DeviceProfileId | JSON object with Device Profile Id. |  |
+| device_profile_id | DeviceProfileId | JSON object with Device Profile Id. If not provided, the type will be used to determine the profile. If neither deviceProfileId nor type is specified, the default device profile will be used. | [optional] |
 | device_data | DeviceData | JSON object with content specific to type of transport in the device profile. | [optional] |
 | firmware_id | OtaPackageId | JSON object with Ota Package Id. | [optional] |
 | software_id | OtaPackageId | JSON object with Ota Package Id. | [optional] |

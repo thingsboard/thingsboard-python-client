@@ -57,7 +57,7 @@ class RuleEngineControllerApi:
         self,
         entity_type: Annotated[StrictStr, Field(description="A string value representing the entity type. For example, 'DEVICE'")],
         entity_id: Annotated[StrictStr, Field(description="A string value representing the entity id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")],
-        body: StrictStr,
+        body: Annotated[StrictStr, Field(description="A JSON object representing the message.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -79,7 +79,7 @@ class RuleEngineControllerApi:
         :type entity_type: str
         :param entity_id: A string value representing the entity id. For example, '784f394c-42b6-435a-983c-b7beff2784f9' (required)
         :type entity_id: str
-        :param body: (required)
+        :param body: A JSON object representing the message. (required)
         :type body: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -137,7 +137,7 @@ class RuleEngineControllerApi:
         self,
         entity_type: Annotated[StrictStr, Field(description="A string value representing the entity type. For example, 'DEVICE'")],
         entity_id: Annotated[StrictStr, Field(description="A string value representing the entity id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")],
-        body: StrictStr,
+        body: Annotated[StrictStr, Field(description="A JSON object representing the message.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -159,7 +159,7 @@ class RuleEngineControllerApi:
         :type entity_type: str
         :param entity_id: A string value representing the entity id. For example, '784f394c-42b6-435a-983c-b7beff2784f9' (required)
         :type entity_id: str
-        :param body: (required)
+        :param body: A JSON object representing the message. (required)
         :type body: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -217,7 +217,7 @@ class RuleEngineControllerApi:
         self,
         entity_type: Annotated[StrictStr, Field(description="A string value representing the entity type. For example, 'DEVICE'")],
         entity_id: Annotated[StrictStr, Field(description="A string value representing the entity id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")],
-        body: StrictStr,
+        body: Annotated[StrictStr, Field(description="A JSON object representing the message.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -239,7 +239,7 @@ class RuleEngineControllerApi:
         :type entity_type: str
         :param entity_id: A string value representing the entity id. For example, '784f394c-42b6-435a-983c-b7beff2784f9' (required)
         :type entity_id: str
-        :param body: (required)
+        :param body: A JSON object representing the message. (required)
         :type body: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -341,7 +341,7 @@ class RuleEngineControllerApi:
             _default_content_type = (
                 self.api_client.select_header_content_type(
                     [
-                        'application/json'
+                        'text/plain'
                     ]
                 )
             )
@@ -379,7 +379,7 @@ class RuleEngineControllerApi:
         entity_id: Annotated[StrictStr, Field(description="A string value representing the entity id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")],
         queue_name: Annotated[StrictStr, Field(description="Queue name to process the request in the rule engine")],
         timeout: Annotated[StrictInt, Field(description="Timeout to process the request in milliseconds")],
-        body: StrictStr,
+        body: Annotated[StrictStr, Field(description="A JSON object representing the message.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -405,7 +405,7 @@ class RuleEngineControllerApi:
         :type queue_name: str
         :param timeout: Timeout to process the request in milliseconds (required)
         :type timeout: int
-        :param body: (required)
+        :param body: A JSON object representing the message. (required)
         :type body: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -467,7 +467,7 @@ class RuleEngineControllerApi:
         entity_id: Annotated[StrictStr, Field(description="A string value representing the entity id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")],
         queue_name: Annotated[StrictStr, Field(description="Queue name to process the request in the rule engine")],
         timeout: Annotated[StrictInt, Field(description="Timeout to process the request in milliseconds")],
-        body: StrictStr,
+        body: Annotated[StrictStr, Field(description="A JSON object representing the message.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -493,7 +493,7 @@ class RuleEngineControllerApi:
         :type queue_name: str
         :param timeout: Timeout to process the request in milliseconds (required)
         :type timeout: int
-        :param body: (required)
+        :param body: A JSON object representing the message. (required)
         :type body: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -555,7 +555,7 @@ class RuleEngineControllerApi:
         entity_id: Annotated[StrictStr, Field(description="A string value representing the entity id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")],
         queue_name: Annotated[StrictStr, Field(description="Queue name to process the request in the rule engine")],
         timeout: Annotated[StrictInt, Field(description="Timeout to process the request in milliseconds")],
-        body: StrictStr,
+        body: Annotated[StrictStr, Field(description="A JSON object representing the message.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -581,7 +581,7 @@ class RuleEngineControllerApi:
         :type queue_name: str
         :param timeout: Timeout to process the request in milliseconds (required)
         :type timeout: int
-        :param body: (required)
+        :param body: A JSON object representing the message. (required)
         :type body: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -691,7 +691,7 @@ class RuleEngineControllerApi:
             _default_content_type = (
                 self.api_client.select_header_content_type(
                     [
-                        'application/json'
+                        'text/plain'
                     ]
                 )
             )
@@ -728,7 +728,7 @@ class RuleEngineControllerApi:
         entity_type: Annotated[StrictStr, Field(description="A string value representing the entity type. For example, 'DEVICE'")],
         entity_id: Annotated[StrictStr, Field(description="A string value representing the entity id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")],
         timeout: Annotated[StrictInt, Field(description="Timeout to process the request in milliseconds")],
-        body: StrictStr,
+        body: Annotated[StrictStr, Field(description="A JSON object representing the message.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -752,7 +752,7 @@ class RuleEngineControllerApi:
         :type entity_id: str
         :param timeout: Timeout to process the request in milliseconds (required)
         :type timeout: int
-        :param body: (required)
+        :param body: A JSON object representing the message. (required)
         :type body: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -812,7 +812,7 @@ class RuleEngineControllerApi:
         entity_type: Annotated[StrictStr, Field(description="A string value representing the entity type. For example, 'DEVICE'")],
         entity_id: Annotated[StrictStr, Field(description="A string value representing the entity id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")],
         timeout: Annotated[StrictInt, Field(description="Timeout to process the request in milliseconds")],
-        body: StrictStr,
+        body: Annotated[StrictStr, Field(description="A JSON object representing the message.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -836,7 +836,7 @@ class RuleEngineControllerApi:
         :type entity_id: str
         :param timeout: Timeout to process the request in milliseconds (required)
         :type timeout: int
-        :param body: (required)
+        :param body: A JSON object representing the message. (required)
         :type body: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -896,7 +896,7 @@ class RuleEngineControllerApi:
         entity_type: Annotated[StrictStr, Field(description="A string value representing the entity type. For example, 'DEVICE'")],
         entity_id: Annotated[StrictStr, Field(description="A string value representing the entity id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")],
         timeout: Annotated[StrictInt, Field(description="Timeout to process the request in milliseconds")],
-        body: StrictStr,
+        body: Annotated[StrictStr, Field(description="A JSON object representing the message.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -920,7 +920,7 @@ class RuleEngineControllerApi:
         :type entity_id: str
         :param timeout: Timeout to process the request in milliseconds (required)
         :type timeout: int
-        :param body: (required)
+        :param body: A JSON object representing the message. (required)
         :type body: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1026,7 +1026,7 @@ class RuleEngineControllerApi:
             _default_content_type = (
                 self.api_client.select_header_content_type(
                     [
-                        'application/json'
+                        'text/plain'
                     ]
                 )
             )
@@ -1060,7 +1060,7 @@ class RuleEngineControllerApi:
     @validate_call
     def handle_rule_engine_request_for_user(
         self,
-        body: StrictStr,
+        body: Annotated[StrictStr, Field(description="A JSON object representing the message.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1078,7 +1078,7 @@ class RuleEngineControllerApi:
 
         Creates the Message with type 'REST_API_REQUEST' and payload taken from the request body. Uses current User Id ( the one which credentials is used to perform the request) as the Rule Engine message originator. This method allows you to extend the regular platform API with the power of Rule Engine. You may use default and custom rule nodes to handle the message. The generated message contains two important metadata fields:   * **'serviceId'** to identify the platform server that received the request;  * **'requestUUID'** to identify the request and route possible response from the Rule Engine;  Use **'rest call reply'** rule node to push the reply from rule engine back as a REST API call response. The default timeout of the request processing is 10 seconds.   Security check is performed to verify that the user has 'WRITE' permission for the entity (entities).
 
-        :param body: (required)
+        :param body: A JSON object representing the message. (required)
         :type body: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1132,7 +1132,7 @@ class RuleEngineControllerApi:
     @validate_call
     def handle_rule_engine_request_for_user_with_http_info(
         self,
-        body: StrictStr,
+        body: Annotated[StrictStr, Field(description="A JSON object representing the message.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1150,7 +1150,7 @@ class RuleEngineControllerApi:
 
         Creates the Message with type 'REST_API_REQUEST' and payload taken from the request body. Uses current User Id ( the one which credentials is used to perform the request) as the Rule Engine message originator. This method allows you to extend the regular platform API with the power of Rule Engine. You may use default and custom rule nodes to handle the message. The generated message contains two important metadata fields:   * **'serviceId'** to identify the platform server that received the request;  * **'requestUUID'** to identify the request and route possible response from the Rule Engine;  Use **'rest call reply'** rule node to push the reply from rule engine back as a REST API call response. The default timeout of the request processing is 10 seconds.   Security check is performed to verify that the user has 'WRITE' permission for the entity (entities).
 
-        :param body: (required)
+        :param body: A JSON object representing the message. (required)
         :type body: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1204,7 +1204,7 @@ class RuleEngineControllerApi:
     @validate_call
     def handle_rule_engine_request_for_user_without_preload_content(
         self,
-        body: StrictStr,
+        body: Annotated[StrictStr, Field(description="A JSON object representing the message.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1222,7 +1222,7 @@ class RuleEngineControllerApi:
 
         Creates the Message with type 'REST_API_REQUEST' and payload taken from the request body. Uses current User Id ( the one which credentials is used to perform the request) as the Rule Engine message originator. This method allows you to extend the regular platform API with the power of Rule Engine. You may use default and custom rule nodes to handle the message. The generated message contains two important metadata fields:   * **'serviceId'** to identify the platform server that received the request;  * **'requestUUID'** to identify the request and route possible response from the Rule Engine;  Use **'rest call reply'** rule node to push the reply from rule engine back as a REST API call response. The default timeout of the request processing is 10 seconds.   Security check is performed to verify that the user has 'WRITE' permission for the entity (entities).
 
-        :param body: (required)
+        :param body: A JSON object representing the message. (required)
         :type body: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1316,7 +1316,7 @@ class RuleEngineControllerApi:
             _default_content_type = (
                 self.api_client.select_header_content_type(
                     [
-                        'application/json'
+                        'text/plain'
                     ]
                 )
             )

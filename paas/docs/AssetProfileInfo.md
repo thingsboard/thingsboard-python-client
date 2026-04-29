@@ -7,7 +7,7 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-| **id** | [**EntityId**](EntityId.md) | JSON object with the entity Id.  | [optional] |
+| **id** | [**AssetProfileId**](AssetProfileId.md) | JSON object with the Asset Profile Id. | [optional] |
 | **name** | **str** | Entity Name | [optional] |
 | **image** | **str** | Either URL or Base64 data of the icon. Used in the mobile application to visualize set of asset profiles in the grid view.  | [optional] |
 | **default_dashboard_id** | [**DashboardId**](DashboardId.md) | Reference to the dashboard. Used in the mobile application to open the default dashboard when user navigates to asset details. | [optional] |

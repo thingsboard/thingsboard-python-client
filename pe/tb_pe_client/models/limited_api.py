@@ -65,6 +65,7 @@ class LimitedApi(str, Enum):
     WS_SUBSCRIPTIONS = 'WS_SUBSCRIPTIONS'
     CALCULATED_FIELD_DEBUG_EVENTS = 'CALCULATED_FIELD_DEBUG_EVENTS'
     TRENDZ_PUBLIC_SYNC = 'TRENDZ_PUBLIC_SYNC'
+    AI_CHAT_REQUESTS = 'AI_CHAT_REQUESTS'
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:

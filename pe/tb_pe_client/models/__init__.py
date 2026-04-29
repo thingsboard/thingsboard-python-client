@@ -183,6 +183,7 @@ __all__ = [
     "ChartLabelPosition",
     "ChartLineType",
     "ChartShape",
+    "ChatType",
     "CheckPreProvisionedDevicesDeviceProfileProvisionConfiguration",
     "ChecksumAlgorithm",
     "ClaimRequest",
@@ -801,6 +802,7 @@ __all__ = [
     "SolutionExportResponse",
     "SolutionImportResult",
     "SolutionInstallResponse",
+    "SolutionStep",
     "SolutionTemplateLevel",
     "SolutionValidationResult",
     "SpecificTimeSchedule",
@@ -1129,6 +1131,7 @@ if TYPE_CHECKING:
     from tb_pe_client.models.chart_label_position import ChartLabelPosition
     from tb_pe_client.models.chart_line_type import ChartLineType
     from tb_pe_client.models.chart_shape import ChartShape
+    from tb_pe_client.models.chat_type import ChatType
     from tb_pe_client.models.check_pre_provisioned_devices_device_profile_provision_configuration import CheckPreProvisionedDevicesDeviceProfileProvisionConfiguration
     from tb_pe_client.models.checksum_algorithm import ChecksumAlgorithm
     from tb_pe_client.models.claim_request import ClaimRequest
@@ -1747,6 +1750,7 @@ if TYPE_CHECKING:
     from tb_pe_client.models.solution_export_response import SolutionExportResponse
     from tb_pe_client.models.solution_import_result import SolutionImportResult
     from tb_pe_client.models.solution_install_response import SolutionInstallResponse
+    from tb_pe_client.models.solution_step import SolutionStep
     from tb_pe_client.models.solution_template_level import SolutionTemplateLevel
     from tb_pe_client.models.solution_validation_result import SolutionValidationResult
     from tb_pe_client.models.specific_time_schedule import SpecificTimeSchedule
@@ -2074,6 +2078,7 @@ _MODEL_CLASSES = {
     "ChartLabelPosition": "tb_pe_client.models.chart_label_position",
     "ChartLineType": "tb_pe_client.models.chart_line_type",
     "ChartShape": "tb_pe_client.models.chart_shape",
+    "ChatType": "tb_pe_client.models.chat_type",
     "CheckPreProvisionedDevicesDeviceProfileProvisionConfiguration": "tb_pe_client.models.check_pre_provisioned_devices_device_profile_provision_configuration",
     "ChecksumAlgorithm": "tb_pe_client.models.checksum_algorithm",
     "ClaimRequest": "tb_pe_client.models.claim_request",
@@ -2692,6 +2697,7 @@ _MODEL_CLASSES = {
     "SolutionExportResponse": "tb_pe_client.models.solution_export_response",
     "SolutionImportResult": "tb_pe_client.models.solution_import_result",
     "SolutionInstallResponse": "tb_pe_client.models.solution_install_response",
+    "SolutionStep": "tb_pe_client.models.solution_step",
     "SolutionTemplateLevel": "tb_pe_client.models.solution_template_level",
     "SolutionValidationResult": "tb_pe_client.models.solution_validation_result",
     "SpecificTimeSchedule": "tb_pe_client.models.specific_time_schedule",

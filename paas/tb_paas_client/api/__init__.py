@@ -24,6 +24,7 @@ __all__ = [
     "AiToolControllerApi",
     "AlarmCommentControllerApi",
     "AlarmControllerApi",
+    "AlarmRuleControllerApi",
     "ApiKeyControllerApi",
     "AssetControllerApi",
     "AssetProfileControllerApi",
@@ -86,6 +87,7 @@ __all__ = [
     "SelfRegistrationControllerApi",
     "SignUpControllerApi",
     "SolutionControllerApi",
+    "SolutionExportImportControllerApi",
     "SubscriptionControllerApi",
     "TbResourceControllerApi",
     "TelemetryControllerApi",
@@ -113,6 +115,7 @@ if TYPE_CHECKING:
     from tb_paas_client.api.ai_tool_controller_api import AiToolControllerApi
     from tb_paas_client.api.alarm_comment_controller_api import AlarmCommentControllerApi
     from tb_paas_client.api.alarm_controller_api import AlarmControllerApi
+    from tb_paas_client.api.alarm_rule_controller_api import AlarmRuleControllerApi
     from tb_paas_client.api.api_key_controller_api import ApiKeyControllerApi
     from tb_paas_client.api.asset_controller_api import AssetControllerApi
     from tb_paas_client.api.asset_profile_controller_api import AssetProfileControllerApi
@@ -175,6 +178,7 @@ if TYPE_CHECKING:
     from tb_paas_client.api.self_registration_controller_api import SelfRegistrationControllerApi
     from tb_paas_client.api.sign_up_controller_api import SignUpControllerApi
     from tb_paas_client.api.solution_controller_api import SolutionControllerApi
+    from tb_paas_client.api.solution_export_import_controller_api import SolutionExportImportControllerApi
     from tb_paas_client.api.subscription_controller_api import SubscriptionControllerApi
     from tb_paas_client.api.tb_resource_controller_api import TbResourceControllerApi
     from tb_paas_client.api.telemetry_controller_api import TelemetryControllerApi
@@ -201,6 +205,7 @@ _API_CLASSES = {
     "AiToolControllerApi": "tb_paas_client.api.ai_tool_controller_api",
     "AlarmCommentControllerApi": "tb_paas_client.api.alarm_comment_controller_api",
     "AlarmControllerApi": "tb_paas_client.api.alarm_controller_api",
+    "AlarmRuleControllerApi": "tb_paas_client.api.alarm_rule_controller_api",
     "ApiKeyControllerApi": "tb_paas_client.api.api_key_controller_api",
     "AssetControllerApi": "tb_paas_client.api.asset_controller_api",
     "AssetProfileControllerApi": "tb_paas_client.api.asset_profile_controller_api",
@@ -263,6 +268,7 @@ _API_CLASSES = {
     "SelfRegistrationControllerApi": "tb_paas_client.api.self_registration_controller_api",
     "SignUpControllerApi": "tb_paas_client.api.sign_up_controller_api",
     "SolutionControllerApi": "tb_paas_client.api.solution_controller_api",
+    "SolutionExportImportControllerApi": "tb_paas_client.api.solution_export_import_controller_api",
     "SubscriptionControllerApi": "tb_paas_client.api.subscription_controller_api",
     "TbResourceControllerApi": "tb_paas_client.api.tb_resource_controller_api",
     "TelemetryControllerApi": "tb_paas_client.api.telemetry_controller_api",

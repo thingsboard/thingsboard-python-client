@@ -35,6 +35,7 @@ from pydantic import Field, StrictInt, StrictStr
 from typing import List, Optional
 from typing_extensions import Annotated
 from uuid import UUID
+from tb_paas_client.models.cloud_domain_info import CloudDomainInfo
 from tb_paas_client.models.domain import Domain
 from tb_paas_client.models.domain_info import DomainInfo
 from tb_paas_client.models.page_data_domain_info import PageDataDomainInfo
@@ -350,7 +351,7 @@ class DomainControllerApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> DomainInfo:
+    ) -> CloudDomainInfo:
         """Get Domain info by Id (getCloudDomainInfoById)
 
           Available for users with 'SYS_ADMIN' or 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
@@ -388,7 +389,7 @@ class DomainControllerApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "DomainInfo",
+            '200': "CloudDomainInfo",
             '400': "ThingsboardErrorResponse",
             '401': "ThingsboardErrorResponse",
             '403': "ThingsboardErrorResponse",
@@ -422,7 +423,7 @@ class DomainControllerApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[DomainInfo]:
+    ) -> ApiResponse[CloudDomainInfo]:
         """Get Domain info by Id (getCloudDomainInfoById)
 
           Available for users with 'SYS_ADMIN' or 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
@@ -460,7 +461,7 @@ class DomainControllerApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "DomainInfo",
+            '200': "CloudDomainInfo",
             '400': "ThingsboardErrorResponse",
             '401': "ThingsboardErrorResponse",
             '403': "ThingsboardErrorResponse",
@@ -532,7 +533,7 @@ class DomainControllerApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': "DomainInfo",
+            '200': "CloudDomainInfo",
             '400': "ThingsboardErrorResponse",
             '401': "ThingsboardErrorResponse",
             '403': "ThingsboardErrorResponse",
@@ -1544,7 +1545,7 @@ class DomainControllerApi:
 
 
     @validate_call
-    def update_oauth2_clients(
+    def update_domain_oauth2_clients(
         self,
         id: UUID,
         request_body: List[UUID],
@@ -1561,7 +1562,7 @@ class DomainControllerApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> None:
-        """Update oauth2 clients (updateOauth2Clients)
+        """Update oauth2 clients (updateDomainOauth2Clients)
 
         Update oauth2 clients for the specified domain.   Available for users with 'SYS_ADMIN' or 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
 
@@ -1591,7 +1592,7 @@ class DomainControllerApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_oauth2_clients_serialize(
+        _param = self._update_domain_oauth2_clients_serialize(
             id=id,
             request_body=request_body,
             _request_auth=_request_auth,
@@ -1620,7 +1621,7 @@ class DomainControllerApi:
 
 
     @validate_call
-    def update_oauth2_clients_with_http_info(
+    def update_domain_oauth2_clients_with_http_info(
         self,
         id: UUID,
         request_body: List[UUID],
@@ -1637,7 +1638,7 @@ class DomainControllerApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[None]:
-        """Update oauth2 clients (updateOauth2Clients)
+        """Update oauth2 clients (updateDomainOauth2Clients)
 
         Update oauth2 clients for the specified domain.   Available for users with 'SYS_ADMIN' or 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
 
@@ -1667,7 +1668,7 @@ class DomainControllerApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_oauth2_clients_serialize(
+        _param = self._update_domain_oauth2_clients_serialize(
             id=id,
             request_body=request_body,
             _request_auth=_request_auth,
@@ -1696,7 +1697,7 @@ class DomainControllerApi:
 
 
     @validate_call
-    def update_oauth2_clients_without_preload_content(
+    def update_domain_oauth2_clients_without_preload_content(
         self,
         id: UUID,
         request_body: List[UUID],
@@ -1713,7 +1714,7 @@ class DomainControllerApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Update oauth2 clients (updateOauth2Clients)
+        """Update oauth2 clients (updateDomainOauth2Clients)
 
         Update oauth2 clients for the specified domain.   Available for users with 'SYS_ADMIN' or 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
 
@@ -1743,7 +1744,7 @@ class DomainControllerApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._update_oauth2_clients_serialize(
+        _param = self._update_domain_oauth2_clients_serialize(
             id=id,
             request_body=request_body,
             _request_auth=_request_auth,
@@ -1767,7 +1768,7 @@ class DomainControllerApi:
         return response_data.response
 
 
-    def _update_oauth2_clients_serialize(
+    def _update_domain_oauth2_clients_serialize(
         self,
         id,
         request_body,

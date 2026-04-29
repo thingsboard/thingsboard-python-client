@@ -6,7 +6,7 @@
 bytearray client.download_full_translation(locale_code: str)  # Download end-user all-to-one translation (downloadFullTranslation)
 object client.get_available_java_locales()  # Get list of available java locales (getAvailableJavaLocales)
 object client.get_available_locales()  # Get list of available locales (getAvailableLocales)
-None client.get_full_translation(locale_code: str, if_none_match: Optional[str] = None, accept_encoding: Optional[str] = None)  # Get end-user all-to-one translation (getFullTranslation)
+object client.get_full_translation(locale_code: str, if_none_match: Optional[str] = None, accept_encoding: Optional[str] = None)  # Get end-user all-to-one translation (getFullTranslation)
 object client.get_login_page_translation(locale_code: str, if_none_match: Optional[str] = None, accept_encoding: Optional[str] = None)  # Get system translation for login page
 object client.get_translation_for_basic_edit(locale_code: str)  # Get end-user multi-translation for basic edit (getTranslationForBasicEdit)
 List[TranslationInfo] client.get_translation_infos()  # Get Translation info (getTranslationInfos)
@@ -74,7 +74,7 @@ Fetch the list of customized locales from all levels  Security check is performe
 ## get_full_translation
 
 ```python
-None client.get_full_translation(locale_code: str, if_none_match: Optional[str] = None, accept_encoding: Optional[str] = None)
+object client.get_full_translation(locale_code: str, if_none_match: Optional[str] = None, accept_encoding: Optional[str] = None)
 ```
 
 **GET** `/api/translation/full/{localeCode}`
@@ -94,7 +94,7 @@ Fetch the end-user translation for specified locale. The result is the merge of 
 
 ### Return type
 
-None (empty response body)
+**object**
 
 
 ## get_login_page_translation

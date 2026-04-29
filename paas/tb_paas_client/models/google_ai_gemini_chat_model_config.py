@@ -34,7 +34,6 @@ class GoogleAiGeminiChatModelConfig(AiModelConfig):
     """
     GoogleAiGeminiChatModelConfig
     """ # noqa: E501
-    model_type: Optional[AiModelType] = Field(default=None, serialization_alias="modelType")
     provider_config: GoogleAiGeminiProviderConfig = Field(serialization_alias="providerConfig")
     model_id: Annotated[str, Field(min_length=1, strict=True)] = Field(serialization_alias="modelId")
     temperature: Optional[Union[StrictFloat, StrictInt]] = None
@@ -45,7 +44,8 @@ class GoogleAiGeminiChatModelConfig(AiModelConfig):
     max_output_tokens: Optional[StrictInt] = Field(default=None, serialization_alias="maxOutputTokens")
     timeout_seconds: Optional[StrictInt] = Field(default=None, serialization_alias="timeoutSeconds")
     max_retries: Optional[StrictInt] = Field(default=None, serialization_alias="maxRetries")
-    __properties: ClassVar[List[str]] = ["provider", "modelType", "providerConfig", "modelId", "temperature", "topP", "topK", "frequencyPenalty", "presencePenalty", "maxOutputTokens", "timeoutSeconds", "maxRetries"]
+    model_type: Optional[AiModelType] = Field(default=None, serialization_alias="modelType")
+    __properties: ClassVar[List[str]] = ["provider", "providerConfig", "modelId", "temperature", "topP", "topK", "frequencyPenalty", "presencePenalty", "maxOutputTokens", "timeoutSeconds", "maxRetries", "modelType"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -109,7 +109,6 @@ class GoogleAiGeminiChatModelConfig(AiModelConfig):
 
         _obj = cls.model_validate({
             "provider": obj.get("provider"),
-            "model_type": obj.get("modelType"),
             "provider_config": GoogleAiGeminiProviderConfig.from_dict(obj["providerConfig"]) if obj.get("providerConfig") is not None else None,
             "model_id": obj.get("modelId"),
             "temperature": obj.get("temperature"),
@@ -119,7 +118,8 @@ class GoogleAiGeminiChatModelConfig(AiModelConfig):
             "presence_penalty": obj.get("presencePenalty"),
             "max_output_tokens": obj.get("maxOutputTokens"),
             "timeout_seconds": obj.get("timeoutSeconds"),
-            "max_retries": obj.get("maxRetries")
+            "max_retries": obj.get("maxRetries"),
+            "model_type": obj.get("modelType")
         })
         return _obj
 
