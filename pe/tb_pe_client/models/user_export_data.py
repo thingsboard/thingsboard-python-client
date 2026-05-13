@@ -21,28 +21,21 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field, StrictBool
-from typing import Any, ClassVar, Dict, List, Optional
-from uuid import UUID
+from pydantic import ConfigDict
+from typing import Any, ClassVar, Dict, List
 from tb_pe_client.models.calculated_field import CalculatedField
-from tb_pe_client.models.device_group_ota_package import DeviceGroupOtaPackage
 from tb_pe_client.models.entity_export_data import EntityExportData
 from tb_pe_client.models.entity_relation import EntityRelation
 from tb_pe_client.models.entity_type import EntityType
 from tb_pe_client.models.exportable_entity import ExportableEntity
-from tb_pe_client.models.group_permission import GroupPermission
 from typing import Optional, Set
 from typing_extensions import Self
 
-class EntityGroupExportData(EntityExportData):
+class UserExportData(EntityExportData):
     """
-    EntityGroupExportData
+    UserExportData
     """ # noqa: E501
-    permissions: Optional[List[GroupPermission]] = Field(default=None, description="Group permissions to apply to this group on import. Meaningful only for USER groups; ignored for groups of any other type. Each entry's userGroupId, roleId, and entityGroupId may use the external IDs of other entities in this payload or the IDs of entities that already exist on the target tenant; the importer resolves them against the target tenant. System-tenant roles are not allowed and will be rejected. Leave null to skip permission management for this group.")
-    group_ota_packages: Optional[List[DeviceGroupOtaPackage]] = Field(default=None, description="OTA package assignments to apply to this group on import. Meaningful only for DEVICE groups; ignored for groups of any other type. Each entry's otaPackageId and groupId may reference external IDs of entities in this payload or IDs of entities that already exist on the target tenant. Leave null to skip OTA assignment management for this group.", serialization_alias="groupOtaPackages")
-    group_entities: Optional[StrictBool] = Field(default=None, description="Marker indicating that the group's member entities are intended to be transported alongside this payload. Used by flows that convey members through a side channel (notably the version control flow, which stores members in a separate git index). The solution import API does not consume this flag and does not require it to be set. Safe to leave false (default).", serialization_alias="groupEntities")
-    member_ids: Optional[List[UUID]] = Field(default=None, description="External IDs of the entities that should be members of this group after import. Each ID is resolved against the target tenant — by other entity in this payload, by external ID, or by existing internal ID — and the matching entities are added to the group. The import fails if any listed member cannot be resolved. Must be null for the special 'All' group (whose membership is implicit and managed by the platform). Leave null to skip membership wiring; existing membership on the target tenant is left untouched.", serialization_alias="memberIds")
-    __properties: ClassVar[List[str]] = ["entity", "relations", "attributes", "calculatedFields", "entityType", "permissions", "groupOtaPackages", "groupEntities", "memberIds"]
+    __properties: ClassVar[List[str]] = ["entity", "relations", "attributes", "calculatedFields", "entityType"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -67,7 +60,7 @@ class EntityGroupExportData(EntityExportData):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of EntityGroupExportData from a JSON string"""
+        """Create an instance of UserExportData from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -114,25 +107,11 @@ class EntityGroupExportData(EntityExportData):
                 if _item_calculated_fields:
                     _items.append(_item_calculated_fields.to_dict())
             _dict['calculatedFields'] = _items
-        # override the default output from pydantic by calling `to_dict()` of each item in permissions (list)
-        _items = []
-        if self.permissions:
-            for _item_permissions in self.permissions:
-                if _item_permissions:
-                    _items.append(_item_permissions.to_dict())
-            _dict['permissions'] = _items
-        # override the default output from pydantic by calling `to_dict()` of each item in group_ota_packages (list)
-        _items = []
-        if self.group_ota_packages:
-            for _item_group_ota_packages in self.group_ota_packages:
-                if _item_group_ota_packages:
-                    _items.append(_item_group_ota_packages.to_dict())
-            _dict['groupOtaPackages'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of EntityGroupExportData from a dict"""
+        """Create an instance of UserExportData from a dict"""
         if obj is None:
             return None
 
@@ -151,11 +130,7 @@ class EntityGroupExportData(EntityExportData):
                 for _k, _v in obj.get("attributes", {}).items()
             ),
             "calculatedFields": [CalculatedField.from_dict(_item) for _item in obj["calculatedFields"]] if obj.get("calculatedFields") is not None else None,
-            "entityType": obj.get("entityType"),
-            "permissions": [GroupPermission.from_dict(_item) for _item in obj["permissions"]] if obj.get("permissions") is not None else None,
-            "groupOtaPackages": [DeviceGroupOtaPackage.from_dict(_item) for _item in obj["groupOtaPackages"]] if obj.get("groupOtaPackages") is not None else None,
-            "groupEntities": obj.get("groupEntities"),
-            "memberIds": obj.get("memberIds")
+            "entityType": obj.get("entityType")
         })
         return _obj
 

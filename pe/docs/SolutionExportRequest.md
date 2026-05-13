@@ -27,6 +27,7 @@ Solution export request specifying which entities to include and export settings
 | export_calculated_fields | bool |  | [optional] |
 | export_permissions | bool |  | [optional] |
 | export_group_entities | bool |  | [optional] |
+| embed_group_members | bool |  | [optional] |
 
 #### EntityType (enum)
 `TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (46 values total)

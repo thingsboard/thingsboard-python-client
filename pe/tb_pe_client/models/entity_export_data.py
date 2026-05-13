@@ -54,6 +54,7 @@ if TYPE_CHECKING:
     from tb_pe_client.models.rule_chain_export_data import RuleChainExportData
     from tb_pe_client.models.scheduler_event_export_data import SchedulerEventExportData
     from tb_pe_client.models.tb_resource_export_data import TbResourceExportData
+    from tb_pe_client.models.user_export_data import UserExportData
     from tb_pe_client.models.widgets_bundle_export_data import WidgetsBundleExportData
     from tb_pe_client.models.widget_type_export_data import WidgetTypeExportData
 
@@ -80,7 +81,7 @@ class EntityExportData(BaseModel):
 
     # discriminator mappings
     __discriminator_value_class_map: ClassVar[Dict[str, str]] = {
-        'AI_MODEL': 'AiModelExportData','ASSET': 'AssetExportData','ASSET_PROFILE': 'AssetProfileExportData','CONVERTER': 'ConverterExportData','CUSTOMER': 'CustomerExportData','DASHBOARD': 'DashboardExportData','DEVICE': 'DeviceExportData','DEVICE_PROFILE': 'DeviceProfileExportData','ENTITY_GROUP': 'EntityGroupExportData','ENTITY_VIEW': 'EntityViewExportData','INTEGRATION': 'IntegrationExportData','NOTIFICATION_RULE': 'NotificationRuleExportData','NOTIFICATION_TARGET': 'NotificationTargetExportData','NOTIFICATION_TEMPLATE': 'NotificationTemplateExportData','OTA_PACKAGE': 'OtaPackageExportData','REPORT_TEMPLATE': 'ReportTemplateExportData','ROLE': 'RoleExportData','RULE_CHAIN': 'RuleChainExportData','SCHEDULER_EVENT': 'SchedulerEventExportData','TB_RESOURCE': 'TbResourceExportData','WIDGETS_BUNDLE': 'WidgetsBundleExportData','WIDGET_TYPE': 'WidgetTypeExportData'
+        'AI_MODEL': 'AiModelExportData','ASSET': 'AssetExportData','ASSET_PROFILE': 'AssetProfileExportData','CONVERTER': 'ConverterExportData','CUSTOMER': 'CustomerExportData','DASHBOARD': 'DashboardExportData','DEVICE': 'DeviceExportData','DEVICE_PROFILE': 'DeviceProfileExportData','ENTITY_GROUP': 'EntityGroupExportData','ENTITY_VIEW': 'EntityViewExportData','INTEGRATION': 'IntegrationExportData','NOTIFICATION_RULE': 'NotificationRuleExportData','NOTIFICATION_TARGET': 'NotificationTargetExportData','NOTIFICATION_TEMPLATE': 'NotificationTemplateExportData','OTA_PACKAGE': 'OtaPackageExportData','REPORT_TEMPLATE': 'ReportTemplateExportData','ROLE': 'RoleExportData','RULE_CHAIN': 'RuleChainExportData','SCHEDULER_EVENT': 'SchedulerEventExportData','TB_RESOURCE': 'TbResourceExportData','USER': 'UserExportData','WIDGETS_BUNDLE': 'WidgetsBundleExportData','WIDGET_TYPE': 'WidgetTypeExportData'
     }
 
     @classmethod
@@ -107,7 +108,7 @@ class EntityExportData(BaseModel):
         return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Union[AiModelExportData, AssetExportData, AssetProfileExportData, ConverterExportData, CustomerExportData, DashboardExportData, DeviceExportData, DeviceProfileExportData, EntityGroupExportData, EntityViewExportData, IntegrationExportData, NotificationRuleExportData, NotificationTargetExportData, NotificationTemplateExportData, OtaPackageExportData, ReportTemplateExportData, RoleExportData, RuleChainExportData, SchedulerEventExportData, TbResourceExportData, WidgetsBundleExportData, WidgetTypeExportData]]:
+    def from_json(cls, json_str: str) -> Optional[Union[AiModelExportData, AssetExportData, AssetProfileExportData, ConverterExportData, CustomerExportData, DashboardExportData, DeviceExportData, DeviceProfileExportData, EntityGroupExportData, EntityViewExportData, IntegrationExportData, NotificationRuleExportData, NotificationTargetExportData, NotificationTemplateExportData, OtaPackageExportData, ReportTemplateExportData, RoleExportData, RuleChainExportData, SchedulerEventExportData, TbResourceExportData, UserExportData, WidgetsBundleExportData, WidgetTypeExportData]]:
         """Create an instance of EntityExportData from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
@@ -158,7 +159,7 @@ class EntityExportData(BaseModel):
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Dict[str, Any]) -> Optional[Union[AiModelExportData, AssetExportData, AssetProfileExportData, ConverterExportData, CustomerExportData, DashboardExportData, DeviceExportData, DeviceProfileExportData, EntityGroupExportData, EntityViewExportData, IntegrationExportData, NotificationRuleExportData, NotificationTargetExportData, NotificationTemplateExportData, OtaPackageExportData, ReportTemplateExportData, RoleExportData, RuleChainExportData, SchedulerEventExportData, TbResourceExportData, WidgetsBundleExportData, WidgetTypeExportData]]:
+    def from_dict(cls, obj: Dict[str, Any]) -> Optional[Union[AiModelExportData, AssetExportData, AssetProfileExportData, ConverterExportData, CustomerExportData, DashboardExportData, DeviceExportData, DeviceProfileExportData, EntityGroupExportData, EntityViewExportData, IntegrationExportData, NotificationRuleExportData, NotificationTargetExportData, NotificationTemplateExportData, OtaPackageExportData, ReportTemplateExportData, RoleExportData, RuleChainExportData, SchedulerEventExportData, TbResourceExportData, UserExportData, WidgetsBundleExportData, WidgetTypeExportData]]:
         """Create an instance of EntityExportData from a dict"""
         # look up the object type based on discriminator mapping
         object_type = cls.get_discriminator_value(obj)
@@ -202,6 +203,8 @@ class EntityExportData(BaseModel):
             return import_module("tb_pe_client.models.scheduler_event_export_data").SchedulerEventExportData.from_dict(obj)
         if object_type ==  'TbResourceExportData':
             return import_module("tb_pe_client.models.tb_resource_export_data").TbResourceExportData.from_dict(obj)
+        if object_type ==  'UserExportData':
+            return import_module("tb_pe_client.models.user_export_data").UserExportData.from_dict(obj)
         if object_type ==  'WidgetsBundleExportData':
             return import_module("tb_pe_client.models.widgets_bundle_export_data").WidgetsBundleExportData.from_dict(obj)
         if object_type ==  'WidgetTypeExportData':

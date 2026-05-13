@@ -38,6 +38,7 @@ except ImportError:
 if TYPE_CHECKING:
     from tb_pe_client.api.admin_controller_api import AdminControllerApi
     from tb_pe_client.api.ai_chat_controller_api import AiChatControllerApi
+    from tb_pe_client.api.ai_device_dashboard_controller_api import AiDeviceDashboardControllerApi
     from tb_pe_client.api.ai_model_controller_api import AiModelControllerApi
     from tb_pe_client.api.ai_solution_controller_api import AiSolutionControllerApi
     from tb_pe_client.api.ai_tool_controller_api import AiToolControllerApi
@@ -1021,6 +1022,7 @@ if TYPE_CHECKING:
     from tb_pe_client.models.user_activation_link import UserActivationLink
     from tb_pe_client.models.user_dashboards_info import UserDashboardsInfo
     from tb_pe_client.models.user_email_info import UserEmailInfo
+    from tb_pe_client.models.user_export_data import UserExportData
     from tb_pe_client.models.user_group_list_filter import UserGroupListFilter
     from tb_pe_client.models.user_id import UserId
     from tb_pe_client.models.user_info import UserInfo
@@ -1070,6 +1072,7 @@ if TYPE_CHECKING:
 _LAZY_CLASSES = {
     "AdminControllerApi": "tb_pe_client.api.admin_controller_api",
     "AiChatControllerApi": "tb_pe_client.api.ai_chat_controller_api",
+    "AiDeviceDashboardControllerApi": "tb_pe_client.api.ai_device_dashboard_controller_api",
     "AiModelControllerApi": "tb_pe_client.api.ai_model_controller_api",
     "AiSolutionControllerApi": "tb_pe_client.api.ai_solution_controller_api",
     "AiToolControllerApi": "tb_pe_client.api.ai_tool_controller_api",
@@ -2053,6 +2056,7 @@ _LAZY_CLASSES = {
     "UserActivationLink": "tb_pe_client.models.user_activation_link",
     "UserDashboardsInfo": "tb_pe_client.models.user_dashboards_info",
     "UserEmailInfo": "tb_pe_client.models.user_email_info",
+    "UserExportData": "tb_pe_client.models.user_export_data",
     "UserGroupListFilter": "tb_pe_client.models.user_group_list_filter",
     "UserId": "tb_pe_client.models.user_id",
     "UserInfo": "tb_pe_client.models.user_info",

@@ -917,6 +917,7 @@ __all__ = [
     "UserActivationLink",
     "UserDashboardsInfo",
     "UserEmailInfo",
+    "UserExportData",
     "UserGroupListFilter",
     "UserId",
     "UserInfo",
@@ -1865,6 +1866,7 @@ if TYPE_CHECKING:
     from tb_pe_client.models.user_activation_link import UserActivationLink
     from tb_pe_client.models.user_dashboards_info import UserDashboardsInfo
     from tb_pe_client.models.user_email_info import UserEmailInfo
+    from tb_pe_client.models.user_export_data import UserExportData
     from tb_pe_client.models.user_group_list_filter import UserGroupListFilter
     from tb_pe_client.models.user_id import UserId
     from tb_pe_client.models.user_info import UserInfo
@@ -2812,6 +2814,7 @@ _MODEL_CLASSES = {
     "UserActivationLink": "tb_pe_client.models.user_activation_link",
     "UserDashboardsInfo": "tb_pe_client.models.user_dashboards_info",
     "UserEmailInfo": "tb_pe_client.models.user_email_info",
+    "UserExportData": "tb_pe_client.models.user_export_data",
     "UserGroupListFilter": "tb_pe_client.models.user_group_list_filter",
     "UserId": "tb_pe_client.models.user_id",
     "UserInfo": "tb_pe_client.models.user_info",

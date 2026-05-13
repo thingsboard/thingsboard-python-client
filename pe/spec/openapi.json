@@ -30,6 +30,10 @@
       "description": "Ai Chat Controller"
     },
     {
+      "name": "ai-device-dashboard-controller",
+      "description": "Ai Device Dashboard Controller"
+    },
+    {
       "name": "ai-model-controller",
       "description": "Ai Model Controller"
     },
@@ -4397,6 +4401,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
@@ -4580,6 +4592,169 @@
                     "value": {
                       "status": 400,
                       "message": "Invalid UUID string: 123",
+                      "errorCode": 31,
+                      "timestamp": 1609459200000
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
+                },
+                "examples": {
+                  "error-code-401": {
+                    "summary": "Unauthorized",
+                    "value": {
+                      "status": 401,
+                      "message": "Authentication failed",
+                      "errorCode": 10,
+                      "timestamp": 1609459200000
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
+                },
+                "examples": {
+                  "error-code-403": {
+                    "summary": "Forbidden",
+                    "value": {
+                      "status": 403,
+                      "message": "You don't have permission to perform this operation!",
+                      "errorCode": 20,
+                      "timestamp": 1609459200000
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
+                },
+                "examples": {
+                  "error-code-404": {
+                    "summary": "Not Found",
+                    "value": {
+                      "status": 404,
+                      "message": "Requested item wasn't found!",
+                      "errorCode": 32,
+                      "timestamp": 1609459200000
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
+                },
+                "examples": {
+                  "error-code-429": {
+                    "summary": "Too Many Requests",
+                    "value": {
+                      "status": 429,
+                      "message": "Too many requests for current tenant!",
+                      "errorCode": 33,
+                      "timestamp": 1609459200000
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HttpLoginForm": []
+          },
+          {
+            "ApiKeyForm": []
+          }
+        ]
+      }
+    },
+    "/api/ai/devices/{deviceId}/dashboard": {
+      "post": {
+        "tags": [
+          "ai-device-dashboard-controller"
+        ],
+        "summary": "generateDashboard",
+        "operationId": "generateDashboard",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "X-Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JsonNode"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonNode"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
+                },
+                "examples": {
+                  "error-code-400": {
+                    "summary": "Bad Request",
+                    "value": {
+                      "status": 400,
+                      "message": "Invalid request body",
                       "errorCode": 31,
                       "timestamp": 1609459200000
                     }
@@ -127895,7 +128070,8 @@
             "CONVERTER": "#/components/schemas/ConverterExportData",
             "INTEGRATION": "#/components/schemas/IntegrationExportData",
             "ROLE": "#/components/schemas/RoleExportData",
-            "REPORT_TEMPLATE": "#/components/schemas/ReportTemplateExportData"
+            "REPORT_TEMPLATE": "#/components/schemas/ReportTemplateExportData",
+            "USER": "#/components/schemas/UserExportData"
           }
         },
         "example": {
@@ -127981,6 +128157,9 @@
             "type": "boolean"
           },
           "exportGroupEntities": {
+            "type": "boolean"
+          },
+          "embedGroupMembers": {
             "type": "boolean"
           }
         }
@@ -128108,18 +128287,29 @@
             "properties": {
               "permissions": {
                 "type": "array",
+                "description": "Group permissions to apply to this group on import. Meaningful only for USER groups; ignored for groups of any other type. Each entry's userGroupId, roleId, and entityGroupId may use the external IDs of other entities in this payload or the IDs of entities that already exist on the target tenant; the importer resolves them against the target tenant. System-tenant roles are not allowed and will be rejected. Leave null to skip permission management for this group.",
                 "items": {
                   "$ref": "#/components/schemas/GroupPermission"
                 }
               },
               "groupOtaPackages": {
                 "type": "array",
+                "description": "OTA package assignments to apply to this group on import. Meaningful only for DEVICE groups; ignored for groups of any other type. Each entry's otaPackageId and groupId may reference external IDs of entities in this payload or IDs of entities that already exist on the target tenant. Leave null to skip OTA assignment management for this group.",
                 "items": {
                   "$ref": "#/components/schemas/DeviceGroupOtaPackage"
                 }
               },
               "groupEntities": {
-                "type": "boolean"
+                "type": "boolean",
+                "description": "Marker indicating that the group's member entities are intended to be transported alongside this payload. Used by flows that convey members through a side channel (notably the version control flow, which stores members in a separate git index). The solution import API does not consume this flag and does not require it to be set. Safe to leave false (default)."
+              },
+              "memberIds": {
+                "type": "array",
+                "description": "External IDs of the entities that should be members of this group after import. Each ID is resolved against the target tenant — by other entity in this payload, by external ID, or by existing internal ID — and the matching entities are added to the group. The import fails if any listed member cannot be resolved. Must be null for the special 'All' group (whose membership is implicit and managed by the platform). Leave null to skip membership wiring; existing membership on the target tenant is left untouched.",
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                }
               }
             }
           },
@@ -128131,6 +128321,7 @@
           "permissions": null,
           "groupOtaPackages": null,
           "groupEntities": null,
+          "memberIds": null,
           "entity": {
             "createdTime": null,
             "id": {
@@ -146070,6 +146261,31 @@
             "description": "User last name",
             "example": "Brown"
           }
+        }
+      },
+      "UserExportData": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/EntityExportData"
+          }
+        ],
+        "example": {
+          "entity": {
+            "createdTime": null,
+            "id": {
+              "entityType": "DEVICE",
+              "id": "784f394c-42b6-435a-983c-b7beff2784f9"
+            },
+            "name": null,
+            "tenantId": {
+              "entityType": "TENANT",
+              "id": "784f394c-42b6-435a-983c-b7beff2784f9"
+            }
+          },
+          "relations": null,
+          "attributes": null,
+          "calculatedFields": null,
+          "entityType": "USER"
         }
       },
       "UserGroupListFilter": {

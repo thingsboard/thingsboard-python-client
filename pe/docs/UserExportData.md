@@ -1,7 +1,7 @@
 
-# EntityGroupExportData
+# UserExportData
 
-`tb_pe_client.models.EntityGroupExportData`
+`tb_pe_client.models.UserExportData`
 
 **Extends:** **EntityExportData**
 
@@ -9,10 +9,6 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-| **permissions** | [**List[GroupPermission]**](GroupPermission.md) | Group permissions to apply to this group on import. Meaningful only for USER groups; ignored for groups of any other type. Each entry's userGroupId, roleId, and entityGroupId may use the external IDs of other entities in this payload or the IDs of entities that already exist on the target tenant; the importer resolves them against the target tenant. System-tenant roles are not allowed and will be rejected. Leave null to skip permission management for this group. | [optional] |
-| **group_ota_packages** | [**List[DeviceGroupOtaPackage]**](DeviceGroupOtaPackage.md) | OTA package assignments to apply to this group on import. Meaningful only for DEVICE groups; ignored for groups of any other type. Each entry's otaPackageId and groupId may reference external IDs of entities in this payload or IDs of entities that already exist on the target tenant. Leave null to skip OTA assignment management for this group. | [optional] |
-| **group_entities** | **bool** | Marker indicating that the group's member entities are intended to be transported alongside this payload. Used by flows that convey members through a side channel (notably the version control flow, which stores members in a separate git index). The solution import API does not consume this flag and does not require it to be set. Safe to leave false (default). | [optional] |
-| **member_ids** | **List[UUID]** | External IDs of the entities that should be members of this group after import. Each ID is resolved against the target tenant — by other entity in this payload, by external ID, or by existing internal ID — and the matching entities are added to the group. The import fails if any listed member cannot be resolved. Must be null for the special 'All' group (whose membership is implicit and managed by the platform). Leave null to skip membership wiring; existing membership on the target tenant is left untouched. | [optional] |
 
 
 
@@ -28,29 +24,6 @@
 | attributes | Dict[str, List[AttributeExportData]] | Map of attributes where key is the scope of attributes and value is the list of attributes for that scope | [optional] |
 | calculated_fields | List[CalculatedField] |  | [optional] |
 | entity_type | EntityType |  |  |
-
-#### GroupPermission
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| id | GroupPermissionId | JSON object with the Group Permission Id. Specify this field to update the Group Permission. Referencing non-existing Group Permission Id will cause error. Omit this field to create new Group Permission. | [optional] |
-| created_time | int | Timestamp of the group permission creation, in milliseconds | [optional] [readonly] |
-| tenant_id | TenantId | JSON object with the Tenant Id. | [optional] [readonly] |
-| user_group_id | EntityGroupId | JSON object with the User Group Id. Represents the user group that will have permissions to perform operations against the corresponding entity group. |  |
-| role_id | RoleId | JSON object with the Role Id. Represents the set of permissions. The role type (GENERIC or GROUP) determines whether 'entityGroupId' is required. |  |
-| entity_group_id | EntityGroupId | JSON object with the Entity Group Id. Required when using a GROUP role — specifies the entity group to which the permissions apply. Must be null or omitted when using a GENERIC role. | [optional] |
-| entity_group_type | EntityType | Type of the entities in the group: DEVICE, ASSET, CUSTOMER, etc. Auto-populated from the referenced entity group. Null for generic permissions. | [optional] [readonly] |
-| is_public | bool |  | [optional] |
-| name | str | Name of the Group Permissions. Auto-generated | [optional] [readonly] |
-| public | bool |  | [optional] |
-
-#### DeviceGroupOtaPackage
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| id | UUID |  | [optional] |
-| group_id | EntityGroupId |  | [optional] |
-| ota_package_type | OtaPackageType |  | [optional] |
-| ota_package_id | OtaPackageId |  | [optional] |
-| ota_package_update_time | int |  | [optional] |
 
 #### ExportableEntity
 | Name | Type | Description | Notes |
@@ -88,9 +61,6 @@
 
 #### EntityType (enum)
 `TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (46 values total)
-
-#### OtaPackageType (enum)
-`FIRMWARE` | `SOFTWARE`
 
 #### RelationTypeGroup (enum)
 `COMMON` | `DASHBOARD` | `FROM_ENTITY_GROUP` | `RULE_CHAIN` | `RULE_NODE` | `EDGE` | `EDGE_AUTO_ASSIGN_RULE_CHAIN`
@@ -552,8 +522,8 @@
 ### Conventions
 
 - **Package:** `tb_pe_client.models`
-- **Attribute access:** `obj.permissions`, `obj.name`, etc.
+- **Attribute access:** `obj.`, `obj.name`, etc.
 - **Serialize:** `obj.model_dump()` or `obj.model_dump(by_alias=True)` for camelCase JSON
-- **Deserialize:** `EntityGroupExportData.model_validate(data)` or `EntityGroupExportData.model_validate_json(json_str)`
+- **Deserialize:** `UserExportData.model_validate(data)` or `UserExportData.model_validate_json(json_str)`
 - **None fields:** Optional attributes default to `None`; accessing them never raises exceptions
 

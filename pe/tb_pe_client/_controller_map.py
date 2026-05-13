@@ -481,6 +481,9 @@ _CONTROLLER_MAP = {
     "find_users_by_query": ("tb_pe_client.api.user_controller_api", "UserControllerApi"),
     "find_users_by_query_with_http_info": ("tb_pe_client.api.user_controller_api", "UserControllerApi"),
     "find_users_by_query_without_preload_content": ("tb_pe_client.api.user_controller_api", "UserControllerApi"),
+    "generate_dashboard": ("tb_pe_client.api.ai_device_dashboard_controller_api", "AiDeviceDashboardControllerApi"),
+    "generate_dashboard_with_http_info": ("tb_pe_client.api.ai_device_dashboard_controller_api", "AiDeviceDashboardControllerApi"),
+    "generate_dashboard_without_preload_content": ("tb_pe_client.api.ai_device_dashboard_controller_api", "AiDeviceDashboardControllerApi"),
     "generate_two_fa_account_config": ("tb_pe_client.api.two_factor_auth_config_controller_api", "TwoFactorAuthConfigControllerApi"),
     "generate_two_fa_account_config_with_http_info": ("tb_pe_client.api.two_factor_auth_config_controller_api", "TwoFactorAuthConfigControllerApi"),
     "generate_two_fa_account_config_without_preload_content": ("tb_pe_client.api.two_factor_auth_config_controller_api", "TwoFactorAuthConfigControllerApi"),
@@ -2220,6 +2223,7 @@ _CONTROLLER_MAP = {
 _CONTROLLER_ATTR_MAP = {
     "admin_controller": ("tb_pe_client.api.admin_controller_api", "AdminControllerApi"),
     "ai_chat_controller": ("tb_pe_client.api.ai_chat_controller_api", "AiChatControllerApi"),
+    "ai_device_dashboard_controller": ("tb_pe_client.api.ai_device_dashboard_controller_api", "AiDeviceDashboardControllerApi"),
     "ai_model_controller": ("tb_pe_client.api.ai_model_controller_api", "AiModelControllerApi"),
     "ai_solution_controller": ("tb_pe_client.api.ai_solution_controller_api", "AiSolutionControllerApi"),
     "ai_tool_controller": ("tb_pe_client.api.ai_tool_controller_api", "AiToolControllerApi"),
