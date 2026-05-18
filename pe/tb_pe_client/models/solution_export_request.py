@@ -32,9 +32,10 @@ class SolutionExportRequest(BaseModel):
     """
     Solution export request specifying which entities to include and export settings.
     """ # noqa: E501
-    entity_ids: Optional[List[EntityId]] = Field(default=None, serialization_alias="entityIds")
+    internal_ids: Optional[List[EntityId]] = Field(default=None, description="Set of internal entity IDs to export. All listed entities must belong to the current tenant. The export will include the entity data, and optionally relations, attributes, and credentials based on the settings.", serialization_alias="internalIds")
+    external_ids: Optional[List[EntityId]] = Field(default=None, serialization_alias="externalIds")
     settings: Optional[EntityExportSettings] = Field(default=None, description="Optional export settings controlling what additional data is included (relations, attributes, credentials, etc.). If not specified, default settings will be used that include all available data.")
-    __properties: ClassVar[List[str]] = ["entityIds", "settings"]
+    __properties: ClassVar[List[str]] = ["internalIds", "externalIds", "settings"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -80,13 +81,20 @@ class SolutionExportRequest(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in entity_ids (list)
+        # override the default output from pydantic by calling `to_dict()` of each item in internal_ids (list)
         _items = []
-        if self.entity_ids:
-            for _item_entity_ids in self.entity_ids:
-                if _item_entity_ids:
-                    _items.append(_item_entity_ids.to_dict())
-            _dict['entityIds'] = _items
+        if self.internal_ids:
+            for _item_internal_ids in self.internal_ids:
+                if _item_internal_ids:
+                    _items.append(_item_internal_ids.to_dict())
+            _dict['internalIds'] = _items
+        # override the default output from pydantic by calling `to_dict()` of each item in external_ids (list)
+        _items = []
+        if self.external_ids:
+            for _item_external_ids in self.external_ids:
+                if _item_external_ids:
+                    _items.append(_item_external_ids.to_dict())
+            _dict['externalIds'] = _items
         # override the default output from pydantic by calling `to_dict()` of settings
         if self.settings:
             _dict['settings'] = self.settings.to_dict()
@@ -102,7 +110,8 @@ class SolutionExportRequest(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "entity_ids": [EntityId.from_dict(_item) for _item in obj["entityIds"]] if obj.get("entityIds") is not None else None,
+            "internal_ids": [EntityId.from_dict(_item) for _item in obj["internalIds"]] if obj.get("internalIds") is not None else None,
+            "external_ids": [EntityId.from_dict(_item) for _item in obj["externalIds"]] if obj.get("externalIds") is not None else None,
             "settings": EntityExportSettings.from_dict(obj["settings"]) if obj.get("settings") is not None else None
         })
         return _obj

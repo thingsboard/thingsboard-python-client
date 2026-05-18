@@ -94619,7 +94619,7 @@
           "solution-export-import-controller"
         ],
         "summary": "Validate Solution (validateSolution)",
-        "description": "Performs a dry-run validation of a solution without modifying any data. Detects duplicate entities within the solution, identifies name conflicts with existing entities in the current tenant, and reports missing dependency references (e.g. a device profile referencing an absent rule chain). The result indicates whether the solution is safe to import (valid=true) and lists any conflicts or warnings.\n\nAvailable for users with 'TENANT_ADMIN' authority. Requires VERSION_CONTROL READ permission.",
+        "description": "Performs a dry-run validation of a solution without modifying any data. Detects duplicate entities within the solution, identifies name conflicts with existing entities in the current tenant, and reports missing dependency references (e.g. a device profile referencing an absent rule chain). The result indicates whether the solution is safe to import (valid=true) and lists any conflicts or warnings.\n\nAvailable for users with 'TENANT_ADMIN' authority. Requires VERSION_CONTROL WRITE permission.",
         "operationId": "validateSolution",
         "requestBody": {
           "description": "Solution data to validate.",
@@ -128243,7 +128243,7 @@
           },
           "ownerId": {
             "$ref": "#/components/schemas/EntityId",
-            "description": "JSON object with the owner of the group - Tenant or Customer Id."
+            "description": "JSON object with the owner of the group - Tenant or Customer Id. When omitted or null on creation, defaults to the current user's owner (Tenant for tenant admins, Customer for customer users)."
           },
           "additionalInfo": {
             "$ref": "#/components/schemas/JsonNode",
@@ -128423,7 +128423,7 @@
           },
           "ownerId": {
             "$ref": "#/components/schemas/EntityId",
-            "description": "JSON object with the owner of the group - Tenant or Customer Id."
+            "description": "JSON object with the owner of the group - Tenant or Customer Id. When omitted or null on creation, defaults to the current user's owner (Tenant for tenant admins, Customer for customer users)."
           },
           "additionalInfo": {
             "$ref": "#/components/schemas/JsonNode",
@@ -140216,11 +140216,26 @@
           },
           "permissions": {
             "$ref": "#/components/schemas/JsonNode",
-            "description": "JSON object with the set of permissions. Structure is specific for role type"
+            "description": "Set of permissions granted by this role. The JSON shape depends on the role 'type':\n\n* GENERIC — JSON object mapping `Resource` enum names to arrays of `Operation` enum names allowed on that resource. The wildcard entry `{\"ALL\":[\"ALL\"]}` grants every operation on every resource.\n\n* GROUP — JSON array of `Operation` enum names that apply to the entity group this role is bound to via `GroupPermission.entityGroupId`. Only operations with `allowedForGroupRole=true` may appear (see `Operation` enum). The wildcard entry `[\"ALL\"]` grants every supported operation on the bound entity group.",
+            "example": {
+              "DEVICE": [
+                "READ",
+                "WRITE",
+                "READ_TELEMETRY"
+              ],
+              "DASHBOARD": [
+                "READ"
+              ]
+            }
           },
           "excludedPermissions": {
             "$ref": "#/components/schemas/JsonNode",
-            "description": "JSON object with the set of excluded permissions. Only applicable for generic roles. Structure is the same as permissions"
+            "description": "Operations to subtract from those granted by `permissions`. Only applicable to GENERIC roles — setting this on a GROUP role is rejected by validation. Same shape as the GENERIC variant of `permissions`: a JSON object mapping `Resource` enum names to non-empty arrays of `Operation` enum names. At evaluation time, for each resource the listed operations are removed from the resolved permission set (e.g. `permissions={\"ALL\":[\"ALL\"]}` combined with `excludedPermissions={\"DEVICE\":[\"DELETE\"]}` grants everything except deleting devices). May be null or an empty object when no exclusions apply.",
+            "example": {
+              "DEVICE": [
+                "DELETE"
+              ]
+            }
           },
           "version": {
             "type": "integer",
@@ -142631,7 +142646,15 @@
         "type": "object",
         "description": "Solution export request specifying which entities to include and export settings.",
         "properties": {
-          "entityIds": {
+          "internalIds": {
+            "type": "array",
+            "description": "Set of internal entity IDs to export. All listed entities must belong to the current tenant. The export will include the entity data, and optionally relations, attributes, and credentials based on the settings.",
+            "items": {
+              "$ref": "#/components/schemas/EntityId"
+            },
+            "uniqueItems": true
+          },
+          "externalIds": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/EntityId"
@@ -142679,11 +142702,12 @@
               "type": "integer",
               "format": "int32"
             },
-            "description": "Number of newly created entities per entity type. Entity types with zero created entities are omitted.",
+            "description": "Number of newly created entities per entity type. Entity types with zero created entities are omitted. Entity groups are reported under the ENTITY_GROUP key regardless of their inner type (e.g. a user group and a device group both contribute to ENTITY_GROUP).",
             "example": {
               "RULE_CHAIN": 2,
               "DEVICE_PROFILE": 1,
-              "DEVICE": 3
+              "DEVICE": 3,
+              "ENTITY_GROUP": 1
             }
           },
           "idMapping": {

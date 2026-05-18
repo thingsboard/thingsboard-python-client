@@ -656,7 +656,7 @@ class SolutionExportImportControllerApi:
     ) -> SolutionValidationResult:
         """Validate Solution (validateSolution)
 
-        Performs a dry-run validation of a solution without modifying any data. Detects duplicate entities within the solution, identifies name conflicts with existing entities in the current tenant, and reports missing dependency references (e.g. a device profile referencing an absent rule chain). The result indicates whether the solution is safe to import (valid=true) and lists any conflicts or warnings.  Available for users with 'TENANT_ADMIN' authority. Requires VERSION_CONTROL READ permission.
+        Performs a dry-run validation of a solution without modifying any data. Detects duplicate entities within the solution, identifies name conflicts with existing entities in the current tenant, and reports missing dependency references (e.g. a device profile referencing an absent rule chain). The result indicates whether the solution is safe to import (valid=true) and lists any conflicts or warnings.  Available for users with 'TENANT_ADMIN' authority. Requires VERSION_CONTROL WRITE permission.
 
         :param solution_data: Solution data to validate. (required)
         :type solution_data: SolutionData
@@ -728,7 +728,7 @@ class SolutionExportImportControllerApi:
     ) -> ApiResponse[SolutionValidationResult]:
         """Validate Solution (validateSolution)
 
-        Performs a dry-run validation of a solution without modifying any data. Detects duplicate entities within the solution, identifies name conflicts with existing entities in the current tenant, and reports missing dependency references (e.g. a device profile referencing an absent rule chain). The result indicates whether the solution is safe to import (valid=true) and lists any conflicts or warnings.  Available for users with 'TENANT_ADMIN' authority. Requires VERSION_CONTROL READ permission.
+        Performs a dry-run validation of a solution without modifying any data. Detects duplicate entities within the solution, identifies name conflicts with existing entities in the current tenant, and reports missing dependency references (e.g. a device profile referencing an absent rule chain). The result indicates whether the solution is safe to import (valid=true) and lists any conflicts or warnings.  Available for users with 'TENANT_ADMIN' authority. Requires VERSION_CONTROL WRITE permission.
 
         :param solution_data: Solution data to validate. (required)
         :type solution_data: SolutionData
@@ -800,7 +800,7 @@ class SolutionExportImportControllerApi:
     ) -> RESTResponseType:
         """Validate Solution (validateSolution)
 
-        Performs a dry-run validation of a solution without modifying any data. Detects duplicate entities within the solution, identifies name conflicts with existing entities in the current tenant, and reports missing dependency references (e.g. a device profile referencing an absent rule chain). The result indicates whether the solution is safe to import (valid=true) and lists any conflicts or warnings.  Available for users with 'TENANT_ADMIN' authority. Requires VERSION_CONTROL READ permission.
+        Performs a dry-run validation of a solution without modifying any data. Detects duplicate entities within the solution, identifies name conflicts with existing entities in the current tenant, and reports missing dependency references (e.g. a device profile referencing an absent rule chain). The result indicates whether the solution is safe to import (valid=true) and lists any conflicts or warnings.  Available for users with 'TENANT_ADMIN' authority. Requires VERSION_CONTROL WRITE permission.
 
         :param solution_data: Solution data to validate. (required)
         :type solution_data: SolutionData

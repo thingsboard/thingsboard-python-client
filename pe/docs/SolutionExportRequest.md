@@ -9,7 +9,8 @@ Solution export request specifying which entities to include and export settings
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-| **entity_ids** | [**List[EntityId]**](EntityId.md) |  | [optional] |
+| **internal_ids** | [**List[EntityId]**](EntityId.md) | Set of internal entity IDs to export. All listed entities must belong to the current tenant. The export will include the entity data, and optionally relations, attributes, and credentials based on the settings. | [optional] |
+| **external_ids** | [**List[EntityId]**](EntityId.md) |  | [optional] |
 | **settings** | [**EntityExportSettings**](EntityExportSettings.md) | Optional export settings controlling what additional data is included (relations, attributes, credentials, etc.). If not specified, default settings will be used that include all available data. | [optional] |
 
 
@@ -37,7 +38,7 @@ Solution export request specifying which entities to include and export settings
 ### Conventions
 
 - **Package:** `tb_pe_client.models`
-- **Attribute access:** `obj.entity_ids`, `obj.name`, etc.
+- **Attribute access:** `obj.internal_ids`, `obj.name`, etc.
 - **Serialize:** `obj.model_dump()` or `obj.model_dump(by_alias=True)` for camelCase JSON
 - **Deserialize:** `SolutionExportRequest.model_validate(data)` or `SolutionExportRequest.model_validate_json(json_str)`
 - **None fields:** Optional attributes default to `None`; accessing them never raises exceptions
