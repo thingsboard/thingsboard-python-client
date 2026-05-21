@@ -34,6 +34,7 @@ class SnmpDeviceTransportConfiguration(DeviceTransportConfiguration):
     """
     SnmpDeviceTransportConfiguration
     """ # noqa: E501
+    type: StrictStr = "SNMP"  # post_process: discriminator default
     host: Optional[StrictStr] = None
     port: Optional[StrictInt] = None
     protocol_version: Optional[SnmpProtocolVersion] = Field(default=None, serialization_alias="protocolVersion")

@@ -31,6 +31,7 @@ class TwilioSmsProviderConfiguration(SmsProviderConfiguration):
     """
     TwilioSmsProviderConfiguration
     """ # noqa: E501
+    type: StrictStr = "TWILIO"  # post_process: discriminator default
     account_sid: Optional[StrictStr] = Field(default=None, description="Twilio account Sid.", serialization_alias="accountSid")
     account_token: Optional[StrictStr] = Field(default=None, description="Twilio account Token.", serialization_alias="accountToken")
     number_from: Optional[StrictStr] = Field(default=None, description="The number/id of a sender.", serialization_alias="numberFrom")

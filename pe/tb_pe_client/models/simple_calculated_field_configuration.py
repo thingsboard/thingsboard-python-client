@@ -33,6 +33,7 @@ class SimpleCalculatedFieldConfiguration(CalculatedFieldConfiguration):
     """
     SimpleCalculatedFieldConfiguration
     """ # noqa: E501
+    type: StrictStr = "SIMPLE"  # post_process: discriminator default
     arguments: Dict[str, Argument]
     expression: Optional[StrictStr] = None
     use_latest_ts: Optional[StrictBool] = Field(default=None, serialization_alias="useLatestTs")

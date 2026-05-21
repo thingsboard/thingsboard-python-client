@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict
+from pydantic import ConfigDict, StrictStr
 from typing import Any, ClassVar, Dict, List
 from tb_ce_client.models.delivery_method_notification_template import DeliveryMethodNotificationTemplate
 from typing import Optional, Set
@@ -31,6 +31,7 @@ class SmsDeliveryMethodNotificationTemplate(DeliveryMethodNotificationTemplate):
     """
     SmsDeliveryMethodNotificationTemplate
     """ # noqa: E501
+    method: StrictStr = "SMS"  # post_process: discriminator default
     __properties: ClassVar[List[str]] = ["enabled", "body", "method"]
 
     model_config = ConfigDict(

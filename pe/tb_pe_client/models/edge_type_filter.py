@@ -31,6 +31,7 @@ class EdgeTypeFilter(EntityFilter):
     """
     EdgeTypeFilter
     """ # noqa: E501
+    type: StrictStr = "edgeType"  # post_process: discriminator default
     edge_types: Optional[List[StrictStr]] = Field(default=None, serialization_alias="edgeTypes")
     edge_name_filter: Optional[StrictStr] = Field(default=None, serialization_alias="edgeNameFilter")
     edge_type: Optional[StrictStr] = Field(default=None, serialization_alias="edgeType")

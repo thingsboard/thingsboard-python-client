@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field, field_validator
+from pydantic import ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List
 from typing_extensions import Annotated
 from tb_pe_client.models.two_fa_account_config import TwoFaAccountConfig
@@ -32,6 +32,7 @@ class TotpTwoFaAccountConfig(TwoFaAccountConfig):
     """
     TotpTwoFaAccountConfig
     """ # noqa: E501
+    provider_type: StrictStr = Field(default="TOTP", serialization_alias="providerType")  # post_process: discriminator default
     auth_url: Annotated[str, Field(min_length=1, strict=True)] = Field(serialization_alias="authUrl")
     __properties: ClassVar[List[str]] = ["useByDefault", "providerType", "authUrl"]
 

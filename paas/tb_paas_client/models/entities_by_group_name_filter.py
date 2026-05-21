@@ -33,6 +33,7 @@ class EntitiesByGroupNameFilter(EntityFilter):
     """
     EntitiesByGroupNameFilter
     """ # noqa: E501
+    type: StrictStr = "entitiesByGroupName"  # post_process: discriminator default
     group_type: Optional[EntityType] = Field(default=None, serialization_alias="groupType")
     owner_id: Optional[EntityId] = Field(default=None, serialization_alias="ownerId")
     entity_group_name_filter: Optional[StrictStr] = Field(default=None, serialization_alias="entityGroupNameFilter")

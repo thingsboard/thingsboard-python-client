@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field, StrictBool, StrictInt
+from pydantic import ConfigDict, Field, StrictBool, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_paas_client.models.calculated_field_configuration import CalculatedFieldConfiguration
 from tb_paas_client.models.entity_coordinates import EntityCoordinates
@@ -34,6 +34,7 @@ class GeofencingCalculatedFieldConfiguration(CalculatedFieldConfiguration):
     """
     GeofencingCalculatedFieldConfiguration
     """ # noqa: E501
+    type: StrictStr = "GEOFENCING"  # post_process: discriminator default
     entity_coordinates: EntityCoordinates = Field(serialization_alias="entityCoordinates")
     zone_groups: Dict[str, ZoneGroupConfiguration] = Field(serialization_alias="zoneGroups")
     scheduled_update_enabled: Optional[StrictBool] = Field(default=None, serialization_alias="scheduledUpdateEnabled")

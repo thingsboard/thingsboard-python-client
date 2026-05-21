@@ -32,6 +32,7 @@ class MicrosoftTeamsNotificationTargetConfig(NotificationTargetConfig):
     """
     MicrosoftTeamsNotificationTargetConfig
     """ # noqa: E501
+    type: StrictStr = "MICROSOFT_TEAMS"  # post_process: discriminator default
     webhook_url: Annotated[str, Field(min_length=1, strict=True)] = Field(serialization_alias="webhookUrl")
     channel_name: Annotated[str, Field(min_length=1, strict=True)] = Field(serialization_alias="channelName")
     use_old_api: Optional[StrictBool] = Field(default=None, serialization_alias="useOldApi")

@@ -33,6 +33,7 @@ class EntityActionNotificationRuleTriggerConfig(NotificationRuleTriggerConfig):
     """
     EntityActionNotificationRuleTriggerConfig
     """ # noqa: E501
+    trigger_type: NotificationRuleTriggerType = Field(default=NotificationRuleTriggerType.ENTITY_ACTION, serialization_alias="triggerType")  # post_process: discriminator default
     entity_types: Optional[List[EntityType]] = Field(default=None, serialization_alias="entityTypes")
     created: Optional[StrictBool] = None
     updated: Optional[StrictBool] = None

@@ -31,6 +31,7 @@ class ProtoTransportPayloadConfiguration(TransportPayloadTypeConfiguration):
     """
     ProtoTransportPayloadConfiguration
     """ # noqa: E501
+    transport_payload_type: StrictStr = Field(default="PROTOBUF", serialization_alias="transportPayloadType")  # post_process: discriminator default
     device_telemetry_proto_schema: Optional[StrictStr] = Field(default=None, serialization_alias="deviceTelemetryProtoSchema")
     device_attributes_proto_schema: Optional[StrictStr] = Field(default=None, serialization_alias="deviceAttributesProtoSchema")
     device_rpc_request_proto_schema: Optional[StrictStr] = Field(default=None, serialization_alias="deviceRpcRequestProtoSchema")

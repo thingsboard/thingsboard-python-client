@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict
+from pydantic import ConfigDict, StrictStr
 from typing import Any, ClassVar, Dict, List
 from tb_pe_client.models.device_profile_provision_configuration import DeviceProfileProvisionConfiguration
 from typing import Optional, Set
@@ -31,6 +31,7 @@ class DisabledDeviceProfileProvisionConfiguration(DeviceProfileProvisionConfigur
     """
     DisabledDeviceProfileProvisionConfiguration
     """ # noqa: E501
+    type: StrictStr = "DISABLED"  # post_process: discriminator default
     __properties: ClassVar[List[str]] = ["provisionDeviceSecret", "type"]
 
     model_config = ConfigDict(

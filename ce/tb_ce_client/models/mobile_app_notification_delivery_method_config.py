@@ -32,6 +32,7 @@ class MobileAppNotificationDeliveryMethodConfig(NotificationDeliveryMethodConfig
     """
     MobileAppNotificationDeliveryMethodConfig
     """ # noqa: E501
+    method: StrictStr = "MOBILE_APP"  # post_process: discriminator default
     firebase_service_account_credentials_file_name: Optional[StrictStr] = Field(default=None, serialization_alias="firebaseServiceAccountCredentialsFileName")
     firebase_service_account_credentials: Annotated[str, Field(min_length=1, strict=True)] = Field(serialization_alias="firebaseServiceAccountCredentials")
     __properties: ClassVar[List[str]] = ["method", "firebaseServiceAccountCredentialsFileName", "firebaseServiceAccountCredentials"]

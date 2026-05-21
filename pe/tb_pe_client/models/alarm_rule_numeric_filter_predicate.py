@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict
+from pydantic import ConfigDict, StrictStr
 from typing import Any, ClassVar, Dict, List
 from tb_pe_client.models.alarm_condition_value_double import AlarmConditionValueDouble
 from tb_pe_client.models.alarm_rule_key_filter_predicate import AlarmRuleKeyFilterPredicate
@@ -33,6 +33,7 @@ class AlarmRuleNumericFilterPredicate(AlarmRuleKeyFilterPredicate):
     """
     AlarmRuleNumericFilterPredicate
     """ # noqa: E501
+    type: StrictStr = "NUMERIC"  # post_process: discriminator default
     operation: AlarmRuleNumericOperation
     value: AlarmConditionValueDouble
     __properties: ClassVar[List[str]] = ["type", "operation", "value"]

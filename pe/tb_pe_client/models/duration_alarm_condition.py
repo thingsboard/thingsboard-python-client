@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict
+from pydantic import ConfigDict, StrictStr
 from typing import Any, ClassVar, Dict, List
 from tb_pe_client.models.alarm_condition import AlarmCondition
 from tb_pe_client.models.alarm_condition_expression import AlarmConditionExpression
@@ -35,6 +35,7 @@ class DurationAlarmCondition(AlarmCondition):
     """
     DurationAlarmCondition
     """ # noqa: E501
+    type: StrictStr = "DURATION"  # post_process: discriminator default
     unit: TimeUnit
     value: AlarmConditionValueLong
     __properties: ClassVar[List[str]] = ["expression", "schedule", "type", "unit", "value"]

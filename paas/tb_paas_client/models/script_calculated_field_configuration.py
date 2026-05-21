@@ -33,6 +33,7 @@ class ScriptCalculatedFieldConfiguration(CalculatedFieldConfiguration):
     """
     ScriptCalculatedFieldConfiguration
     """ # noqa: E501
+    type: StrictStr = "SCRIPT"  # post_process: discriminator default
     arguments: Dict[str, Argument]
     expression: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["output", "type", "arguments", "expression"]

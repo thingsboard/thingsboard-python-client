@@ -25,6 +25,9 @@ Steps performed:
   2. Fix JsonNode/object references (broken imports, from_dict calls, to_dict calls)
   2a. Convert alias= to serialization_alias= for PEP 8 __init__ signatures
   2b. Add __str__/__repr__ to models and get_id() to EntityId
+  2c. Inject discriminator defaults on polymorphic subclasses (generator quirk)
+  2d. Add default=None to Optional[...] = Field(...) declarations missing it
+  2e. Inject missing 2xx entries in api/*.py _response_types_map blocks
   3. Rewrite __init__.py files for lazy imports (models/ and root)
   4. Apply Apache 2.0 license headers to all .py files
   5. Clean up unwanted generated files (README, setup.py, etc.)
@@ -479,6 +482,544 @@ def add_model_str_methods(models_dir: Path) -> tuple[int, int, int]:
             f.write_text(content, encoding="utf-8")
 
     return to_str_fixes, str_injections, entity_id_patched
+
+
+# ---------------------------------------------------------------------------
+# Step 2c: Inject discriminator defaults on polymorphic subclasses
+# ---------------------------------------------------------------------------
+#
+# The OpenAPI Python generator (7.20.0) emits parent models with the
+# discriminator field declared as required, but never overrides that field on
+# concrete subclasses with a default value. Result: constructing a subclass
+# without explicitly passing the discriminator (e.g. ``EntityTypeFilter(...)``
+# without ``type="entityType"``) fails Pydantic validation. The Java generator
+# avoids this because Jackson resolves the discriminator from annotations.
+#
+# Fix: for every polymorphic parent declared in the OpenAPI spec, read the
+# discriminator mapping {value: ChildClassName}, then for each child file
+# inject a field-override line that supplies the matching default. Idempotent
+# (skips if the child already has an override at the same field).
+#
+# Safety: when the OpenAPI spec lacks an explicit ``discriminator.mapping``,
+# the generator falls back to using class names as both keys AND values in the
+# emitted ``__discriminator_value_class_map``. That makes the wire value
+# unknowable from the spec alone (it lives only in Java/Jackson annotations).
+# In that case we skip the subclass rather than write a garbage default.
+
+# Tag used to mark our injected override line for idempotent re-runs.
+_DISCRIMINATOR_INJECT_TAG = "# post_process: discriminator default"
+
+
+def _build_class_to_file_map(models_dir: Path) -> "dict[str, Path]":
+    """Scan all model files and return {TopLevelClassName: Path}."""
+    cls_to_file: dict[str, Path] = {}
+    for f in sorted(models_dir.glob("*.py")):
+        if f.name == "__init__.py":
+            continue
+        content = f.read_text(encoding="utf-8")
+        # Match the first top-level class definition (line starts with `class `)
+        m = re.search(r"^class (\w+)\(", content, re.MULTILINE)
+        if m:
+            cls_to_file[m.group(1)] = f
+    return cls_to_file
+
+
+def _read_parent_discriminator_field(parent_content: str, py_field: str) -> "Optional[str]":
+    """Extract the Python type annotation of the parent's discriminator field.
+
+    Returns the bare type string (e.g. "StrictStr", "EntityType", "Optional[Foo]")
+    or None if the field is not found.
+    """
+    # Match "    <field>: <type>" possibly followed by " = ..." or end of line
+    m = re.search(
+        rf"^\s+{re.escape(py_field)}:\s*([^=\n]+?)(?:\s*=|\s*$)",
+        parent_content,
+        re.MULTILINE,
+    )
+    if not m:
+        return None
+    return m.group(1).strip()
+
+
+def _ensure_pydantic_imports(content: str, names: "list[str]") -> "tuple[str, bool]":
+    """Ensure ``from pydantic import ...`` line contains the given names.
+
+    Returns (new_content, modified). Adds missing names to the existing import.
+    """
+    m = re.search(r"^from pydantic import (.+)$", content, re.MULTILINE)
+    if not m:
+        # No pydantic import line; nothing safe to do (the file shouldn't
+        # exist without pydantic imports — leave it alone).
+        return content, False
+    current = [n.strip() for n in m.group(1).split(",")]
+    added = False
+    for name in names:
+        if name not in current:
+            current.append(name)
+            added = True
+    if not added:
+        return content, False
+    new_line = "from pydantic import " + ", ".join(sorted(current))
+    new_content = content[: m.start()] + new_line + content[m.end() :]
+    return new_content, True
+
+
+def _ensure_model_import(content: str, package_name: str, enum_class: str) -> "tuple[str, bool]":
+    """Ensure ``from {package}.models.<snake> import <enum_class>`` is present.
+
+    Returns (new_content, modified). Inserts the import after the last existing
+    ``from {package}.models.`` import line if missing.
+    """
+    if re.search(rf"\bfrom {re.escape(package_name)}\.models\.\w+ import {re.escape(enum_class)}\b", content):
+        return content, False
+    snake = _camel_to_snake(enum_class)
+    new_import = f"from {package_name}.models.{snake} import {enum_class}"
+    # Insert after the last "from {package}.models." import
+    matches = list(re.finditer(rf"^from {re.escape(package_name)}\.models\.\w+ import .+$", content, re.MULTILINE))
+    if matches:
+        last = matches[-1]
+        new_content = content[: last.end()] + "\n" + new_import + content[last.end() :]
+    else:
+        # Insert after the pydantic import as a fallback
+        m = re.search(r"^from pydantic import .+$", content, re.MULTILINE)
+        if not m:
+            return content, False
+        new_content = content[: m.end()] + "\n" + new_import + content[m.end() :]
+    return new_content, True
+
+
+def _snake_to_camel_alias(snake: str) -> str:
+    """Convert snake_case to camelCase (lowerCamel) for JSON property names."""
+    parts = snake.split("_")
+    if len(parts) == 1:
+        return parts[0]
+    return parts[0] + "".join(p[:1].upper() + p[1:] for p in parts[1:])
+
+
+def _inject_discriminator_override(
+    child_content: str,
+    package_name: str,
+    py_field: str,
+    field_type: str,
+    discriminator_value: str,
+) -> "tuple[str, bool]":
+    """Inject a discriminator field override into a child class body.
+
+    Returns (new_content, modified). No-op if our tag is already present.
+    """
+    if _DISCRIMINATOR_INJECT_TAG in child_content:
+        return child_content, False
+
+    # Find the class definition line; if there are multiple top-level classes
+    # in the file (unusual), only patch the first one (matches the generator
+    # convention of one class per file).
+    class_match = re.search(r"^class (\w+)\(\w+\):\s*\n", child_content, re.MULTILINE)
+    if not class_match:
+        return child_content, False
+
+    # Skip past the docstring that always follows the class definition. The
+    # generated docstring closes with `""" # noqa: E501` on its own line.
+    after_class = child_content[class_match.end() :]
+    doc_close = re.search(r'^\s*"""\s*#\s*noqa:\s*E501\s*$', after_class, re.MULTILINE)
+    if not doc_close:
+        # Without a recognizable docstring close we can't pick a safe insertion
+        # point — inserting right after `class Foo(Bar):` would push the
+        # docstring out of position (silently turning it into a no-op string
+        # expression and dropping __doc__). Skip rather than corrupt.
+        return child_content, False
+    insert_pos = class_match.end() + doc_close.end() + 1  # +1 for the newline
+
+    # Determine the default-value expression. Strip an Optional[...] wrapping
+    # so we can identify the underlying type (Pydantic narrows the union once
+    # a default is supplied).
+    bare_type = field_type
+    optional_match = re.match(r"Optional\[(.+)\]$", bare_type)
+    if optional_match:
+        bare_type = optional_match.group(1)
+
+    enum_class: "Optional[str]" = None
+    needs_strict_str_import = False
+    if bare_type == "StrictStr":
+        default_expr = f'"{discriminator_value}"'
+        needs_strict_str_import = True
+    elif re.match(r"^[A-Z][A-Za-z0-9]*$", bare_type):
+        # Enum class name (e.g. EntityType, EventType). Discriminator values
+        # for enum-typed discriminators must be valid Python identifiers
+        # matching the enum members (e.g. "DEVICE", "ENTITY_ACTION").
+        if not re.match(r"^[A-Za-z_][A-Za-z0-9_]*$", discriminator_value):
+            print(
+                f"    Skipping enum-typed discriminator value {discriminator_value!r} "
+                f"for {bare_type}: not a valid Python identifier"
+            )
+            return child_content, False
+        enum_class = bare_type
+        default_expr = f"{enum_class}.{discriminator_value}"
+    else:
+        # Unknown shape (Annotated[...], etc.) — skip.
+        return child_content, False
+
+    # Only add serialization_alias when the JSON property name differs from
+    # the Python field name.
+    json_prop = _snake_to_camel_alias(py_field)
+    if json_prop != py_field:
+        new_line = (
+            f"    {py_field}: {field_type} = "
+            f'Field(default={default_expr}, serialization_alias="{json_prop}")'
+            f"  {_DISCRIMINATOR_INJECT_TAG}\n"
+        )
+        needs_field_import = True
+    else:
+        new_line = (
+            f"    {py_field}: {field_type} = {default_expr}"
+            f"  {_DISCRIMINATOR_INJECT_TAG}\n"
+        )
+        needs_field_import = False
+
+    new_content = child_content[:insert_pos] + new_line + child_content[insert_pos:]
+
+    # Ensure required imports
+    pydantic_names: list[str] = []
+    if needs_field_import:
+        pydantic_names.append("Field")
+    if needs_strict_str_import:
+        pydantic_names.append("StrictStr")
+    if pydantic_names:
+        new_content, _ = _ensure_pydantic_imports(new_content, pydantic_names)
+    if enum_class is not None:
+        new_content, _ = _ensure_model_import(new_content, package_name, enum_class)
+
+    return new_content, True
+
+
+def fix_polymorphic_discriminator_defaults(
+    models_dir: Path, package_name: str
+) -> "tuple[int, int, int]":
+    """Inject discriminator-field defaults onto every polymorphic subclass.
+
+    Returns (parents_processed, subclasses_patched, subclasses_skipped).
+    """
+    if not models_dir.exists():
+        return 0, 0, 0
+
+    cls_to_file = _build_class_to_file_map(models_dir)
+
+    parents_processed = 0
+    subclasses_patched = 0
+    subclasses_skipped = 0
+
+    discriminator_re = re.compile(
+        r"__discriminator_property_name: ClassVar\[str\] = '([^']+)'"
+    )
+    mapping_re = re.compile(
+        r"__discriminator_value_class_map: ClassVar\[Dict\[str, str\]\] = \{\s*([^}]*)\}",
+        re.DOTALL,
+    )
+    pair_re = re.compile(r"'([^']+)'\s*:\s*'([^']+)'")
+
+    for f in sorted(models_dir.glob("*.py")):
+        if f.name == "__init__.py":
+            continue
+        content = f.read_text(encoding="utf-8")
+        prop_m = discriminator_re.search(content)
+        if not prop_m:
+            continue
+        map_m = mapping_re.search(content)
+        if not map_m:
+            continue
+        json_prop = prop_m.group(1)
+        py_field = _camel_to_snake(json_prop)
+        field_type = _read_parent_discriminator_field(content, py_field)
+        if field_type is None:
+            continue
+        mapping = dict(pair_re.findall(map_m.group(1)))
+        if not mapping:
+            continue
+        parents_processed += 1
+
+        for disc_value, child_cls in mapping.items():
+            # Safety: when the OpenAPI spec lacks an explicit
+            # ``discriminator.mapping``, the generator emits class names as
+            # both keys and values. The real wire value is unknown from the
+            # spec, so skip rather than inject a garbage default.
+            if disc_value == child_cls:
+                print(
+                    f"    Skipping {child_cls}: discriminator mapping uses "
+                    f"class names (no explicit mapping in OpenAPI spec)"
+                )
+                subclasses_skipped += 1
+                continue
+            child_file = cls_to_file.get(child_cls)
+            if child_file is None:
+                # Subclass referenced in mapping but not present in models/
+                continue
+            # Defensive: never patch the parent itself, even if some future
+            # spec puts the parent class as one of its own mapping values.
+            if child_file == f:
+                continue
+            child_content = child_file.read_text(encoding="utf-8")
+            new_content, modified = _inject_discriminator_override(
+                child_content,
+                package_name,
+                py_field,
+                field_type,
+                disc_value,
+            )
+            if modified:
+                child_file.write_text(new_content, encoding="utf-8")
+                subclasses_patched += 1
+
+    return parents_processed, subclasses_patched, subclasses_skipped
+
+
+# ---------------------------------------------------------------------------
+# Step 2d: Add default=None to Optional[...] = Field(...) declarations missing it
+# ---------------------------------------------------------------------------
+#
+# The Python generator sometimes emits ``permissions: Optional[Any] = Field(description=...)``
+# with no ``default=`` argument, which Pydantic v2 treats as a REQUIRED field.
+# Detect those declarations and prepend ``default=None,`` so the field actually
+# defaults to None as the type annotation implies. Idempotent: skipped if the
+# Field(...) call already mentions default=.
+
+# Matches the prefix of a candidate declaration up through ``Field(``:
+#   <indent><name>: Optional[<inner>] = Field(
+# The ``Optional[...]`` part allows nested brackets (one level deep — enough
+# for ``Optional[Dict[str, X]]`` / ``Optional[List[X]]``). We then walk the
+# args manually with a paren-depth scanner so descriptions containing ``(...)``
+# don't truncate the capture.
+_OPTIONAL_FIELD_PREFIX_RE = re.compile(
+    r"^(?P<indent>\s+)(?P<name>\w+):\s*Optional\[(?:[^\[\]]|\[[^\]]*\])+\]\s*=\s*Field\(",
+    re.MULTILINE,
+)
+
+
+def _scan_balanced_args(content: str, open_paren_idx: int) -> "Optional[tuple[int, str]]":
+    """Walk forward from ``Field(`` and return (end_idx, args_text).
+
+    ``open_paren_idx`` is the position of the ``(`` immediately after ``Field``.
+    ``end_idx`` is the index of the matching ``)`` (so a caller can splice
+    around it). Returns None if the parens never close (malformed input) OR if
+    the args span more than the current line — we only patch single-line
+    declarations to avoid touching multi-line edits hand-written by humans.
+    """
+    depth = 1
+    i = open_paren_idx + 1
+    n = len(content)
+    in_str: "Optional[str]" = None
+    while i < n:
+        ch = content[i]
+        if in_str is not None:
+            if ch == "\\":
+                i += 2
+                continue
+            if ch == in_str:
+                in_str = None
+            i += 1
+            continue
+        if ch in ('"', "'"):
+            in_str = ch
+            i += 1
+            continue
+        if ch == "\n":
+            # Multi-line Field(...) — bail out to stay conservative.
+            return None
+        if ch == "(":
+            depth += 1
+        elif ch == ")":
+            depth -= 1
+            if depth == 0:
+                return i, content[open_paren_idx + 1 : i]
+        i += 1
+    return None
+
+
+def add_default_none_to_optional_fields(models_dir: Path) -> int:
+    """Add ``default=None`` to any Optional[...] = Field(...) missing it.
+
+    Returns the number of declarations patched.
+    """
+    if not models_dir.exists():
+        return 0
+
+    total = 0
+    default_kwarg_re = re.compile(r"\bdefault\s*=")
+
+    for f in sorted(models_dir.glob("*.py")):
+        if f.name == "__init__.py":
+            continue
+        content = f.read_text(encoding="utf-8")
+
+        # Collect edits first, then splice them in reverse to keep indices
+        # stable against the source text.
+        edits: list[tuple[int, int, str]] = []
+        for m in _OPTIONAL_FIELD_PREFIX_RE.finditer(content):
+            open_paren_idx = m.end() - 1  # the ``(`` after ``Field``
+            scanned = _scan_balanced_args(content, open_paren_idx)
+            if scanned is None:
+                continue
+            close_idx, args = scanned
+            if default_kwarg_re.search(args):
+                continue
+            stripped = args.strip()
+            new_args = "default=None, " + args.lstrip() if stripped else "default=None"
+            # Replace the args slice (between the open and close parens) only.
+            edits.append((open_paren_idx + 1, close_idx, new_args))
+
+        if not edits:
+            continue
+        for start, end, new_args in reversed(edits):
+            content = content[:start] + new_args + content[end:]
+        total += len(edits)
+        f.write_text(content, encoding="utf-8")
+    return total
+
+
+# ---------------------------------------------------------------------------
+# Step 2e: Inject missing 2xx response_types_map entries
+# ---------------------------------------------------------------------------
+#
+# The Python generator drops the success-status entry from ``_response_types_map``
+# when the OpenAPI operation declares its 2xx response under ``default`` instead
+# of an explicit ``200``. Result: api_client.response_deserialize() can't find a
+# matching status entry and returns the raw HTTPResponse instead of the typed
+# data. Fix: derive the success type from the method's ``-> T:`` return type
+# and inject ``'200': "<type>"`` (or ``'200': None`` for None returns) into the
+# map. Idempotent: only patches blocks that already lack any 2xx entry.
+
+# Regex for finding a `_response_types_map: Dict[str, Optional[str]] = { ... }` block
+_RESPONSE_TYPES_MAP_RE = re.compile(
+    r"(_response_types_map: Dict\[str, Optional\[str\]\] = \{)(\s*\n)(.*?)(\n\s*\})",
+    re.DOTALL,
+)
+
+# Regex for finding a method def: `    def <name>(...) -> <type>:`
+_API_METHOD_DEF_RE = re.compile(r"^    def ([a-zA-Z_]\w*)\(", re.MULTILINE)
+
+
+def _extract_return_type(content: str, def_start: int) -> "Optional[str]":
+    """Return the ``-> T`` type annotation of the method starting at ``def_start``.
+
+    Walks past the parameter parens, then matches the return annotation.
+    """
+    # Find the opening paren after `def <name>(`
+    open_idx = content.find("(", def_start)
+    if open_idx == -1:
+        return None
+    depth = 1
+    i = open_idx + 1
+    n = len(content)
+    while i < n and depth > 0:
+        ch = content[i]
+        if ch == "(":
+            depth += 1
+        elif ch == ")":
+            depth -= 1
+        i += 1
+    # i now points just past the closing ')'
+    m = re.match(r"\s*->\s*(.+?)\s*:\s*\n", content[i:], re.DOTALL)
+    if not m:
+        return None
+    return m.group(1).strip().replace("\n", " ").strip()
+
+
+def _api_response_inner(return_type: str) -> str:
+    """Strip ``ApiResponse[...]`` wrapping to get the inner data type.
+
+    ApiResponse[List[Foo]] -> List[Foo]
+    ApiResponse[None]     -> None
+    Foo                    -> Foo (unchanged)
+    """
+    m = re.match(r"ApiResponse\[(.+)\]$", return_type)
+    return m.group(1).strip() if m else return_type
+
+
+def fix_missing_2xx_response_types(api_dir: Path) -> int:
+    """Inject missing 2xx entries in response_types_map blocks.
+
+    Returns the number of map blocks patched.
+    """
+    if not api_dir.exists():
+        return 0
+
+    total_patched = 0
+
+    for f in sorted(api_dir.glob("*.py")):
+        if f.name == "__init__.py":
+            continue
+        content = f.read_text(encoding="utf-8")
+
+        # Find every method def in this file
+        method_defs = list(_API_METHOD_DEF_RE.finditer(content))
+        if not method_defs:
+            continue
+
+        # Build a list of edits per file; we apply them in reverse order to
+        # preserve indices computed against the original content.
+        edits: list[tuple[int, int, str]] = []
+
+        for idx, m in enumerate(method_defs):
+            method_name = m.group(1)
+            if method_name.startswith("_") and not method_name.startswith("__"):
+                continue
+            if method_name == "__init__":
+                continue
+            scope_start = m.start()
+            scope_end = (
+                method_defs[idx + 1].start() if idx + 1 < len(method_defs) else len(content)
+            )
+
+            # Find _response_types_map within this method's scope
+            map_m = _RESPONSE_TYPES_MAP_RE.search(content, scope_start, scope_end)
+            if not map_m:
+                continue
+            body = map_m.group(3)
+            # Already has a 2xx entry?
+            if re.search(r"""['"]2\d\d['"]\s*:""", body):
+                continue
+
+            return_type = _extract_return_type(content, scope_start)
+            if return_type is None:
+                continue
+            if return_type == "RESTResponseType":
+                # Derive T from the matching plain method (drop suffix).
+                base_name = method_name
+                for sfx in ("_without_preload_content", "_with_http_info"):
+                    if base_name.endswith(sfx):
+                        base_name = base_name[: -len(sfx)]
+                        break
+                plain_re = re.compile(rf"^    def {re.escape(base_name)}\(", re.MULTILINE)
+                plain_m = plain_re.search(content)
+                if plain_m is None:
+                    continue
+                plain_return = _extract_return_type(content, plain_m.start())
+                if plain_return is None:
+                    continue
+                success_type = _api_response_inner(plain_return)
+            else:
+                success_type = _api_response_inner(return_type)
+
+            if success_type == "None":
+                entry = "'200': None,"
+            else:
+                entry = f"'200': \"{success_type}\","
+
+            # Determine indentation of existing entries (default 12 spaces)
+            indent_m = re.search(r"^(\s*)['\"]\d", body, re.MULTILINE)
+            indent = indent_m.group(1) if indent_m else "            "
+
+            new_body = f"{indent}{entry}\n{body}"
+            edits.append((map_m.start(3), map_m.end(3), new_body))
+
+        if not edits:
+            continue
+
+        for start, end, new_body in reversed(edits):
+            content = content[:start] + new_body + content[end:]
+
+        f.write_text(content, encoding="utf-8")
+        total_patched += len(edits)
+
+    return total_patched
 
 
 # ---------------------------------------------------------------------------
@@ -1198,6 +1739,46 @@ def main(package_dir: Path, package_name: str) -> None:
         print("  Step 2b — Skipped (no models/ directory)")
 
     # -------------------------------------------------------------------
+    # Step 2c: Inject discriminator defaults on polymorphic subclasses
+    # -------------------------------------------------------------------
+    if models_dir.exists():
+        parents_proc, subs_patched, subs_skipped = fix_polymorphic_discriminator_defaults(
+            models_dir, package_name
+        )
+        print(
+            f"  Step 2c — Discriminator defaults: "
+            f"{parents_proc} parents scanned, {subs_patched} subclasses patched, "
+            f"{subs_skipped} skipped (missing explicit mapping)"
+        )
+    else:
+        print("  Step 2c — Skipped (no models/ directory)")
+        parents_proc, subs_patched, subs_skipped = 0, 0, 0
+
+    # -------------------------------------------------------------------
+    # Step 2d: Add default=None to Optional[...] = Field(...) missing default
+    # -------------------------------------------------------------------
+    if models_dir.exists():
+        default_none_patched = add_default_none_to_optional_fields(models_dir)
+        print(f"  Step 2d — Optional field defaults: {default_none_patched} declarations patched")
+    else:
+        print("  Step 2d — Skipped (no models/ directory)")
+        default_none_patched = 0
+
+    # -------------------------------------------------------------------
+    # Step 2e: Inject missing 2xx entries in api/*.py _response_types_map
+    # -------------------------------------------------------------------
+    api_dir = package_dir / "api"
+    if api_dir.exists():
+        response_types_patched = fix_missing_2xx_response_types(api_dir)
+        print(
+            f"  Step 2e — Response types: "
+            f"{response_types_patched} _response_types_map blocks patched"
+        )
+    else:
+        print("  Step 2e — Skipped (no api/ directory)")
+        response_types_patched = 0
+
+    # -------------------------------------------------------------------
     # Step 3: Rewrite __init__.py files for lazy imports
     # -------------------------------------------------------------------
     model_count, api_count, method_count = rewrite_init_files(package_dir, package_name)
@@ -1237,6 +1818,9 @@ def main(package_dir: Path, package_name: str) -> None:
     print(f"    Broken imports removed: {import_removals}")
     print(f"    from_dict() fixed:      {from_dict_fixes}")
     print(f"    to_dict() fixed:        {to_dict_fixes}")
+    print(f"  Discriminator subclasses patched: {subs_patched}")
+    print(f"  Optional fields defaulted: {default_none_patched}")
+    print(f"  Response-types maps fixed: {response_types_patched}")
     print(f"  Lazy import models:    {model_count}")
     print(f"  Lazy import controllers: {api_count}")
     print(f"  Controller map methods:  {method_count}")

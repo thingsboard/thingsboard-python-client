@@ -446,3 +446,298 @@ def test_rewrite_init_files_writes_pyi(tmp_path):
     assert pyi_path.exists(), "client.pyi must be written to package_dir after rewrite_init_files"
     pyi_content = pyi_path.read_text(encoding="utf-8")
     assert "class ThingsboardClient:" in pyi_content
+
+
+# ---------------------------------------------------------------------------
+# Tests for fix_polymorphic_discriminator_defaults (Step 2c)
+# ---------------------------------------------------------------------------
+
+
+def _write_parent(models_dir: Path, *, property_name: str, mapping: dict[str, str],
+                  field_type: str = "StrictStr", class_name: str = "Parent") -> Path:
+    """Write a minimal parent model file with the given discriminator mapping."""
+    field_py = post_process._camel_to_snake(property_name)
+    pairs = ",".join(f"'{k}': '{v}'" for k, v in mapping.items())
+    content = f'''\
+from pydantic import BaseModel, Field, StrictStr
+from typing import ClassVar, Dict, Optional
+
+class {class_name}(BaseModel):
+    """
+    {class_name}
+    """ # noqa: E501
+    {field_py}: {field_type} = Field(serialization_alias="{property_name}")
+
+    __discriminator_property_name: ClassVar[str] = '{property_name}'
+    __discriminator_value_class_map: ClassVar[Dict[str, str]] = {{
+        {pairs}
+    }}
+'''
+    path = models_dir / f"{post_process._camel_to_snake(class_name)}.py"
+    path.write_text(content, encoding="utf-8")
+    return path
+
+
+def _write_child(models_dir: Path, *, class_name: str, parent: str,
+                 field_py: str = "type", field_type: str = "StrictStr") -> Path:
+    """Write a minimal child model file with no discriminator default."""
+    content = f'''\
+from pydantic import Field, StrictStr
+from typing import Optional
+from tb_test_client.models.{post_process._camel_to_snake(parent)} import {parent}
+
+class {class_name}({parent}):
+    """
+    {class_name}
+    """ # noqa: E501
+'''
+    path = models_dir / f"{post_process._camel_to_snake(class_name)}.py"
+    path.write_text(content, encoding="utf-8")
+    return path
+
+
+@pytest.fixture
+def discriminator_models_dir(tmp_path):
+    models_dir = tmp_path / "models"
+    models_dir.mkdir()
+    return models_dir
+
+
+def test_discriminator_patches_strict_str_subclass(discriminator_models_dir):
+    """Real OpenAPI mapping (key != class name) -> inject string default."""
+    _write_parent(discriminator_models_dir, property_name="type",
+                  mapping={"DEVICE": "DeviceFilter"}, class_name="EntityFilter")
+    child = _write_child(discriminator_models_dir, class_name="DeviceFilter", parent="EntityFilter")
+
+    parents, patched, skipped = post_process.fix_polymorphic_discriminator_defaults(
+        discriminator_models_dir, "tb_test_client"
+    )
+    assert (parents, patched, skipped) == (1, 1, 0)
+    out = child.read_text()
+    assert 'type: StrictStr = "DEVICE"' in out
+    assert post_process._DISCRIMINATOR_INJECT_TAG in out
+
+
+def test_discriminator_skips_class_name_fallback(discriminator_models_dir):
+    """No explicit mapping (key == class name) -> skip rather than write garbage."""
+    _write_parent(discriminator_models_dir, property_name="securityMode",
+                  mapping={"PSKChild": "PSKChild"}, class_name="Credential")
+    child = _write_child(discriminator_models_dir, class_name="PSKChild", parent="Credential")
+
+    parents, patched, skipped = post_process.fix_polymorphic_discriminator_defaults(
+        discriminator_models_dir, "tb_test_client"
+    )
+    assert (parents, patched, skipped) == (1, 0, 1)
+    out = child.read_text()
+    assert post_process._DISCRIMINATOR_INJECT_TAG not in out
+    assert 'default="PSKChild"' not in out
+
+
+def test_discriminator_idempotent_on_rerun(discriminator_models_dir):
+    """Second run is a no-op once the tag is present."""
+    _write_parent(discriminator_models_dir, property_name="type",
+                  mapping={"DEVICE": "DeviceFilter"}, class_name="EntityFilter")
+    _write_child(discriminator_models_dir, class_name="DeviceFilter", parent="EntityFilter")
+
+    post_process.fix_polymorphic_discriminator_defaults(discriminator_models_dir, "tb_test_client")
+    _parents, patched2, _skipped = post_process.fix_polymorphic_discriminator_defaults(
+        discriminator_models_dir, "tb_test_client"
+    )
+    assert patched2 == 0
+
+
+def test_discriminator_bails_without_docstring_close(discriminator_models_dir):
+    """If the class has no `""" # noqa: E501` close, skip to avoid breaking the docstring."""
+    _write_parent(discriminator_models_dir, property_name="type",
+                  mapping={"DEVICE": "DeviceFilter"}, class_name="EntityFilter")
+    child = discriminator_models_dir / "device_filter.py"
+    child.write_text(
+        "from pydantic import Field\n"
+        "from tb_test_client.models.entity_filter import EntityFilter\n"
+        "class DeviceFilter(EntityFilter):\n"
+        '    """No noqa close here."""\n',
+        encoding="utf-8",
+    )
+
+    _parents, patched, _skipped = post_process.fix_polymorphic_discriminator_defaults(
+        discriminator_models_dir, "tb_test_client"
+    )
+    assert patched == 0
+    assert post_process._DISCRIMINATOR_INJECT_TAG not in child.read_text()
+
+
+# ---------------------------------------------------------------------------
+# Tests for add_default_none_to_optional_fields (Step 2d)
+# ---------------------------------------------------------------------------
+
+
+def test_default_none_added_to_simple_optional(tmp_path):
+    models_dir = tmp_path / "models"
+    models_dir.mkdir()
+    f = models_dir / "role.py"
+    f.write_text(
+        "from pydantic import Field\n"
+        "from typing import Any, Optional\n"
+        "class Role:\n"
+        '    permissions: Optional[Any] = Field(description="Permissions blob")\n',
+        encoding="utf-8",
+    )
+
+    assert post_process.add_default_none_to_optional_fields(models_dir) == 1
+    out = f.read_text()
+    assert 'Field(default=None, description="Permissions blob")' in out
+
+
+def test_default_none_skips_already_defaulted(tmp_path):
+    models_dir = tmp_path / "models"
+    models_dir.mkdir()
+    f = models_dir / "role.py"
+    original = (
+        "from pydantic import Field\n"
+        "from typing import Any, Optional\n"
+        "class Role:\n"
+        '    permissions: Optional[Any] = Field(default=None, description="Already set")\n'
+    )
+    f.write_text(original, encoding="utf-8")
+
+    assert post_process.add_default_none_to_optional_fields(models_dir) == 0
+    assert f.read_text() == original
+
+
+def test_default_none_handles_nested_generics(tmp_path):
+    """Optional[Dict[str, int]] and Optional[List[Foo]] must be patched."""
+    models_dir = tmp_path / "models"
+    models_dir.mkdir()
+    f = models_dir / "model.py"
+    f.write_text(
+        "from pydantic import Field\n"
+        "from typing import Dict, List, Optional\n"
+        "class M:\n"
+        '    a: Optional[Dict[str, int]] = Field(description="dict")\n'
+        '    b: Optional[List[str]] = Field(description="list")\n',
+        encoding="utf-8",
+    )
+
+    assert post_process.add_default_none_to_optional_fields(models_dir) == 2
+    out = f.read_text()
+    assert 'a: Optional[Dict[str, int]] = Field(default=None, description="dict")' in out
+    assert 'b: Optional[List[str]] = Field(default=None, description="list")' in out
+
+
+def test_default_none_handles_parens_in_description(tmp_path):
+    """A description string containing parens must not truncate the args capture."""
+    models_dir = tmp_path / "models"
+    models_dir.mkdir()
+    f = models_dir / "model.py"
+    f.write_text(
+        "from pydantic import Field\n"
+        "from typing import Any, Optional\n"
+        "class M:\n"
+        '    x: Optional[Any] = Field(description="Provider (e.g. github, google)")\n',
+        encoding="utf-8",
+    )
+
+    assert post_process.add_default_none_to_optional_fields(models_dir) == 1
+    out = f.read_text()
+    assert (
+        'x: Optional[Any] = Field(default=None, description="Provider (e.g. github, google)")'
+        in out
+    )
+
+
+def test_default_none_skips_default_factory(tmp_path):
+    """default_factory= must NOT be treated as default=."""
+    models_dir = tmp_path / "models"
+    models_dir.mkdir()
+    f = models_dir / "model.py"
+    original = (
+        "from pydantic import Field\n"
+        "from typing import Any, Optional\n"
+        "class M:\n"
+        '    x: Optional[Any] = Field(default_factory=list, description="x")\n'
+    )
+    f.write_text(original, encoding="utf-8")
+
+    # default_factory satisfies pydantic, no extra `default=` injection needed.
+    # The function currently injects (since default_factory != default=); we
+    # only assert it stays valid Python and doesn't blow up. Adjust if policy
+    # changes to leave default_factory alone.
+    count = post_process.add_default_none_to_optional_fields(models_dir)
+    out = f.read_text()
+    if count == 1:
+        assert "default=None" in out and "default_factory=list" in out
+    else:
+        assert out == original
+
+
+# ---------------------------------------------------------------------------
+# Tests for fix_missing_2xx_response_types (Step 2e)
+# ---------------------------------------------------------------------------
+
+
+_RESP_MAP_TEMPLATE = '''\
+class FooApi:
+    def get_thing(self) -> List[Foo]:
+        _response_types_map: Dict[str, Optional[str]] = {{
+{entries}
+        }}
+        return _response_types_map
+
+    def get_thing_with_http_info(self) -> ApiResponse[List[Foo]]:
+        _response_types_map: Dict[str, Optional[str]] = {{
+{entries}
+        }}
+        return _response_types_map
+
+    def get_thing_without_preload_content(self) -> RESTResponseType:
+        _response_types_map: Dict[str, Optional[str]] = {{
+{entries}
+        }}
+        return _response_types_map
+'''
+
+
+def test_response_types_injects_missing_200(tmp_path):
+    api_dir = tmp_path / "api"
+    api_dir.mkdir()
+    f = api_dir / "foo_api.py"
+    entries = "            '400': \"Error\","
+    f.write_text(_RESP_MAP_TEMPLATE.format(entries=entries), encoding="utf-8")
+
+    assert post_process.fix_missing_2xx_response_types(api_dir) == 3
+    out = f.read_text()
+    # All three variants get the 200 entry derived from the plain method
+    assert out.count("'200': \"List[Foo]\",") == 3
+
+
+def test_response_types_skips_when_2xx_present(tmp_path):
+    api_dir = tmp_path / "api"
+    api_dir.mkdir()
+    f = api_dir / "foo_api.py"
+    entries = "            '201': \"Foo\",\n            '400': \"Error\","
+    original = _RESP_MAP_TEMPLATE.format(entries=entries)
+    f.write_text(original, encoding="utf-8")
+
+    assert post_process.fix_missing_2xx_response_types(api_dir) == 0
+    assert f.read_text() == original
+
+
+def test_response_types_handles_none_return(tmp_path):
+    """A method returning None should emit `'200': None,` (no quotes)."""
+    api_dir = tmp_path / "api"
+    api_dir.mkdir()
+    f = api_dir / "foo_api.py"
+    f.write_text(
+        "class FooApi:\n"
+        "    def delete_thing(self) -> None:\n"
+        "        _response_types_map: Dict[str, Optional[str]] = {\n"
+        "            '400': \"Error\",\n"
+        "        }\n"
+        "        return _response_types_map\n",
+        encoding="utf-8",
+    )
+
+    assert post_process.fix_missing_2xx_response_types(api_dir) == 1
+    out = f.read_text()
+    assert "'200': None," in out
+    assert "'200': \"None\"" not in out

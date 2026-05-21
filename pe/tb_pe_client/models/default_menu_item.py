@@ -32,6 +32,7 @@ class DefaultMenuItem(MenuItem):
     """
     DefaultMenuItem
     """ # noqa: E501
+    type: MenuItemType = MenuItemType.DEFAULT  # post_process: discriminator default
     id: Optional[StrictStr] = Field(default=None, description="Unique identifier for predefined menu items")
     name: Optional[StrictStr] = Field(default=None, description="Name of the menu item")
     icon: Optional[StrictStr] = Field(default=None, description="URL of the menu item icon. Overrides 'materialIcon'")

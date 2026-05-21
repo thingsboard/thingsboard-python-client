@@ -33,6 +33,7 @@ class CfReprocessingJobConfiguration(JobConfiguration):
     """
     CfReprocessingJobConfiguration
     """ # noqa: E501
+    type: StrictStr = "CF_REPROCESSING"  # post_process: discriminator default
     calculated_field_id: CalculatedFieldId = Field(serialization_alias="calculatedFieldId")
     calculated_field_name: Optional[StrictStr] = Field(default=None, serialization_alias="calculatedFieldName")
     start_ts: Optional[StrictInt] = Field(default=None, serialization_alias="startTs")

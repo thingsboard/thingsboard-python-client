@@ -31,6 +31,7 @@ class DefaultTenantProfileConfiguration(TenantProfileConfiguration):
     """
     DefaultTenantProfileConfiguration
     """ # noqa: E501
+    type: StrictStr = "DEFAULT"  # post_process: discriminator default
     max_devices: Optional[StrictInt] = Field(default=None, serialization_alias="maxDevices")
     max_assets: Optional[StrictInt] = Field(default=None, serialization_alias="maxAssets")
     max_customers: Optional[StrictInt] = Field(default=None, serialization_alias="maxCustomers")

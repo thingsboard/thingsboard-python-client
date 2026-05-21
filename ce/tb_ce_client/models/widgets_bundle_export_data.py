@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, StrictStr
+from pydantic import ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_ce_client.models.calculated_field import CalculatedField
 from tb_ce_client.models.entity_export_data import EntityExportData
@@ -35,6 +35,7 @@ class WidgetsBundleExportData(EntityExportData):
     """
     WidgetsBundleExportData
     """ # noqa: E501
+    entity_type: EntityType = Field(default=EntityType.WIDGETS_BUNDLE, serialization_alias="entityType")  # post_process: discriminator default
     widgets: Optional[List[Any]] = None
     fqns: Optional[List[StrictStr]] = None
     __properties: ClassVar[List[str]] = ["entity", "relations", "attributes", "calculatedFields", "entityType", "widgets", "fqns"]

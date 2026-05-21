@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict
+from pydantic import ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List
 from tb_pe_client.models.coap_device_type_configuration import CoapDeviceTypeConfiguration
 from typing import Optional, Set
@@ -31,6 +31,7 @@ class EfentoCoapDeviceTypeConfiguration(CoapDeviceTypeConfiguration):
     """
     EfentoCoapDeviceTypeConfiguration
     """ # noqa: E501
+    coap_device_type: StrictStr = Field(default="EFENTO", serialization_alias="coapDeviceType")  # post_process: discriminator default
     __properties: ClassVar[List[str]] = ["coapDeviceType"]
 
     model_config = ConfigDict(

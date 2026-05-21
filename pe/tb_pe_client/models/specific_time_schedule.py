@@ -31,6 +31,7 @@ class SpecificTimeSchedule(AlarmSchedule):
     """
     SpecificTimeSchedule
     """ # noqa: E501
+    type: StrictStr = "SPECIFIC_TIME"  # post_process: discriminator default
     timezone: Optional[StrictStr] = None
     days_of_week: Optional[List[StrictInt]] = Field(default=None, serialization_alias="daysOfWeek")
     starts_on: Optional[StrictInt] = Field(default=None, serialization_alias="startsOn")

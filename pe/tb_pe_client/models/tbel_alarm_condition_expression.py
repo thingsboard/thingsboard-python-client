@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field
+from pydantic import ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List
 from typing_extensions import Annotated
 from tb_pe_client.models.alarm_condition_expression import AlarmConditionExpression
@@ -32,6 +32,7 @@ class TbelAlarmConditionExpression(AlarmConditionExpression):
     """
     TbelAlarmConditionExpression
     """ # noqa: E501
+    type: StrictStr = "TBEL"  # post_process: discriminator default
     expression: Annotated[str, Field(min_length=1, strict=True)]
     __properties: ClassVar[List[str]] = ["type", "expression"]
 

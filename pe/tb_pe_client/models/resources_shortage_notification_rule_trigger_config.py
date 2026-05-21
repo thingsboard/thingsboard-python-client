@@ -33,6 +33,7 @@ class ResourcesShortageNotificationRuleTriggerConfig(NotificationRuleTriggerConf
     """
     ResourcesShortageNotificationRuleTriggerConfig
     """ # noqa: E501
+    trigger_type: NotificationRuleTriggerType = Field(default=NotificationRuleTriggerType.RESOURCES_SHORTAGE, serialization_alias="triggerType")  # post_process: discriminator default
     cpu_threshold: Optional[Union[Annotated[float, Field(le=1, strict=True)], Annotated[int, Field(le=1, strict=True)]]] = Field(default=None, serialization_alias="cpuThreshold")
     ram_threshold: Optional[Union[Annotated[float, Field(le=1, strict=True)], Annotated[int, Field(le=1, strict=True)]]] = Field(default=None, serialization_alias="ramThreshold")
     storage_threshold: Optional[Union[Annotated[float, Field(le=1, strict=True)], Annotated[int, Field(le=1, strict=True)]]] = Field(default=None, serialization_alias="storageThreshold")

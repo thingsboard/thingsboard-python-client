@@ -36,6 +36,7 @@ class DividerComponent(ReportComponent):
     """
     DividerComponent
     """ # noqa: E501
+    type: ReportComponentType = ReportComponentType.DIVIDER  # post_process: discriminator default
     margins: Optional[Insets] = None
     paddings: Optional[Insets] = None
     background: Optional[StrictStr] = None

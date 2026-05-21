@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field
+from pydantic import ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from tb_paas_client.models.two_fa_provider_config import TwoFaProviderConfig
@@ -32,6 +32,7 @@ class EmailTwoFaProviderConfig(TwoFaProviderConfig):
     """
     EmailTwoFaProviderConfig
     """ # noqa: E501
+    provider_type: StrictStr = Field(default="EMAIL", serialization_alias="providerType")  # post_process: discriminator default
     verification_code_lifetime: Optional[Annotated[int, Field(strict=True, ge=1)]] = Field(default=None, serialization_alias="verificationCodeLifetime")
     __properties: ClassVar[List[str]] = ["providerType", "verificationCodeLifetime"]
 

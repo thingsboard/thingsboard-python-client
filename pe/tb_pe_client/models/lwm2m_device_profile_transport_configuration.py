@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field, StrictBool
+from pydantic import ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_pe_client.models.device_profile_transport_configuration import DeviceProfileTransportConfiguration
 from tb_pe_client.models.lw_m2_m_bootstrap_server_credential import LwM2MBootstrapServerCredential
@@ -34,6 +34,7 @@ class Lwm2mDeviceProfileTransportConfiguration(DeviceProfileTransportConfigurati
     """
     Lwm2mDeviceProfileTransportConfiguration
     """ # noqa: E501
+    type: StrictStr = "LWM2M"  # post_process: discriminator default
     observe_attr: Optional[TelemetryMappingConfiguration] = Field(default=None, description="Configuration for mapping LwM2M resources to telemetry and attributes", serialization_alias="observeAttr")
     bootstrap_server_update_enable: Optional[StrictBool] = Field(default=None, description="Flag indicating whether LwM2M bootstrap server update is enabled", serialization_alias="bootstrapServerUpdateEnable")
     bootstrap: Optional[List[LwM2MBootstrapServerCredential]] = None

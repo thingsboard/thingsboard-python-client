@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict
+from pydantic import ConfigDict, StrictStr
 from typing import Any, ClassVar, Dict, List
 from tb_ce_client.models.cf_argument_dynamic_source_configuration import CfArgumentDynamicSourceConfiguration
 from typing import Optional, Set
@@ -31,6 +31,7 @@ class CurrentOwnerDynamicSourceConfiguration(CfArgumentDynamicSourceConfiguratio
     """
     CurrentOwnerDynamicSourceConfiguration
     """ # noqa: E501
+    type: StrictStr = "CURRENT_OWNER"  # post_process: discriminator default
     __properties: ClassVar[List[str]] = ["type"]
 
     model_config = ConfigDict(

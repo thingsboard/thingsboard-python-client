@@ -31,6 +31,7 @@ class EnterpriseCaptchaParams(CaptchaParams):
     """
     EnterpriseCaptchaParams
     """ # noqa: E501
+    version: StrictStr = "enterprise"  # post_process: discriminator default
     project_id: Optional[StrictStr] = Field(default=None, description="Your Google Cloud project ID", serialization_alias="projectId")
     service_account_credentials: Optional[StrictStr] = Field(default=None, description="Service account credentials", serialization_alias="serviceAccountCredentials")
     service_account_credentials_file_name: Optional[StrictStr] = Field(default=None, description="Service account credentials file name", serialization_alias="serviceAccountCredentialsFileName")

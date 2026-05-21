@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field, field_validator
+from pydantic import ConfigDict, Field, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List
 from typing_extensions import Annotated
 from tb_paas_client.models.two_fa_account_config import TwoFaAccountConfig
@@ -32,6 +32,7 @@ class SmsTwoFaAccountConfig(TwoFaAccountConfig):
     """
     SmsTwoFaAccountConfig
     """ # noqa: E501
+    provider_type: StrictStr = Field(default="SMS", serialization_alias="providerType")  # post_process: discriminator default
     phone_number: Annotated[str, Field(min_length=1, strict=True)] = Field(serialization_alias="phoneNumber")
     __properties: ClassVar[List[str]] = ["useByDefault", "providerType", "phoneNumber"]
 

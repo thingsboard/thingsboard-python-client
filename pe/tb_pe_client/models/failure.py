@@ -31,6 +31,7 @@ class Failure(TbChatResponse):
     """
     Failure
     """ # noqa: E501
+    status: StrictStr = "FAILURE"  # post_process: discriminator default
     error_details: Optional[StrictStr] = Field(default=None, description="A string containing details about the failure", serialization_alias="errorDetails")
     __properties: ClassVar[List[str]] = ["status", "errorDetails"]
 

@@ -35,6 +35,7 @@ class RelationsQueryFilter(EntityFilter):
     """
     RelationsQueryFilter
     """ # noqa: E501
+    type: StrictStr = "relationsQuery"  # post_process: discriminator default
     root_entity: Optional[AliasEntityId] = Field(default=None, serialization_alias="rootEntity")
     multi_root: Optional[StrictBool] = Field(default=None, serialization_alias="multiRoot")
     multi_root_entities_type: Optional[EntityType] = Field(default=None, serialization_alias="multiRootEntitiesType")

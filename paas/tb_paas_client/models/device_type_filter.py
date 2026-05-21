@@ -31,6 +31,7 @@ class DeviceTypeFilter(EntityFilter):
     """
     DeviceTypeFilter
     """ # noqa: E501
+    type: StrictStr = "deviceType"  # post_process: discriminator default
     device_types: Optional[List[StrictStr]] = Field(default=None, serialization_alias="deviceTypes")
     device_name_filter: Optional[StrictStr] = Field(default=None, serialization_alias="deviceNameFilter")
     device_type: Optional[StrictStr] = Field(default=None, serialization_alias="deviceType")

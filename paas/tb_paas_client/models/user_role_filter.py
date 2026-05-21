@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field
+from pydantic import ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List
 from typing_extensions import Annotated
 from uuid import UUID
@@ -33,6 +33,7 @@ class UserRoleFilter(UsersFilter):
     """
     UserRoleFilter
     """ # noqa: E501
+    type: StrictStr = "USER_ROLE"  # post_process: discriminator default
     roles_ids: Annotated[List[UUID], Field(min_length=1)] = Field(serialization_alias="rolesIds")
     __properties: ClassVar[List[str]] = ["type", "rolesIds"]
 

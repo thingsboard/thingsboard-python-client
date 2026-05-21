@@ -35,6 +35,7 @@ class SubReportComponent(ReportComponent):
     """
     SubReportComponent
     """ # noqa: E501
+    type: ReportComponentType = ReportComponentType.SUB_REPORT  # post_process: discriminator default
     data_sources: Optional[List[DataSource]] = Field(default=None, serialization_alias="dataSources")
     template_id: Optional[ReportTemplateId] = Field(default=None, serialization_alias="templateId")
     avoid_page_break_inside: Optional[StrictBool] = Field(default=None, serialization_alias="avoidPageBreakInside")

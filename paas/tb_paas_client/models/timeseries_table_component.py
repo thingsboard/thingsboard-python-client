@@ -39,6 +39,7 @@ class TimeseriesTableComponent(ReportComponent):
     """
     TimeseriesTableComponent
     """ # noqa: E501
+    type: ReportComponentType = ReportComponentType.TIME_SERIES_TABLE  # post_process: discriminator default
     data_sources: Optional[List[DataSource]] = Field(default=None, serialization_alias="dataSources")
     margins: Optional[Insets] = None
     paddings: Optional[Insets] = None

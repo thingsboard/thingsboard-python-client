@@ -32,6 +32,7 @@ class RuleChainDebugEventFilter(EventFilter):
     """
     RuleChainDebugEventFilter
     """ # noqa: E501
+    event_type: EventType = Field(default=EventType.DEBUG_RULE_CHAIN, serialization_alias="eventType")  # post_process: discriminator default
     server: Optional[StrictStr] = Field(default=None, description="String value representing the server name, identifier or ip address where the platform is running")
     is_error: Optional[StrictBool] = Field(default=None, description="Boolean value to filter the errors", serialization_alias="isError")
     error_str: Optional[StrictStr] = Field(default=None, description="The case insensitive 'contains' filter based on error message", serialization_alias="errorStr")

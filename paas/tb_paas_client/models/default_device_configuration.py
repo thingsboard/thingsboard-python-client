@@ -32,6 +32,7 @@ class DefaultDeviceConfiguration(DeviceConfiguration):
     """
     Default device configuration
     """ # noqa: E501
+    type: DeviceProfileType = DeviceProfileType.DEFAULT  # post_process: discriminator default
     __properties: ClassVar[List[str]] = ["type"]
 
     model_config = ConfigDict(

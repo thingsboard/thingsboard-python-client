@@ -42,7 +42,7 @@ class Role(BaseModel):
     customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id. ", serialization_alias="customerId")
     name: StrictStr = Field(description="Role Name")
     type: RoleType = Field(description="Type of the role: generic or group")
-    permissions: Optional[Any] = Field(description="JSON object with the set of permissions. Structure is specific for role type")
+    permissions: Optional[Any] = Field(default=None, description="JSON object with the set of permissions. Structure is specific for role type")
     excluded_permissions: Optional[Any] = Field(default=None, description="JSON object with the set of excluded permissions. Only applicable for generic roles. Structure is the same as permissions", serialization_alias="excludedPermissions")
     version: Optional[StrictInt] = None
     owner_id: Optional[EntityId] = Field(default=None, description="JSON object with Customer or Tenant Id", serialization_alias="ownerId")

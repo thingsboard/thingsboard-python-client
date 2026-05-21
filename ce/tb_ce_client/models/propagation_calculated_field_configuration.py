@@ -34,6 +34,7 @@ class PropagationCalculatedFieldConfiguration(CalculatedFieldConfiguration):
     """
     PropagationCalculatedFieldConfiguration
     """ # noqa: E501
+    type: StrictStr = "PROPAGATION"  # post_process: discriminator default
     arguments: Dict[str, Argument]
     expression: Optional[StrictStr] = None
     relation: RelationPathLevel

@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field
+from pydantic import ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List
 from tb_pe_client.models.notification_target_config import NotificationTargetConfig
 from tb_pe_client.models.users_filter import UsersFilter
@@ -32,6 +32,7 @@ class PlatformUsersNotificationTargetConfig(NotificationTargetConfig):
     """
     PlatformUsersNotificationTargetConfig
     """ # noqa: E501
+    type: StrictStr = "PLATFORM_USERS"  # post_process: discriminator default
     users_filter: UsersFilter = Field(serialization_alias="usersFilter")
     __properties: ClassVar[List[str]] = ["description", "type", "usersFilter"]
 

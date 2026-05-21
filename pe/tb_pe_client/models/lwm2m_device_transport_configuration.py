@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field, StrictInt
+from pydantic import ConfigDict, Field, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_pe_client.models.device_transport_configuration import DeviceTransportConfiguration
 from tb_pe_client.models.power_mode import PowerMode
@@ -32,6 +32,7 @@ class Lwm2mDeviceTransportConfiguration(DeviceTransportConfiguration):
     """
     Lwm2mDeviceTransportConfiguration
     """ # noqa: E501
+    type: StrictStr = "LWM2M"  # post_process: discriminator default
     power_mode: Optional[PowerMode] = Field(default=None, serialization_alias="powerMode")
     psm_activity_timer: Optional[StrictInt] = Field(default=None, serialization_alias="psmActivityTimer")
     edrx_cycle: Optional[StrictInt] = Field(default=None, serialization_alias="edrxCycle")

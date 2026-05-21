@@ -32,6 +32,7 @@ class EntityGroupFilter(EntityFilter):
     """
     EntityGroupFilter
     """ # noqa: E501
+    type: StrictStr = "entityGroup"  # post_process: discriminator default
     group_type: Optional[EntityType] = Field(default=None, serialization_alias="groupType")
     entity_group: Optional[StrictStr] = Field(default=None, serialization_alias="entityGroup")
     group_state_entity: Optional[StrictBool] = Field(default=None, serialization_alias="groupStateEntity")

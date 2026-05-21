@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict
+from pydantic import ConfigDict, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_ce_client.models.complex_operation import ComplexOperation
 from tb_ce_client.models.key_filter_predicate import KeyFilterPredicate
@@ -32,6 +32,7 @@ class ComplexFilterPredicate(KeyFilterPredicate):
     """
     ComplexFilterPredicate
     """ # noqa: E501
+    type: StrictStr = "COMPLEX"  # post_process: discriminator default
     operation: Optional[ComplexOperation] = None
     predicates: Optional[List[KeyFilterPredicate]] = None
     __properties: ClassVar[List[str]] = ["type", "operation", "predicates"]

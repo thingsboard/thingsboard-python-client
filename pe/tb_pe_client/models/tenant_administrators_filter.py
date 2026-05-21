@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field
+from pydantic import ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from uuid import UUID
 from tb_pe_client.models.users_filter import UsersFilter
@@ -32,6 +32,7 @@ class TenantAdministratorsFilter(UsersFilter):
     """
     TenantAdministratorsFilter
     """ # noqa: E501
+    type: StrictStr = "TENANT_ADMINISTRATORS"  # post_process: discriminator default
     tenants_ids: Optional[List[UUID]] = Field(default=None, serialization_alias="tenantsIds")
     tenant_profiles_ids: Optional[List[UUID]] = Field(default=None, serialization_alias="tenantProfilesIds")
     __properties: ClassVar[List[str]] = ["type", "tenantsIds", "tenantProfilesIds"]

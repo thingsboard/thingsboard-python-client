@@ -31,6 +31,7 @@ class MobileAppNotificationDeliveryMethodConfig(NotificationDeliveryMethodConfig
     """
     MobileAppNotificationDeliveryMethodConfig
     """ # noqa: E501
+    method: StrictStr = "MOBILE_APP"  # post_process: discriminator default
     firebase_service_account_credentials_file_name: Optional[StrictStr] = Field(default=None, serialization_alias="firebaseServiceAccountCredentialsFileName")
     firebase_service_account_credentials: Optional[StrictStr] = Field(default=None, serialization_alias="firebaseServiceAccountCredentials")
     use_system_settings: Optional[StrictBool] = Field(default=None, serialization_alias="useSystemSettings")

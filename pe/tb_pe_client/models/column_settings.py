@@ -32,6 +32,7 @@ class ColumnSettings(BaseModel):
     """
     ColumnSettings
     """ # noqa: E501
+    type: DataKeySettingsType = DataKeySettingsType.COLUMN  # post_process: discriminator default
     column_width: Optional[StrictStr] = Field(default=None, serialization_alias="columnWidth")
     header: Optional[CellSettings] = None
     cell: Optional[CellSettings] = None

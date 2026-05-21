@@ -34,6 +34,7 @@ class ComplexVersionCreateRequest(VersionCreateRequest):
     """
     ComplexVersionCreateRequest
     """ # noqa: E501
+    type: VersionCreateRequestType = VersionCreateRequestType.COMPLEX  # post_process: discriminator default
     sync_strategy: Optional[SyncStrategy] = Field(default=None, serialization_alias="syncStrategy")
     entity_types: Optional[Dict[str, EntityTypeVersionCreateConfig]] = Field(default=None, serialization_alias="entityTypes")
     __properties: ClassVar[List[str]] = ["versionName", "branch", "type", "syncStrategy", "entityTypes"]

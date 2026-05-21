@@ -32,6 +32,7 @@ class DefaultDataKeySettings(DataKeySettings):
     """
     DefaultDataKeySettings
     """ # noqa: E501
+    type: DataKeySettingsType = DataKeySettingsType.DEFAULT  # post_process: discriminator default
     __properties: ClassVar[List[str]] = ["type"]
 
     model_config = ConfigDict(

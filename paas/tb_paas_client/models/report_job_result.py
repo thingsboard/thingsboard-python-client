@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict
+from pydantic import ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_paas_client.models.job_result import JobResult
 from tb_paas_client.models.report import Report
@@ -33,6 +33,7 @@ class ReportJobResult(JobResult):
     """
     ReportJobResult
     """ # noqa: E501
+    job_type: StrictStr = Field(default="REPORT", serialization_alias="jobType")  # post_process: discriminator default
     report: Optional[Report] = None
     __properties: ClassVar[List[str]] = ["successfulCount", "failedCount", "discardedCount", "totalCount", "results", "generalError", "startTs", "finishTs", "cancellationTs", "jobType", "report"]
 

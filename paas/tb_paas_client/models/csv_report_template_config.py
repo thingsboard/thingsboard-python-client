@@ -35,6 +35,7 @@ class CsvReportTemplateConfig(ReportTemplateConfig):
     """
     CsvReportTemplateConfig
     """ # noqa: E501
+    format: TbReportFormat = TbReportFormat.CSV  # post_process: discriminator default
     __properties: ClassVar[List[str]] = ["namePattern", "timeDataPattern", "format", "entityAliases", "filters", "components"]
 
     model_config = ConfigDict(

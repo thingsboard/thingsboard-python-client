@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict
+from pydantic import ConfigDict, StrictStr
 from typing import Any, ClassVar, Dict, List
 from tb_ce_client.models.users_filter import UsersFilter
 from typing import Optional, Set
@@ -31,6 +31,7 @@ class OriginatorEntityOwnerUsersFilter(UsersFilter):
     """
     OriginatorEntityOwnerUsersFilter
     """ # noqa: E501
+    type: StrictStr = "ORIGINATOR_ENTITY_OWNER_USERS"  # post_process: discriminator default
     __properties: ClassVar[List[str]] = ["type"]
 
     model_config = ConfigDict(

@@ -34,6 +34,7 @@ class ApiUsageLimitNotificationRuleTriggerConfig(NotificationRuleTriggerConfig):
     """
     ApiUsageLimitNotificationRuleTriggerConfig
     """ # noqa: E501
+    trigger_type: NotificationRuleTriggerType = Field(default=NotificationRuleTriggerType.API_USAGE_LIMIT, serialization_alias="triggerType")  # post_process: discriminator default
     api_features: Optional[List[ApiFeature]] = Field(default=None, serialization_alias="apiFeatures")
     notify_on: Optional[List[ApiUsageStateValue]] = Field(default=None, serialization_alias="notifyOn")
     __properties: ClassVar[List[str]] = ["triggerType", "apiFeatures", "notifyOn"]

@@ -33,6 +33,7 @@ class EntityTypeVersionLoadRequest(VersionLoadRequest):
     """
     EntityTypeVersionLoadRequest
     """ # noqa: E501
+    type: VersionLoadRequestType = VersionLoadRequestType.ENTITY_TYPE  # post_process: discriminator default
     entity_types: Optional[Dict[str, EntityTypeVersionLoadConfig]] = Field(default=None, serialization_alias="entityTypes")
     rollback_on_error: Optional[StrictBool] = Field(default=None, serialization_alias="rollbackOnError")
     __properties: ClassVar[List[str]] = ["versionId", "type", "entityTypes", "rollbackOnError"]

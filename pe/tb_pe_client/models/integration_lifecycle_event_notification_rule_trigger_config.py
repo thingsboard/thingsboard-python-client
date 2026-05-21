@@ -35,6 +35,7 @@ class IntegrationLifecycleEventNotificationRuleTriggerConfig(NotificationRuleTri
     """
     IntegrationLifecycleEventNotificationRuleTriggerConfig
     """ # noqa: E501
+    trigger_type: NotificationRuleTriggerType = Field(default=NotificationRuleTriggerType.INTEGRATION_LIFECYCLE_EVENT, serialization_alias="triggerType")  # post_process: discriminator default
     integration_types: Optional[List[IntegrationType]] = Field(default=None, serialization_alias="integrationTypes")
     integrations: Optional[List[UUID]] = None
     notify_on: Optional[List[ComponentLifecycleEvent]] = Field(default=None, serialization_alias="notifyOn")

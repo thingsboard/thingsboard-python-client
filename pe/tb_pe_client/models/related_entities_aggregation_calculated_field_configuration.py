@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field, StrictBool, StrictInt
+from pydantic import ConfigDict, Field, StrictBool, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_pe_client.models.agg_metric import AggMetric
 from tb_pe_client.models.argument import Argument
@@ -35,6 +35,7 @@ class RelatedEntitiesAggregationCalculatedFieldConfiguration(CalculatedFieldConf
     """
     RelatedEntitiesAggregationCalculatedFieldConfiguration
     """ # noqa: E501
+    type: StrictStr = "RELATED_ENTITIES_AGGREGATION"  # post_process: discriminator default
     relation: RelationPathLevel
     arguments: Dict[str, Argument]
     deduplication_interval_in_sec: Optional[StrictInt] = Field(default=None, serialization_alias="deduplicationIntervalInSec")

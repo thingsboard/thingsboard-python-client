@@ -35,6 +35,7 @@ class DeviceActivityNotificationRuleTriggerConfig(NotificationRuleTriggerConfig)
     """
     DeviceActivityNotificationRuleTriggerConfig
     """ # noqa: E501
+    trigger_type: NotificationRuleTriggerType = Field(default=NotificationRuleTriggerType.DEVICE_ACTIVITY, serialization_alias="triggerType")  # post_process: discriminator default
     devices: Optional[List[UUID]] = None
     device_profiles: Optional[List[UUID]] = Field(default=None, serialization_alias="deviceProfiles")
     notify_on: Annotated[List[DeviceEvent], Field(min_length=1)] = Field(serialization_alias="notifyOn")

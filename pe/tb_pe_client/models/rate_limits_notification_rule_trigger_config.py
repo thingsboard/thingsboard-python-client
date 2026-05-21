@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict
+from pydantic import ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_pe_client.models.limited_api import LimitedApi
 from tb_pe_client.models.notification_rule_trigger_config import NotificationRuleTriggerConfig
@@ -33,6 +33,7 @@ class RateLimitsNotificationRuleTriggerConfig(NotificationRuleTriggerConfig):
     """
     RateLimitsNotificationRuleTriggerConfig
     """ # noqa: E501
+    trigger_type: NotificationRuleTriggerType = Field(default=NotificationRuleTriggerType.RATE_LIMITS, serialization_alias="triggerType")  # post_process: discriminator default
     apis: Optional[List[LimitedApi]] = None
     __properties: ClassVar[List[str]] = ["triggerType", "apis"]
 

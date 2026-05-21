@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict
+from pydantic import ConfigDict, StrictStr
 from typing import Any, ClassVar, Dict, List
 from tb_paas_client.models.alarm_condition_value_boolean import AlarmConditionValueBoolean
 from tb_paas_client.models.alarm_rule_boolean_operation import AlarmRuleBooleanOperation
@@ -33,6 +33,7 @@ class AlarmRuleBooleanFilterPredicate(AlarmRuleKeyFilterPredicate):
     """
     AlarmRuleBooleanFilterPredicate
     """ # noqa: E501
+    type: StrictStr = "BOOLEAN"  # post_process: discriminator default
     operation: AlarmRuleBooleanOperation
     value: AlarmConditionValueBoolean
     __properties: ClassVar[List[str]] = ["type", "operation", "value"]

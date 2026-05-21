@@ -32,6 +32,7 @@ class WebViewPage(MobilePage):
     """
     WebViewPage
     """ # noqa: E501
+    type: MobilePageType = MobilePageType.WEB_VIEW  # post_process: discriminator default
     label: Optional[StrictStr] = Field(default=None, description="Page label")
     icon: Optional[StrictStr] = Field(default=None, description="URL of the page icon")
     url: Optional[StrictStr] = Field(default=None, description="Url")

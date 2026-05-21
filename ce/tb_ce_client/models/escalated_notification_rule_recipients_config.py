@@ -33,6 +33,7 @@ class EscalatedNotificationRuleRecipientsConfig(NotificationRuleRecipientsConfig
     """
     Escalated notification rule recipients configuration
     """ # noqa: E501
+    trigger_type: Optional[NotificationRuleTriggerType] = Field(default=NotificationRuleTriggerType.ALARM, serialization_alias="triggerType")  # post_process: discriminator default
     escalation_table: Dict[str, List[UUID]] = Field(serialization_alias="escalationTable")
     __properties: ClassVar[List[str]] = ["triggerType", "escalationTable"]
 

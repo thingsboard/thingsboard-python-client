@@ -32,6 +32,7 @@ class DummyJobConfiguration(JobConfiguration):
     """
     Dummy job configuration
     """ # noqa: E501
+    type: StrictStr = "DUMMY"  # post_process: discriminator default
     task_processing_time_ms: Optional[StrictInt] = Field(default=None, serialization_alias="taskProcessingTimeMs")
     successful_tasks_count: Optional[StrictInt] = Field(default=None, serialization_alias="successfulTasksCount")
     failed_tasks_count: Optional[StrictInt] = Field(default=None, serialization_alias="failedTasksCount")

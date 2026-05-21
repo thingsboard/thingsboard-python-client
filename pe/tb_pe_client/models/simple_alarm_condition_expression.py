@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field
+from pydantic import ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from tb_pe_client.models.alarm_condition_expression import AlarmConditionExpression
@@ -34,6 +34,7 @@ class SimpleAlarmConditionExpression(AlarmConditionExpression):
     """
     SimpleAlarmConditionExpression
     """ # noqa: E501
+    type: StrictStr = "SIMPLE"  # post_process: discriminator default
     filters: Annotated[List[AlarmConditionFilter], Field(min_length=1)]
     operation: Optional[AlarmRuleComplexOperation] = None
     __properties: ClassVar[List[str]] = ["type", "filters", "operation"]

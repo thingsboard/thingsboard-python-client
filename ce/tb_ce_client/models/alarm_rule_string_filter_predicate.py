@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field, StrictBool
+from pydantic import ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_ce_client.models.alarm_condition_value_string import AlarmConditionValueString
 from tb_ce_client.models.alarm_rule_key_filter_predicate import AlarmRuleKeyFilterPredicate
@@ -33,6 +33,7 @@ class AlarmRuleStringFilterPredicate(AlarmRuleKeyFilterPredicate):
     """
     AlarmRuleStringFilterPredicate
     """ # noqa: E501
+    type: StrictStr = "STRING"  # post_process: discriminator default
     operation: AlarmRuleStringOperation
     value: AlarmConditionValueString
     ignore_case: Optional[StrictBool] = Field(default=None, serialization_alias="ignoreCase")

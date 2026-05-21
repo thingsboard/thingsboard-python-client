@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field
+from pydantic import ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List
 from uuid import UUID
 from tb_pe_client.models.users_filter import UsersFilter
@@ -32,6 +32,7 @@ class CustomerUsersFilter(UsersFilter):
     """
     CustomerUsersFilter
     """ # noqa: E501
+    type: StrictStr = "CUSTOMER_USERS"  # post_process: discriminator default
     customer_id: UUID = Field(serialization_alias="customerId")
     __properties: ClassVar[List[str]] = ["type", "customerId"]
 

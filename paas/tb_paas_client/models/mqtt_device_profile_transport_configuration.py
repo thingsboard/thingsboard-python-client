@@ -32,6 +32,7 @@ class MqttDeviceProfileTransportConfiguration(DeviceProfileTransportConfiguratio
     """
     MqttDeviceProfileTransportConfiguration
     """ # noqa: E501
+    type: StrictStr = "MQTT"  # post_process: discriminator default
     device_telemetry_topic: Optional[StrictStr] = Field(default=None, serialization_alias="deviceTelemetryTopic")
     device_attributes_topic: Optional[StrictStr] = Field(default=None, serialization_alias="deviceAttributesTopic")
     device_attributes_subscribe_topic: Optional[StrictStr] = Field(default=None, serialization_alias="deviceAttributesSubscribeTopic")

@@ -37,6 +37,7 @@ class EntityTableComponent(ReportComponent):
     """
     EntityTableComponent
     """ # noqa: E501
+    type: ReportComponentType = ReportComponentType.ENTITY_TABLE  # post_process: discriminator default
     data_sources: Optional[List[DataSource]] = Field(default=None, serialization_alias="dataSources")
     margins: Optional[Insets] = None
     paddings: Optional[Insets] = None

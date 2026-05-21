@@ -34,6 +34,7 @@ class CustomMenuItem(MenuItem):
     """
     CustomMenuItem
     """ # noqa: E501
+    type: MenuItemType = MenuItemType.CUSTOM  # post_process: discriminator default
     name: StrictStr = Field(description="Name of the menu item")
     icon: Optional[StrictStr] = Field(default=None, description="URL of the menu item icon. Overrides 'materialIcon'")
     menu_item_type: CMItemType = Field(description="Type of menu item (LINK or SECTION). LINK type means item has no child items, SECTION type should have at least one child", serialization_alias="menuItemType")

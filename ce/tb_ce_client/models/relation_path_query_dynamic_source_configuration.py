@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict
+from pydantic import ConfigDict, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_ce_client.models.cf_argument_dynamic_source_configuration import CfArgumentDynamicSourceConfiguration
 from tb_ce_client.models.relation_path_level import RelationPathLevel
@@ -32,6 +32,7 @@ class RelationPathQueryDynamicSourceConfiguration(CfArgumentDynamicSourceConfigu
     """
     RelationPathQueryDynamicSourceConfiguration
     """ # noqa: E501
+    type: StrictStr = "RELATION_PATH_QUERY"  # post_process: discriminator default
     levels: Optional[List[RelationPathLevel]] = None
     __properties: ClassVar[List[str]] = ["type", "levels"]
 

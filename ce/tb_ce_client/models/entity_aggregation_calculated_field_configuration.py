@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field, StrictBool
+from pydantic import ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_ce_client.models.agg_interval import AggInterval
 from tb_ce_client.models.agg_metric import AggMetric
@@ -36,6 +36,7 @@ class EntityAggregationCalculatedFieldConfiguration(CalculatedFieldConfiguration
     """
     EntityAggregationCalculatedFieldConfiguration
     """ # noqa: E501
+    type: StrictStr = "ENTITY_AGGREGATION"  # post_process: discriminator default
     arguments: Dict[str, Argument]
     metrics: Dict[str, AggMetric]
     interval: AggInterval

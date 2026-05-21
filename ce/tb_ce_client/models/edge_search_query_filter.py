@@ -33,6 +33,7 @@ class EdgeSearchQueryFilter(EntityFilter):
     """
     EdgeSearchQueryFilter
     """ # noqa: E501
+    type: StrictStr = "edgeSearchQuery"  # post_process: discriminator default
     root_entity: Optional[AliasEntityId] = Field(default=None, serialization_alias="rootEntity")
     relation_type: Optional[StrictStr] = Field(default=None, serialization_alias="relationType")
     direction: Optional[EntitySearchDirection] = None

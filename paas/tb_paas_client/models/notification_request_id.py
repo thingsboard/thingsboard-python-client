@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict
+from pydantic import ConfigDict, Field
 from typing import Any, ClassVar, Dict, List
 from tb_paas_client.models.entity_id import EntityId
 from tb_paas_client.models.entity_type import EntityType
@@ -32,6 +32,7 @@ class NotificationRequestId(EntityId):
     """
     NotificationRequestId
     """ # noqa: E501
+    entity_type: EntityType = Field(default=EntityType.NOTIFICATION_REQUEST, serialization_alias="entityType")  # post_process: discriminator default
     __properties: ClassVar[List[str]] = ["entityType", "id"]
 
     model_config = ConfigDict(

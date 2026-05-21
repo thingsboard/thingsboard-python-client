@@ -31,6 +31,7 @@ class Token(OllamaAuth):
     """
     Token
     """ # noqa: E501
+    type: StrictStr = "TOKEN"  # post_process: discriminator default
     token: StrictStr
     __properties: ClassVar[List[str]] = ["type", "token"]
 

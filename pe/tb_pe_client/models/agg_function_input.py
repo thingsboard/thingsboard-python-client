@@ -31,6 +31,7 @@ class AggFunctionInput(AggInput):
     """
     AggFunctionInput
     """ # noqa: E501
+    type: StrictStr = "function"  # post_process: discriminator default
     function: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["type", "function"]
 

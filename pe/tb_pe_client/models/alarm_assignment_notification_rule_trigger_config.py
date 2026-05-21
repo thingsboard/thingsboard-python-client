@@ -36,6 +36,7 @@ class AlarmAssignmentNotificationRuleTriggerConfig(NotificationRuleTriggerConfig
     """
     AlarmAssignmentNotificationRuleTriggerConfig
     """ # noqa: E501
+    trigger_type: NotificationRuleTriggerType = Field(default=NotificationRuleTriggerType.ALARM_ASSIGNMENT, serialization_alias="triggerType")  # post_process: discriminator default
     alarm_types: Optional[List[StrictStr]] = Field(default=None, serialization_alias="alarmTypes")
     alarm_severities: Optional[List[AlarmSeverity]] = Field(default=None, serialization_alias="alarmSeverities")
     alarm_statuses: Optional[List[AlarmSearchStatus]] = Field(default=None, serialization_alias="alarmStatuses")

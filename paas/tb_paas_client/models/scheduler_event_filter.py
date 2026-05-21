@@ -32,6 +32,7 @@ class SchedulerEventFilter(EntityFilter):
     """
     SchedulerEventFilter
     """ # noqa: E501
+    type: StrictStr = "schedulerEvent"  # post_process: discriminator default
     originator: Optional[AliasEntityId] = None
     event_type: Optional[StrictStr] = Field(default=None, serialization_alias="eventType")
     originator_state_entity: Optional[StrictBool] = Field(default=None, serialization_alias="originatorStateEntity")

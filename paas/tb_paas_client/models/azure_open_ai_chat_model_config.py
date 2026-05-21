@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field, StrictFloat, StrictInt
+from pydantic import ConfigDict, Field, StrictFloat, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing_extensions import Annotated
 from tb_paas_client.models.ai_model_config import AiModelConfig
@@ -34,6 +34,7 @@ class AzureOpenAiChatModelConfig(AiModelConfig):
     """
     AzureOpenAiChatModelConfig
     """ # noqa: E501
+    provider: StrictStr = "AZURE_OPENAI"  # post_process: discriminator default
     provider_config: AzureOpenAiProviderConfig = Field(serialization_alias="providerConfig")
     model_id: Annotated[str, Field(min_length=1, strict=True)] = Field(serialization_alias="modelId")
     temperature: Optional[Union[StrictFloat, StrictInt]] = None

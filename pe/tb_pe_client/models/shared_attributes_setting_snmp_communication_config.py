@@ -33,6 +33,7 @@ class SharedAttributesSettingSnmpCommunicationConfig(SnmpCommunicationConfig):
     """
     SharedAttributesSettingSnmpCommunicationConfig
     """ # noqa: E501
+    spec: SnmpCommunicationSpec = SnmpCommunicationSpec.SHARED_ATTRIBUTES_SETTING  # post_process: discriminator default
     mappings: Optional[List[SnmpMapping]] = None
     __properties: ClassVar[List[str]] = ["spec", "mappings"]
 

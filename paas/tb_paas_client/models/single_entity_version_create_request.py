@@ -34,6 +34,7 @@ class SingleEntityVersionCreateRequest(VersionCreateRequest):
     """
     SingleEntityVersionCreateRequest
     """ # noqa: E501
+    type: VersionCreateRequestType = VersionCreateRequestType.SINGLE_ENTITY  # post_process: discriminator default
     entity_id: Optional[EntityId] = Field(default=None, serialization_alias="entityId")
     config: Optional[VersionCreateConfig] = None
     __properties: ClassVar[List[str]] = ["versionName", "branch", "type", "entityId", "config"]

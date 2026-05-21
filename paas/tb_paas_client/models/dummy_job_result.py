@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict
+from pydantic import ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List
 from tb_paas_client.models.job_result import JobResult
 from tb_paas_client.models.task_result import TaskResult
@@ -32,6 +32,7 @@ class DummyJobResult(JobResult):
     """
     DummyJobResult
     """ # noqa: E501
+    job_type: StrictStr = Field(default="DUMMY", serialization_alias="jobType")  # post_process: discriminator default
     __properties: ClassVar[List[str]] = ["successfulCount", "failedCount", "discardedCount", "totalCount", "results", "generalError", "startTs", "finishTs", "cancellationTs", "jobType"]
 
     model_config = ConfigDict(

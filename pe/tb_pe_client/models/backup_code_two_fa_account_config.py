@@ -32,6 +32,7 @@ class BackupCodeTwoFaAccountConfig(TwoFaAccountConfig):
     """
     BackupCodeTwoFaAccountConfig
     """ # noqa: E501
+    provider_type: StrictStr = Field(default="BACKUP_CODE", serialization_alias="providerType")  # post_process: discriminator default
     codes: Annotated[List[StrictStr], Field(min_length=1)]
     codes_left: Optional[StrictInt] = Field(default=None, serialization_alias="codesLeft")
     __properties: ClassVar[List[str]] = ["useByDefault", "providerType", "codes", "codesLeft"]

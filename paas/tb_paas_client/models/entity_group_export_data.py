@@ -37,6 +37,7 @@ class EntityGroupExportData(EntityExportData):
     """
     EntityGroupExportData
     """ # noqa: E501
+    entity_type: EntityType = Field(default=EntityType.ENTITY_GROUP, serialization_alias="entityType")  # post_process: discriminator default
     permissions: Optional[List[GroupPermission]] = None
     group_ota_packages: Optional[List[DeviceGroupOtaPackage]] = Field(default=None, serialization_alias="groupOtaPackages")
     group_entities: Optional[StrictBool] = Field(default=None, serialization_alias="groupEntities")

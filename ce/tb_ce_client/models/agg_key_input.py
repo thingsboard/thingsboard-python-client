@@ -31,6 +31,7 @@ class AggKeyInput(AggInput):
     """
     AggKeyInput
     """ # noqa: E501
+    type: StrictStr = "key"  # post_process: discriminator default
     key: Optional[StrictStr] = None
     __properties: ClassVar[List[str]] = ["type", "key"]
 

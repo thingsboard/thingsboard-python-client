@@ -33,6 +33,7 @@ class PageBreakComponent(ReportComponent):
     """
     PageBreakComponent
     """ # noqa: E501
+    type: ReportComponentType = ReportComponentType.PAGE_BREAK  # post_process: discriminator default
     __properties: ClassVar[List[str]] = ["subType", "type"]
 
     model_config = ConfigDict(

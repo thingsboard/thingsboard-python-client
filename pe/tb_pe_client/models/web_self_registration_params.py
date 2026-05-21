@@ -41,6 +41,7 @@ class WebSelfRegistrationParams(SelfRegistrationParams):
     """
     WebSelfRegistrationParams
     """ # noqa: E501
+    type: SelfRegistrationType = SelfRegistrationType.WEB  # post_process: discriminator default
     domain_id: DomainId = Field(description="Domain name for self registration URL. Typically this matches the domain name from the Login White Labeling page.", serialization_alias="domainId")
     privacy_policy: Optional[StrictStr] = Field(default=None, description="Privacy policy text. Supports HTML.", serialization_alias="privacyPolicy")
     terms_of_use: Optional[StrictStr] = Field(default=None, description="Terms of User text. Supports HTML.", serialization_alias="termsOfUse")

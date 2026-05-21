@@ -35,6 +35,7 @@ class SplitViewComponent(ReportComponent):
     """
     SplitViewComponent
     """ # noqa: E501
+    type: ReportComponentType = ReportComponentType.SPLIT_VIEW  # post_process: discriminator default
     margins: Optional[Insets] = None
     paddings: Optional[Insets] = None
     background: Optional[StrictStr] = None

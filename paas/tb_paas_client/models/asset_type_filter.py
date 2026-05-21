@@ -31,6 +31,7 @@ class AssetTypeFilter(EntityFilter):
     """
     AssetTypeFilter
     """ # noqa: E501
+    type: StrictStr = "assetType"  # post_process: discriminator default
     asset_types: Optional[List[StrictStr]] = Field(default=None, serialization_alias="assetTypes")
     asset_name_filter: Optional[StrictStr] = Field(default=None, serialization_alias="assetNameFilter")
     asset_type: Optional[StrictStr] = Field(default=None, serialization_alias="assetType")

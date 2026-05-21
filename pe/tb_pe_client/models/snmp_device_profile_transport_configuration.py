@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field, StrictInt
+from pydantic import ConfigDict, Field, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_pe_client.models.device_profile_transport_configuration import DeviceProfileTransportConfiguration
 from tb_pe_client.models.snmp_communication_config import SnmpCommunicationConfig
@@ -32,6 +32,7 @@ class SnmpDeviceProfileTransportConfiguration(DeviceProfileTransportConfiguratio
     """
     SnmpDeviceProfileTransportConfiguration
     """ # noqa: E501
+    type: StrictStr = "SNMP"  # post_process: discriminator default
     timeout_ms: Optional[StrictInt] = Field(default=None, serialization_alias="timeoutMs")
     retries: Optional[StrictInt] = None
     communication_configs: Optional[List[SnmpCommunicationConfig]] = Field(default=None, serialization_alias="communicationConfigs")

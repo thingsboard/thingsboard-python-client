@@ -32,6 +32,7 @@ class DashboardPage(MobilePage):
     """
     DashboardPage
     """ # noqa: E501
+    type: MobilePageType = MobilePageType.DASHBOARD  # post_process: discriminator default
     label: Optional[StrictStr] = Field(default=None, description="Page label")
     icon: Optional[StrictStr] = Field(default=None, description="URL of the page icon")
     dashboard_id: Optional[StrictStr] = Field(default=None, description="Dashboard id", serialization_alias="dashboardId")

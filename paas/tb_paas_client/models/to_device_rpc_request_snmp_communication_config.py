@@ -33,6 +33,7 @@ class ToDeviceRpcRequestSnmpCommunicationConfig(SnmpCommunicationConfig):
     """
     ToDeviceRpcRequestSnmpCommunicationConfig
     """ # noqa: E501
+    spec: SnmpCommunicationSpec = SnmpCommunicationSpec.TO_DEVICE_RPC_REQUEST  # post_process: discriminator default
     mappings: Optional[List[SnmpMapping]] = None
     __properties: ClassVar[List[str]] = ["spec", "mappings"]
 

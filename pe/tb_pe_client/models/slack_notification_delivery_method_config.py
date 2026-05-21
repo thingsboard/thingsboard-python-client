@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field
+from pydantic import ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List
 from typing_extensions import Annotated
 from tb_pe_client.models.notification_delivery_method_config import NotificationDeliveryMethodConfig
@@ -32,6 +32,7 @@ class SlackNotificationDeliveryMethodConfig(NotificationDeliveryMethodConfig):
     """
     SlackNotificationDeliveryMethodConfig
     """ # noqa: E501
+    method: StrictStr = "SLACK"  # post_process: discriminator default
     bot_token: Annotated[str, Field(min_length=1, strict=True)] = Field(serialization_alias="botToken")
     __properties: ClassVar[List[str]] = ["method", "botToken"]
 

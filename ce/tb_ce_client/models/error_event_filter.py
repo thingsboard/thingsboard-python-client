@@ -32,6 +32,7 @@ class ErrorEventFilter(EventFilter):
     """
     ErrorEventFilter
     """ # noqa: E501
+    event_type: EventType = Field(default=EventType.ERROR, serialization_alias="eventType")  # post_process: discriminator default
     server: Optional[StrictStr] = Field(default=None, description="String value representing the server name, identifier or ip address where the platform is running")
     method: Optional[StrictStr] = Field(default=None, description="String value representing the method name when the error happened")
     error_str: Optional[StrictStr] = Field(default=None, description="The case insensitive 'contains' filter based on error message", serialization_alias="errorStr")

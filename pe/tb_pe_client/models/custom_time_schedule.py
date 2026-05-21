@@ -32,6 +32,7 @@ class CustomTimeSchedule(AlarmSchedule):
     """
     CustomTimeSchedule
     """ # noqa: E501
+    type: StrictStr = "CUSTOM"  # post_process: discriminator default
     timezone: Optional[StrictStr] = None
     items: Optional[List[CustomTimeScheduleItem]] = None
     __properties: ClassVar[List[str]] = ["type", "timezone", "items"]

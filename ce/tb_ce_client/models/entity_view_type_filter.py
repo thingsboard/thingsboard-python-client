@@ -31,6 +31,7 @@ class EntityViewTypeFilter(EntityFilter):
     """
     EntityViewTypeFilter
     """ # noqa: E501
+    type: StrictStr = "entityViewType"  # post_process: discriminator default
     entity_view_types: Optional[List[StrictStr]] = Field(default=None, serialization_alias="entityViewTypes")
     entity_view_name_filter: Optional[StrictStr] = Field(default=None, serialization_alias="entityViewNameFilter")
     entity_view_type: Optional[StrictStr] = Field(default=None, serialization_alias="entityViewType")

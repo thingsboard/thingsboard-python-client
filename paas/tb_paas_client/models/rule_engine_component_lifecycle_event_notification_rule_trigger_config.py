@@ -34,6 +34,7 @@ class RuleEngineComponentLifecycleEventNotificationRuleTriggerConfig(Notificatio
     """
     RuleEngineComponentLifecycleEventNotificationRuleTriggerConfig
     """ # noqa: E501
+    trigger_type: NotificationRuleTriggerType = Field(default=NotificationRuleTriggerType.RULE_ENGINE_COMPONENT_LIFECYCLE_EVENT, serialization_alias="triggerType")  # post_process: discriminator default
     rule_chains: Optional[List[UUID]] = Field(default=None, serialization_alias="ruleChains")
     rule_chain_events: Optional[List[ComponentLifecycleEvent]] = Field(default=None, serialization_alias="ruleChainEvents")
     only_rule_chain_lifecycle_failures: Optional[StrictBool] = Field(default=None, serialization_alias="onlyRuleChainLifecycleFailures")

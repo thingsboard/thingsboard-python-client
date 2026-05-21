@@ -31,6 +31,7 @@ class X509CertificateChainProvisionConfiguration(DeviceProfileProvisionConfigura
     """
     X509CertificateChainProvisionConfiguration
     """ # noqa: E501
+    type: StrictStr = "X509_CERTIFICATE_CHAIN"  # post_process: discriminator default
     certificate_reg_ex_pattern: Optional[StrictStr] = Field(default=None, serialization_alias="certificateRegExPattern")
     allow_create_new_devices_by_x509_certificate: Optional[StrictBool] = Field(default=None, serialization_alias="allowCreateNewDevicesByX509Certificate")
     __properties: ClassVar[List[str]] = ["provisionDeviceSecret", "type", "certificateRegExPattern", "allowCreateNewDevicesByX509Certificate"]

@@ -33,6 +33,7 @@ class TelemetryQueryingSnmpCommunicationConfig(SnmpCommunicationConfig):
     """
     TelemetryQueryingSnmpCommunicationConfig
     """ # noqa: E501
+    spec: SnmpCommunicationSpec = SnmpCommunicationSpec.TELEMETRY_QUERYING  # post_process: discriminator default
     mappings: Optional[List[SnmpMapping]] = None
     querying_frequency_ms: Optional[StrictInt] = Field(default=None, serialization_alias="queryingFrequencyMs")
     __properties: ClassVar[List[str]] = ["spec", "mappings", "queryingFrequencyMs"]

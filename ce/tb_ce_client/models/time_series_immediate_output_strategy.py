@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field, StrictBool, StrictInt
+from pydantic import ConfigDict, Field, StrictBool, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_ce_client.models.time_series_output_strategy import TimeSeriesOutputStrategy
 from typing import Optional, Set
@@ -31,6 +31,7 @@ class TimeSeriesImmediateOutputStrategy(TimeSeriesOutputStrategy):
     """
     TimeSeriesImmediateOutputStrategy
     """ # noqa: E501
+    type: StrictStr = "IMMEDIATE"  # post_process: discriminator default
     ttl: Optional[StrictInt] = None
     save_time_series: Optional[StrictBool] = Field(default=None, serialization_alias="saveTimeSeries")
     save_latest: Optional[StrictBool] = Field(default=None, serialization_alias="saveLatest")

@@ -32,6 +32,7 @@ class CustomMobilePage(MobilePage):
     """
     CustomMobilePage
     """ # noqa: E501
+    type: MobilePageType = MobilePageType.CUSTOM  # post_process: discriminator default
     label: Optional[StrictStr] = Field(default=None, description="Page label")
     icon: Optional[StrictStr] = Field(default=None, description="URL of the page icon")
     path: Optional[StrictStr] = Field(default=None, description="Path to custom page")

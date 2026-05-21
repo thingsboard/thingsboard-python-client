@@ -34,6 +34,7 @@ class ErrorComponent(ReportComponent):
     """
     ErrorComponent
     """ # noqa: E501
+    type: ReportComponentType = ReportComponentType.ERROR  # post_process: discriminator default
     error_message: Optional[StrictStr] = Field(default=None, serialization_alias="errorMessage")
     exception: Optional[ErrorComponentAllOfException] = None
     __properties: ClassVar[List[str]] = ["subType", "type", "errorMessage", "exception"]

@@ -33,7 +33,7 @@ class RuleChainConnectionInfo(BaseModel):
     """ # noqa: E501
     from_index: StrictInt = Field(description="Index of rule node in the 'nodes' array of the RuleChainMetaData. Indicates the 'from' part of the connection.", serialization_alias="fromIndex")
     target_rule_chain_id: RuleChainId = Field(description="JSON object with the Rule Chain Id.", serialization_alias="targetRuleChainId")
-    additional_info: Optional[Any] = Field(description="JSON object with the additional information about the connection.", serialization_alias="additionalInfo")
+    additional_info: Optional[Any] = Field(default=None, description="JSON object with the additional information about the connection.", serialization_alias="additionalInfo")
     type: StrictStr = Field(description="Type of the relation. Typically indicated the result of processing by the 'from' rule node. For example, 'Success' or 'Failure'")
     __properties: ClassVar[List[str]] = ["fromIndex", "targetRuleChainId", "additionalInfo", "type"]
 

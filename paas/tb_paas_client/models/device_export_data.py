@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict
+from pydantic import ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_paas_client.models.calculated_field import CalculatedField
 from tb_paas_client.models.device_credentials import DeviceCredentials
@@ -36,6 +36,7 @@ class DeviceExportData(EntityExportData):
     """
     DeviceExportData
     """ # noqa: E501
+    entity_type: EntityType = Field(default=EntityType.DEVICE, serialization_alias="entityType")  # post_process: discriminator default
     credentials: Optional[DeviceCredentials] = None
     __properties: ClassVar[List[str]] = ["entity", "relations", "attributes", "calculatedFields", "entityType", "credentials"]
 

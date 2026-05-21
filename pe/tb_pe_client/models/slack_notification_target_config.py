@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field
+from pydantic import ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_pe_client.models.notification_target_config import NotificationTargetConfig
 from tb_pe_client.models.slack_conversation import SlackConversation
@@ -33,6 +33,7 @@ class SlackNotificationTargetConfig(NotificationTargetConfig):
     """
     SlackNotificationTargetConfig
     """ # noqa: E501
+    type: StrictStr = "SLACK"  # post_process: discriminator default
     conversation_type: Optional[SlackConversationType] = Field(default=None, serialization_alias="conversationType")
     conversation: SlackConversation
     __properties: ClassVar[List[str]] = ["description", "type", "conversationType", "conversation"]

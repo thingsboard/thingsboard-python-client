@@ -32,6 +32,7 @@ class EntityListFilter(EntityFilter):
     """
     EntityListFilter
     """ # noqa: E501
+    type: StrictStr = "entityList"  # post_process: discriminator default
     entity_type: Optional[EntityType] = Field(default=None, serialization_alias="entityType")
     entity_list: Optional[List[StrictStr]] = Field(default=None, serialization_alias="entityList")
     __properties: ClassVar[List[str]] = ["type", "entityType", "entityList"]

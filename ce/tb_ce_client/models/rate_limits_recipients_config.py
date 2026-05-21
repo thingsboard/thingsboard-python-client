@@ -34,6 +34,7 @@ class RateLimitsRecipientsConfig(NotificationRuleRecipientsConfig):
     """
     RateLimitsRecipientsConfig
     """ # noqa: E501
+    trigger_type: Optional[NotificationRuleTriggerType] = Field(default=NotificationRuleTriggerType.RATE_LIMITS, serialization_alias="triggerType")  # post_process: discriminator default
     targets: Annotated[List[UUID], Field(min_length=1)]
     __properties: ClassVar[List[str]] = ["triggerType", "targets"]
 

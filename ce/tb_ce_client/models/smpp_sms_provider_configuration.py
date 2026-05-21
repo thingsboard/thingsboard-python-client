@@ -33,6 +33,7 @@ class SmppSmsProviderConfiguration(SmsProviderConfiguration):
     """
     SmppSmsProviderConfiguration
     """ # noqa: E501
+    type: StrictStr = "SMPP"  # post_process: discriminator default
     protocol_version: StrictStr = Field(description="SMPP version", serialization_alias="protocolVersion")
     host: StrictStr = Field(description="SMPP host")
     port: StrictInt = Field(description="SMPP port")

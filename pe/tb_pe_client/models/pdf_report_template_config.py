@@ -39,6 +39,7 @@ class PdfReportTemplateConfig(ReportTemplateConfig):
     """
     PdfReportTemplateConfig
     """ # noqa: E501
+    format: TbReportFormat = TbReportFormat.PDF  # post_process: discriminator default
     footer: Optional[HeaderFooter] = None
     header: Optional[HeaderFooter] = None
     page_background: Optional[StrictStr] = Field(default=None, serialization_alias="pageBackground")

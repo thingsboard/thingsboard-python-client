@@ -36,6 +36,7 @@ class RuleChainExportData(EntityExportData):
     """
     RuleChainExportData
     """ # noqa: E501
+    entity_type: EntityType = Field(default=EntityType.RULE_CHAIN, serialization_alias="entityType")  # post_process: discriminator default
     meta_data: Optional[RuleChainMetaData] = Field(default=None, serialization_alias="metaData")
     __properties: ClassVar[List[str]] = ["entity", "relations", "attributes", "calculatedFields", "entityType", "metaData"]
 

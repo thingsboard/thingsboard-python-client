@@ -34,6 +34,7 @@ class EntitiesLimitNotificationRuleTriggerConfig(NotificationRuleTriggerConfig):
     """
     EntitiesLimitNotificationRuleTriggerConfig
     """ # noqa: E501
+    trigger_type: NotificationRuleTriggerType = Field(default=NotificationRuleTriggerType.ENTITIES_LIMIT, serialization_alias="triggerType")  # post_process: discriminator default
     entity_types: Optional[List[EntityType]] = Field(default=None, serialization_alias="entityTypes")
     threshold: Optional[Union[Annotated[float, Field(le=1, strict=True)], Annotated[int, Field(le=1, strict=True)]]] = None
     __properties: ClassVar[List[str]] = ["triggerType", "entityTypes", "threshold"]

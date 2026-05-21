@@ -32,6 +32,7 @@ class StatisticsEventFilter(EventFilter):
     """
     StatisticsEventFilter
     """ # noqa: E501
+    event_type: EventType = Field(default=EventType.STATS, serialization_alias="eventType")  # post_process: discriminator default
     server: Optional[StrictStr] = Field(default=None, description="String value representing the server name, identifier or ip address where the platform is running")
     min_messages_processed: Optional[StrictInt] = Field(default=None, description="The minimum number of successfully processed messages", serialization_alias="minMessagesProcessed")
     max_messages_processed: Optional[StrictInt] = Field(default=None, description="The maximum number of successfully processed messages", serialization_alias="maxMessagesProcessed")

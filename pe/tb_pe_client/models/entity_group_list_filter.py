@@ -32,6 +32,7 @@ class EntityGroupListFilter(EntityFilter):
     """
     EntityGroupListFilter
     """ # noqa: E501
+    type: StrictStr = "entityGroupList"  # post_process: discriminator default
     group_type: Optional[EntityType] = Field(default=None, serialization_alias="groupType")
     entity_group_list: Optional[List[StrictStr]] = Field(default=None, serialization_alias="entityGroupList")
     __properties: ClassVar[List[str]] = ["type", "groupType", "entityGroupList"]

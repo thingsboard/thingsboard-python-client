@@ -34,6 +34,7 @@ class EdgeConnectionNotificationRuleTriggerConfig(NotificationRuleTriggerConfig)
     """
     EdgeConnectionNotificationRuleTriggerConfig
     """ # noqa: E501
+    trigger_type: NotificationRuleTriggerType = Field(default=NotificationRuleTriggerType.EDGE_CONNECTION, serialization_alias="triggerType")  # post_process: discriminator default
     edges: Optional[List[UUID]] = None
     notify_on: Optional[List[EdgeConnectivityEvent]] = Field(default=None, serialization_alias="notifyOn")
     __properties: ClassVar[List[str]] = ["triggerType", "edges", "notifyOn"]

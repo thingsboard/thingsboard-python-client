@@ -39,6 +39,7 @@ class TimeseriesChartComponent(ReportComponent):
     """
     TimeseriesChartComponent
     """ # noqa: E501
+    type: ReportComponentType = ReportComponentType.TIME_SERIES_CHART  # post_process: discriminator default
     data_sources: Optional[List[DataSource]] = Field(default=None, serialization_alias="dataSources")
     margins: Optional[Insets] = None
     paddings: Optional[Insets] = None

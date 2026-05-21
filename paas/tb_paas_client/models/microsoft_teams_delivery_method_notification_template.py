@@ -32,6 +32,7 @@ class MicrosoftTeamsDeliveryMethodNotificationTemplate(DeliveryMethodNotificatio
     """
     MicrosoftTeamsDeliveryMethodNotificationTemplate
     """ # noqa: E501
+    method: StrictStr = "MICROSOFT_TEAMS"  # post_process: discriminator default
     subject: Optional[StrictStr] = None
     theme_color: Optional[StrictStr] = Field(default=None, serialization_alias="themeColor")
     button: Optional[Button] = None

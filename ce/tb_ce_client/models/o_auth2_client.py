@@ -37,7 +37,7 @@ class OAuth2Client(BaseModel):
     """ # noqa: E501
     id: Optional[OAuth2ClientId] = None
     created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", serialization_alias="createdTime")
-    additional_info: Optional[Any] = Field(description="Additional info of OAuth2 client. Must include: 'providerName' (string, name of the OAuth2 provider).", serialization_alias="additionalInfo")
+    additional_info: Optional[Any] = Field(default=None, description="Additional info of OAuth2 client. Must include: 'providerName' (string, name of the OAuth2 provider).", serialization_alias="additionalInfo")
     tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id", serialization_alias="tenantId")
     title: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Oauth2 client title")
     mapper_config: OAuth2MapperConfig = Field(description="Config for mapping OAuth2 log in response to platform entities", serialization_alias="mapperConfig")

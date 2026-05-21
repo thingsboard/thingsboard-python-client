@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field, StrictBool
+from pydantic import ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_paas_client.models.filter_predicate_value_string import FilterPredicateValueString
 from tb_paas_client.models.key_filter_predicate import KeyFilterPredicate
@@ -33,6 +33,7 @@ class StringFilterPredicate(KeyFilterPredicate):
     """
     StringFilterPredicate
     """ # noqa: E501
+    type: StrictStr = "STRING"  # post_process: discriminator default
     operation: Optional[StringOperation] = None
     value: Optional[FilterPredicateValueString] = Field(default=None, description="The value associated with the filter predicate")
     ignore_case: Optional[StrictBool] = Field(default=None, serialization_alias="ignoreCase")

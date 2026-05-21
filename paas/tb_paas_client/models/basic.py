@@ -31,6 +31,7 @@ class Basic(OllamaAuth):
     """
     Basic
     """ # noqa: E501
+    type: StrictStr = "BASIC"  # post_process: discriminator default
     username: StrictStr
     password: StrictStr
     __properties: ClassVar[List[str]] = ["type", "username", "password"]

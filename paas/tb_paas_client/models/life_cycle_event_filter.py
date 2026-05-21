@@ -32,6 +32,7 @@ class LifeCycleEventFilter(EventFilter):
     """
     LifeCycleEventFilter
     """ # noqa: E501
+    event_type: EventType = Field(default=EventType.LC_EVENT, serialization_alias="eventType")  # post_process: discriminator default
     server: Optional[StrictStr] = Field(default=None, description="String value representing the server name, identifier or ip address where the platform is running")
     event: Optional[StrictStr] = Field(default=None, description="String value representing the lifecycle event type")
     status: Optional[StrictStr] = Field(default=None, description="String value representing status of the lifecycle event")

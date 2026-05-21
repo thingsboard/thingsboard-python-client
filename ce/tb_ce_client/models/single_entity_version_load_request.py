@@ -34,6 +34,7 @@ class SingleEntityVersionLoadRequest(VersionLoadRequest):
     """
     SingleEntityVersionLoadRequest
     """ # noqa: E501
+    type: VersionLoadRequestType = VersionLoadRequestType.SINGLE_ENTITY  # post_process: discriminator default
     external_entity_id: Optional[EntityId] = Field(default=None, serialization_alias="externalEntityId")
     config: Optional[VersionLoadConfig] = None
     __properties: ClassVar[List[str]] = ["versionId", "type", "externalEntityId", "config"]

@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict
+from pydantic import ConfigDict, Field
 from typing import Any, ClassVar, Dict, List
 from tb_pe_client.models.notification_rule_trigger_config import NotificationRuleTriggerConfig
 from tb_pe_client.models.notification_rule_trigger_type import NotificationRuleTriggerType
@@ -32,6 +32,7 @@ class NewPlatformVersionNotificationRuleTriggerConfig(NotificationRuleTriggerCon
     """
     NewPlatformVersionNotificationRuleTriggerConfig
     """ # noqa: E501
+    trigger_type: NotificationRuleTriggerType = Field(default=NotificationRuleTriggerType.NEW_PLATFORM_VERSION, serialization_alias="triggerType")  # post_process: discriminator default
     __properties: ClassVar[List[str]] = ["triggerType"]
 
     model_config = ConfigDict(

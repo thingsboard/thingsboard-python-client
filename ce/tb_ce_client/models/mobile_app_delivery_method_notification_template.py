@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field
+from pydantic import ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from tb_ce_client.models.delivery_method_notification_template import DeliveryMethodNotificationTemplate
@@ -32,6 +32,7 @@ class MobileAppDeliveryMethodNotificationTemplate(DeliveryMethodNotificationTemp
     """
     MobileAppDeliveryMethodNotificationTemplate
     """ # noqa: E501
+    method: StrictStr = "MOBILE_APP"  # post_process: discriminator default
     subject: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Subject line for the mobile notification")
     additional_config: Optional[Any] = Field(default=None, description="Additional JSON configuration for web buttons/actions", serialization_alias="additionalConfig")
     __properties: ClassVar[List[str]] = ["enabled", "body", "method", "subject", "additionalConfig"]

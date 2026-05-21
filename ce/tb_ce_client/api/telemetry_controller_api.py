@@ -2141,6 +2141,7 @@ class TelemetryControllerApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
+            '200': "List[AttributeData]",
             '400': "ThingsboardErrorResponse",
             '401': "ThingsboardErrorResponse",
             '403': "ThingsboardErrorResponse",
@@ -2228,6 +2229,7 @@ class TelemetryControllerApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
+            '200': "List[AttributeData]",
             '400': "ThingsboardErrorResponse",
             '401': "ThingsboardErrorResponse",
             '403': "ThingsboardErrorResponse",
@@ -2315,6 +2317,7 @@ class TelemetryControllerApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
+            '200': "List[AttributeData]",
             '400': "ThingsboardErrorResponse",
             '401': "ThingsboardErrorResponse",
             '403': "ThingsboardErrorResponse",

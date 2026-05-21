@@ -32,6 +32,7 @@ class RawDataEventFilter(EventFilter):
     """
     RawDataEventFilter
     """ # noqa: E501
+    event_type: EventType = Field(default=EventType.RAW_DATA, serialization_alias="eventType")  # post_process: discriminator default
     server: Optional[StrictStr] = Field(default=None, description="String value representing the server name, identifier or ip address where the platform is running")
     uuid: Optional[StrictStr] = Field(default=None, description="String value representing the uuid")
     message_type: Optional[StrictStr] = Field(default=None, description="String value representing the message type", serialization_alias="messageType")

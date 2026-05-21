@@ -40,6 +40,7 @@ class ReportJobConfiguration(JobConfiguration):
     """
     ReportJobConfiguration
     """ # noqa: E501
+    type: StrictStr = "REPORT"  # post_process: discriminator default
     report_template_id: Optional[ReportTemplateId] = Field(default=None, serialization_alias="reportTemplateId")
     user_id: Optional[UserId] = Field(default=None, serialization_alias="userId")
     timezone: Optional[StrictStr] = None

@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field, StrictInt
+from pydantic import ConfigDict, Field, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from tb_paas_client.models.agg_interval import AggInterval
@@ -32,6 +32,7 @@ class DayInterval(AggInterval):
     """
     DayInterval
     """ # noqa: E501
+    type: StrictStr = "DAY"  # post_process: discriminator default
     tz: Annotated[str, Field(min_length=1, strict=True)]
     offset_sec: Optional[StrictInt] = Field(default=None, serialization_alias="offsetSec")
     __properties: ClassVar[List[str]] = ["type", "tz", "offsetSec"]

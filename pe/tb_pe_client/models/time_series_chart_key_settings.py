@@ -36,6 +36,7 @@ class TimeSeriesChartKeySettings(DataKeySettings):
     """
     TimeSeriesChartKeySettings
     """ # noqa: E501
+    type: DataKeySettingsType = DataKeySettingsType.TIME_SERIES_CHART  # post_process: discriminator default
     y_axis_id: Optional[StrictStr] = Field(default=None, serialization_alias="yAxisId")
     show_in_legend: Optional[StrictBool] = Field(default=None, serialization_alias="showInLegend")
     series_type: Optional[TimeSeriesChartSeriesType] = Field(default=None, serialization_alias="seriesType")

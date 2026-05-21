@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field, StrictBool
+from pydantic import ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_ce_client.models.attributes_output_strategy import AttributesOutputStrategy
 from typing import Optional, Set
@@ -31,6 +31,7 @@ class AttributesImmediateOutputStrategy(AttributesOutputStrategy):
     """
     AttributesImmediateOutputStrategy
     """ # noqa: E501
+    type: StrictStr = "IMMEDIATE"  # post_process: discriminator default
     send_attributes_updated_notification: Optional[StrictBool] = Field(default=None, serialization_alias="sendAttributesUpdatedNotification")
     update_attributes_only_on_value_change: Optional[StrictBool] = Field(default=None, serialization_alias="updateAttributesOnlyOnValueChange")
     save_attribute: Optional[StrictBool] = Field(default=None, serialization_alias="saveAttribute")

@@ -38,6 +38,7 @@ class AlarmTableComponent(ReportComponent):
     """
     AlarmTableComponent
     """ # noqa: E501
+    type: ReportComponentType = ReportComponentType.ALARM_TABLE  # post_process: discriminator default
     margins: Optional[Insets] = None
     paddings: Optional[Insets] = None
     background: Optional[StrictStr] = None

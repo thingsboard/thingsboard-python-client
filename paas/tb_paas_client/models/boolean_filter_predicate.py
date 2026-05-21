@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field
+from pydantic import ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_paas_client.models.boolean_operation import BooleanOperation
 from tb_paas_client.models.filter_predicate_value_boolean import FilterPredicateValueBoolean
@@ -33,6 +33,7 @@ class BooleanFilterPredicate(KeyFilterPredicate):
     """
     BooleanFilterPredicate
     """ # noqa: E501
+    type: StrictStr = "BOOLEAN"  # post_process: discriminator default
     operation: Optional[BooleanOperation] = None
     value: Optional[FilterPredicateValueBoolean] = Field(default=None, description="The value associated with the filter predicate")
     __properties: ClassVar[List[str]] = ["type", "operation", "value"]

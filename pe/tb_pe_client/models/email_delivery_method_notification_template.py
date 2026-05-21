@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field
+from pydantic import ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List
 from typing_extensions import Annotated
 from tb_pe_client.models.delivery_method_notification_template import DeliveryMethodNotificationTemplate
@@ -32,6 +32,7 @@ class EmailDeliveryMethodNotificationTemplate(DeliveryMethodNotificationTemplate
     """
     EmailDeliveryMethodNotificationTemplate
     """ # noqa: E501
+    method: StrictStr = "EMAIL"  # post_process: discriminator default
     subject: Annotated[str, Field(min_length=1, strict=True)]
     __properties: ClassVar[List[str]] = ["enabled", "body", "method", "subject"]
 

@@ -31,6 +31,7 @@ class AwsSnsSmsProviderConfiguration(SmsProviderConfiguration):
     """
     AwsSnsSmsProviderConfiguration
     """ # noqa: E501
+    type: StrictStr = "AWS_SNS"  # post_process: discriminator default
     access_key_id: Optional[StrictStr] = Field(default=None, description="The AWS SNS Access Key ID.", serialization_alias="accessKeyId")
     secret_access_key: Optional[StrictStr] = Field(default=None, description="The AWS SNS Access Key.", serialization_alias="secretAccessKey")
     region: Optional[StrictStr] = Field(default=None, description="The AWS region.")

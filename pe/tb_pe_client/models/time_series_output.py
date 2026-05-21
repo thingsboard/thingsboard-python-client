@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict
+from pydantic import ConfigDict, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_pe_client.models.attribute_scope import AttributeScope
 from tb_pe_client.models.output import Output
@@ -33,6 +33,7 @@ class TimeSeriesOutput(Output):
     """
     TimeSeriesOutput
     """ # noqa: E501
+    type: StrictStr = "TIME_SERIES"  # post_process: discriminator default
     strategy: Optional[TimeSeriesOutputStrategy] = None
     __properties: ClassVar[List[str]] = ["decimalsByDefault", "name", "scope", "strategy", "type"]
 

@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict
+from pydantic import ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List
 from tb_paas_client.models.transport_payload_type_configuration import TransportPayloadTypeConfiguration
 from typing import Optional, Set
@@ -31,6 +31,7 @@ class JsonTransportPayloadConfiguration(TransportPayloadTypeConfiguration):
     """
     JsonTransportPayloadConfiguration
     """ # noqa: E501
+    transport_payload_type: StrictStr = Field(default="JSON", serialization_alias="transportPayloadType")  # post_process: discriminator default
     __properties: ClassVar[List[str]] = ["transportPayloadType"]
 
     model_config = ConfigDict(

@@ -38,6 +38,7 @@ class ImageComponent(ReportComponent):
     """
     ImageComponent
     """ # noqa: E501
+    type: ReportComponentType = ReportComponentType.IMAGE  # post_process: discriminator default
     data_sources: Optional[List[DataSource]] = Field(default=None, serialization_alias="dataSources")
     margins: Optional[Insets] = None
     paddings: Optional[Insets] = None

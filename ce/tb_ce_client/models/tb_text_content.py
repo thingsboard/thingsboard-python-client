@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field
+from pydantic import ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List
 from typing_extensions import Annotated
 from tb_ce_client.models.tb_content import TbContent
@@ -32,6 +32,7 @@ class TbTextContent(TbContent):
     """
     Text-based content part of a user's prompt
     """ # noqa: E501
+    content_type: StrictStr = Field(default="TEXT", serialization_alias="contentType")  # post_process: discriminator default
     text: Annotated[str, Field(min_length=1, strict=True)] = Field(description="The text content")
     __properties: ClassVar[List[str]] = ["contentType", "text"]
 

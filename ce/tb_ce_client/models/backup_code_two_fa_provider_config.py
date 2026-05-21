@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field
+from pydantic import ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from tb_ce_client.models.two_fa_provider_config import TwoFaProviderConfig
@@ -32,6 +32,7 @@ class BackupCodeTwoFaProviderConfig(TwoFaProviderConfig):
     """
     BackupCodeTwoFaProviderConfig
     """ # noqa: E501
+    provider_type: StrictStr = Field(default="BACKUP_CODE", serialization_alias="providerType")  # post_process: discriminator default
     codes_quantity: Optional[Annotated[int, Field(strict=True, ge=1)]] = Field(default=None, serialization_alias="codesQuantity")
     __properties: ClassVar[List[str]] = ["providerType", "codesQuantity"]
 

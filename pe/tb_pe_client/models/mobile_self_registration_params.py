@@ -41,6 +41,7 @@ class MobileSelfRegistrationParams(SelfRegistrationParams):
     """
     MobileSelfRegistrationParams
     """ # noqa: E501
+    type: SelfRegistrationType = SelfRegistrationType.MOBILE  # post_process: discriminator default
     privacy_policy: Optional[StrictStr] = Field(default=None, description="Privacy policy text. Supports HTML.", serialization_alias="privacyPolicy")
     redirect: MobileRedirectParams = Field(description="Mobile redirect params.")
     terms_of_use: Optional[StrictStr] = Field(default=None, description="Terms of User text. Supports HTML.", serialization_alias="termsOfUse")

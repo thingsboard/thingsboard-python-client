@@ -31,6 +31,7 @@ class V2CaptchaParams(CaptchaParams):
     """
     V2CaptchaParams
     """ # noqa: E501
+    version: StrictStr = "v2"  # post_process: discriminator default
     site_key: Optional[StrictStr] = Field(default=None, description="Captcha site key for 'I'm not a robot' validation", serialization_alias="siteKey")
     log_action_name: Optional[StrictStr] = Field(default=None, description="Optional action name used for logging (for captcha version 'v3' and 'enterprise')", serialization_alias="logActionName")
     secret_key: Optional[StrictStr] = Field(default=None, description="Secret key to validate the Captcha. Should match the Captcha Site Key.", serialization_alias="secretKey")

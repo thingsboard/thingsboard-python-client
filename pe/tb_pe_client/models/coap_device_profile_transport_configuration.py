@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field
+from pydantic import ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_pe_client.models.coap_device_type_configuration import CoapDeviceTypeConfiguration
 from tb_pe_client.models.device_profile_transport_configuration import DeviceProfileTransportConfiguration
@@ -33,6 +33,7 @@ class CoapDeviceProfileTransportConfiguration(DeviceProfileTransportConfiguratio
     """
     CoapDeviceProfileTransportConfiguration
     """ # noqa: E501
+    type: StrictStr = "COAP"  # post_process: discriminator default
     coap_device_type_configuration: Optional[CoapDeviceTypeConfiguration] = Field(default=None, serialization_alias="coapDeviceTypeConfiguration")
     client_settings: Optional[PowerSavingConfiguration] = Field(default=None, serialization_alias="clientSettings")
     __properties: ClassVar[List[str]] = ["type", "coapDeviceTypeConfiguration", "clientSettings"]

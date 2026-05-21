@@ -34,6 +34,7 @@ class AlarmCalculatedFieldConfiguration(CalculatedFieldConfiguration):
     """
     AlarmCalculatedFieldConfiguration
     """ # noqa: E501
+    type: StrictStr = "ALARM"  # post_process: discriminator default
     arguments: Dict[str, Argument]
     create_rules: Dict[str, AlarmRule] = Field(serialization_alias="createRules")
     clear_rule: Optional[AlarmRule] = Field(default=None, serialization_alias="clearRule")
