@@ -524,7 +524,7 @@ def _build_class_to_file_map(models_dir: Path) -> "dict[str, Path]":
     return cls_to_file
 
 
-def _read_parent_discriminator_field(parent_content: str, py_field: str) -> "Optional[str]":
+def _read_parent_discriminator_field(parent_content: str, py_field: str) -> "str | None":
     """Extract the Python type annotation of the parent's discriminator field.
 
     Returns the bare type string (e.g. "StrictStr", "EntityType", "Optional[Foo]")
@@ -570,12 +570,17 @@ def _ensure_model_import(content: str, package_name: str, enum_class: str) -> "t
     Returns (new_content, modified). Inserts the import after the last existing
     ``from {package}.models.`` import line if missing.
     """
-    if re.search(rf"\bfrom {re.escape(package_name)}\.models\.\w+ import {re.escape(enum_class)}\b", content):
+    import_pattern = (
+        rf"\bfrom {re.escape(package_name)}\.models\.\w+ import "
+        rf"{re.escape(enum_class)}\b"
+    )
+    if re.search(import_pattern, content):
         return content, False
     snake = _camel_to_snake(enum_class)
     new_import = f"from {package_name}.models.{snake} import {enum_class}"
     # Insert after the last "from {package}.models." import
-    matches = list(re.finditer(rf"^from {re.escape(package_name)}\.models\.\w+ import .+$", content, re.MULTILINE))
+    models_import_re = rf"^from {re.escape(package_name)}\.models\.\w+ import .+$"
+    matches = list(re.finditer(models_import_re, content, re.MULTILINE))
     if matches:
         last = matches[-1]
         new_content = content[: last.end()] + "\n" + new_import + content[last.end() :]
@@ -618,7 +623,8 @@ def _inject_discriminator_override(
         return child_content, False
 
     # Skip past the docstring that always follows the class definition. The
-    # generated docstring closes with `""" # noqa: E501` on its own line.
+    # generated docstring closes with a ``"""`` followed by the E501 noqa
+    # marker on its own line.
     after_class = child_content[class_match.end() :]
     doc_close = re.search(r'^\s*"""\s*#\s*noqa:\s*E501\s*$', after_class, re.MULTILINE)
     if not doc_close:
@@ -637,7 +643,7 @@ def _inject_discriminator_override(
     if optional_match:
         bare_type = optional_match.group(1)
 
-    enum_class: "Optional[str]" = None
+    enum_class: str | None = None
     needs_strict_str_import = False
     if bare_type == "StrictStr":
         default_expr = f'"{discriminator_value}"'
@@ -793,7 +799,7 @@ _OPTIONAL_FIELD_PREFIX_RE = re.compile(
 )
 
 
-def _scan_balanced_args(content: str, open_paren_idx: int) -> "Optional[tuple[int, str]]":
+def _scan_balanced_args(content: str, open_paren_idx: int) -> "tuple[int, str] | None":
     """Walk forward from ``Field(`` and return (end_idx, args_text).
 
     ``open_paren_idx`` is the position of the ``(`` immediately after ``Field``.
@@ -805,7 +811,7 @@ def _scan_balanced_args(content: str, open_paren_idx: int) -> "Optional[tuple[in
     depth = 1
     i = open_paren_idx + 1
     n = len(content)
-    in_str: "Optional[str]" = None
+    in_str: str | None = None
     while i < n:
         ch = content[i]
         if in_str is not None:
@@ -896,7 +902,7 @@ _RESPONSE_TYPES_MAP_RE = re.compile(
 _API_METHOD_DEF_RE = re.compile(r"^    def ([a-zA-Z_]\w*)\(", re.MULTILINE)
 
 
-def _extract_return_type(content: str, def_start: int) -> "Optional[str]":
+def _extract_return_type(content: str, def_start: int) -> "str | None":
     """Return the ``-> T`` type annotation of the method starting at ``def_start``.
 
     Walks past the parameter parens, then matches the return annotation.

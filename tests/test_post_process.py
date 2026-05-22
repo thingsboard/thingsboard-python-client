@@ -547,7 +547,7 @@ def test_discriminator_idempotent_on_rerun(discriminator_models_dir):
 
 
 def test_discriminator_bails_without_docstring_close(discriminator_models_dir):
-    """If the class has no `""" # noqa: E501` close, skip to avoid breaking the docstring."""
+    """Skip injection when the generated docstring close marker is absent."""
     _write_parent(discriminator_models_dir, property_name="type",
                   mapping={"DEVICE": "DeviceFilter"}, class_name="EntityFilter")
     child = discriminator_models_dir / "device_filter.py"

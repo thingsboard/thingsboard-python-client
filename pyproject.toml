@@ -31,3 +31,9 @@ select = ["E", "W", "F", "I", "B", "UP"]
 # Tests insert paths into sys.path before importing local packages, and contain
 # long explanatory comments inline with assertions; both are intentional.
 "tests/**" = ["E402", "E501"]
+# These two test modules mirror documentation code snippets verbatim. The
+# snippets re-import inside each test (so they read as standalone examples in
+# the docs) and sometimes assign return values that the snippet would print —
+# all of which is intentional and should not be reorganized by the linter.
+"tests/test_python_client_docs_ce.py" = ["E402", "E501", "F401", "F811", "F841", "I001"]
+"tests/test_python_client_docs_pe.py" = ["E402", "E501", "F401", "F811", "F841", "I001"]

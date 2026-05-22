@@ -26,6 +26,7 @@ from ._doc_mock_http import (
     MOCK_USER_EMAIL,
     MockHttp,
     ROLE_UUID,
+    TENANT_UUID,
     USER_GROUP_UUID,
     asset_payload,
     device_payload,
@@ -48,6 +49,7 @@ def _entity_group_payload(name: str, group_type: str = "DEVICE") -> dict:
         "id": {"id": DEVICE_GROUP_UUID, "entityType": "ENTITY_GROUP"},
         "name": name,
         "type": group_type,
+        "ownerIds": [{"id": TENANT_UUID, "entityType": "TENANT"}],
     }
 
 
@@ -413,6 +415,7 @@ def test_share_with_customer(mock_http):
             "id": {"id": USER_GROUP_UUID, "entityType": "ENTITY_GROUP"},
             "name": "All",
             "type": "USER",
+            "ownerIds": [{"id": real_customer_id, "entityType": "CUSTOMER"}],
         },
     )
     mock_http.add(
