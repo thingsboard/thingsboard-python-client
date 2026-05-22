@@ -26,7 +26,7 @@
 | additional_info | object | Additional parameters of the entity view. May include: 'description' (string). | [optional] |
 | entity_id | EntityId | JSON object with the referenced Entity Id (Device or Asset). |  |
 | tenant_id | TenantId | JSON object with Tenant Id. | [optional] [readonly] |
-| customer_id | CustomerId | JSON object with Customer Id. Use 'assignEntityViewToCustomer' to change the Customer Id. | [optional] [readonly] |
+| customer_id | CustomerId | JSON object with Customer Id. Optional on create: when omitted, defaults to the owner of the target Entity Group or to the current Customer user. Cannot be changed on update via this endpoint; use the Owner API (changeOwnerToCustomer) to re-assign an existing Entity View. | [optional] |
 | name | str | Entity View name |  |
 | type | str | Device Profile Name |  |
 | keys | TelemetryEntityView | Set of telemetry and attribute keys to expose via Entity View. | [optional] |

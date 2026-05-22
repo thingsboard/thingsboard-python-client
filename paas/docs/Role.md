@@ -16,8 +16,8 @@ A JSON value representing the role.
 | **customer_id** | [**CustomerId**](CustomerId.md) | JSON object with Customer Id.  | [optional] [readonly] |
 | **name** | **str** | Role Name | |
 | **type** | [**RoleType**](RoleType.md) | Type of the role: generic or group | |
-| **permissions** | **object** | JSON object with the set of permissions. Structure is specific for role type | |
-| **excluded_permissions** | **object** | JSON object with the set of excluded permissions. Only applicable for generic roles. Structure is the same as permissions | [optional] |
+| **permissions** | **object** | Set of permissions granted by this role. The JSON shape depends on the role 'type':  * GENERIC — JSON object mapping `Resource` enum names to arrays of `Operation` enum names allowed on that resource. The wildcard entry `{\"ALL\":[\"ALL\"]}` grants every operation on every resource.  * GROUP — JSON array of `Operation` enum names that apply to the entity group this role is bound to via `GroupPermission.entityGroupId`. Only operations with `allowedForGroupRole=true` may appear (see `Operation` enum). The wildcard entry `[\"ALL\"]` grants every supported operation on the bound entity group. | |
+| **excluded_permissions** | **object** | Operations to subtract from those granted by `permissions`. Only applicable to GENERIC roles — setting this on a GROUP role is rejected by validation. Same shape as the GENERIC variant of `permissions`: a JSON object mapping `Resource` enum names to non-empty arrays of `Operation` enum names. At evaluation time, for each resource the listed operations are removed from the resolved permission set (e.g. `permissions={\"ALL\":[\"ALL\"]}` combined with `excludedPermissions={\"DEVICE\":[\"DELETE\"]}` grants everything except deleting devices). May be null or an empty object when no exclusions apply. | [optional] |
 | **version** | **int** |  | [optional] |
 | **owner_id** | [**EntityId**](EntityId.md) | JSON object with Customer or Tenant Id | [optional] [readonly] |
 

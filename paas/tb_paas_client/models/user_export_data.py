@@ -21,22 +21,22 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt
-from typing import Any, ClassVar, Dict, List, Optional
+from pydantic import ConfigDict, Field
+from typing import Any, ClassVar, Dict, List
+from tb_paas_client.models.calculated_field import CalculatedField
+from tb_paas_client.models.entity_export_data import EntityExportData
+from tb_paas_client.models.entity_relation import EntityRelation
 from tb_paas_client.models.entity_type import EntityType
-from tb_paas_client.models.key_info import KeyInfo
+from tb_paas_client.models.exportable_entity import ExportableEntity
 from typing import Optional, Set
 from typing_extensions import Self
 
-class AvailableEntityKeysV2(BaseModel):
+class UserExportData(EntityExportData):
     """
-    Contains unique time series and attribute key names discovered from entities matching a query, optionally including a sample value for each key.
+    UserExportData
     """ # noqa: E501
-    total_entities: StrictInt = Field(description="Total number of entities that matched the query filter.", serialization_alias="totalEntities")
-    entity_types: List[EntityType] = Field(description="Set of entity types found among the matched entities.", serialization_alias="entityTypes")
-    timeseries: Optional[List[KeyInfo]] = Field(default=None, description="List of unique time series keys available on the matched entities, sorted alphabetically. Omitted when timeseries keys were not requested.")
-    attributes: Optional[Dict[str, List[KeyInfo]]] = Field(default=None, description="Map of attribute scope to the list of unique attribute keys available on the matched entities. Only scopes supported by the matched entity types are included. Omitted when attribute keys were not requested or when none of the requested scopes apply to the matched entity types.")
-    __properties: ClassVar[List[str]] = ["totalEntities", "entityTypes", "timeseries", "attributes"]
+    entity_type: EntityType = Field(default=EntityType.USER, serialization_alias="entityType")  # post_process: discriminator default
+    __properties: ClassVar[List[str]] = ["entity", "relations", "attributes", "calculatedFields", "entityType"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -61,7 +61,7 @@ class AvailableEntityKeysV2(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of AvailableEntityKeysV2 from a JSON string"""
+        """Create an instance of UserExportData from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -82,13 +82,16 @@ class AvailableEntityKeysV2(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of each item in timeseries (list)
+        # override the default output from pydantic by calling `to_dict()` of entity
+        if self.entity:
+            _dict['entity'] = self.entity.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in relations (list)
         _items = []
-        if self.timeseries:
-            for _item_timeseries in self.timeseries:
-                if _item_timeseries:
-                    _items.append(_item_timeseries.to_dict())
-            _dict['timeseries'] = _items
+        if self.relations:
+            for _item_relations in self.relations:
+                if _item_relations:
+                    _items.append(_item_relations.to_dict())
+            _dict['relations'] = _items
         # override the default output from pydantic by calling `to_dict()` of each value in attributes (dict of array)
         _field_dict_of_array = {}
         if self.attributes:
@@ -98,11 +101,18 @@ class AvailableEntityKeysV2(BaseModel):
                         _item.to_dict() for _item in self.attributes[_key_attributes]
                     ]
             _dict['attributes'] = _field_dict_of_array
+        # override the default output from pydantic by calling `to_dict()` of each item in calculated_fields (list)
+        _items = []
+        if self.calculated_fields:
+            for _item_calculated_fields in self.calculated_fields:
+                if _item_calculated_fields:
+                    _items.append(_item_calculated_fields.to_dict())
+            _dict['calculatedFields'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of AvailableEntityKeysV2 from a dict"""
+        """Create an instance of UserExportData from a dict"""
         if obj is None:
             return None
 
@@ -110,17 +120,18 @@ class AvailableEntityKeysV2(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "total_entities": obj.get("totalEntities"),
-            "entity_types": obj.get("entityTypes"),
-            "timeseries": [KeyInfo.from_dict(_item) for _item in obj["timeseries"]] if obj.get("timeseries") is not None else None,
+            "entity": ExportableEntity.from_dict(obj["entity"]) if obj.get("entity") is not None else None,
+            "relations": [EntityRelation.from_dict(_item) for _item in obj["relations"]] if obj.get("relations") is not None else None,
             "attributes": dict(
                 (_k,
-                        [KeyInfo.from_dict(_item) for _item in _v]
+                        [AttributeExportData.from_dict(_item) for _item in _v]
                         if _v is not None
                         else None
                 )
                 for _k, _v in obj.get("attributes", {}).items()
-            )
+            ),
+            "calculatedFields": [CalculatedField.from_dict(_item) for _item in obj["calculatedFields"]] if obj.get("calculatedFields") is not None else None,
+            "entityType": obj.get("entityType")
         })
         return _obj
 

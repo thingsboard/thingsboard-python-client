@@ -23,6 +23,7 @@ import json
 
 from pydantic import ConfigDict, Field, StrictBool
 from typing import Any, ClassVar, Dict, List, Optional
+from uuid import UUID
 from tb_paas_client.models.calculated_field import CalculatedField
 from tb_paas_client.models.device_group_ota_package import DeviceGroupOtaPackage
 from tb_paas_client.models.entity_export_data import EntityExportData
@@ -38,10 +39,11 @@ class EntityGroupExportData(EntityExportData):
     EntityGroupExportData
     """ # noqa: E501
     entity_type: EntityType = Field(default=EntityType.ENTITY_GROUP, serialization_alias="entityType")  # post_process: discriminator default
-    permissions: Optional[List[GroupPermission]] = None
-    group_ota_packages: Optional[List[DeviceGroupOtaPackage]] = Field(default=None, serialization_alias="groupOtaPackages")
-    group_entities: Optional[StrictBool] = Field(default=None, serialization_alias="groupEntities")
-    __properties: ClassVar[List[str]] = ["entity", "relations", "attributes", "calculatedFields", "entityType", "permissions", "groupOtaPackages", "groupEntities"]
+    permissions: Optional[List[GroupPermission]] = Field(default=None, description="Group permissions to apply to this group on import. Meaningful only for USER groups; ignored for groups of any other type. Each entry's userGroupId, roleId, and entityGroupId may use the external IDs of other entities in this payload or the IDs of entities that already exist on the target tenant; the importer resolves them against the target tenant. System-tenant roles are not allowed and will be rejected. Leave null to skip permission management for this group.")
+    group_ota_packages: Optional[List[DeviceGroupOtaPackage]] = Field(default=None, description="OTA package assignments to apply to this group on import. Meaningful only for DEVICE groups; ignored for groups of any other type. Each entry's otaPackageId and groupId may reference external IDs of entities in this payload or IDs of entities that already exist on the target tenant. Leave null to skip OTA assignment management for this group.", serialization_alias="groupOtaPackages")
+    group_entities: Optional[StrictBool] = Field(default=None, description="Marker indicating that the group's member entities are intended to be transported alongside this payload. Used by flows that convey members through a side channel (notably the version control flow, which stores members in a separate git index). The solution import API does not consume this flag and does not require it to be set. Safe to leave false (default).", serialization_alias="groupEntities")
+    member_ids: Optional[List[UUID]] = Field(default=None, description="External IDs of the entities that should be members of this group after import. Each ID is resolved against the target tenant — by other entity in this payload, by external ID, or by existing internal ID — and the matching entities are added to the group. The import fails if any listed member cannot be resolved. Must be null for the special 'All' group (whose membership is implicit and managed by the platform). Leave null to skip membership wiring; existing membership on the target tenant is left untouched.", serialization_alias="memberIds")
+    __properties: ClassVar[List[str]] = ["entity", "relations", "attributes", "calculatedFields", "entityType", "permissions", "groupOtaPackages", "groupEntities", "memberIds"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -153,7 +155,8 @@ class EntityGroupExportData(EntityExportData):
             "entityType": obj.get("entityType"),
             "permissions": [GroupPermission.from_dict(_item) for _item in obj["permissions"]] if obj.get("permissions") is not None else None,
             "groupOtaPackages": [DeviceGroupOtaPackage.from_dict(_item) for _item in obj["groupOtaPackages"]] if obj.get("groupOtaPackages") is not None else None,
-            "groupEntities": obj.get("groupEntities")
+            "groupEntities": obj.get("groupEntities"),
+            "memberIds": obj.get("memberIds")
         })
         return _obj
 

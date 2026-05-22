@@ -100,7 +100,7 @@
 #### WidgetsBundleExportData  *(extends EntityExportData, entity_type=`WIDGETS_BUNDLE`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| widgets | List[object] |  | [optional] |
+| widgets | List[object] | List of widgets in the bundle | [optional] |
 | fqns | List[str] |  | [optional] |
 
 #### WidgetTypeExportData  *(extends EntityExportData, entity_type=`WIDGET_TYPE`)*

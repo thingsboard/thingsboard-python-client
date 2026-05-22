@@ -42,7 +42,7 @@ class EntityGroupInfo(BaseModel):
     additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the entity group. May include: 'description' (string), 'isPublic' (boolean, whether this group is shared publicly), 'publicCustomerId' (string, UUID of the public customer associated with this group).", serialization_alias="additionalInfo")
     configuration: Optional[Any] = Field(default=None, description="JSON with the configuration for UI components: list of columns, settings, actions, etc ")
     version: Optional[StrictInt] = None
-    owner_ids: Optional[List[EntityId]] = Field(default=None, serialization_alias="ownerIds")
+    owner_ids: List[EntityId] = Field(description="List of the entity group owners.", serialization_alias="ownerIds")
     edge_group_all: Optional[StrictBool] = Field(default=None, description="Indicates special edge group 'All' that contains all entities and can't be deleted.", serialization_alias="edgeGroupAll")
     group_all: Optional[StrictBool] = Field(default=None, description="Indicates special group 'All' that contains all entities and can't be deleted.", serialization_alias="groupAll")
     tenant_id: Optional[TenantId] = Field(default=None, serialization_alias="tenantId")

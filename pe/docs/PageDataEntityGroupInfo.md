@@ -29,7 +29,7 @@
 | additional_info | object | Additional parameters of the entity group. May include: 'description' (string), 'isPublic' (boolean, whether this group is shared publicly), 'publicCustomerId' (string, UUID of the public customer associated with this group). | [optional] |
 | configuration | object | JSON with the configuration for UI components: list of columns, settings, actions, etc | [optional] |
 | version | int |  | [optional] |
-| owner_ids | List[EntityId] |  | [optional] |
+| owner_ids | List[EntityId] | List of the entity group owners. |  |
 | edge_group_all | bool | Indicates special edge group 'All' that contains all entities and can't be deleted. | [optional] [readonly] |
 | group_all | bool | Indicates special group 'All' that contains all entities and can't be deleted. | [optional] |
 | tenant_id | TenantId |  | [optional] |

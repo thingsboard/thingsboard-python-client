@@ -84999,6 +84999,7 @@
           },
           "timeseries": {
             "type": "array",
+            "description": "List of unique time series key names available on the matched entities.",
             "items": {
               "type": "string",
               "example": "temperature",
@@ -85008,6 +85009,7 @@
           },
           "attribute": {
             "type": "array",
+            "description": "List of unique attribute key names available on the matched entities.",
             "items": {
               "type": "string",
               "example": "serialNumber",
@@ -85040,6 +85042,7 @@
           },
           "timeseries": {
             "type": "array",
+            "description": "List of unique time series keys available on the matched entities, sorted alphabetically.\nOmitted when timeseries keys were not requested.",
             "items": {
               "$ref": "#/components/schemas/KeyInfo"
             }
@@ -99552,6 +99555,7 @@
         "properties": {
           "contents": {
             "type": "array",
+            "description": "A list of content parts that make up the complete user prompt",
             "items": {
               "$ref": "#/components/schemas/TbContent"
             },
@@ -101714,6 +101718,7 @@
             "properties": {
               "widgets": {
                 "type": "array",
+                "description": "List of widgets in the bundle",
                 "items": {
                   "$ref": "#/components/schemas/JsonNode"
                 }

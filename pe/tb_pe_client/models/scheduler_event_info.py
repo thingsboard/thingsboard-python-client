@@ -38,7 +38,7 @@ class SchedulerEventInfo(BaseModel):
     created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the scheduler event creation, in milliseconds", serialization_alias="createdTime")
     additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the scheduler event", serialization_alias="additionalInfo")
     tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id", serialization_alias="tenantId")
-    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id", serialization_alias="customerId")
+    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id. Optional: when omitted the Scheduler Event is owned by the tenant. When the request is made by a Customer user, the value is forced to the user's own Customer Id.", serialization_alias="customerId")
     originator_id: Optional[EntityId] = Field(default=None, description="JSON object with Originator Id", serialization_alias="originatorId")
     name: Optional[StrictStr] = Field(default=None, description="scheduler event name")
     type: Optional[StrictStr] = Field(default=None, description="scheduler event type")
@@ -87,12 +87,10 @@ class SchedulerEventInfo(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
-        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
             "created_time",
             "tenant_id",
-            "customer_id",
             "originator_id",
             "owner_id",
         ])

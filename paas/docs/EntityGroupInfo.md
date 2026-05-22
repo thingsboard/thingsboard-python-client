@@ -11,11 +11,11 @@
 | **created_time** | **int** | Timestamp of the entity group creation, in milliseconds | [optional] [readonly] |
 | **type** | **TypeEnum** |  | |
 | **name** | **str** | Name of the entity group | |
-| **owner_id** | [**EntityId**](EntityId.md) | JSON object with the owner of the group - Tenant or Customer Id. | [optional] |
+| **owner_id** | [**EntityId**](EntityId.md) | JSON object with the owner of the group - Tenant or Customer Id. When omitted or null on creation, defaults to the current user's owner (Tenant for tenant admins, Customer for customer users). | [optional] |
 | **additional_info** | **object** | Additional parameters of the entity group. May include: 'description' (string), 'isPublic' (boolean, whether this group is shared publicly), 'publicCustomerId' (string, UUID of the public customer associated with this group). | [optional] |
 | **configuration** | **object** | JSON with the configuration for UI components: list of columns, settings, actions, etc  | [optional] |
 | **version** | **int** |  | [optional] |
-| **owner_ids** | [**List[EntityId]**](EntityId.md) |  | [optional] |
+| **owner_ids** | [**List[EntityId]**](EntityId.md) | List of the entity group owners. | |
 | **edge_group_all** | **bool** | Indicates special edge group 'All' that contains all entities and can't be deleted. | [optional] [readonly] |
 | **group_all** | **bool** | Indicates special group 'All' that contains all entities and can't be deleted. | [optional] |
 | **tenant_id** | [**TenantId**](TenantId.md) |  | [optional] |

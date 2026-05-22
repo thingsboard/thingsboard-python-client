@@ -60,7 +60,7 @@ class SolutionExportImportControllerApi:
     @validate_call
     def export_solution(
         self,
-        solution_export_request: Annotated[SolutionExportRequest, Field(description="Export request with entity IDs and optional settings.")],
+        solution_export_request: Annotated[SolutionExportRequest, Field(description="Export request with internal and/or external entity IDs and optional settings.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -76,9 +76,9 @@ class SolutionExportImportControllerApi:
     ) -> SolutionExportResponse:
         """Export Solution (exportSolution)
 
-        Exports a set of entities as a portable solution package. The request specifies entity IDs to include and optional export settings (relations, attributes, credentials). All specified entities must belong to the current tenant. The response contains the solution data (entities grouped by type) and any dependency warnings (e.g. when an exported device profile references a rule chain that was not included in the export). The solution data can later be imported into the same or a different tenant via the import endpoint.  Available for users with 'TENANT_ADMIN' authority. Requires VERSION_CONTROL WRITE permission.
+        Exports a set of entities as a portable solution package. The request specifies entities to include via 'internalIds' (server-internal UUIDs) and/or 'externalIds' (looked up by the entity's stored externalId within the current tenant); at least one of the two collections must be non-empty, and entities reached via both sides are deduplicated. Optional export settings control inclusion of relations, attributes, and credentials. All resolved entities must belong to the current tenant. The response contains the solution data (entities grouped by type) and any dependency warnings (e.g. when an exported device profile references a rule chain that was not included in the export). The solution data can later be imported into the same or a different tenant via the import endpoint.  Available for users with 'TENANT_ADMIN' authority. Requires VERSION_CONTROL WRITE permission.
 
-        :param solution_export_request: Export request with entity IDs and optional settings. (required)
+        :param solution_export_request: Export request with internal and/or external entity IDs and optional settings. (required)
         :type solution_export_request: SolutionExportRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -132,7 +132,7 @@ class SolutionExportImportControllerApi:
     @validate_call
     def export_solution_with_http_info(
         self,
-        solution_export_request: Annotated[SolutionExportRequest, Field(description="Export request with entity IDs and optional settings.")],
+        solution_export_request: Annotated[SolutionExportRequest, Field(description="Export request with internal and/or external entity IDs and optional settings.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -148,9 +148,9 @@ class SolutionExportImportControllerApi:
     ) -> ApiResponse[SolutionExportResponse]:
         """Export Solution (exportSolution)
 
-        Exports a set of entities as a portable solution package. The request specifies entity IDs to include and optional export settings (relations, attributes, credentials). All specified entities must belong to the current tenant. The response contains the solution data (entities grouped by type) and any dependency warnings (e.g. when an exported device profile references a rule chain that was not included in the export). The solution data can later be imported into the same or a different tenant via the import endpoint.  Available for users with 'TENANT_ADMIN' authority. Requires VERSION_CONTROL WRITE permission.
+        Exports a set of entities as a portable solution package. The request specifies entities to include via 'internalIds' (server-internal UUIDs) and/or 'externalIds' (looked up by the entity's stored externalId within the current tenant); at least one of the two collections must be non-empty, and entities reached via both sides are deduplicated. Optional export settings control inclusion of relations, attributes, and credentials. All resolved entities must belong to the current tenant. The response contains the solution data (entities grouped by type) and any dependency warnings (e.g. when an exported device profile references a rule chain that was not included in the export). The solution data can later be imported into the same or a different tenant via the import endpoint.  Available for users with 'TENANT_ADMIN' authority. Requires VERSION_CONTROL WRITE permission.
 
-        :param solution_export_request: Export request with entity IDs and optional settings. (required)
+        :param solution_export_request: Export request with internal and/or external entity IDs and optional settings. (required)
         :type solution_export_request: SolutionExportRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -204,7 +204,7 @@ class SolutionExportImportControllerApi:
     @validate_call
     def export_solution_without_preload_content(
         self,
-        solution_export_request: Annotated[SolutionExportRequest, Field(description="Export request with entity IDs and optional settings.")],
+        solution_export_request: Annotated[SolutionExportRequest, Field(description="Export request with internal and/or external entity IDs and optional settings.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -220,9 +220,9 @@ class SolutionExportImportControllerApi:
     ) -> RESTResponseType:
         """Export Solution (exportSolution)
 
-        Exports a set of entities as a portable solution package. The request specifies entity IDs to include and optional export settings (relations, attributes, credentials). All specified entities must belong to the current tenant. The response contains the solution data (entities grouped by type) and any dependency warnings (e.g. when an exported device profile references a rule chain that was not included in the export). The solution data can later be imported into the same or a different tenant via the import endpoint.  Available for users with 'TENANT_ADMIN' authority. Requires VERSION_CONTROL WRITE permission.
+        Exports a set of entities as a portable solution package. The request specifies entities to include via 'internalIds' (server-internal UUIDs) and/or 'externalIds' (looked up by the entity's stored externalId within the current tenant); at least one of the two collections must be non-empty, and entities reached via both sides are deduplicated. Optional export settings control inclusion of relations, attributes, and credentials. All resolved entities must belong to the current tenant. The response contains the solution data (entities grouped by type) and any dependency warnings (e.g. when an exported device profile references a rule chain that was not included in the export). The solution data can later be imported into the same or a different tenant via the import endpoint.  Available for users with 'TENANT_ADMIN' authority. Requires VERSION_CONTROL WRITE permission.
 
-        :param solution_export_request: Export request with entity IDs and optional settings. (required)
+        :param solution_export_request: Export request with internal and/or external entity IDs and optional settings. (required)
         :type solution_export_request: SolutionExportRequest
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request

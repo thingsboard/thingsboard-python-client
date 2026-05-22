@@ -32,7 +32,7 @@ class TbUserMessage(BaseModel):
     """
     TbUserMessage
     """ # noqa: E501
-    contents: Annotated[List[TbContent], Field(min_length=1)]
+    contents: Annotated[List[TbContent], Field(min_length=1)] = Field(description="A list of content parts that make up the complete user prompt")
     __properties: ClassVar[List[str]] = ["contents"]
 
     model_config = ConfigDict(

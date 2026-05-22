@@ -19,14 +19,14 @@ SolutionExportResponse client.export_solution(solution_export_request: SolutionE
 
 Export Solution (exportSolution)
 
-Exports a set of entities as a portable solution package. The request specifies entity IDs to include and optional export settings (relations, attributes, credentials). All specified entities must belong to the current tenant. The response contains the solution data (entities grouped by type) and any dependency warnings (e.g. when an exported device profile references a rule chain that was not included in the export). The solution data can later be imported into the same or a different tenant via the import endpoint.  Available for users with 'TENANT_ADMIN' authority. Requires VERSION_CONTROL WRITE permission.
+Exports a set of entities as a portable solution package. The request specifies entities to include via 'internalIds' (server-internal UUIDs) and/or 'externalIds' (looked up by the entity's stored externalId within the current tenant); at least one of the two collections must be non-empty, and entities reached via both sides are deduplicated. Optional export settings control inclusion of relations, attributes, and credentials. All resolved entities must belong to the current tenant. The response contains the solution data (entities grouped by type) and any dependency warnings (e.g. when an exported device profile references a rule chain that was not included in the export). The solution data can later be imported into the same or a different tenant via the import endpoint.  Available for users with 'TENANT_ADMIN' authority. Requires VERSION_CONTROL WRITE permission.
 
 
 ### Parameters
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **solution_export_request** | **SolutionExportRequest** | Export request with entity IDs and optional settings. | |
+| **solution_export_request** | **SolutionExportRequest** | Export request with internal and/or external entity IDs and optional settings. | |
 
 ### Return type
 
