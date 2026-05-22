@@ -34,7 +34,7 @@ class AvailableEntityKeysV2(BaseModel):
     """ # noqa: E501
     total_entities: StrictInt = Field(description="Total number of entities that matched the query filter.", serialization_alias="totalEntities")
     entity_types: List[EntityType] = Field(description="Set of entity types found among the matched entities.", serialization_alias="entityTypes")
-    timeseries: Optional[List[KeyInfo]] = None
+    timeseries: Optional[List[KeyInfo]] = Field(default=None, description="List of unique time series keys available on the matched entities, sorted alphabetically. Omitted when timeseries keys were not requested.")
     attributes: Optional[Dict[str, List[KeyInfo]]] = Field(default=None, description="Map of attribute scope to the list of unique attribute keys available on the matched entities. Only scopes supported by the matched entity types are included. Omitted when attribute keys were not requested or when none of the requested scopes apply to the matched entity types.")
     __properties: ClassVar[List[str]] = ["totalEntities", "entityTypes", "timeseries", "attributes"]
 

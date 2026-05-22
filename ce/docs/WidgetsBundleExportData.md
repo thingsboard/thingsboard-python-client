@@ -9,7 +9,7 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-| **widgets** | **List[object]** |  | [optional] |
+| **widgets** | **List[object]** | List of widgets in the bundle | [optional] |
 | **fqns** | **List[str]** |  | [optional] |
 
 

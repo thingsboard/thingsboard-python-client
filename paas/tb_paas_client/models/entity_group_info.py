@@ -38,11 +38,11 @@ class EntityGroupInfo(BaseModel):
     created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the entity group creation, in milliseconds", serialization_alias="createdTime")
     type: EntityType
     name: StrictStr = Field(description="Name of the entity group")
-    owner_id: Optional[EntityId] = Field(default=None, description="JSON object with the owner of the group - Tenant or Customer Id.", serialization_alias="ownerId")
+    owner_id: Optional[EntityId] = Field(default=None, description="JSON object with the owner of the group - Tenant or Customer Id. When omitted or null on creation, defaults to the current user's owner (Tenant for tenant admins, Customer for customer users).", serialization_alias="ownerId")
     additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the entity group. May include: 'description' (string), 'isPublic' (boolean, whether this group is shared publicly), 'publicCustomerId' (string, UUID of the public customer associated with this group).", serialization_alias="additionalInfo")
     configuration: Optional[Any] = Field(default=None, description="JSON with the configuration for UI components: list of columns, settings, actions, etc ")
     version: Optional[StrictInt] = None
-    owner_ids: Optional[List[EntityId]] = Field(default=None, serialization_alias="ownerIds")
+    owner_ids: List[EntityId] = Field(description="List of the entity group owners.", serialization_alias="ownerIds")
     edge_group_all: Optional[StrictBool] = Field(default=None, description="Indicates special edge group 'All' that contains all entities and can't be deleted.", serialization_alias="edgeGroupAll")
     group_all: Optional[StrictBool] = Field(default=None, description="Indicates special group 'All' that contains all entities and can't be deleted.", serialization_alias="groupAll")
     tenant_id: Optional[TenantId] = Field(default=None, serialization_alias="tenantId")

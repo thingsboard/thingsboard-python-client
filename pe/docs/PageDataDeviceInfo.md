@@ -25,7 +25,7 @@
 | created_time | int | Timestamp of the device creation, in milliseconds | [optional] [readonly] |
 | additional_info | object | Additional parameters of the device. May include: 'gateway' (boolean, whether the device is a gateway), 'description' (string), 'lastConnectedGateway' (string, UUID of the last gateway that connected this device). | [optional] |
 | tenant_id | TenantId | JSON object with Tenant Id. Use 'assignDeviceToTenant' to change the Tenant Id. | [optional] [readonly] |
-| customer_id | CustomerId | JSON object with Customer Id. Use 'assignDeviceToCustomer' to change the Customer Id. | [optional] [readonly] |
+| customer_id | CustomerId | JSON object with Customer Id. Optional on create: when omitted, defaults to the owner of the target Entity Group or to the current Customer user. Cannot be changed on update via this endpoint; use the Owner API (changeOwnerToCustomer) to re-assign an existing Device. | [optional] |
 | name | str | Unique Device Name in scope of Tenant | [optional] |
 | type | str | Device Profile Name | [optional] |
 | label | str | Label that may be used in widgets | [optional] |

@@ -36,7 +36,7 @@ class WidgetsBundleExportData(EntityExportData):
     WidgetsBundleExportData
     """ # noqa: E501
     entity_type: EntityType = Field(default=EntityType.WIDGETS_BUNDLE, serialization_alias="entityType")  # post_process: discriminator default
-    widgets: Optional[List[Any]] = None
+    widgets: Optional[List[Any]] = Field(default=None, description="List of widgets in the bundle")
     fqns: Optional[List[StrictStr]] = None
     __properties: ClassVar[List[str]] = ["entity", "relations", "attributes", "calculatedFields", "entityType", "widgets", "fqns"]
 

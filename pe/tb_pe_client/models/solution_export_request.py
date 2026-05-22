@@ -32,8 +32,8 @@ class SolutionExportRequest(BaseModel):
     """
     Solution export request specifying which entities to include and export settings.
     """ # noqa: E501
-    internal_ids: Optional[List[EntityId]] = Field(default=None, description="Set of internal entity IDs to export. All listed entities must belong to the current tenant. The export will include the entity data, and optionally relations, attributes, and credentials based on the settings.", serialization_alias="internalIds")
-    external_ids: Optional[List[EntityId]] = Field(default=None, serialization_alias="externalIds")
+    internal_ids: Optional[List[EntityId]] = Field(default=None, description="Set of internal entity IDs to export. The 'id' of each EntityId is the server-internal UUID. All listed entities must belong to the current tenant. Optional, but at least one of 'internalIds' or 'externalIds' must be non-empty.", serialization_alias="internalIds")
+    external_ids: Optional[List[EntityId]] = Field(default=None, description="Set of external entity IDs to export. The 'id' of each EntityId is the external UUID (as stored in the 'externalId' field on the entity in the current tenant). The server looks up each entity by 'externalId' and 'entityType' within the current tenant. Optional, but at least one of 'internalIds' or 'externalIds' must be non-empty.", serialization_alias="externalIds")
     settings: Optional[EntityExportSettings] = Field(default=None, description="Optional export settings controlling what additional data is included (relations, attributes, credentials, etc.). If not specified, default settings will be used that include all available data.")
     __properties: ClassVar[List[str]] = ["internalIds", "externalIds", "settings"]
 

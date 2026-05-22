@@ -10,7 +10,7 @@
 | **id** | [**AlarmId**](AlarmId.md) | JSON object with the alarm Id. Specify this field to update the alarm. Referencing non-existing alarm Id will cause error. Omit this field to create new alarm. | [optional] |
 | **created_time** | **int** | Timestamp of the alarm creation, in milliseconds | [optional] [readonly] |
 | **tenant_id** | [**TenantId**](TenantId.md) | JSON object with Tenant Id | [optional] [readonly] |
-| **customer_id** | [**CustomerId**](CustomerId.md) | JSON object with Customer Id | [optional] [readonly] |
+| **customer_id** | [**CustomerId**](CustomerId.md) | JSON object with Customer Id. Derived from the originator entity owner and cannot be set independently; any value supplied in the request body must match the originator's customer or the request is rejected. | [optional] [readonly] |
 | **type** | **str** | representing type of the Alarm | |
 | **originator** | [**EntityId**](EntityId.md) | JSON object with alarm originator id | |
 | **severity** | [**AlarmSeverity**](AlarmSeverity.md) | Alarm severity | |

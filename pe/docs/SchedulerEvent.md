@@ -13,7 +13,7 @@ A JSON value representing the Scheduler Event.
 | **created_time** | **int** | Timestamp of the scheduler event creation, in milliseconds | [optional] [readonly] |
 | **additional_info** | **object** | Additional parameters of the scheduler event | [optional] |
 | **tenant_id** | [**TenantId**](TenantId.md) | JSON object with Tenant Id | [optional] [readonly] |
-| **customer_id** | [**CustomerId**](CustomerId.md) | JSON object with Customer Id | [optional] [readonly] |
+| **customer_id** | [**CustomerId**](CustomerId.md) | JSON object with Customer Id. Optional: when omitted the Scheduler Event is owned by the tenant. When the request is made by a Customer user, the value is forced to the user's own Customer Id. | [optional] |
 | **originator_id** | [**EntityId**](EntityId.md) | JSON object with Originator Id | [optional] [readonly] |
 | **name** | **str** | scheduler event name | [optional] |
 | **type** | **str** | scheduler event type | [optional] |

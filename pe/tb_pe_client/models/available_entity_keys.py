@@ -33,8 +33,8 @@ class AvailableEntityKeys(BaseModel):
     Contains unique time series and attribute key names discovered from entities matching a query. Used primarily for UI hints such as autocomplete suggestions.
     """ # noqa: E501
     entity_types: List[EntityType] = Field(description="Set of entity types found among the matched entities.", serialization_alias="entityTypes")
-    timeseries: List[Annotated[str, Field(strict=True)]]
-    attribute: List[Annotated[str, Field(strict=True)]]
+    timeseries: List[Annotated[str, Field(strict=True)]] = Field(description="List of unique time series key names available on the matched entities.")
+    attribute: List[Annotated[str, Field(strict=True)]] = Field(description="List of unique attribute key names available on the matched entities.")
     __properties: ClassVar[List[str]] = ["entityTypes", "timeseries", "attribute"]
 
     model_config = ConfigDict(

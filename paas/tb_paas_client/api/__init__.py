@@ -19,6 +19,7 @@ from typing import TYPE_CHECKING
 __all__ = [
     "AdminControllerApi",
     "AiChatControllerApi",
+    "AiDeviceDashboardControllerApi",
     "AiModelControllerApi",
     "AiSolutionControllerApi",
     "AiToolControllerApi",
@@ -110,6 +111,7 @@ __all__ = [
 if TYPE_CHECKING:
     from tb_paas_client.api.admin_controller_api import AdminControllerApi
     from tb_paas_client.api.ai_chat_controller_api import AiChatControllerApi
+    from tb_paas_client.api.ai_device_dashboard_controller_api import AiDeviceDashboardControllerApi
     from tb_paas_client.api.ai_model_controller_api import AiModelControllerApi
     from tb_paas_client.api.ai_solution_controller_api import AiSolutionControllerApi
     from tb_paas_client.api.ai_tool_controller_api import AiToolControllerApi
@@ -200,6 +202,7 @@ if TYPE_CHECKING:
 _API_CLASSES = {
     "AdminControllerApi": "tb_paas_client.api.admin_controller_api",
     "AiChatControllerApi": "tb_paas_client.api.ai_chat_controller_api",
+    "AiDeviceDashboardControllerApi": "tb_paas_client.api.ai_device_dashboard_controller_api",
     "AiModelControllerApi": "tb_paas_client.api.ai_model_controller_api",
     "AiSolutionControllerApi": "tb_paas_client.api.ai_solution_controller_api",
     "AiToolControllerApi": "tb_paas_client.api.ai_tool_controller_api",

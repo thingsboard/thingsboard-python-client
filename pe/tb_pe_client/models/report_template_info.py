@@ -39,7 +39,7 @@ class ReportTemplateInfo(BaseModel):
     id: Optional[ReportTemplateId] = Field(default=None, description="JSON object with the report template Id. Specify this field to update the report. Referencing non-existing report template Id will cause error. Omit this field to create new report template")
     created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the report template creation, in milliseconds", serialization_alias="createdTime")
     tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id. Tenant Id of the report template can't be changed.", serialization_alias="tenantId")
-    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id", serialization_alias="customerId")
+    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id. Optional: when omitted the Report Template is owned by the tenant. When the request is made by a Customer user, the value is forced to the user's own Customer Id.", serialization_alias="customerId")
     name: StrictStr = Field(description="Report name")
     format: TbReportFormat = Field(description="Report format")
     type: ReportTemplateType = Field(description="Report template type")
@@ -88,12 +88,10 @@ class ReportTemplateInfo(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
-        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
             "created_time",
             "tenant_id",
-            "customer_id",
             "owner_name",
             "owner_id",
         ])

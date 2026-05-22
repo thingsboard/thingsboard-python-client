@@ -24,7 +24,7 @@
 | id | ReportTemplateId | JSON object with the report template Id. Specify this field to update the report. Referencing non-existing report template Id will cause error. Omit this field to create new report template | [optional] |
 | created_time | int | Timestamp of the report template creation, in milliseconds | [optional] [readonly] |
 | tenant_id | TenantId | JSON object with Tenant Id. Tenant Id of the report template can't be changed. | [optional] [readonly] |
-| customer_id | CustomerId | JSON object with Customer Id | [optional] [readonly] |
+| customer_id | CustomerId | JSON object with Customer Id. Optional: when omitted the Report Template is owned by the tenant. When the request is made by a Customer user, the value is forced to the user's own Customer Id. | [optional] |
 | name | str | Report name |  |
 | format | TbReportFormat | Report format |  |
 | type | ReportTemplateType | Report template type |  |
