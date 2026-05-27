@@ -453,8 +453,14 @@ def test_rewrite_init_files_writes_pyi(tmp_path):
 # ---------------------------------------------------------------------------
 
 
-def _write_parent(models_dir: Path, *, property_name: str, mapping: dict[str, str],
-                  field_type: str = "StrictStr", class_name: str = "Parent") -> Path:
+def _write_parent(
+    models_dir: Path,
+    *,
+    property_name: str,
+    mapping: dict[str, str],
+    field_type: str = "StrictStr",
+    class_name: str = "Parent",
+) -> Path:
     """Write a minimal parent model file with the given discriminator mapping."""
     field_py = post_process._camel_to_snake(property_name)
     pairs = ",".join(f"'{k}': '{v}'" for k, v in mapping.items())
@@ -478,8 +484,14 @@ class {class_name}(BaseModel):
     return path
 
 
-def _write_child(models_dir: Path, *, class_name: str, parent: str,
-                 field_py: str = "type", field_type: str = "StrictStr") -> Path:
+def _write_child(
+    models_dir: Path,
+    *,
+    class_name: str,
+    parent: str,
+    field_py: str = "type",
+    field_type: str = "StrictStr",
+) -> Path:
     """Write a minimal child model file with no discriminator default."""
     content = f'''\
 from pydantic import Field, StrictStr
@@ -505,8 +517,12 @@ def discriminator_models_dir(tmp_path):
 
 def test_discriminator_patches_strict_str_subclass(discriminator_models_dir):
     """Real OpenAPI mapping (key != class name) -> inject string default."""
-    _write_parent(discriminator_models_dir, property_name="type",
-                  mapping={"DEVICE": "DeviceFilter"}, class_name="EntityFilter")
+    _write_parent(
+        discriminator_models_dir,
+        property_name="type",
+        mapping={"DEVICE": "DeviceFilter"},
+        class_name="EntityFilter",
+    )
     child = _write_child(discriminator_models_dir, class_name="DeviceFilter", parent="EntityFilter")
 
     parents, patched, skipped = post_process.fix_polymorphic_discriminator_defaults(
@@ -520,8 +536,12 @@ def test_discriminator_patches_strict_str_subclass(discriminator_models_dir):
 
 def test_discriminator_skips_class_name_fallback(discriminator_models_dir):
     """No explicit mapping (key == class name) -> skip rather than write garbage."""
-    _write_parent(discriminator_models_dir, property_name="securityMode",
-                  mapping={"PSKChild": "PSKChild"}, class_name="Credential")
+    _write_parent(
+        discriminator_models_dir,
+        property_name="securityMode",
+        mapping={"PSKChild": "PSKChild"},
+        class_name="Credential",
+    )
     child = _write_child(discriminator_models_dir, class_name="PSKChild", parent="Credential")
 
     parents, patched, skipped = post_process.fix_polymorphic_discriminator_defaults(
@@ -535,8 +555,12 @@ def test_discriminator_skips_class_name_fallback(discriminator_models_dir):
 
 def test_discriminator_idempotent_on_rerun(discriminator_models_dir):
     """Second run is a no-op once the tag is present."""
-    _write_parent(discriminator_models_dir, property_name="type",
-                  mapping={"DEVICE": "DeviceFilter"}, class_name="EntityFilter")
+    _write_parent(
+        discriminator_models_dir,
+        property_name="type",
+        mapping={"DEVICE": "DeviceFilter"},
+        class_name="EntityFilter",
+    )
     _write_child(discriminator_models_dir, class_name="DeviceFilter", parent="EntityFilter")
 
     post_process.fix_polymorphic_discriminator_defaults(discriminator_models_dir, "tb_test_client")
@@ -548,8 +572,12 @@ def test_discriminator_idempotent_on_rerun(discriminator_models_dir):
 
 def test_discriminator_bails_without_docstring_close(discriminator_models_dir):
     """Skip injection when the generated docstring close marker is absent."""
-    _write_parent(discriminator_models_dir, property_name="type",
-                  mapping={"DEVICE": "DeviceFilter"}, class_name="EntityFilter")
+    _write_parent(
+        discriminator_models_dir,
+        property_name="type",
+        mapping={"DEVICE": "DeviceFilter"},
+        class_name="EntityFilter",
+    )
     child = discriminator_models_dir / "device_filter.py"
     child.write_text(
         "from pydantic import Field\n"
@@ -675,7 +703,7 @@ def test_default_none_skips_default_factory(tmp_path):
 # ---------------------------------------------------------------------------
 
 
-_RESP_MAP_TEMPLATE = '''\
+_RESP_MAP_TEMPLATE = """\
 class FooApi:
     def get_thing(self) -> List[Foo]:
         _response_types_map: Dict[str, Optional[str]] = {{
@@ -694,7 +722,7 @@ class FooApi:
 {entries}
         }}
         return _response_types_map
-'''
+"""
 
 
 def test_response_types_injects_missing_200(tmp_path):

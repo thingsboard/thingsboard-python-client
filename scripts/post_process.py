@@ -675,10 +675,7 @@ def _inject_discriminator_override(
         )
         needs_field_import = True
     else:
-        new_line = (
-            f"    {py_field}: {field_type} = {default_expr}"
-            f"  {_DISCRIMINATOR_INJECT_TAG}\n"
-        )
+        new_line = f"    {py_field}: {field_type} = {default_expr}  {_DISCRIMINATOR_INJECT_TAG}\n"
         needs_field_import = False
 
     new_content = child_content[:insert_pos] + new_line + child_content[insert_pos:]
@@ -713,9 +710,7 @@ def fix_polymorphic_discriminator_defaults(
     subclasses_patched = 0
     subclasses_skipped = 0
 
-    discriminator_re = re.compile(
-        r"__discriminator_property_name: ClassVar\[str\] = '([^']+)'"
-    )
+    discriminator_re = re.compile(r"__discriminator_property_name: ClassVar\[str\] = '([^']+)'")
     mapping_re = re.compile(
         r"__discriminator_value_class_map: ClassVar\[Dict\[str, str\]\] = \{\s*([^}]*)\}",
         re.DOTALL,
@@ -970,9 +965,7 @@ def fix_missing_2xx_response_types(api_dir: Path) -> int:
             if method_name == "__init__":
                 continue
             scope_start = m.start()
-            scope_end = (
-                method_defs[idx + 1].start() if idx + 1 < len(method_defs) else len(content)
-            )
+            scope_end = method_defs[idx + 1].start() if idx + 1 < len(method_defs) else len(content)
 
             # Find _response_types_map within this method's scope
             map_m = _RESPONSE_TYPES_MAP_RE.search(content, scope_start, scope_end)

@@ -41,7 +41,7 @@ class Device(BaseModel):
     created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the device creation, in milliseconds", serialization_alias="createdTime")
     additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the device. May include: 'gateway' (boolean, whether the device is a gateway), 'description' (string), 'lastConnectedGateway' (string, UUID of the last gateway that connected this device).", serialization_alias="additionalInfo")
     tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id. Use 'assignDeviceToTenant' to change the Tenant Id.", serialization_alias="tenantId")
-    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id. Use 'assignDeviceToCustomer' to change the Customer Id.", serialization_alias="customerId")
+    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id. Optional on create: when omitted, defaults to the owner of the target Entity Group or to the current Customer user. Cannot be changed on update via this endpoint; use the Owner API (changeOwnerToCustomer) to re-assign an existing Device.", serialization_alias="customerId")
     name: Optional[StrictStr] = Field(default=None, description="Unique Device Name in scope of Tenant")
     type: Optional[StrictStr] = Field(default=None, description="Device Profile Name")
     label: Optional[StrictStr] = Field(default=None, description="Label that may be used in widgets")
@@ -91,12 +91,10 @@ class Device(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
-        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
             "created_time",
             "tenant_id",
-            "customer_id",
             "owner_id",
         ])
 

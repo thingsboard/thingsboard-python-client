@@ -139,9 +139,9 @@ def test_rate_limit_handling_builder_options(mock_http):
     client = ThingsboardClient(
         MOCK_URL,
         api_key=API_KEY,
-        max_retries=3,                # default 3
-        initial_retry_delay_ms=1_000, # default 1 s
-        max_retry_delay_ms=30_000,    # default 30 s
+        max_retries=3,  # default 3
+        initial_retry_delay_ms=1_000,  # default 1 s
+        max_retry_delay_ms=30_000,  # default 30 s
     )
 
     # post-snippet verification: the tuned client was constructed and exposes the API surface
@@ -319,16 +319,18 @@ def test_entity_data_query_count_filtered(mock_http):
     # === doc snippet ===
     from tb_ce_client import ThingsboardClient
     from tb_ce_client.models import (
-        EntityCountQuery, EntityTypeFilter, KeyFilter, EntityKey,
-        BooleanFilterPredicate, FilterPredicateValueBoolean,
+        EntityCountQuery,
+        EntityTypeFilter,
+        KeyFilter,
+        EntityKey,
+        BooleanFilterPredicate,
+        FilterPredicateValueBoolean,
     )
 
     with ThingsboardClient(MOCK_URL, api_key=API_KEY) as client:
         type_filter = EntityTypeFilter(entity_type="DEVICE")
 
-        total = client.count_entities_by_query(
-            EntityCountQuery(entity_filter=type_filter)
-        )
+        total = client.count_entities_by_query(EntityCountQuery(entity_filter=type_filter))
         assert total == 3
 
         active_filter = KeyFilter(
