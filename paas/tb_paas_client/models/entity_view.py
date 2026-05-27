@@ -40,7 +40,7 @@ class EntityView(BaseModel):
     additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the entity view. May include: 'description' (string).", serialization_alias="additionalInfo")
     entity_id: EntityId = Field(description="JSON object with the referenced Entity Id (Device or Asset).", serialization_alias="entityId")
     tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id.", serialization_alias="tenantId")
-    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id. Use 'assignEntityViewToCustomer' to change the Customer Id.", serialization_alias="customerId")
+    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id. Optional on create: when omitted, defaults to the owner of the target Entity Group or to the current Customer user. Cannot be changed on update via this endpoint; use the Owner API (changeOwnerToCustomer) to re-assign an existing Entity View.", serialization_alias="customerId")
     name: StrictStr = Field(description="Entity View name")
     type: StrictStr = Field(description="Device Profile Name")
     keys: Optional[TelemetryEntityView] = Field(default=None, description="Set of telemetry and attribute keys to expose via Entity View.")
@@ -88,12 +88,10 @@ class EntityView(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
-        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
             "created_time",
             "tenant_id",
-            "customer_id",
             "owner_id",
         ])
 

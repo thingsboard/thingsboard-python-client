@@ -39,8 +39,8 @@ class Edge(BaseModel):
     id: Optional[EdgeId] = Field(default=None, description="JSON object with the Edge Id. Specify this field to update the Edge. Referencing non-existing Edge Id will cause error. Omit this field to create new Edge.")
     created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the edge creation, in milliseconds", serialization_alias="createdTime")
     additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the edge. May include: 'description' (string).", serialization_alias="additionalInfo")
-    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id. Use 'assignDeviceToTenant' to change the Tenant Id.", serialization_alias="tenantId")
-    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id. Use 'assignEdgeToCustomer' to change the Customer Id.", serialization_alias="customerId")
+    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id. Always set to the tenant of the current user on save; cannot be changed after creation.", serialization_alias="tenantId")
+    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id.", serialization_alias="customerId")
     root_rule_chain_id: Optional[RuleChainId] = Field(default=None, description="JSON object with Root Rule Chain Id. Use 'setEdgeRootRuleChain' to change the Root Rule Chain Id.", serialization_alias="rootRuleChainId")
     name: StrictStr = Field(description="Unique Edge Name in scope of Tenant")
     type: StrictStr = Field(description="Edge type")
@@ -93,12 +93,10 @@ class Edge(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
-        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
             "created_time",
             "tenant_id",
-            "customer_id",
             "root_rule_chain_id",
             "owner_id",
         ])
