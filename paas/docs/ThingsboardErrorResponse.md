@@ -26,7 +26,7 @@
 `NUMBER_1` | `NUMBER_2` | `NUMBER_3` | `NUMBER_4` | `NUMBER_5` | `NUMBER_6` | `NUMBER_7` | `NUMBER_8` | `NUMBER_9` | `NUMBER_10` | … (13 values total)
 
 #### SubscriptionExceptionErrorCode (enum)
-`NUMBER_1` | `NUMBER_2` | `NUMBER_3` | `NUMBER_4` | `NUMBER_5` | `NUMBER_6` | `NUMBER_7`
+`NUMBER_1` | `NUMBER_2` | `NUMBER_3` | `NUMBER_4` | `NUMBER_5` | `NUMBER_6`
 
 ---
 

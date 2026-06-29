@@ -801,9 +801,7 @@ __all__ = [
     "SolutionExportRequest",
     "SolutionExportResponse",
     "SolutionImportResult",
-    "SolutionInstallResponse",
     "SolutionStep",
-    "SolutionTemplateLevel",
     "SolutionValidationResult",
     "SpecificTimeSchedule",
     "SplitViewComponent",
@@ -855,9 +853,6 @@ __all__ = [
     "TenantProfileData",
     "TenantProfileId",
     "TenantProfileQueueConfiguration",
-    "TenantSolutionTemplateDetails",
-    "TenantSolutionTemplateInfo",
-    "TenantSolutionTemplateInstructions",
     "TestSmsRequest",
     "TextAlignment",
     "ThingsboardCredentialsExpiredResponse",
@@ -1750,9 +1745,7 @@ if TYPE_CHECKING:
     from tb_pe_client.models.solution_export_request import SolutionExportRequest
     from tb_pe_client.models.solution_export_response import SolutionExportResponse
     from tb_pe_client.models.solution_import_result import SolutionImportResult
-    from tb_pe_client.models.solution_install_response import SolutionInstallResponse
     from tb_pe_client.models.solution_step import SolutionStep
-    from tb_pe_client.models.solution_template_level import SolutionTemplateLevel
     from tb_pe_client.models.solution_validation_result import SolutionValidationResult
     from tb_pe_client.models.specific_time_schedule import SpecificTimeSchedule
     from tb_pe_client.models.split_view_component import SplitViewComponent
@@ -1804,9 +1797,6 @@ if TYPE_CHECKING:
     from tb_pe_client.models.tenant_profile_data import TenantProfileData
     from tb_pe_client.models.tenant_profile_id import TenantProfileId
     from tb_pe_client.models.tenant_profile_queue_configuration import TenantProfileQueueConfiguration
-    from tb_pe_client.models.tenant_solution_template_details import TenantSolutionTemplateDetails
-    from tb_pe_client.models.tenant_solution_template_info import TenantSolutionTemplateInfo
-    from tb_pe_client.models.tenant_solution_template_instructions import TenantSolutionTemplateInstructions
     from tb_pe_client.models.test_sms_request import TestSmsRequest
     from tb_pe_client.models.text_alignment import TextAlignment
     from tb_pe_client.models.thingsboard_credentials_expired_response import ThingsboardCredentialsExpiredResponse
@@ -2698,9 +2688,7 @@ _MODEL_CLASSES = {
     "SolutionExportRequest": "tb_pe_client.models.solution_export_request",
     "SolutionExportResponse": "tb_pe_client.models.solution_export_response",
     "SolutionImportResult": "tb_pe_client.models.solution_import_result",
-    "SolutionInstallResponse": "tb_pe_client.models.solution_install_response",
     "SolutionStep": "tb_pe_client.models.solution_step",
-    "SolutionTemplateLevel": "tb_pe_client.models.solution_template_level",
     "SolutionValidationResult": "tb_pe_client.models.solution_validation_result",
     "SpecificTimeSchedule": "tb_pe_client.models.specific_time_schedule",
     "SplitViewComponent": "tb_pe_client.models.split_view_component",
@@ -2752,9 +2740,6 @@ _MODEL_CLASSES = {
     "TenantProfileData": "tb_pe_client.models.tenant_profile_data",
     "TenantProfileId": "tb_pe_client.models.tenant_profile_id",
     "TenantProfileQueueConfiguration": "tb_pe_client.models.tenant_profile_queue_configuration",
-    "TenantSolutionTemplateDetails": "tb_pe_client.models.tenant_solution_template_details",
-    "TenantSolutionTemplateInfo": "tb_pe_client.models.tenant_solution_template_info",
-    "TenantSolutionTemplateInstructions": "tb_pe_client.models.tenant_solution_template_instructions",
     "TestSmsRequest": "tb_pe_client.models.test_sms_request",
     "TextAlignment": "tb_pe_client.models.text_alignment",
     "ThingsboardCredentialsExpiredResponse": "tb_pe_client.models.thingsboard_credentials_expired_response",
