@@ -106,7 +106,6 @@ if TYPE_CHECKING:
     from tb_paas_client.api.secret_controller_api import SecretControllerApi
     from tb_paas_client.api.self_registration_controller_api import SelfRegistrationControllerApi
     from tb_paas_client.api.sign_up_controller_api import SignUpControllerApi
-    from tb_paas_client.api.solution_controller_api import SolutionControllerApi
     from tb_paas_client.api.solution_export_import_controller_api import SolutionExportImportControllerApi
     from tb_paas_client.api.subscription_controller_api import SubscriptionControllerApi
     from tb_paas_client.api.tb_resource_controller_api import TbResourceControllerApi
@@ -921,9 +920,7 @@ if TYPE_CHECKING:
     from tb_paas_client.models.solution_export_request import SolutionExportRequest
     from tb_paas_client.models.solution_export_response import SolutionExportResponse
     from tb_paas_client.models.solution_import_result import SolutionImportResult
-    from tb_paas_client.models.solution_install_response import SolutionInstallResponse
     from tb_paas_client.models.solution_step import SolutionStep
-    from tb_paas_client.models.solution_template_level import SolutionTemplateLevel
     from tb_paas_client.models.solution_validation_result import SolutionValidationResult
     from tb_paas_client.models.specific_time_schedule import SpecificTimeSchedule
     from tb_paas_client.models.split_view_component import SplitViewComponent
@@ -984,9 +981,6 @@ if TYPE_CHECKING:
     from tb_paas_client.models.tenant_profile_data import TenantProfileData
     from tb_paas_client.models.tenant_profile_id import TenantProfileId
     from tb_paas_client.models.tenant_profile_queue_configuration import TenantProfileQueueConfiguration
-    from tb_paas_client.models.tenant_solution_template_details import TenantSolutionTemplateDetails
-    from tb_paas_client.models.tenant_solution_template_info import TenantSolutionTemplateInfo
-    from tb_paas_client.models.tenant_solution_template_instructions import TenantSolutionTemplateInstructions
     from tb_paas_client.models.test_sms_request import TestSmsRequest
     from tb_paas_client.models.text_alignment import TextAlignment
     from tb_paas_client.models.thingsboard_credentials_expired_response import ThingsboardCredentialsExpiredResponse
@@ -1164,7 +1158,6 @@ _LAZY_CLASSES = {
     "SecretControllerApi": "tb_paas_client.api.secret_controller_api",
     "SelfRegistrationControllerApi": "tb_paas_client.api.self_registration_controller_api",
     "SignUpControllerApi": "tb_paas_client.api.sign_up_controller_api",
-    "SolutionControllerApi": "tb_paas_client.api.solution_controller_api",
     "SolutionExportImportControllerApi": "tb_paas_client.api.solution_export_import_controller_api",
     "SubscriptionControllerApi": "tb_paas_client.api.subscription_controller_api",
     "TbResourceControllerApi": "tb_paas_client.api.tb_resource_controller_api",
@@ -1979,9 +1972,7 @@ _LAZY_CLASSES = {
     "SolutionExportRequest": "tb_paas_client.models.solution_export_request",
     "SolutionExportResponse": "tb_paas_client.models.solution_export_response",
     "SolutionImportResult": "tb_paas_client.models.solution_import_result",
-    "SolutionInstallResponse": "tb_paas_client.models.solution_install_response",
     "SolutionStep": "tb_paas_client.models.solution_step",
-    "SolutionTemplateLevel": "tb_paas_client.models.solution_template_level",
     "SolutionValidationResult": "tb_paas_client.models.solution_validation_result",
     "SpecificTimeSchedule": "tb_paas_client.models.specific_time_schedule",
     "SplitViewComponent": "tb_paas_client.models.split_view_component",
@@ -2042,9 +2033,6 @@ _LAZY_CLASSES = {
     "TenantProfileData": "tb_paas_client.models.tenant_profile_data",
     "TenantProfileId": "tb_paas_client.models.tenant_profile_id",
     "TenantProfileQueueConfiguration": "tb_paas_client.models.tenant_profile_queue_configuration",
-    "TenantSolutionTemplateDetails": "tb_paas_client.models.tenant_solution_template_details",
-    "TenantSolutionTemplateInfo": "tb_paas_client.models.tenant_solution_template_info",
-    "TenantSolutionTemplateInstructions": "tb_paas_client.models.tenant_solution_template_instructions",
     "TestSmsRequest": "tb_paas_client.models.test_sms_request",
     "TextAlignment": "tb_paas_client.models.text_alignment",
     "ThingsboardCredentialsExpiredResponse": "tb_paas_client.models.thingsboard_credentials_expired_response",

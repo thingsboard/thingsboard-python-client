@@ -12,7 +12,7 @@
       "name": "Apache License Version 2.0",
       "url": "https://github.com/thingsboard/thingsboard/blob/master/LICENSE"
     },
-    "version": "4.3.1.2PE"
+    "version": "4.3.1.3PE"
   },
   "servers": [
     {
@@ -292,10 +292,6 @@
     {
       "name": "sign-up-controller",
       "description": "Sign Up Controller"
-    },
-    {
-      "name": "solution-controller",
-      "description": "Solution Controller"
     },
     {
       "name": "solution-export-import-controller",
@@ -4417,6 +4413,11 @@
               "schema": {
                 "type": "string"
               }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JsonNode"
+              }
             }
           },
           "required": true
@@ -4541,6 +4542,7 @@
             }
           }
         },
+        "deprecated": true,
         "security": [
           {
             "HttpLoginForm": []
@@ -64992,6 +64994,152 @@
         ]
       }
     },
+    "/api/integration/{integrationId}/export-package": {
+      "get": {
+        "tags": [
+          "integration-controller"
+        ],
+        "summary": "Export integration as IoT Hub package",
+        "description": "Returns a ZIP containing integration.json, uplink.json, optional downlink.json, and form.json. Sensitive fields are tokenized via @TemplateField annotations on the integration's runtime POJO.",
+        "operationId": "exportIntegrationPackage",
+        "parameters": [
+          {
+            "name": "integrationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "byte"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
+                },
+                "examples": {
+                  "error-code-400": {
+                    "summary": "Bad Request",
+                    "value": {
+                      "status": 400,
+                      "message": "Invalid UUID string: 123",
+                      "errorCode": 31,
+                      "timestamp": 1609459200000
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
+                },
+                "examples": {
+                  "error-code-401": {
+                    "summary": "Unauthorized",
+                    "value": {
+                      "status": 401,
+                      "message": "Authentication failed",
+                      "errorCode": 10,
+                      "timestamp": 1609459200000
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
+                },
+                "examples": {
+                  "error-code-403": {
+                    "summary": "Forbidden",
+                    "value": {
+                      "status": 403,
+                      "message": "You don't have permission to perform this operation!",
+                      "errorCode": 20,
+                      "timestamp": 1609459200000
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
+                },
+                "examples": {
+                  "error-code-404": {
+                    "summary": "Not Found",
+                    "value": {
+                      "status": 404,
+                      "message": "Requested item wasn't found!",
+                      "errorCode": 32,
+                      "timestamp": 1609459200000
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
+                },
+                "examples": {
+                  "error-code-429": {
+                    "summary": "Too Many Requests",
+                    "value": {
+                      "status": 429,
+                      "message": "Too many requests for current tenant!",
+                      "errorCode": 33,
+                      "timestamp": 1609459200000
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HttpLoginForm": []
+          },
+          {
+            "ApiKeyForm": []
+          }
+        ]
+      }
+    },
     "/api/integrationInfos": {
       "get": {
         "tags": [
@@ -93503,721 +93651,6 @@
                     "value": {
                       "status": 400,
                       "message": "Invalid UUID string: 123",
-                      "errorCode": 31,
-                      "timestamp": 1609459200000
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
-                },
-                "examples": {
-                  "error-code-401": {
-                    "summary": "Unauthorized",
-                    "value": {
-                      "status": 401,
-                      "message": "Authentication failed",
-                      "errorCode": 10,
-                      "timestamp": 1609459200000
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
-                },
-                "examples": {
-                  "error-code-403": {
-                    "summary": "Forbidden",
-                    "value": {
-                      "status": 403,
-                      "message": "You don't have permission to perform this operation!",
-                      "errorCode": 20,
-                      "timestamp": 1609459200000
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
-                },
-                "examples": {
-                  "error-code-404": {
-                    "summary": "Not Found",
-                    "value": {
-                      "status": 404,
-                      "message": "Requested item wasn't found!",
-                      "errorCode": 32,
-                      "timestamp": 1609459200000
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too Many Requests",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
-                },
-                "examples": {
-                  "error-code-429": {
-                    "summary": "Too Many Requests",
-                    "value": {
-                      "status": 429,
-                      "message": "Too many requests for current tenant!",
-                      "errorCode": 33,
-                      "timestamp": 1609459200000
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "HttpLoginForm": []
-          },
-          {
-            "ApiKeyForm": []
-          }
-        ]
-      }
-    },
-    "/api/solutions/templates/details/{solutionTemplateId}": {
-      "get": {
-        "tags": [
-          "solution-controller"
-        ],
-        "summary": "Get Solution template details (getSolutionTemplateDetails)",
-        "description": "Get a solution template details based on the provided id\n\n Security check is performed to verify that the user has 'READ' permission for the entity (entities).",
-        "operationId": "getSolutionTemplateDetails",
-        "parameters": [
-          {
-            "name": "solutionTemplateId",
-            "in": "path",
-            "description": "A string value representing the solution template id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TenantSolutionTemplateDetails"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
-                },
-                "examples": {
-                  "error-code-400": {
-                    "summary": "Bad Request",
-                    "value": {
-                      "status": 400,
-                      "message": "Invalid UUID string: 123",
-                      "errorCode": 31,
-                      "timestamp": 1609459200000
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
-                },
-                "examples": {
-                  "error-code-401": {
-                    "summary": "Unauthorized",
-                    "value": {
-                      "status": 401,
-                      "message": "Authentication failed",
-                      "errorCode": 10,
-                      "timestamp": 1609459200000
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
-                },
-                "examples": {
-                  "error-code-403": {
-                    "summary": "Forbidden",
-                    "value": {
-                      "status": 403,
-                      "message": "You don't have permission to perform this operation!",
-                      "errorCode": 20,
-                      "timestamp": 1609459200000
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
-                },
-                "examples": {
-                  "error-code-404": {
-                    "summary": "Not Found",
-                    "value": {
-                      "status": 404,
-                      "message": "Requested item wasn't found!",
-                      "errorCode": 32,
-                      "timestamp": 1609459200000
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too Many Requests",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
-                },
-                "examples": {
-                  "error-code-429": {
-                    "summary": "Too Many Requests",
-                    "value": {
-                      "status": 429,
-                      "message": "Too many requests for current tenant!",
-                      "errorCode": 33,
-                      "timestamp": 1609459200000
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "HttpLoginForm": []
-          },
-          {
-            "ApiKeyForm": []
-          }
-        ]
-      }
-    },
-    "/api/solutions/templates/infos": {
-      "get": {
-        "tags": [
-          "solution-controller"
-        ],
-        "summary": "Get Solution templates (getSolutionTemplateInfos)",
-        "description": "Get a list of solution template descriptors\n\n Security check is performed to verify that the user has 'READ' permission for the entity (entities).",
-        "operationId": "getSolutionTemplateInfos",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TenantSolutionTemplateInfo"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
-                },
-                "examples": {
-                  "error-code-400": {
-                    "summary": "Bad Request",
-                    "value": {
-                      "status": 400,
-                      "message": "Invalid UUID string: 123",
-                      "errorCode": 31,
-                      "timestamp": 1609459200000
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
-                },
-                "examples": {
-                  "error-code-401": {
-                    "summary": "Unauthorized",
-                    "value": {
-                      "status": 401,
-                      "message": "Authentication failed",
-                      "errorCode": 10,
-                      "timestamp": 1609459200000
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
-                },
-                "examples": {
-                  "error-code-403": {
-                    "summary": "Forbidden",
-                    "value": {
-                      "status": 403,
-                      "message": "You don't have permission to perform this operation!",
-                      "errorCode": 20,
-                      "timestamp": 1609459200000
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
-                },
-                "examples": {
-                  "error-code-404": {
-                    "summary": "Not Found",
-                    "value": {
-                      "status": 404,
-                      "message": "Requested item wasn't found!",
-                      "errorCode": 32,
-                      "timestamp": 1609459200000
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too Many Requests",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
-                },
-                "examples": {
-                  "error-code-429": {
-                    "summary": "Too Many Requests",
-                    "value": {
-                      "status": 429,
-                      "message": "Too many requests for current tenant!",
-                      "errorCode": 33,
-                      "timestamp": 1609459200000
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "HttpLoginForm": []
-          },
-          {
-            "ApiKeyForm": []
-          }
-        ]
-      }
-    },
-    "/api/solutions/templates/instructions/{solutionTemplateId}": {
-      "get": {
-        "tags": [
-          "solution-controller"
-        ],
-        "summary": "Get Solution Template Instructions (getSolutionTemplateInstructions)",
-        "description": "Get a solution template instructions based on the provided id\n\n Security check is performed to verify that the user has 'READ' permission for the entity (entities).",
-        "operationId": "getSolutionTemplateInstructions",
-        "parameters": [
-          {
-            "name": "solutionTemplateId",
-            "in": "path",
-            "description": "A string value representing the solution template id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TenantSolutionTemplateInstructions"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
-                },
-                "examples": {
-                  "error-code-400": {
-                    "summary": "Bad Request",
-                    "value": {
-                      "status": 400,
-                      "message": "Invalid UUID string: 123",
-                      "errorCode": 31,
-                      "timestamp": 1609459200000
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
-                },
-                "examples": {
-                  "error-code-401": {
-                    "summary": "Unauthorized",
-                    "value": {
-                      "status": 401,
-                      "message": "Authentication failed",
-                      "errorCode": 10,
-                      "timestamp": 1609459200000
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
-                },
-                "examples": {
-                  "error-code-403": {
-                    "summary": "Forbidden",
-                    "value": {
-                      "status": 403,
-                      "message": "You don't have permission to perform this operation!",
-                      "errorCode": 20,
-                      "timestamp": 1609459200000
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
-                },
-                "examples": {
-                  "error-code-404": {
-                    "summary": "Not Found",
-                    "value": {
-                      "status": 404,
-                      "message": "Requested item wasn't found!",
-                      "errorCode": 32,
-                      "timestamp": 1609459200000
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too Many Requests",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
-                },
-                "examples": {
-                  "error-code-429": {
-                    "summary": "Too Many Requests",
-                    "value": {
-                      "status": 429,
-                      "message": "Too many requests for current tenant!",
-                      "errorCode": 33,
-                      "timestamp": 1609459200000
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "HttpLoginForm": []
-          },
-          {
-            "ApiKeyForm": []
-          }
-        ]
-      }
-    },
-    "/api/solutions/templates/{solutionTemplateId}/delete": {
-      "delete": {
-        "tags": [
-          "solution-controller"
-        ],
-        "summary": "Uninstall Solution Template (uninstallSolutionTemplate)",
-        "description": "Uninstall solution template based on the provided id\n\n Security check is performed to verify that the user has 'DELETE' permission for the entity (entities).",
-        "operationId": "uninstallSolutionTemplate",
-        "parameters": [
-          {
-            "name": "solutionTemplateId",
-            "in": "path",
-            "description": "A string value representing the solution template id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
-                },
-                "examples": {
-                  "error-code-400": {
-                    "summary": "Bad Request",
-                    "value": {
-                      "status": 400,
-                      "message": "Invalid UUID string: 123",
-                      "errorCode": 31,
-                      "timestamp": 1609459200000
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
-                },
-                "examples": {
-                  "error-code-401": {
-                    "summary": "Unauthorized",
-                    "value": {
-                      "status": 401,
-                      "message": "Authentication failed",
-                      "errorCode": 10,
-                      "timestamp": 1609459200000
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
-                },
-                "examples": {
-                  "error-code-403": {
-                    "summary": "Forbidden",
-                    "value": {
-                      "status": 403,
-                      "message": "You don't have permission to perform this operation!",
-                      "errorCode": 20,
-                      "timestamp": 1609459200000
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
-                },
-                "examples": {
-                  "error-code-404": {
-                    "summary": "Not Found",
-                    "value": {
-                      "status": 404,
-                      "message": "Requested item wasn't found!",
-                      "errorCode": 32,
-                      "timestamp": 1609459200000
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too Many Requests",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
-                },
-                "examples": {
-                  "error-code-429": {
-                    "summary": "Too Many Requests",
-                    "value": {
-                      "status": 429,
-                      "message": "Too many requests for current tenant!",
-                      "errorCode": 33,
-                      "timestamp": 1609459200000
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "HttpLoginForm": []
-          },
-          {
-            "ApiKeyForm": []
-          }
-        ]
-      }
-    },
-    "/api/solutions/templates/{solutionTemplateId}/install": {
-      "post": {
-        "tags": [
-          "solution-controller"
-        ],
-        "summary": "Install Solution Template (installSolutionTemplate)",
-        "description": "Install solution template based on the provided id\n\n Security check is performed to verify that the user has 'WRITE' permission for the entity (entities).",
-        "operationId": "installSolutionTemplate",
-        "parameters": [
-          {
-            "name": "solutionTemplateId",
-            "in": "path",
-            "description": "A string value representing the solution template id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SolutionInstallResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
-                },
-                "examples": {
-                  "error-code-400": {
-                    "summary": "Bad Request",
-                    "value": {
-                      "status": 400,
-                      "message": "Invalid request body",
                       "errorCode": 31,
                       "timestamp": 1609459200000
                     }
@@ -142711,48 +142144,11 @@
           }
         }
       },
-      "SolutionInstallResponse": {
-        "type": "object",
-        "properties": {
-          "dashboardGroupId": {
-            "$ref": "#/components/schemas/EntityGroupId",
-            "description": "Id of the group that contains main dashboard of the solution"
-          },
-          "dashboardId": {
-            "$ref": "#/components/schemas/DashboardId",
-            "description": "Id of the main dashboard of the solution"
-          },
-          "publicId": {
-            "$ref": "#/components/schemas/CustomerId",
-            "description": "Id of the public customer if solution has public entities"
-          },
-          "mainDashboardPublic": {
-            "type": "boolean",
-            "description": "Is the main dashboard public"
-          },
-          "details": {
-            "type": "string",
-            "description": "Markdown with solution usage instructions"
-          },
-          "success": {
-            "type": "boolean",
-            "description": "Indicates that template was installed successfully"
-          }
-        }
-      },
       "SolutionStep": {
         "type": "string",
         "enum": [
           "INITIAL_CONFIGURATION",
           "DASHBOARDS_CONFIGURATION"
-        ]
-      },
-      "SolutionTemplateLevel": {
-        "type": "string",
-        "enum": [
-          "MAKER",
-          "PROTOTYPE",
-          "STARTUP"
         ]
       },
       "SolutionValidationResult": {
@@ -144311,144 +143707,6 @@
           },
           "additionalInfo": {
             "$ref": "#/components/schemas/JsonNode"
-          }
-        }
-      },
-      "TenantSolutionTemplateDetails": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "ID of the solution template",
-            "example": "smart_office"
-          },
-          "title": {
-            "type": "string",
-            "description": "Template Title",
-            "example": "Smart office"
-          },
-          "level": {
-            "$ref": "#/components/schemas/SolutionTemplateLevel",
-            "description": "Level of the subscription that is required to unlock the template",
-            "example": "PROTOTYPE"
-          },
-          "installTimeoutMs": {
-            "type": "integer",
-            "format": "int64",
-            "description": "Timeout for the installation UI to wait while template is installing"
-          },
-          "tenantTelemetryKeys": {
-            "type": "array",
-            "description": "What keys to delete during template uninstall",
-            "items": {
-              "type": "string"
-            }
-          },
-          "tenantAttributeKeys": {
-            "type": "array",
-            "description": "What attributes to delete during template uninstall",
-            "items": {
-              "type": "string"
-            }
-          },
-          "imageUrls": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "highlights": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "installed": {
-            "type": "boolean"
-          }
-        }
-      },
-      "TenantSolutionTemplateInfo": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "ID of the solution template",
-            "example": "smart_office"
-          },
-          "title": {
-            "type": "string",
-            "description": "Template Title",
-            "example": "Smart office"
-          },
-          "level": {
-            "$ref": "#/components/schemas/SolutionTemplateLevel",
-            "description": "Level of the subscription that is required to unlock the template",
-            "example": "PROTOTYPE"
-          },
-          "installTimeoutMs": {
-            "type": "integer",
-            "format": "int64",
-            "description": "Timeout for the installation UI to wait while template is installing"
-          },
-          "tenantTelemetryKeys": {
-            "type": "array",
-            "description": "What keys to delete during template uninstall",
-            "items": {
-              "type": "string"
-            }
-          },
-          "tenantAttributeKeys": {
-            "type": "array",
-            "description": "What attributes to delete during template uninstall",
-            "items": {
-              "type": "string"
-            }
-          },
-          "previewImageUrl": {
-            "type": "string",
-            "description": "URL of the preview image"
-          },
-          "videoPreviewImageUrl": {
-            "type": "string",
-            "description": "Video preview image URL"
-          },
-          "previewMp4Url": {
-            "type": "string",
-            "description": "Video MP4 URL"
-          },
-          "previewWebmUrl": {
-            "type": "string",
-            "description": "Video WEBM URL"
-          },
-          "installed": {
-            "type": "boolean",
-            "description": "Indicates that template is already installed for the current tenant"
-          }
-        }
-      },
-      "TenantSolutionTemplateInstructions": {
-        "type": "object",
-        "properties": {
-          "dashboardGroupId": {
-            "$ref": "#/components/schemas/EntityGroupId",
-            "description": "Id of the group that contains main dashboard of the solution"
-          },
-          "dashboardId": {
-            "$ref": "#/components/schemas/DashboardId",
-            "description": "Id of the main dashboard of the solution"
-          },
-          "publicId": {
-            "$ref": "#/components/schemas/CustomerId",
-            "description": "Id of the public customer if solution has public entities"
-          },
-          "mainDashboardPublic": {
-            "type": "boolean",
-            "description": "Is the main dashboard public"
-          },
-          "details": {
-            "type": "string",
-            "description": "Markdown with solution usage instructions"
           }
         }
       },

@@ -87,7 +87,6 @@ __all__ = [
     "SecretControllerApi",
     "SelfRegistrationControllerApi",
     "SignUpControllerApi",
-    "SolutionControllerApi",
     "SolutionExportImportControllerApi",
     "SubscriptionControllerApi",
     "TbResourceControllerApi",
@@ -179,7 +178,6 @@ if TYPE_CHECKING:
     from tb_paas_client.api.secret_controller_api import SecretControllerApi
     from tb_paas_client.api.self_registration_controller_api import SelfRegistrationControllerApi
     from tb_paas_client.api.sign_up_controller_api import SignUpControllerApi
-    from tb_paas_client.api.solution_controller_api import SolutionControllerApi
     from tb_paas_client.api.solution_export_import_controller_api import SolutionExportImportControllerApi
     from tb_paas_client.api.subscription_controller_api import SubscriptionControllerApi
     from tb_paas_client.api.tb_resource_controller_api import TbResourceControllerApi
@@ -270,7 +268,6 @@ _API_CLASSES = {
     "SecretControllerApi": "tb_paas_client.api.secret_controller_api",
     "SelfRegistrationControllerApi": "tb_paas_client.api.self_registration_controller_api",
     "SignUpControllerApi": "tb_paas_client.api.sign_up_controller_api",
-    "SolutionControllerApi": "tb_paas_client.api.solution_controller_api",
     "SolutionExportImportControllerApi": "tb_paas_client.api.solution_export_import_controller_api",
     "SubscriptionControllerApi": "tb_paas_client.api.subscription_controller_api",
     "TbResourceControllerApi": "tb_paas_client.api.tb_resource_controller_api",

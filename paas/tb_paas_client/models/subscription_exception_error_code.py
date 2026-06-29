@@ -36,7 +36,6 @@ class SubscriptionExceptionErrorCode(int, Enum):
     NUMBER_4 = 4
     NUMBER_5 = 5
     NUMBER_6 = 6
-    NUMBER_7 = 7
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:
