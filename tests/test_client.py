@@ -41,6 +41,61 @@ class TestThingsboardClientJWTLogin(unittest.TestCase):
         # Token stored in auth manager
         self.assertEqual(client.get_token(), mock_resp.token)
 
+    def test_jwt_login_seeds_configuration_api_key(self):
+        """AUTH-01: the login token is installed into configuration, not only the auth manager.
+
+        Configuration.auth_settings() emits the X-Authorization header only when
+        'ApiKeyForm' is already present in configuration.api_key, and the
+        refresh_api_key_hook that would install it runs *inside* that same check
+        (get_api_key_with_prefix). Storing the token on the auth manager alone
+        therefore leaves every request unauthenticated. api_key= and token= auth
+        both seed the slot at construction; JWT login must do the same.
+        """
+        mock_resp = _mock_login_response()
+        with patch(
+            "tb_ce_client.api.login_endpoint_api.LoginEndpointApi.login", return_value=mock_resp
+        ):
+            client = ThingsboardClient(URL, "user@tb.io", "pass123")
+        cfg = client.api_client.configuration
+        self.assertEqual(cfg.api_key.get("ApiKeyForm"), mock_resp.token)
+        self.assertEqual(cfg.api_key_prefix.get("ApiKeyForm"), "Bearer")
+
+    def test_jwt_login_emits_x_authorization_header(self):
+        """AUTH-01: auth_settings() yields the header an API request actually sends.
+
+        This is the end-to-end assertion through the generated gate — it fails
+        whenever the token never reaches configuration, which is what produces
+        HTTP 401 on every call after a successful login.
+        """
+        mock_resp = _mock_login_response()
+        with patch(
+            "tb_ce_client.api.login_endpoint_api.LoginEndpointApi.login", return_value=mock_resp
+        ):
+            client = ThingsboardClient(URL, "user@tb.io", "pass123")
+        auth = client.api_client.configuration.auth_settings()
+        self.assertIn("ApiKeyForm", auth)
+        self.assertEqual(auth["ApiKeyForm"]["key"], "X-Authorization")
+        self.assertEqual(auth["ApiKeyForm"]["value"], f"Bearer {mock_resp.token}")
+
+    def test_jwt_header_follows_token_rotation(self):
+        """AUTH-02: once seeded, the hook keeps the header in step with new tokens.
+
+        Seeding at login time is sufficient — it does not freeze the first token.
+        The refresh hook now runs before every request, so a token replaced by
+        refresh or re-login is picked up on the next call.
+        """
+        mock_resp = _mock_login_response()
+        with patch(
+            "tb_ce_client.api.login_endpoint_api.LoginEndpointApi.login", return_value=mock_resp
+        ):
+            client = ThingsboardClient(URL, "user@tb.io", "pass123")
+        # Simulate what _do_refresh_token / _do_login do on expiry: swap in new tokens.
+        client._auth_manager.on_login(
+            "user@tb.io", "pass123", "rotated.jwt.token", "rotated.jwt.refresh"
+        )
+        auth = client.api_client.configuration.auth_settings()
+        self.assertEqual(auth["ApiKeyForm"]["value"], "Bearer rotated.jwt.token")
+
     def test_api_key_auth(self):
         """WRAP-01, AUTH-05: api_key sets header without calling login()."""
         with patch("tb_ce_client.api.login_endpoint_api.LoginEndpointApi.login") as mock_login:
