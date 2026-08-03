@@ -1,11 +1,15 @@
 """
-Tests validating README.md and ce/docs/tb-examples.md content.
+Tests validating README.md and common/docs/tb-examples.md content.
 
 Validates:
 - README.md existence, quickstart section, code block syntax (DOC-01)
 - README.md uses keyword constructor form: username=... (DOC-01)
-- ce/docs/tb-examples.md existence, required sections, code block syntax (DOC-04)
-- ce/docs/tb-examples.md uses keyword constructor form: username=... (DOC-04)
+- common/docs/tb-examples.md existence, required sections, code block syntax (DOC-04)
+- common/docs/tb-examples.md uses keyword constructor form: username=... (DOC-04)
+
+The examples are checked at their source in common/docs/ rather than in one edition's
+copy: that is the file people edit, and test_common_overlay.py already proves every
+<edition>/docs/ copy is byte-identical to it, so all three editions are covered here.
 """
 
 import ast
@@ -13,6 +17,7 @@ import re
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).parent.parent
+TB_EXAMPLES = REPO_ROOT / "common" / "docs" / "tb-examples.md"
 
 
 # ---------------------------------------------------------------------------
@@ -99,20 +104,20 @@ def test_readme_uses_keyword_constructor():
 
 
 # ---------------------------------------------------------------------------
-# DOC-04: ce/docs/tb-examples.md tests
+# DOC-04: common/docs/tb-examples.md tests
 # ---------------------------------------------------------------------------
 
 
 def test_tb_examples_exists():
-    """ce/docs/tb-examples.md exists."""
-    examples = REPO_ROOT / "ce" / "docs" / "tb-examples.md"
-    assert examples.is_file(), f"ce/docs/tb-examples.md does not exist at {examples}"
+    """common/docs/tb-examples.md exists."""
+    examples = TB_EXAMPLES
+    assert examples.is_file(), f"common/docs/tb-examples.md does not exist at {examples}"
 
 
 def test_tb_examples_required_sections():
-    """ce/docs/tb-examples.md contains all required operation sections."""
-    examples = REPO_ROOT / "ce" / "docs" / "tb-examples.md"
-    assert examples.is_file(), "ce/docs/tb-examples.md does not exist"
+    """common/docs/tb-examples.md contains all required operation sections."""
+    examples = TB_EXAMPLES
+    assert examples.is_file(), "common/docs/tb-examples.md does not exist"
     content = examples.read_text(encoding="utf-8")
     lower = content.lower()
 
@@ -141,32 +146,32 @@ def test_tb_examples_required_sections():
 
 
 def test_tb_examples_code_blocks_valid_python():
-    """All Python code blocks in ce/docs/tb-examples.md are syntactically valid."""
-    examples = REPO_ROOT / "ce" / "docs" / "tb-examples.md"
-    assert examples.is_file(), "ce/docs/tb-examples.md does not exist"
+    """All Python code blocks in common/docs/tb-examples.md are syntactically valid."""
+    examples = TB_EXAMPLES
+    assert examples.is_file(), "common/docs/tb-examples.md does not exist"
     content = examples.read_text(encoding="utf-8")
 
     blocks = _extract_python_blocks(content)
-    assert blocks, "ce/docs/tb-examples.md has no Python code blocks"
+    assert blocks, "common/docs/tb-examples.md has no Python code blocks"
 
     errors = _validate_python_syntax(blocks)
     assert not errors, (
-        "ce/docs/tb-examples.md has Python code blocks with syntax errors:\n"
+        "common/docs/tb-examples.md has Python code blocks with syntax errors:\n"
         + "\n".join(f"  Block {i}: {msg}" for i, msg in errors)
     )
 
 
 def test_tb_examples_uses_keyword_constructor():
-    """ce/docs/tb-examples.md Python code blocks use keyword argument form (username=...)."""
-    examples = REPO_ROOT / "ce" / "docs" / "tb-examples.md"
-    assert examples.is_file(), "ce/docs/tb-examples.md does not exist"
+    """common/docs/tb-examples.md Python code blocks use keyword argument form (username=...)."""
+    examples = TB_EXAMPLES
+    assert examples.is_file(), "common/docs/tb-examples.md does not exist"
     content = examples.read_text(encoding="utf-8")
 
     blocks = _extract_python_blocks(content)
-    assert blocks, "ce/docs/tb-examples.md has no Python code blocks"
+    assert blocks, "common/docs/tb-examples.md has no Python code blocks"
 
     has_keyword_form = any("username=" in block for block in blocks)
     assert has_keyword_form, (
-        "ce/docs/tb-examples.md has no Python code block containing 'username=' "
+        "common/docs/tb-examples.md has no Python code block containing 'username=' "
         "(must use keyword argument form, not positional)"
     )
