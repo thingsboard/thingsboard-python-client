@@ -122,10 +122,8 @@ class _AuthManager:
                       (username/password or an externally supplied token).
         """
         self._base_url = base_url.rstrip("/")
-        # The auth mode is derived from api_key rather than passed in as a mode
-        # name: it never changes, every later decision follows from it (initial
-        # token state, header prefix, whether the hook refreshes), and there is no
-        # spelling of a mode that silently means something other than intended.
+        # Mode is fixed at construction: api_key present -> API key auth, absent -> JWT.
+        # Header prefix, initial token state and hook behaviour all follow from it.
         self._is_api_key = api_key is not None
         self._header_prefix = _API_KEY_PREFIX if self._is_api_key else _JWT_PREFIX
         self._lock = threading.Lock()

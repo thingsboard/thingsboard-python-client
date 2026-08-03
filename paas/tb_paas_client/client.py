@@ -91,9 +91,10 @@ class ThingsboardClient:
                 _RetryingRESTClient. If False, uses plain RESTClientObject.
 
         Raises:
-            ValueError: If more than one of username=, api_key= or token= is given,
-                or if either half of username=/password= or of token=/refresh_token=
-                is given without the other.
+            ValueError: If more than one of username=, api_key= or token= is given;
+                if password= is given without username= or vice versa; or if
+                refresh_token= is given without token=. token= on its own is valid —
+                it simply means no refresh is possible.
         """
         # Must be the very first assignment — prevents __getattr__ infinite recursion
         # if __init__ raises partway through (before self.api_client is set).
@@ -126,7 +127,6 @@ class ThingsboardClient:
 
         configuration = Configuration(host=url)
 
-        # api_key selects the auth mode: present means API key auth, absent means JWT
         auth_manager = _AuthManager(url, api_key)
 
         # Install the refresh hook so the hook fires before every API request

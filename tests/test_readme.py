@@ -130,6 +130,12 @@ def test_tb_examples_required_sections():
     assert "with " in lower or "context manager" in lower, (
         "tb-examples.md missing with-statement section (must contain 'with ' or 'context manager')"
     )
+    assert "pre-existing token" in lower, (
+        "tb-examples.md missing pre-existing token section (must contain 'pre-existing token')"
+    )
+    assert "no authentication" in lower, (
+        "tb-examples.md missing no-authentication section (must contain 'no authentication')"
+    )
 
 
 def test_tb_examples_code_blocks_valid_python():

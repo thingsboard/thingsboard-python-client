@@ -1,11 +1,12 @@
 """
-Guards the common/ -> edition overlay performed by generate-client.sh.
+Guards the common/ -> edition overlays performed by generate-client.sh.
 
-generate-client.sh copies common/ verbatim into every tb_<edition>_client/ package,
-and those copies are committed. Nothing else in CI compares them, so a fix landed in
-common/ but overlaid into only some editions would ship stale code to the rest.
+generate-client.sh copies common/ verbatim into every tb_<edition>_client/ package and
+common/docs/ into every <edition>/docs/, and those copies are committed. Nothing else in
+CI compares them, so a fix landed in common/ but overlaid into only some editions would
+ship stale code — or stale documentation — to the rest.
 
-Both lists are taken from the things that define them rather than hardcoded here:
+Every list is taken from the thing that defines it rather than hardcoded here:
 filenames from common/ itself, editions from generate-client.sh. Adding either a file
 or an edition extends the check with no test edit — and, because the editions come
 from the script rather than from whichever directories happen to exist, an edition
@@ -33,7 +34,7 @@ _EXCLUDED_DIRS_ANY_DEPTH = {"__pycache__"}
 def _overlaid_filenames(root: Path = _COMMON_DIR) -> list[str]:
     """Paths under root that must appear verbatim in every edition package.
 
-    Walks recursively and returns paths relative to root, because
+    Walks recursively and returns forward-slash paths relative to root, because
     generate-client.sh `cp -r`s every entry — subdirectories included.
     """
     names = []
@@ -45,8 +46,20 @@ def _overlaid_filenames(root: Path = _COMMON_DIR) -> list[str]:
             continue
         if _EXCLUDED_DIRS_ANY_DEPTH.intersection(rel.parts):
             continue
-        names.append(str(rel))
+        names.append(rel.as_posix())
     return sorted(names)
+
+
+def _overlaid_doc_filenames() -> list[str]:
+    """Names in common/docs/ that must appear verbatim in every <edition>/docs/.
+
+    Flat rather than recursive: the script overlays these with `cp common/docs/* ...`,
+    which copies top-level entries only.
+    """
+    docs_dir = _COMMON_DIR / "docs"
+    if not docs_dir.is_dir():
+        return []
+    return sorted(p.name for p in docs_dir.iterdir() if p.is_file())
 
 
 def _editions() -> list[str]:
@@ -58,12 +71,13 @@ def _editions() -> list[str]:
 
 
 def test_discovery_finds_filenames_and_editions():
-    """Both derived lists are non-empty.
+    """Every derived list is non-empty.
 
     Without this, a glob or regex that silently matched nothing would collect zero
     parametrized cases and the sync check would vacuously pass.
     """
     assert _overlaid_filenames(), "no overlaid files discovered in common/"
+    assert _overlaid_doc_filenames(), "no overlaid docs discovered in common/docs/"
     assert _editions(), "no editions parsed from generate-client.sh"
 
 
@@ -81,13 +95,16 @@ def test_walk_exclusion_semantics(tmp_path):
     (tmp_path / "sub").mkdir()
     (tmp_path / "sub" / "mod.py").write_text("x")  # kept: nested file
     (tmp_path / "sub" / "__init__.py").write_text("x")  # kept: not at the top level
+    (tmp_path / "sub" / "docs").mkdir()
+    (tmp_path / "sub" / "docs" / "guide.md").write_text("x")  # kept: not at the top level
     (tmp_path / "sub" / "__pycache__").mkdir()
     (tmp_path / "sub" / "__pycache__" / "mod.pyc").write_bytes(b"x")  # excluded: any depth
 
     assert _overlaid_filenames(tmp_path) == [
         "client.py",
-        str(Path("sub") / "__init__.py"),
-        str(Path("sub") / "mod.py"),
+        "sub/__init__.py",
+        "sub/docs/guide.md",
+        "sub/mod.py",
     ]
 
 
@@ -103,4 +120,24 @@ def test_edition_copy_matches_common(edition, filename):
         f"{copy.relative_to(_REPO_ROOT)} is out of sync with common/{filename}. "
         f"Edit common/{filename} and re-run generate-client.sh (or copy it into "
         f"every tb_*_client/ package)."
+    )
+
+
+@pytest.mark.parametrize("edition", _editions())
+@pytest.mark.parametrize("filename", _overlaid_doc_filenames())
+def test_edition_doc_copy_matches_common(edition, filename):
+    """Each committed <edition>/docs/ copy is byte-identical to its common/docs/ source.
+
+    The package overlay above skips common/docs because the script sends it to
+    <edition>/docs instead; without this, a hand-edit to one edition's copy of the
+    shared documentation would pass CI unnoticed.
+    """
+    source = _COMMON_DIR / "docs" / filename
+    copy = _REPO_ROOT / edition / "docs" / filename
+
+    assert copy.is_file(), f"{copy} is missing — run generate-client.sh"
+    assert copy.read_bytes() == source.read_bytes(), (
+        f"{copy.relative_to(_REPO_ROOT)} is out of sync with common/docs/{filename}. "
+        f"Edit common/docs/{filename} and re-run generate-client.sh (or copy it into "
+        f"every <edition>/docs/ directory)."
     )

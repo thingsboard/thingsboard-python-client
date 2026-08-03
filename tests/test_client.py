@@ -94,6 +94,20 @@ class TestThingsboardClientJWTLogin(unittest.TestCase):
         self.assertEqual(cfg.api_key.get("ApiKeyForm"), "jwt.payload.sig")
         self.assertEqual(cfg.api_key_prefix.get("ApiKeyForm"), "Bearer")
 
+    def test_preexisting_token_without_refresh_token(self):
+        """token= alone is valid — it just means no refresh is possible.
+
+        The mutual-exclusion and companion checks deliberately do not pair token= with
+        refresh_token=, so this pins the asymmetry the docstring describes.
+        """
+        with patch(_LOGIN_PATCH_TARGET) as mock_login:
+            client = ThingsboardClient(URL, token="jwt.payload.sig")
+        mock_login.assert_not_called()
+        cfg = client.api_client.configuration
+        self.assertEqual(cfg.api_key.get("ApiKeyForm"), "jwt.payload.sig")
+        self.assertEqual(cfg.api_key_prefix.get("ApiKeyForm"), "Bearer")
+        self.assertFalse(client.get_refresh_token())
+
     def test_no_auth_leaves_header_slot_absent(self):
         """A client built without auth kwargs creates no ApiKeyForm slot.
 
