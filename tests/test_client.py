@@ -42,14 +42,18 @@ class TestThingsboardClientJWTLogin(unittest.TestCase):
     def _assert_header_slot(self, client, token, prefix):
         """The X-Authorization slot holds this token, and emits it under this prefix.
 
-        The auth_settings() assertion is the one a user observes — it is what an API
-        request actually sends. It runs the refresh hook, which is the real request
-        path rather than a pure state inspection.
+        The auth_settings() assertions are the ones a user observes — they are the
+        header name and value an API request actually sends. Reading auth_settings()
+        runs the refresh hook, which is the real request path rather than a pure state
+        inspection. The header name is scheme-wide rather than per-mode, but asserting
+        it here is what makes the helper cover what its name claims.
         """
         cfg = client.api_client.configuration
         self.assertEqual(cfg.api_key.get("ApiKeyForm"), token)
         self.assertEqual(cfg.api_key_prefix.get("ApiKeyForm"), prefix)
-        self.assertEqual(cfg.auth_settings()["ApiKeyForm"]["value"], f"{prefix} {token}")
+        emitted = cfg.auth_settings()["ApiKeyForm"]
+        self.assertEqual(emitted["key"], "X-Authorization")
+        self.assertEqual(emitted["value"], f"{prefix} {token}")
 
     def test_jwt_login(self):
         """ThingsboardClient(url, username, password) calls login() and stores tokens."""
@@ -61,12 +65,12 @@ class TestThingsboardClientJWTLogin(unittest.TestCase):
         self.assertEqual(client.get_token(), mock_resp.token)
 
     def test_jwt_login_emits_x_authorization_header(self):
-        """AUTH-01: auth_settings() yields the header an API request actually sends."""
-        client = _logged_in_client()
-        auth = client.api_client.configuration.auth_settings()
-        self.assertIn("ApiKeyForm", auth)
-        self.assertEqual(auth["ApiKeyForm"]["key"], "X-Authorization")
-        self.assertEqual(auth["ApiKeyForm"]["value"], "Bearer test.jwt.token")
+        """AUTH-01: auth_settings() yields the header an API request actually sends.
+
+        The login path is the one mode _assert_header_slot's other callers do not
+        cover — api_key=, token= and token-without-refresh all skip /api/auth/login.
+        """
+        self._assert_header_slot(_logged_in_client(), "test.jwt.token", "Bearer")
 
     def test_jwt_header_follows_token_rotation(self):
         """AUTH-02: seeding at login does not freeze the first token.

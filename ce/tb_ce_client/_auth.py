@@ -154,11 +154,11 @@ class _AuthManager:
         """
         self._token_info = self._build_token_info(token, refresh_token)
 
-    def get_token(self):
+    def get_token(self) -> "str | None":
         """Return the current access token, or None if not yet set."""
         return self._token_info.token
 
-    def get_refresh_token(self):
+    def get_refresh_token(self) -> "str | None":
         """Return the current refresh token, or None if not available."""
         return self._token_info.refresh_token
 

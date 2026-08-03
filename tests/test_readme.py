@@ -17,6 +17,7 @@ twice, so a rule added for one cannot silently miss the other.
 
 import ast
 import re
+from functools import cache
 from pathlib import Path
 
 import pytest
@@ -25,8 +26,7 @@ REPO_ROOT = Path(__file__).parent.parent
 README = REPO_ROOT / "README.md"
 TB_EXAMPLES = REPO_ROOT / "common" / "docs" / "tb-examples.md"
 
-DOCUMENTS = ((README, "README.md"), (TB_EXAMPLES, "common/docs/tb-examples.md"))
-_DOCUMENT_IDS = [label for _, label in DOCUMENTS]
+DOCUMENTS = (README, TB_EXAMPLES)
 
 
 # ---------------------------------------------------------------------------
@@ -34,13 +34,26 @@ _DOCUMENT_IDS = [label for _, label in DOCUMENTS]
 # ---------------------------------------------------------------------------
 
 
-def _extract_python_blocks(text: str) -> list:
-    """Return list of Python code block contents from a markdown string.
+def _label(path: Path) -> str:
+    """Repo-relative name for a document, used for both test ids and messages."""
+    return path.relative_to(REPO_ROOT).as_posix()
 
-    Finds all fenced code blocks marked with ```python ... ``` and returns
-    the text between the fences (excluding the fence lines themselves).
+
+@cache
+def _read(path: Path) -> str:
+    """Read a document once per session — several tests read the same few files."""
+    return path.read_text(encoding="utf-8")
+
+
+def _python_blocks(path: Path) -> list:
+    """Return the document's ```python blocks, asserting it has at least one.
+
+    The non-empty guard keeps a document that lost all its code samples from
+    vacuously satisfying the rules applied to those samples.
     """
-    return re.findall(r"```python\n(.*?)```", text, re.DOTALL)
+    blocks = re.findall(r"```python\n(.*?)```", _read(path), re.DOTALL)
+    assert blocks, f"{_label(path)} has no Python code blocks"
+    return blocks
 
 
 def _validate_python_syntax(blocks: list) -> list:
@@ -63,33 +76,27 @@ def _validate_python_syntax(blocks: list) -> list:
 # ---------------------------------------------------------------------------
 
 
-@pytest.mark.parametrize("path,label", DOCUMENTS, ids=_DOCUMENT_IDS)
-def test_document_exists(path, label):
+@pytest.mark.parametrize("path", DOCUMENTS, ids=_label)
+def test_document_exists(path):
     """The document exists where the other tests expect to find it."""
-    assert path.is_file(), f"{label} does not exist at {path}"
+    assert path.is_file(), f"{_label(path)} does not exist at {path}"
 
 
-@pytest.mark.parametrize("path,label", DOCUMENTS, ids=_DOCUMENT_IDS)
-def test_document_code_blocks_valid_python(path, label):
+@pytest.mark.parametrize("path", DOCUMENTS, ids=_label)
+def test_document_code_blocks_valid_python(path):
     """All Python code blocks in the document are syntactically valid."""
-    blocks = _extract_python_blocks(path.read_text(encoding="utf-8"))
-    assert blocks, f"{label} has no Python code blocks"
-
-    errors = _validate_python_syntax(blocks)
-    assert not errors, f"{label} has Python code blocks with syntax errors:\n" + "\n".join(
+    errors = _validate_python_syntax(_python_blocks(path))
+    assert not errors, f"{_label(path)} has Python code blocks with syntax errors:\n" + "\n".join(
         f"  Block {i}: {msg}" for i, msg in errors
     )
 
 
-@pytest.mark.parametrize("path,label", DOCUMENTS, ids=_DOCUMENT_IDS)
-def test_document_uses_keyword_constructor(path, label):
+@pytest.mark.parametrize("path", DOCUMENTS, ids=_label)
+def test_document_uses_keyword_constructor(path):
     """The document's Python code blocks use keyword argument form (username=...)."""
-    blocks = _extract_python_blocks(path.read_text(encoding="utf-8"))
-    assert blocks, f"{label} has no Python code blocks"
-
-    has_keyword_form = any("username=" in block for block in blocks)
+    has_keyword_form = any("username=" in block for block in _python_blocks(path))
     assert has_keyword_form, (
-        f"{label} has no Python code block containing 'username=' "
+        f"{_label(path)} has no Python code block containing 'username=' "
         "(must use keyword argument form, not positional)"
     )
 
@@ -101,7 +108,7 @@ def test_document_uses_keyword_constructor(path, label):
 
 def test_readme_has_quickstart():
     """README.md contains quickstart section with install, client, and error handling."""
-    content = README.read_text(encoding="utf-8")
+    content = _read(README)
 
     assert "## Quickstart" in content, "README.md missing '## Quickstart' section heading"
     assert "pip install" in content, "README.md missing 'pip install' instruction"
@@ -113,13 +120,9 @@ def test_readme_has_quickstart():
 # DOC-04: common/docs/tb-examples.md only
 # ---------------------------------------------------------------------------
 
-# Matched as headings rather than as bare words: the terms also occur in ordinary prose
+# Matched as whole headings rather than as bare words: these terms also occur in prose
 # and in code samples elsewhere in the file, so a substring survives deleting the very
-# section it is meant to guard. Both known cases were confirmed — "with " matches
-# "…for use with the /api/noauth endpoints", and "device" appears in six sections
-# (Context Manager, Push Telemetry, Error Handling, Read/Save Attributes) besides its
-# own. Anchoring every row keeps the rule uniform rather than leaving the next reader to
-# work out which words happen to be section-exclusive.
+# section it is meant to guard.
 _REQUIRED_HEADINGS = (
     "## JWT Login",
     "## API Key Login",
@@ -134,6 +137,11 @@ _REQUIRED_HEADINGS = (
 
 @pytest.mark.parametrize("heading", _REQUIRED_HEADINGS)
 def test_tb_examples_required_sections(heading):
-    """common/docs/tb-examples.md contains each required section heading."""
-    lower = TB_EXAMPLES.read_text(encoding="utf-8").lower()
-    assert heading.lower() in lower, f"common/docs/tb-examples.md missing '{heading}' section"
+    """common/docs/tb-examples.md contains each required section heading.
+
+    Anchored and case-sensitive, so the assertion means what the tuple spells: a
+    demotion to '### ...' or a change of capitalization fails rather than passing
+    on a substring match.
+    """
+    found = re.search(rf"^{re.escape(heading)}\s*$", _read(TB_EXAMPLES), re.MULTILINE)
+    assert found, f"{_label(TB_EXAMPLES)} missing '{heading}' section"
