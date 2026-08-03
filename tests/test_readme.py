@@ -17,6 +17,7 @@ import re
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).parent.parent
+README = REPO_ROOT / "README.md"
 TB_EXAMPLES = REPO_ROOT / "common" / "docs" / "tb-examples.md"
 
 
@@ -56,15 +57,13 @@ def _validate_python_syntax(blocks: list) -> list:
 
 def test_readme_exists():
     """README.md exists at the repository root."""
-    readme = REPO_ROOT / "README.md"
-    assert readme.is_file(), f"README.md does not exist at {readme}"
+    assert README.is_file(), f"README.md does not exist at {README}"
 
 
 def test_readme_has_quickstart():
     """README.md contains quickstart section with install, client, and error handling."""
-    readme = REPO_ROOT / "README.md"
-    assert readme.is_file(), "README.md does not exist"
-    content = readme.read_text(encoding="utf-8")
+    assert README.is_file(), "README.md does not exist"
+    content = README.read_text(encoding="utf-8")
 
     assert "## Quickstart" in content, "README.md missing '## Quickstart' section heading"
     assert "pip install" in content, "README.md missing 'pip install' instruction"
@@ -74,9 +73,8 @@ def test_readme_has_quickstart():
 
 def test_readme_code_blocks_valid_python():
     """All Python code blocks in README.md are syntactically valid."""
-    readme = REPO_ROOT / "README.md"
-    assert readme.is_file(), "README.md does not exist"
-    content = readme.read_text(encoding="utf-8")
+    assert README.is_file(), "README.md does not exist"
+    content = README.read_text(encoding="utf-8")
 
     blocks = _extract_python_blocks(content)
     assert blocks, "README.md has no Python code blocks"
@@ -89,9 +87,8 @@ def test_readme_code_blocks_valid_python():
 
 def test_readme_uses_keyword_constructor():
     """README.md Python code blocks use keyword argument form (username=...)."""
-    readme = REPO_ROOT / "README.md"
-    assert readme.is_file(), "README.md does not exist"
-    content = readme.read_text(encoding="utf-8")
+    assert README.is_file(), "README.md does not exist"
+    content = README.read_text(encoding="utf-8")
 
     blocks = _extract_python_blocks(content)
     assert blocks, "README.md has no Python code blocks"
@@ -110,33 +107,32 @@ def test_readme_uses_keyword_constructor():
 
 def test_tb_examples_exists():
     """common/docs/tb-examples.md exists."""
-    examples = TB_EXAMPLES
-    assert examples.is_file(), f"common/docs/tb-examples.md does not exist at {examples}"
+    assert TB_EXAMPLES.is_file(), f"common/docs/tb-examples.md does not exist at {TB_EXAMPLES}"
 
 
 def test_tb_examples_required_sections():
     """common/docs/tb-examples.md contains all required operation sections."""
-    examples = TB_EXAMPLES
-    assert examples.is_file(), "common/docs/tb-examples.md does not exist"
-    content = examples.read_text(encoding="utf-8")
+    assert TB_EXAMPLES.is_file(), "common/docs/tb-examples.md does not exist"
+    content = TB_EXAMPLES.read_text(encoding="utf-8")
     lower = content.lower()
 
-    # The JWT section is the one that needs both terms, so it stays its own assertion.
-    assert "jwt" in lower and "login" in lower, (
-        "tb-examples.md missing JWT login section (must contain 'jwt' and 'login')"
-    )
-
     # Each row is one required section and the alternatives that satisfy it — any one
-    # is enough. Add a required section by adding a row. The two auth-mode sections are
-    # matched on their headings, since prose mentioning them in passing is not the point.
+    # is enough. Add a required section by adding a row.
+    #
+    # The auth-mode and usage sections are matched on their headings: their terms also
+    # occur in ordinary prose, so a substring would survive deleting the section itself
+    # (e.g. "for use with the /api/noauth endpoints" satisfies a bare "with "). The
+    # operation rows below stay substring-matched — those words appear only inside the
+    # sections they guard, and matching on content survives a heading being reworded.
     required_sections = (
-        ("api key login", ("api key", "api_key")),
+        ("jwt login", ("## jwt login",)),
+        ("api key login", ("## api key login",)),
         ("pre-existing token", ("## pre-existing token",)),
         ("no authentication", ("## no authentication",)),
+        ("context manager", ("## context manager",)),
         ("device", ("device",)),
         ("telemetry", ("telemetry",)),
         ("alarm", ("alarm",)),
-        ("with-statement", ("with ", "context manager")),
     )
     for name, alternatives in required_sections:
         assert any(alt in lower for alt in alternatives), (
@@ -147,9 +143,8 @@ def test_tb_examples_required_sections():
 
 def test_tb_examples_code_blocks_valid_python():
     """All Python code blocks in common/docs/tb-examples.md are syntactically valid."""
-    examples = TB_EXAMPLES
-    assert examples.is_file(), "common/docs/tb-examples.md does not exist"
-    content = examples.read_text(encoding="utf-8")
+    assert TB_EXAMPLES.is_file(), "common/docs/tb-examples.md does not exist"
+    content = TB_EXAMPLES.read_text(encoding="utf-8")
 
     blocks = _extract_python_blocks(content)
     assert blocks, "common/docs/tb-examples.md has no Python code blocks"
@@ -163,9 +158,8 @@ def test_tb_examples_code_blocks_valid_python():
 
 def test_tb_examples_uses_keyword_constructor():
     """common/docs/tb-examples.md Python code blocks use keyword argument form (username=...)."""
-    examples = TB_EXAMPLES
-    assert examples.is_file(), "common/docs/tb-examples.md does not exist"
-    content = examples.read_text(encoding="utf-8")
+    assert TB_EXAMPLES.is_file(), "common/docs/tb-examples.md does not exist"
+    content = TB_EXAMPLES.read_text(encoding="utf-8")
 
     blocks = _extract_python_blocks(content)
     assert blocks, "common/docs/tb-examples.md has no Python code blocks"

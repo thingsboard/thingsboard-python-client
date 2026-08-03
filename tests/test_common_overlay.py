@@ -22,8 +22,10 @@ _REPO_ROOT = Path(__file__).parent.parent
 _COMMON_DIR = _REPO_ROOT / "common"
 
 # The directory generate-client.sh overlays into <edition>/docs rather than into the
-# package. Named once because three things depend on it agreeing: the package check
-# excludes it, and the docs check uses it as both source and destination.
+# package. Named once for the two source-side uses — the package check excludes it and
+# the docs check reads from it. The destination happens to share the name, but the
+# script hardcodes that separately (`cp "$common_docs_dir/"* "$module_dir/docs/"`), so
+# renaming this constant would not rename the edition directories.
 _DOCS_DIRNAME = "docs"
 
 # Excluded only where they sit at the top level of common/ — a nested file of the
@@ -60,10 +62,16 @@ def _overlaid_doc_filenames(root: Path = _COMMON_DIR / _DOCS_DIRNAME) -> list[st
 
     Flat rather than recursive: the script overlays these with `cp common/docs/* ...`,
     which copies top-level entries only — and would abort on a subdirectory, since it
-    passes no -r. Missing the directory entirely is an error rather than an empty list,
-    so the check can't shrink to zero cases and pass vacuously.
+    passes no -r.
+
+    A missing directory yields an empty list rather than raising, matching what rglob
+    does for _overlaid_filenames. Both then shrink to zero parametrized cases, and
+    test_discovery_finds_filenames_and_editions is the single place that reports it —
+    as a plain test failure, rather than a collection-time error that would take the
+    unrelated package-sync cases down with it.
     """
-    assert root.is_dir(), f"{root} is missing — run generate-client.sh"
+    if not root.is_dir():
+        return []
     return sorted(p.name for p in root.iterdir() if p.is_file())
 
 
@@ -86,12 +94,21 @@ def test_discovery_finds_filenames_and_editions():
     assert _editions(), "no editions parsed from generate-client.sh"
 
 
-def _assert_identical(source: Path, copy: Path, remediation: str) -> None:
-    """Assert copy exists and is byte-identical to source, or explain how to fix it."""
-    assert copy.is_file(), f"{copy} is missing — run generate-client.sh"
+def _assert_identical(source: Path, copy: Path, destinations: str) -> None:
+    """Assert copy exists and is byte-identical to source, or explain how to fix it.
+
+    destinations names where the source has to be copied to, e.g. "every tb_*_client/
+    package" — the rest of the remediation is the same for both callers.
+    """
+    source_rel = source.relative_to(_REPO_ROOT).as_posix()
+    copy_rel = copy.relative_to(_REPO_ROOT).as_posix()
+    remediation = (
+        f"Edit {source_rel} and re-run generate-client.sh (or copy it into {destinations})."
+    )
+
+    assert copy.is_file(), f"{copy_rel} is missing. {remediation}"
     assert copy.read_bytes() == source.read_bytes(), (
-        f"{copy.relative_to(_REPO_ROOT).as_posix()} is out of sync with "
-        f"{source.relative_to(_REPO_ROOT).as_posix()}. {remediation}"
+        f"{copy_rel} is out of sync with {source_rel}. {remediation}"
     )
 
 
@@ -133,6 +150,9 @@ def test_doc_walk_is_flat(tmp_path):
     (tmp_path / "sub" / "nested.md").write_text("x")  # skipped: not a top-level file
 
     assert _overlaid_doc_filenames(tmp_path) == ["tb-examples.md"]
+    # A missing directory degrades to [] rather than raising, the same as rglob does
+    # for _overlaid_filenames; the discovery test is what turns that into a failure.
+    assert _overlaid_doc_filenames(tmp_path / "missing") == []
 
 
 @pytest.mark.parametrize("edition", _editions())
@@ -142,8 +162,7 @@ def test_edition_copy_matches_common(edition, filename):
     _assert_identical(
         _COMMON_DIR / filename,
         _REPO_ROOT / edition / f"tb_{edition}_client" / filename,
-        f"Edit common/{filename} and re-run generate-client.sh (or copy it into "
-        f"every tb_*_client/ package).",
+        "every tb_*_client/ package",
     )
 
 
@@ -159,6 +178,5 @@ def test_edition_doc_copy_matches_common(edition, filename):
     _assert_identical(
         _COMMON_DIR / _DOCS_DIRNAME / filename,
         _REPO_ROOT / edition / _DOCS_DIRNAME / filename,
-        f"Edit common/{_DOCS_DIRNAME}/{filename} and re-run generate-client.sh (or copy "
-        f"it into every <edition>/{_DOCS_DIRNAME}/ directory).",
+        f"every <edition>/{_DOCS_DIRNAME}/ directory",
     )

@@ -39,6 +39,12 @@ def _logged_in_client(token="test.jwt.token", refresh_token="test.jwt.refresh"):
 class TestThingsboardClientJWTLogin(unittest.TestCase):
     """WRAP-01, AUTH-01 integration: username/password login flow."""
 
+    def _assert_header_slot(self, client, token, prefix):
+        """The X-Authorization slot holds this token under this prefix."""
+        cfg = client.api_client.configuration
+        self.assertEqual(cfg.api_key.get("ApiKeyForm"), token)
+        self.assertEqual(cfg.api_key_prefix.get("ApiKeyForm"), prefix)
+
     def test_jwt_login(self):
         """ThingsboardClient(url, username, password) calls login() and stores tokens."""
         mock_resp = _mock_login_response()
@@ -79,15 +85,7 @@ class TestThingsboardClientJWTLogin(unittest.TestCase):
         with patch(_LOGIN_PATCH_TARGET) as mock_login:
             client = ThingsboardClient(URL, api_key="test-key")
         mock_login.assert_not_called()
-        cfg = client.api_client.configuration
-        self.assertEqual(cfg.api_key.get("ApiKeyForm"), "test-key")
-        self.assertEqual(cfg.api_key_prefix.get("ApiKeyForm"), "ApiKey")
-
-    def _assert_bearer_token_installed(self, client, token):
-        """The Bearer header slot is seeded from an externally supplied token."""
-        cfg = client.api_client.configuration
-        self.assertEqual(cfg.api_key.get("ApiKeyForm"), token)
-        self.assertEqual(cfg.api_key_prefix.get("ApiKeyForm"), "Bearer")
+        self._assert_header_slot(client, "test-key", "ApiKey")
 
     def test_preexisting_token(self):
         """WRAP-01, AUTH-06: pre-existing token sets header without login()."""
@@ -96,7 +94,7 @@ class TestThingsboardClientJWTLogin(unittest.TestCase):
                 URL, token="jwt.payload.sig", refresh_token="jwt.refresh.sig"
             )
         mock_login.assert_not_called()
-        self._assert_bearer_token_installed(client, "jwt.payload.sig")
+        self._assert_header_slot(client, "jwt.payload.sig", "Bearer")
         self.assertEqual(client.get_refresh_token(), "jwt.refresh.sig")
 
     def test_preexisting_token_without_refresh_token(self):
@@ -109,7 +107,7 @@ class TestThingsboardClientJWTLogin(unittest.TestCase):
         with patch(_LOGIN_PATCH_TARGET) as mock_login:
             client = ThingsboardClient(URL, token="jwt.payload.sig")
         mock_login.assert_not_called()
-        self._assert_bearer_token_installed(client, "jwt.payload.sig")
+        self._assert_header_slot(client, "jwt.payload.sig", "Bearer")
         self.assertIsNone(client.get_refresh_token())
 
     def test_no_auth_leaves_header_slot_absent(self):

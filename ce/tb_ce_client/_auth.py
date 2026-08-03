@@ -146,7 +146,7 @@ class _AuthManager:
         self._password = password
         self._token_info = self._build_token_info(token, refresh_token)
 
-    def set_external_token(self, token: str, refresh_token=None) -> None:
+    def set_external_token(self, token: str, refresh_token: "str | None" = None) -> None:
         """Set a pre-existing token without storing login credentials.
 
         refresh_token is passed through as-is so that omitting it leaves
@@ -264,7 +264,7 @@ class _AuthManager:
             raise RuntimeError(f"Auth request to {path} returned HTTP {response.status}")
         return json.loads(response.data)
 
-    def _build_token_info(self, token: str, refresh_token: str) -> "_TokenInfo":
+    def _build_token_info(self, token: str, refresh_token: "str | None") -> "_TokenInfo":
         """Parse JWT claims from token and refresh_token; compute clock_diff."""
         now_ms = int(time.time() * 1000)
         token_exp = _parse_jwt_claim_ms(token, "exp")
