@@ -123,6 +123,9 @@ class _AuthManager:
         """
         self._base_url = base_url.rstrip("/")
         self._auth_type = auth_type
+        # The header prefix follows from auth_type and never changes afterwards,
+        # so resolve it once here instead of on every install_header() call.
+        self._header_prefix = _API_KEY_PREFIX if auth_type == "api_key" else _JWT_PREFIX
         self._lock = threading.Lock()
         self._refreshing = False
         self._username = None
@@ -164,11 +167,11 @@ class _AuthManager:
         """
         token = self._token_info.token
         if not token:
+            # No auth configured (e.g. /api/noauth usage) — leave the slot absent
+            # so auth_settings() emits no header at all.
             return
         configuration.api_key[_SECURITY_SCHEME] = token
-        configuration.api_key_prefix[_SECURITY_SCHEME] = (
-            _API_KEY_PREFIX if self._auth_type == "api_key" else _JWT_PREFIX
-        )
+        configuration.api_key_prefix[_SECURITY_SCHEME] = self._header_prefix
 
     def hook(self, configuration) -> None:
         """refresh_api_key_hook implementation.

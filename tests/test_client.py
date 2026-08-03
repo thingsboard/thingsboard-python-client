@@ -9,12 +9,10 @@ import unittest
 from unittest.mock import ANY, MagicMock, patch
 
 from tb_ce_client._retry import _RetryingRESTClient
-
-# conftest.py handles sys.path; this import will work once client.py is copied
 from tb_ce_client.client import ThingsboardClient
 from tb_ce_client.rest import RESTClientObject
 
-from tests.test_auth import _make_refresh_token, _make_token
+from tests._jwt import _make_refresh_token, _make_token
 
 URL = "http://tb-server:9090"
 
@@ -51,12 +49,7 @@ class TestThingsboardClientJWTLogin(unittest.TestCase):
         self.assertEqual(client.get_token(), mock_resp.token)
 
     def test_jwt_login_emits_x_authorization_header(self):
-        """AUTH-01: auth_settings() yields the header an API request actually sends.
-
-        auth_settings() only emits the header when 'ApiKeyForm' is already present
-        in configuration.api_key, so the slot has to be seeded before the refresh
-        hook — which runs inside that same check — can ever take over.
-        """
+        """AUTH-01: auth_settings() yields the header an API request actually sends."""
         client = _logged_in_client()
         auth = client.api_client.configuration.auth_settings()
         self.assertIn("ApiKeyForm", auth)
@@ -99,6 +92,20 @@ class TestThingsboardClientJWTLogin(unittest.TestCase):
         mock_login.assert_not_called()
         cfg = client.api_client.configuration
         self.assertEqual(cfg.api_key.get("ApiKeyForm"), "jwt.payload.sig")
+        self.assertEqual(cfg.api_key_prefix.get("ApiKeyForm"), "Bearer")
+
+    def test_no_auth_leaves_header_slot_absent(self):
+        """A client built without auth kwargs creates no ApiKeyForm slot.
+
+        Legitimate for the /api/noauth endpoints: construction must not raise, and
+        auth_settings() must stay empty so no X-Authorization header is sent.
+        """
+        with patch(_LOGIN_PATCH_TARGET) as mock_login:
+            client = ThingsboardClient(URL)
+        mock_login.assert_not_called()
+        cfg = client.api_client.configuration
+        self.assertNotIn("ApiKeyForm", cfg.api_key)
+        self.assertEqual(cfg.auth_settings(), {})
 
 
 class TestThingsboardClientAuthArgValidation(unittest.TestCase):
@@ -112,20 +119,38 @@ class TestThingsboardClientAuthArgValidation(unittest.TestCase):
         failing with 401 once it expired.
         """
         with patch(_LOGIN_PATCH_TARGET) as mock_login:
-            with self.assertRaises(ValueError):
+            with self.assertRaisesRegex(ValueError, "username, api_key"):
                 ThingsboardClient(URL, "user@tb.io", "pass123", api_key="test-key")
         mock_login.assert_not_called()
 
     def test_api_key_with_token_rejected(self):
         """api_key= plus token= raises."""
-        with self.assertRaises(ValueError):
+        with self.assertRaisesRegex(ValueError, "api_key, token"):
             ThingsboardClient(URL, api_key="test-key", token="jwt.payload.sig")
 
     def test_username_with_token_rejected(self):
         """username= plus token= raises."""
         with patch(_LOGIN_PATCH_TARGET):
-            with self.assertRaises(ValueError):
+            with self.assertRaisesRegex(ValueError, "username, token"):
                 ThingsboardClient(URL, "user@tb.io", "pass123", token="jwt.payload.sig")
+
+    def test_all_three_modes_rejected(self):
+        """All three at once raises and the message names every colliding mode."""
+        with patch(_LOGIN_PATCH_TARGET):
+            with self.assertRaisesRegex(ValueError, "username, api_key, token"):
+                ThingsboardClient(
+                    URL, "user@tb.io", "pass123", api_key="test-key", token="jwt.payload.sig"
+                )
+
+    def test_password_without_username_rejected(self):
+        """password= alone would be silently dropped, so it raises instead."""
+        with self.assertRaisesRegex(ValueError, "password= requires username="):
+            ThingsboardClient(URL, password="pass123")
+
+    def test_refresh_token_without_token_rejected(self):
+        """refresh_token= alone would be silently dropped, so it raises instead."""
+        with self.assertRaisesRegex(ValueError, "refresh_token= requires token="):
+            ThingsboardClient(URL, api_key="test-key", refresh_token="jwt.payload.sig")
 
 
 class TestThingsboardClientStructure(unittest.TestCase):

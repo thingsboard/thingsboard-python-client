@@ -89,7 +89,8 @@ class ThingsboardClient:
                 _RetryingRESTClient. If False, uses plain RESTClientObject.
 
         Raises:
-            ValueError: If more than one of username=, api_key= or token= is given.
+            ValueError: If more than one of username=, api_key= or token= is given,
+                or if password=/refresh_token= is given without its own mode.
         """
         # Must be the very first assignment — prevents __getattr__ infinite recursion
         # if __init__ raises partway through (before self.api_client is set).
@@ -109,6 +110,12 @@ class ThingsboardClient:
                 "ThingsboardClient authentication modes are mutually exclusive; "
                 f"got {', '.join(modes)}"
             )
+        # password= and refresh_token= are only read by their own mode's branch, so
+        # on their own they would be silently dropped and surface later as a 401.
+        if password is not None and username is None:
+            raise ValueError("password= requires username=")
+        if refresh_token is not None and token is None:
+            raise ValueError("refresh_token= requires token=")
 
         configuration = Configuration(host=url)
 
@@ -146,11 +153,7 @@ class ThingsboardClient:
         if token is not None:
             auth_manager.set_external_token(token, refresh_token)
 
-        # Seed the X-Authorization slot for whichever mode was used:
-        # Configuration.auth_settings() only emits the header when the security
-        # scheme is already present in configuration.api_key, so the hook that
-        # would install it can never fire until the slot exists. One seed is
-        # enough — from here the hook keeps the header in step with every refresh.
+        # Seed the header slot for whichever mode ran — see _AuthManager.install_header.
         auth_manager.install_header(configuration)
 
     # ------------------------------------------------------------------
