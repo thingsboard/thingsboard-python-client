@@ -52,6 +52,7 @@ class ThingsboardClient:
     3. Pre-existing token:
          ThingsboardClient(url, token="jwt", refresh_token="jwt")
          Injects an externally obtained JWT; no login call made.
+         refresh_token is optional — omit it for a token that is never refreshed.
 
     The three modes are mutually exclusive — passing more than one raises ValueError.
     All auth arguments are optional: omitting them yields an unauthenticated client
@@ -83,7 +84,8 @@ class ThingsboardClient:
             password: Password for JWT authentication.
             api_key: API key for X-Authorization: ApiKey authentication.
             token: Pre-existing JWT access token.
-            refresh_token: Pre-existing JWT refresh token (used with token=).
+            refresh_token: Pre-existing JWT refresh token (used with token=). Omit it
+                to install a token that is never refreshed.
             max_retries: Maximum retry attempts on HTTP 429 (default 3).
             initial_retry_delay_ms: Base backoff delay in milliseconds (default 1000).
             max_retry_delay_ms: Maximum backoff cap in milliseconds (default 30000).
@@ -93,8 +95,7 @@ class ThingsboardClient:
         Raises:
             ValueError: If more than one of username=, api_key= or token= is given;
                 if password= is given without username= or vice versa; or if
-                refresh_token= is given without token=. token= on its own is valid —
-                it simply means no refresh is possible.
+                refresh_token= is given without token=.
         """
         # Must be the very first assignment — prevents __getattr__ infinite recursion
         # if __init__ raises partway through (before self.api_client is set).

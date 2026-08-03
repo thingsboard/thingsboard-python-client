@@ -111,6 +111,8 @@ class _AuthManager:
     Thread safety: a threading.Lock protects the _refreshing flag so that only
     one concurrent API thread triggers a refresh call. Other threads wait at the
     lock and skip the refresh once the first thread completes.
+
+    The auth mode is decided once in __init__ and never re-derived per request.
     """
 
     def __init__(self, base_url: str, api_key=None):
@@ -122,8 +124,6 @@ class _AuthManager:
                       (username/password or an externally supplied token).
         """
         self._base_url = base_url.rstrip("/")
-        # Mode is fixed at construction: api_key present -> API key auth, absent -> JWT.
-        # Header prefix, initial token state and hook behaviour all follow from it.
         self._is_api_key = api_key is not None
         self._header_prefix = _API_KEY_PREFIX if self._is_api_key else _JWT_PREFIX
         self._lock = threading.Lock()
@@ -147,8 +147,12 @@ class _AuthManager:
         self._token_info = self._build_token_info(token, refresh_token)
 
     def set_external_token(self, token: str, refresh_token=None) -> None:
-        """Set a pre-existing token without storing login credentials."""
-        self._token_info = self._build_token_info(token, refresh_token or "")
+        """Set a pre-existing token without storing login credentials.
+
+        refresh_token is passed through as-is so that omitting it leaves
+        get_refresh_token() returning None, as its docstring promises.
+        """
+        self._token_info = self._build_token_info(token, refresh_token)
 
     def get_token(self):
         """Return the current access token, or None if not yet set."""

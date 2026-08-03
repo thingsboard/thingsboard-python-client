@@ -116,26 +116,28 @@ def test_tb_examples_required_sections():
     content = examples.read_text(encoding="utf-8")
     lower = content.lower()
 
+    # The JWT section is the one that needs both terms, so it stays its own assertion.
     assert "jwt" in lower and "login" in lower, (
         "tb-examples.md missing JWT login section (must contain 'jwt' and 'login')"
     )
-    assert "api key" in lower or "api_key" in lower, (
-        "tb-examples.md missing API key login section (must contain 'api key' or 'api_key')"
+
+    # Each row is one required section and the alternatives that satisfy it — any one
+    # is enough. Add a required section by adding a row. The two auth-mode sections are
+    # matched on their headings, since prose mentioning them in passing is not the point.
+    required_sections = (
+        ("api key login", ("api key", "api_key")),
+        ("pre-existing token", ("## pre-existing token",)),
+        ("no authentication", ("## no authentication",)),
+        ("device", ("device",)),
+        ("telemetry", ("telemetry",)),
+        ("alarm", ("alarm",)),
+        ("with-statement", ("with ", "context manager")),
     )
-    assert "device" in lower, "tb-examples.md missing device section (must contain 'device')"
-    assert "telemetry" in lower, (
-        "tb-examples.md missing telemetry section (must contain 'telemetry')"
-    )
-    assert "alarm" in lower, "tb-examples.md missing alarm section (must contain 'alarm')"
-    assert "with " in lower or "context manager" in lower, (
-        "tb-examples.md missing with-statement section (must contain 'with ' or 'context manager')"
-    )
-    assert "pre-existing token" in lower, (
-        "tb-examples.md missing pre-existing token section (must contain 'pre-existing token')"
-    )
-    assert "no authentication" in lower, (
-        "tb-examples.md missing no-authentication section (must contain 'no authentication')"
-    )
+    for name, alternatives in required_sections:
+        assert any(alt in lower for alt in alternatives), (
+            f"tb-examples.md missing {name} section "
+            f"(must contain one of {', '.join(repr(a) for a in alternatives)})"
+        )
 
 
 def test_tb_examples_code_blocks_valid_python():

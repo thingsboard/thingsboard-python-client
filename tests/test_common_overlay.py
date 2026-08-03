@@ -21,11 +21,16 @@ import pytest
 _REPO_ROOT = Path(__file__).parent.parent
 _COMMON_DIR = _REPO_ROOT / "common"
 
+# The directory generate-client.sh overlays into <edition>/docs rather than into the
+# package. Named once because three things depend on it agreeing: the package check
+# excludes it, and the docs check uses it as both source and destination.
+_DOCS_DIRNAME = "docs"
+
 # Excluded only where they sit at the top level of common/ — a nested file of the
 # same name would still be overlaid verbatim and must stay checked:
 #   docs        — generate-client.sh overlays it into <edition>/docs, not the package
 #   __init__.py — post_process.py merges it with the generated package __init__
-_EXCLUDED_TOP_LEVEL = {"docs", "__init__.py"}
+_EXCLUDED_TOP_LEVEL = {_DOCS_DIRNAME, "__init__.py"}
 
 # Excluded at any depth, because they are build output that is never committed:
 _EXCLUDED_DIRS_ANY_DEPTH = {"__pycache__"}
@@ -50,16 +55,16 @@ def _overlaid_filenames(root: Path = _COMMON_DIR) -> list[str]:
     return sorted(names)
 
 
-def _overlaid_doc_filenames() -> list[str]:
-    """Names in common/docs/ that must appear verbatim in every <edition>/docs/.
+def _overlaid_doc_filenames(root: Path = _COMMON_DIR / _DOCS_DIRNAME) -> list[str]:
+    """Names directly under root that must appear verbatim in every <edition>/docs/.
 
     Flat rather than recursive: the script overlays these with `cp common/docs/* ...`,
-    which copies top-level entries only.
+    which copies top-level entries only — and would abort on a subdirectory, since it
+    passes no -r. Missing the directory entirely is an error rather than an empty list,
+    so the check can't shrink to zero cases and pass vacuously.
     """
-    docs_dir = _COMMON_DIR / "docs"
-    if not docs_dir.is_dir():
-        return []
-    return sorted(p.name for p in docs_dir.iterdir() if p.is_file())
+    assert root.is_dir(), f"{root} is missing — run generate-client.sh"
+    return sorted(p.name for p in root.iterdir() if p.is_file())
 
 
 def _editions() -> list[str]:
@@ -79,6 +84,15 @@ def test_discovery_finds_filenames_and_editions():
     assert _overlaid_filenames(), "no overlaid files discovered in common/"
     assert _overlaid_doc_filenames(), "no overlaid docs discovered in common/docs/"
     assert _editions(), "no editions parsed from generate-client.sh"
+
+
+def _assert_identical(source: Path, copy: Path, remediation: str) -> None:
+    """Assert copy exists and is byte-identical to source, or explain how to fix it."""
+    assert copy.is_file(), f"{copy} is missing — run generate-client.sh"
+    assert copy.read_bytes() == source.read_bytes(), (
+        f"{copy.relative_to(_REPO_ROOT).as_posix()} is out of sync with "
+        f"{source.relative_to(_REPO_ROOT).as_posix()}. {remediation}"
+    )
 
 
 def test_walk_exclusion_semantics(tmp_path):
@@ -108,18 +122,28 @@ def test_walk_exclusion_semantics(tmp_path):
     ]
 
 
+def test_doc_walk_is_flat(tmp_path):
+    """The docs helper takes top-level files only, matching `cp common/docs/*`.
+
+    Kept deliberately flat because the script passes no -r; a subdirectory would abort
+    it, so silently skipping one here is the right behaviour rather than an oversight.
+    """
+    (tmp_path / "tb-examples.md").write_text("x")
+    (tmp_path / "sub").mkdir()
+    (tmp_path / "sub" / "nested.md").write_text("x")  # skipped: not a top-level file
+
+    assert _overlaid_doc_filenames(tmp_path) == ["tb-examples.md"]
+
+
 @pytest.mark.parametrize("edition", _editions())
 @pytest.mark.parametrize("filename", _overlaid_filenames())
 def test_edition_copy_matches_common(edition, filename):
     """Each committed edition copy is byte-identical to its common/ source."""
-    source = _COMMON_DIR / filename
-    copy = _REPO_ROOT / edition / f"tb_{edition}_client" / filename
-
-    assert copy.is_file(), f"{copy} is missing — run generate-client.sh"
-    assert copy.read_bytes() == source.read_bytes(), (
-        f"{copy.relative_to(_REPO_ROOT)} is out of sync with common/{filename}. "
+    _assert_identical(
+        _COMMON_DIR / filename,
+        _REPO_ROOT / edition / f"tb_{edition}_client" / filename,
         f"Edit common/{filename} and re-run generate-client.sh (or copy it into "
-        f"every tb_*_client/ package)."
+        f"every tb_*_client/ package).",
     )
 
 
@@ -132,12 +156,9 @@ def test_edition_doc_copy_matches_common(edition, filename):
     <edition>/docs instead; without this, a hand-edit to one edition's copy of the
     shared documentation would pass CI unnoticed.
     """
-    source = _COMMON_DIR / "docs" / filename
-    copy = _REPO_ROOT / edition / "docs" / filename
-
-    assert copy.is_file(), f"{copy} is missing — run generate-client.sh"
-    assert copy.read_bytes() == source.read_bytes(), (
-        f"{copy.relative_to(_REPO_ROOT)} is out of sync with common/docs/{filename}. "
-        f"Edit common/docs/{filename} and re-run generate-client.sh (or copy it into "
-        f"every <edition>/docs/ directory)."
+    _assert_identical(
+        _COMMON_DIR / _DOCS_DIRNAME / filename,
+        _REPO_ROOT / edition / _DOCS_DIRNAME / filename,
+        f"Edit common/{_DOCS_DIRNAME}/{filename} and re-run generate-client.sh (or copy "
+        f"it into every <edition>/{_DOCS_DIRNAME}/ directory).",
     )

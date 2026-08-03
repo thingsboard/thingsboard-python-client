@@ -83,30 +83,34 @@ class TestThingsboardClientJWTLogin(unittest.TestCase):
         self.assertEqual(cfg.api_key.get("ApiKeyForm"), "test-key")
         self.assertEqual(cfg.api_key_prefix.get("ApiKeyForm"), "ApiKey")
 
+    def _assert_bearer_token_installed(self, client, token):
+        """The Bearer header slot is seeded from an externally supplied token."""
+        cfg = client.api_client.configuration
+        self.assertEqual(cfg.api_key.get("ApiKeyForm"), token)
+        self.assertEqual(cfg.api_key_prefix.get("ApiKeyForm"), "Bearer")
+
     def test_preexisting_token(self):
         """WRAP-01, AUTH-06: pre-existing token sets header without login()."""
         with patch(_LOGIN_PATCH_TARGET) as mock_login:
             client = ThingsboardClient(
-                URL, token="jwt.payload.sig", refresh_token="jwt.payload.sig"
+                URL, token="jwt.payload.sig", refresh_token="jwt.refresh.sig"
             )
         mock_login.assert_not_called()
-        cfg = client.api_client.configuration
-        self.assertEqual(cfg.api_key.get("ApiKeyForm"), "jwt.payload.sig")
-        self.assertEqual(cfg.api_key_prefix.get("ApiKeyForm"), "Bearer")
+        self._assert_bearer_token_installed(client, "jwt.payload.sig")
+        self.assertEqual(client.get_refresh_token(), "jwt.refresh.sig")
 
     def test_preexisting_token_without_refresh_token(self):
-        """token= alone is valid — it just means no refresh is possible.
+        """token= alone is valid — the token is simply never refreshed.
 
         The mutual-exclusion and companion checks deliberately do not pair token= with
-        refresh_token=, so this pins the asymmetry the docstring describes.
+        refresh_token=, so this pins the asymmetry the docstring describes. The refresh
+        token is None rather than "", matching get_refresh_token()'s documented contract.
         """
         with patch(_LOGIN_PATCH_TARGET) as mock_login:
             client = ThingsboardClient(URL, token="jwt.payload.sig")
         mock_login.assert_not_called()
-        cfg = client.api_client.configuration
-        self.assertEqual(cfg.api_key.get("ApiKeyForm"), "jwt.payload.sig")
-        self.assertEqual(cfg.api_key_prefix.get("ApiKeyForm"), "Bearer")
-        self.assertFalse(client.get_refresh_token())
+        self._assert_bearer_token_installed(client, "jwt.payload.sig")
+        self.assertIsNone(client.get_refresh_token())
 
     def test_no_auth_leaves_header_slot_absent(self):
         """A client built without auth kwargs creates no ApiKeyForm slot.

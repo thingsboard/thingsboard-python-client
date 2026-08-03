@@ -49,9 +49,9 @@ client = ThingsboardClient("http://localhost:9090")
 ```
 
 The three authenticated modes above are mutually exclusive — passing more than one
-raises `ValueError`, as does passing `username=`, `password=` or `refresh_token=`
-without its companion argument. `token=` on its own is valid; it simply means no
-refresh is possible.
+raises `ValueError`, as does passing `username=` without `password=` or vice versa, or
+`refresh_token=` without `token=`. `token=` on its own is valid; it simply means the
+token is never refreshed.
 
 ## Context Manager
 
