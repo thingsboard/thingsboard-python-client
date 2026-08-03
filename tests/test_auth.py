@@ -8,7 +8,7 @@ import unittest
 from unittest.mock import MagicMock, patch
 
 from common._auth import _AuthManager, _parse_jwt_claim_ms
-from tests._jwt import _make_jwt, _make_refresh_token, _make_token
+from tests._jwt import make_jwt, make_refresh_token, make_token
 
 # ---------------------------------------------------------------------------
 # Test helpers
@@ -32,14 +32,14 @@ class TestParseJwtClaimMs(unittest.TestCase):
     def test_parse_exp_claim(self):
         """_parse_jwt_claim_ms returns exp * 1000 for a valid JWT."""
         exp_seconds = int(time.time()) + 3600
-        jwt = _make_jwt({"exp": exp_seconds, "iat": int(time.time())})
+        jwt = make_jwt({"exp": exp_seconds, "iat": int(time.time())})
         result = _parse_jwt_claim_ms(jwt, "exp")
         self.assertEqual(result, exp_seconds * 1000)
 
     def test_parse_iat_claim(self):
         """_parse_jwt_claim_ms returns iat * 1000 for the iat claim."""
         iat_seconds = int(time.time())
-        jwt = _make_jwt({"exp": iat_seconds + 3600, "iat": iat_seconds})
+        jwt = make_jwt({"exp": iat_seconds + 3600, "iat": iat_seconds})
         result = _parse_jwt_claim_ms(jwt, "iat")
         self.assertEqual(result, iat_seconds * 1000)
 
@@ -51,7 +51,7 @@ class TestParseJwtClaimMs(unittest.TestCase):
 
     def test_missing_claim_returns_minus_one(self):
         """_parse_jwt_claim_ms returns -1 when the claim key is absent."""
-        jwt = _make_jwt({"sub": "user@example.com"})
+        jwt = make_jwt({"sub": "user@example.com"})
         self.assertEqual(_parse_jwt_claim_ms(jwt, "exp"), -1)
 
     def test_malformed_base64_returns_minus_one(self):
@@ -68,8 +68,8 @@ class TestJwtLogin(unittest.TestCase):
     def test_jwt_login(self):
         """on_login stores credentials and builds _TokenInfo from provided JWTs."""
         auth = _AuthManager("http://tb:9090", "jwt", None)
-        token = _make_token(exp_offset_s=3600, iat_offset_s=0)
-        refresh = _make_refresh_token(exp_offset_s=86400)
+        token = make_token(exp_offset_s=3600, iat_offset_s=0)
+        refresh = make_refresh_token(exp_offset_s=86400)
 
         auth.on_login("user@tb.io", "password", token, refresh)
 
@@ -93,13 +93,13 @@ class TestHookRefreshesExpiredToken(unittest.TestCase):
         """hook() calls /api/auth/token when access token is expired but refresh is valid."""
         auth = _AuthManager("http://tb:9090", "jwt", None)
         # expired access token (exp in the past)
-        old_token = _make_token(exp_offset_s=-3600, iat_offset_s=0)
+        old_token = make_token(exp_offset_s=-3600, iat_offset_s=0)
         # valid refresh token
-        refresh = _make_refresh_token(exp_offset_s=86400)
+        refresh = make_refresh_token(exp_offset_s=86400)
         auth.on_login("user@tb.io", "password", old_token, refresh)
 
-        new_token = _make_token(exp_offset_s=7200, iat_offset_s=0)
-        new_refresh = _make_refresh_token(exp_offset_s=172800)
+        new_token = make_token(exp_offset_s=7200, iat_offset_s=0)
+        new_refresh = make_refresh_token(exp_offset_s=172800)
         new_response_data = {"token": new_token, "refreshToken": new_refresh}
 
         with patch.object(auth, "_raw_post", return_value=new_response_data) as mock_post:
@@ -114,8 +114,8 @@ class TestHookRefreshesExpiredToken(unittest.TestCase):
         """hook() does not call HTTP when access token is still valid."""
         auth = _AuthManager("http://tb:9090", "jwt", None)
         # token valid for an hour
-        token = _make_token(exp_offset_s=3600, iat_offset_s=0)
-        refresh = _make_refresh_token(exp_offset_s=86400)
+        token = make_token(exp_offset_s=3600, iat_offset_s=0)
+        refresh = make_refresh_token(exp_offset_s=86400)
         auth.on_login("user@tb.io", "password", token, refresh)
 
         with patch.object(auth, "_raw_post") as mock_post:
@@ -138,8 +138,8 @@ class TestClockSkewCompensation(unittest.TestCase):
         auth = _AuthManager("http://tb:9090", "jwt", None)
         # iat is 5 seconds ahead of "now" (simulates server clock being 5s ahead)
         skew_s = 5
-        token = _make_token(exp_offset_s=skew_s + 35, iat_offset_s=skew_s)
-        refresh = _make_refresh_token(exp_offset_s=86400)
+        token = make_token(exp_offset_s=skew_s + 35, iat_offset_s=skew_s)
+        refresh = make_refresh_token(exp_offset_s=86400)
 
         auth.on_login("user@tb.io", "password", token, refresh)
 
@@ -165,12 +165,12 @@ class TestReloginOnRefreshExpiry(unittest.TestCase):
     def test_relogin_on_refresh_expiry(self):
         """hook() calls /api/auth/login when both access and refresh tokens are expired."""
         auth = _AuthManager("http://tb:9090", "jwt", None)
-        expired_token = _make_token(exp_offset_s=-7200, iat_offset_s=0)
-        expired_refresh = _make_refresh_token(exp_offset_s=-3600)
+        expired_token = make_token(exp_offset_s=-7200, iat_offset_s=0)
+        expired_refresh = make_refresh_token(exp_offset_s=-3600)
         auth.on_login("user@tb.io", "password", expired_token, expired_refresh)
 
-        new_token = _make_token(exp_offset_s=3600, iat_offset_s=0)
-        new_refresh = _make_refresh_token(exp_offset_s=86400)
+        new_token = make_token(exp_offset_s=3600, iat_offset_s=0)
+        new_refresh = make_refresh_token(exp_offset_s=86400)
         new_response_data = {"token": new_token, "refreshToken": new_refresh}
 
         with patch.object(auth, "_raw_post", return_value=new_response_data) as mock_post:
@@ -184,12 +184,12 @@ class TestReloginOnRefreshExpiry(unittest.TestCase):
         """When refresh fails, _do_login is called as fallback (AUTH-04)."""
         auth = _AuthManager("http://tb:9090", "jwt", None)
         # expired access token, but valid refresh token so _do_refresh_token will be tried first
-        expired_token = _make_token(exp_offset_s=-7200, iat_offset_s=0)
-        valid_refresh = _make_refresh_token(exp_offset_s=86400)
+        expired_token = make_token(exp_offset_s=-7200, iat_offset_s=0)
+        valid_refresh = make_refresh_token(exp_offset_s=86400)
         auth.on_login("user@tb.io", "password", expired_token, valid_refresh)
 
-        new_token = _make_token(exp_offset_s=3600, iat_offset_s=0)
-        new_refresh = _make_refresh_token(exp_offset_s=86400)
+        new_token = make_token(exp_offset_s=3600, iat_offset_s=0)
+        new_refresh = make_refresh_token(exp_offset_s=86400)
         new_response_data = {"token": new_token, "refreshToken": new_refresh}
 
         call_count = [0]
@@ -241,8 +241,8 @@ class TestPreexistingToken(unittest.TestCase):
         """set_external_token parses exp times correctly from provided JWTs."""
         auth = _AuthManager("http://tb:9090", "jwt", None)
         now_s = int(time.time())
-        token = _make_jwt({"exp": now_s + 3600, "iat": now_s})
-        refresh = _make_jwt({"exp": now_s + 86400})
+        token = make_jwt({"exp": now_s + 3600, "iat": now_s})
+        refresh = make_jwt({"exp": now_s + 86400})
 
         auth.set_external_token(token, refresh)
 

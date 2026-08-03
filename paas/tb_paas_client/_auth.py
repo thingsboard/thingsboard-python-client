@@ -122,16 +122,18 @@ class _AuthManager:
             api_key:   The API key string when auth_type='api_key', else None.
         """
         self._base_url = base_url.rstrip("/")
-        self._auth_type = auth_type
-        # The header prefix follows from auth_type and never changes afterwards,
-        # so resolve it once here instead of on every install_header() call.
-        self._header_prefix = _API_KEY_PREFIX if auth_type == "api_key" else _JWT_PREFIX
+        # Resolve the auth mode once: it never changes, and every later decision
+        # (initial token state, header prefix, whether the hook refreshes) follows
+        # from it. Keeping the string comparison here means an unexpected auth_type
+        # can't be read as api_key by one branch and jwt by another.
+        self._is_api_key = auth_type == "api_key"
+        self._header_prefix = _API_KEY_PREFIX if self._is_api_key else _JWT_PREFIX
         self._lock = threading.Lock()
         self._refreshing = False
         self._username = None
         self._password = None
 
-        if auth_type == "api_key":
+        if self._is_api_key:
             self._token_info = _TokenInfo(api_key, None, -1, -1, 0)
         else:
             self._token_info = _TokenInfo.EMPTY  # type: ignore[attr-defined]
@@ -180,7 +182,7 @@ class _AuthManager:
         every API request assembles its X-Authorization header. Checks token
         expiry and refreshes if needed, then updates configuration.api_key.
         """
-        if self._auth_type != "jwt":
+        if self._is_api_key:
             # API key auth — hook is a no-op; the key is set at construction time
             return
         self._refresh_if_needed()

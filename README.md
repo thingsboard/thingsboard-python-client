@@ -75,6 +75,17 @@ client = ThingsboardClient(
 )
 ```
 
+**No authentication:** All auth arguments are optional. Omit them to get a client that
+sends no `X-Authorization` header, for use with the `/api/noauth` endpoints.
+
+```python
+client = ThingsboardClient("http://localhost:9090")
+```
+
+The three authenticated modes are mutually exclusive — passing more than one raises
+`ValueError`, as does passing `password=`, `refresh_token=` or `username=` without its
+companion argument.
+
 ## Resource cleanup
 
 Use the client as a context manager so `close()` is called automatically on exit:

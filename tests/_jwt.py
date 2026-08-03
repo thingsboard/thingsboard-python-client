@@ -10,7 +10,7 @@ import json
 import time
 
 
-def _make_jwt(claims: dict) -> str:
+def make_jwt(claims: dict) -> str:
     """Create a minimal 3-part JWT (header.payload.signature) for testing.
 
     The header and signature are stubs — only the payload is meaningful.
@@ -25,10 +25,10 @@ def _make_jwt(claims: dict) -> str:
     return f"{header}.{payload}.{signature}"
 
 
-def _make_token(exp_offset_s: int, iat_offset_s: int = 0) -> str:
+def make_token(exp_offset_s: int, iat_offset_s: int = 0) -> str:
     """Create a JWT with exp = now + exp_offset_s and iat = now + iat_offset_s."""
     now = int(time.time())
-    return _make_jwt(
+    return make_jwt(
         {
             "exp": now + exp_offset_s,
             "iat": now + iat_offset_s,
@@ -37,10 +37,14 @@ def _make_token(exp_offset_s: int, iat_offset_s: int = 0) -> str:
     )
 
 
-def _make_refresh_token(exp_offset_s: int) -> str:
-    """Create a JWT with exp = now + exp_offset_s (for refresh tokens)."""
+def make_refresh_token(exp_offset_s: int) -> str:
+    """Create a refresh JWT with exp = now + exp_offset_s.
+
+    Kept separate from make_token because ThingsBoard refresh tokens carry no iat
+    claim — _build_token_info() reads iat only from the access token.
+    """
     now = int(time.time())
-    return _make_jwt(
+    return make_jwt(
         {
             "exp": now + exp_offset_s,
             "sub": "user@example.com",

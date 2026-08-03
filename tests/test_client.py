@@ -12,7 +12,7 @@ from tb_ce_client._retry import _RetryingRESTClient
 from tb_ce_client.client import ThingsboardClient
 from tb_ce_client.rest import RESTClientObject
 
-from tests._jwt import _make_refresh_token, _make_token
+from tests._jwt import make_refresh_token, make_token
 
 URL = "http://tb-server:9090"
 
@@ -64,11 +64,11 @@ class TestThingsboardClientJWTLogin(unittest.TestCase):
         through a real /api/auth/token refresh before the header is assembled.
         """
         client = _logged_in_client(
-            token=_make_token(exp_offset_s=-3600),
-            refresh_token=_make_refresh_token(exp_offset_s=86400),
+            token=make_token(exp_offset_s=-3600),
+            refresh_token=make_refresh_token(exp_offset_s=86400),
         )
-        rotated = _make_token(exp_offset_s=3600)
-        refreshed = {"token": rotated, "refreshToken": _make_refresh_token(exp_offset_s=172800)}
+        rotated = make_token(exp_offset_s=3600)
+        refreshed = {"token": rotated, "refreshToken": make_refresh_token(exp_offset_s=172800)}
         with patch.object(client._auth_manager, "_raw_post", return_value=refreshed) as mock_post:
             auth = client.api_client.configuration.auth_settings()
         mock_post.assert_called_once_with("/api/auth/token", ANY)
@@ -150,7 +150,14 @@ class TestThingsboardClientAuthArgValidation(unittest.TestCase):
     def test_refresh_token_without_token_rejected(self):
         """refresh_token= alone would be silently dropped, so it raises instead."""
         with self.assertRaisesRegex(ValueError, "refresh_token= requires token="):
-            ThingsboardClient(URL, api_key="test-key", refresh_token="jwt.payload.sig")
+            ThingsboardClient(URL, refresh_token="jwt.payload.sig")
+
+    def test_username_without_password_rejected(self):
+        """username= alone raises here rather than as a pydantic error from LoginRequest."""
+        with patch(_LOGIN_PATCH_TARGET) as mock_login:
+            with self.assertRaisesRegex(ValueError, "username= requires password="):
+                ThingsboardClient(URL, "user@tb.io")
+        mock_login.assert_not_called()
 
 
 class TestThingsboardClientStructure(unittest.TestCase):

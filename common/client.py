@@ -54,6 +54,8 @@ class ThingsboardClient:
          Injects an externally obtained JWT; no login call made.
 
     The three modes are mutually exclusive — passing more than one raises ValueError.
+    All auth arguments are optional: omitting them yields an unauthenticated client
+    that sends no X-Authorization header, which is what the /api/noauth endpoints want.
 
     Context manager usage:
          with ThingsboardClient(url, api_key="key") as client:
@@ -116,6 +118,10 @@ class ThingsboardClient:
             raise ValueError("password= requires username=")
         if refresh_token is not None and token is None:
             raise ValueError("refresh_token= requires token=")
+        # LoginRequest.password is a required StrictStr, so without this the caller
+        # gets a pydantic ValidationError from inside the generated model instead.
+        if username is not None and password is None:
+            raise ValueError("username= requires password=")
 
         configuration = Configuration(host=url)
 
