@@ -58,8 +58,8 @@ class _TokenInfo:
 
     def __init__(
         self,
-        token,
-        refresh_token,
+        token: "str | None",
+        refresh_token: "str | None",
         token_exp_ts: int,
         refresh_exp_ts: int,
         clock_diff: int,
@@ -115,7 +115,7 @@ class _AuthManager:
     The auth mode is decided once in __init__ and never re-derived per request.
     """
 
-    def __init__(self, base_url: str, api_key=None):
+    def __init__(self, base_url: str, api_key: "str | None" = None):
         """
         Args:
             base_url: ThingsBoard server URL (e.g. "http://tb-server:9090").

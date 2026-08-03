@@ -40,10 +40,16 @@ class TestThingsboardClientJWTLogin(unittest.TestCase):
     """WRAP-01, AUTH-01 integration: username/password login flow."""
 
     def _assert_header_slot(self, client, token, prefix):
-        """The X-Authorization slot holds this token under this prefix."""
+        """The X-Authorization slot holds this token, and emits it under this prefix.
+
+        The auth_settings() assertion is the one a user observes — it is what an API
+        request actually sends. It runs the refresh hook, which is the real request
+        path rather than a pure state inspection.
+        """
         cfg = client.api_client.configuration
         self.assertEqual(cfg.api_key.get("ApiKeyForm"), token)
         self.assertEqual(cfg.api_key_prefix.get("ApiKeyForm"), prefix)
+        self.assertEqual(cfg.auth_settings()["ApiKeyForm"]["value"], f"{prefix} {token}")
 
     def test_jwt_login(self):
         """ThingsboardClient(url, username, password) calls login() and stores tokens."""

@@ -102,8 +102,10 @@ def _assert_identical(source: Path, copy: Path, destinations: str) -> None:
     """
     source_rel = source.relative_to(_REPO_ROOT).as_posix()
     copy_rel = copy.relative_to(_REPO_ROOT).as_posix()
+    # Action-first, so it reads correctly for the missing-copy case too — there the
+    # source is presumably fine and re-running the script is the only step needed.
     remediation = (
-        f"Edit {source_rel} and re-run generate-client.sh (or copy it into {destinations})."
+        f"Run generate-client.sh (or copy {source_rel} into {destinations}) after editing it."
     )
 
     assert copy.is_file(), f"{copy_rel} is missing. {remediation}"
@@ -150,9 +152,18 @@ def test_doc_walk_is_flat(tmp_path):
     (tmp_path / "sub" / "nested.md").write_text("x")  # skipped: not a top-level file
 
     assert _overlaid_doc_filenames(tmp_path) == ["tb-examples.md"]
-    # A missing directory degrades to [] rather than raising, the same as rglob does
-    # for _overlaid_filenames; the discovery test is what turns that into a failure.
-    assert _overlaid_doc_filenames(tmp_path / "missing") == []
+
+
+@pytest.mark.parametrize("walk", (_overlaid_filenames, _overlaid_doc_filenames))
+def test_missing_directory_yields_empty_list(walk, tmp_path):
+    """Both helpers degrade to [] rather than raising when their root is absent.
+
+    _overlaid_doc_filenames documents its guard as matching what rglob already does
+    for _overlaid_filenames; parametrizing over both makes that parity self-enforcing
+    instead of a claim in a docstring. The discovery test is what turns the empty list
+    into a failure — see the note on _overlaid_doc_filenames.
+    """
+    assert walk(tmp_path / "missing") == []
 
 
 @pytest.mark.parametrize("edition", _editions())

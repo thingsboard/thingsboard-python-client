@@ -10,15 +10,23 @@ Validates:
 The examples are checked at their source in common/docs/ rather than in one edition's
 copy: that is the file people edit, and test_common_overlay.py already proves every
 <edition>/docs/ copy is byte-identical to it, so all three editions are covered here.
+
+Checks that apply to both documents are parametrized over DOCUMENTS rather than written
+twice, so a rule added for one cannot silently miss the other.
 """
 
 import ast
 import re
 from pathlib import Path
 
+import pytest
+
 REPO_ROOT = Path(__file__).parent.parent
 README = REPO_ROOT / "README.md"
 TB_EXAMPLES = REPO_ROOT / "common" / "docs" / "tb-examples.md"
+
+DOCUMENTS = ((README, "README.md"), (TB_EXAMPLES, "common/docs/tb-examples.md"))
+_DOCUMENT_IDS = [label for _, label in DOCUMENTS]
 
 
 # ---------------------------------------------------------------------------
@@ -51,18 +59,48 @@ def _validate_python_syntax(blocks: list) -> list:
 
 
 # ---------------------------------------------------------------------------
-# DOC-01: README.md tests
+# DOC-01 / DOC-04: checks that apply to both documents
 # ---------------------------------------------------------------------------
 
 
-def test_readme_exists():
-    """README.md exists at the repository root."""
-    assert README.is_file(), f"README.md does not exist at {README}"
+@pytest.mark.parametrize("path,label", DOCUMENTS, ids=_DOCUMENT_IDS)
+def test_document_exists(path, label):
+    """The document exists where the other tests expect to find it."""
+    assert path.is_file(), f"{label} does not exist at {path}"
+
+
+@pytest.mark.parametrize("path,label", DOCUMENTS, ids=_DOCUMENT_IDS)
+def test_document_code_blocks_valid_python(path, label):
+    """All Python code blocks in the document are syntactically valid."""
+    blocks = _extract_python_blocks(path.read_text(encoding="utf-8"))
+    assert blocks, f"{label} has no Python code blocks"
+
+    errors = _validate_python_syntax(blocks)
+    assert not errors, f"{label} has Python code blocks with syntax errors:\n" + "\n".join(
+        f"  Block {i}: {msg}" for i, msg in errors
+    )
+
+
+@pytest.mark.parametrize("path,label", DOCUMENTS, ids=_DOCUMENT_IDS)
+def test_document_uses_keyword_constructor(path, label):
+    """The document's Python code blocks use keyword argument form (username=...)."""
+    blocks = _extract_python_blocks(path.read_text(encoding="utf-8"))
+    assert blocks, f"{label} has no Python code blocks"
+
+    has_keyword_form = any("username=" in block for block in blocks)
+    assert has_keyword_form, (
+        f"{label} has no Python code block containing 'username=' "
+        "(must use keyword argument form, not positional)"
+    )
+
+
+# ---------------------------------------------------------------------------
+# DOC-01: README.md only
+# ---------------------------------------------------------------------------
 
 
 def test_readme_has_quickstart():
     """README.md contains quickstart section with install, client, and error handling."""
-    assert README.is_file(), "README.md does not exist"
     content = README.read_text(encoding="utf-8")
 
     assert "## Quickstart" in content, "README.md missing '## Quickstart' section heading"
@@ -71,101 +109,31 @@ def test_readme_has_quickstart():
     assert "ApiException" in content, "README.md missing 'ApiException' error handling"
 
 
-def test_readme_code_blocks_valid_python():
-    """All Python code blocks in README.md are syntactically valid."""
-    assert README.is_file(), "README.md does not exist"
-    content = README.read_text(encoding="utf-8")
-
-    blocks = _extract_python_blocks(content)
-    assert blocks, "README.md has no Python code blocks"
-
-    errors = _validate_python_syntax(blocks)
-    assert not errors, "README.md has Python code blocks with syntax errors:\n" + "\n".join(
-        f"  Block {i}: {msg}" for i, msg in errors
-    )
-
-
-def test_readme_uses_keyword_constructor():
-    """README.md Python code blocks use keyword argument form (username=...)."""
-    assert README.is_file(), "README.md does not exist"
-    content = README.read_text(encoding="utf-8")
-
-    blocks = _extract_python_blocks(content)
-    assert blocks, "README.md has no Python code blocks"
-
-    has_keyword_form = any("username=" in block for block in blocks)
-    assert has_keyword_form, (
-        "README.md has no Python code block containing 'username=' "
-        "(must use keyword argument form, not positional)"
-    )
-
-
 # ---------------------------------------------------------------------------
-# DOC-04: common/docs/tb-examples.md tests
+# DOC-04: common/docs/tb-examples.md only
 # ---------------------------------------------------------------------------
 
-
-def test_tb_examples_exists():
-    """common/docs/tb-examples.md exists."""
-    assert TB_EXAMPLES.is_file(), f"common/docs/tb-examples.md does not exist at {TB_EXAMPLES}"
-
-
-def test_tb_examples_required_sections():
-    """common/docs/tb-examples.md contains all required operation sections."""
-    assert TB_EXAMPLES.is_file(), "common/docs/tb-examples.md does not exist"
-    content = TB_EXAMPLES.read_text(encoding="utf-8")
-    lower = content.lower()
-
-    # Each row is one required section and the alternatives that satisfy it — any one
-    # is enough. Add a required section by adding a row.
-    #
-    # The auth-mode and usage sections are matched on their headings: their terms also
-    # occur in ordinary prose, so a substring would survive deleting the section itself
-    # (e.g. "for use with the /api/noauth endpoints" satisfies a bare "with "). The
-    # operation rows below stay substring-matched — those words appear only inside the
-    # sections they guard, and matching on content survives a heading being reworded.
-    required_sections = (
-        ("jwt login", ("## jwt login",)),
-        ("api key login", ("## api key login",)),
-        ("pre-existing token", ("## pre-existing token",)),
-        ("no authentication", ("## no authentication",)),
-        ("context manager", ("## context manager",)),
-        ("device", ("device",)),
-        ("telemetry", ("telemetry",)),
-        ("alarm", ("alarm",)),
-    )
-    for name, alternatives in required_sections:
-        assert any(alt in lower for alt in alternatives), (
-            f"tb-examples.md missing {name} section "
-            f"(must contain one of {', '.join(repr(a) for a in alternatives)})"
-        )
+# Matched as headings rather than as bare words: the terms also occur in ordinary prose
+# and in code samples elsewhere in the file, so a substring survives deleting the very
+# section it is meant to guard. Both known cases were confirmed — "with " matches
+# "…for use with the /api/noauth endpoints", and "device" appears in six sections
+# (Context Manager, Push Telemetry, Error Handling, Read/Save Attributes) besides its
+# own. Anchoring every row keeps the rule uniform rather than leaving the next reader to
+# work out which words happen to be section-exclusive.
+_REQUIRED_HEADINGS = (
+    "## JWT Login",
+    "## API Key Login",
+    "## Pre-existing Token",
+    "## No Authentication",
+    "## Context Manager",
+    "## List Devices",
+    "## Push Telemetry",
+    "## List Alarms",
+)
 
 
-def test_tb_examples_code_blocks_valid_python():
-    """All Python code blocks in common/docs/tb-examples.md are syntactically valid."""
-    assert TB_EXAMPLES.is_file(), "common/docs/tb-examples.md does not exist"
-    content = TB_EXAMPLES.read_text(encoding="utf-8")
-
-    blocks = _extract_python_blocks(content)
-    assert blocks, "common/docs/tb-examples.md has no Python code blocks"
-
-    errors = _validate_python_syntax(blocks)
-    assert not errors, (
-        "common/docs/tb-examples.md has Python code blocks with syntax errors:\n"
-        + "\n".join(f"  Block {i}: {msg}" for i, msg in errors)
-    )
-
-
-def test_tb_examples_uses_keyword_constructor():
-    """common/docs/tb-examples.md Python code blocks use keyword argument form (username=...)."""
-    assert TB_EXAMPLES.is_file(), "common/docs/tb-examples.md does not exist"
-    content = TB_EXAMPLES.read_text(encoding="utf-8")
-
-    blocks = _extract_python_blocks(content)
-    assert blocks, "common/docs/tb-examples.md has no Python code blocks"
-
-    has_keyword_form = any("username=" in block for block in blocks)
-    assert has_keyword_form, (
-        "common/docs/tb-examples.md has no Python code block containing 'username=' "
-        "(must use keyword argument form, not positional)"
-    )
+@pytest.mark.parametrize("heading", _REQUIRED_HEADINGS)
+def test_tb_examples_required_sections(heading):
+    """common/docs/tb-examples.md contains each required section heading."""
+    lower = TB_EXAMPLES.read_text(encoding="utf-8").lower()
+    assert heading.lower() in lower, f"common/docs/tb-examples.md missing '{heading}' section"
