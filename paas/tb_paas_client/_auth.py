@@ -34,6 +34,13 @@ logger = logging.getLogger(__name__)
 # Matches Java's AuthManager.AVG_REQUEST_TIMEOUT (30 seconds in ms)
 AVG_REQUEST_TIMEOUT_MS = 30_000
 
+# Security scheme name and prefixes dictated by the generated configuration.py.
+# Keep them in one place so a spec regeneration that renames the scheme has a
+# single owner instead of literals scattered across client.py and _auth.py.
+_SECURITY_SCHEME = "ApiKeyForm"
+_JWT_PREFIX = "Bearer"
+_API_KEY_PREFIX = "ApiKey"
+
 
 # ---------------------------------------------------------------------------
 # _TokenInfo
@@ -148,6 +155,21 @@ class _AuthManager:
         """Return the current refresh token, or None if not available."""
         return self._token_info.refresh_token
 
+    def install_header(self, configuration) -> None:
+        """Write the current token into configuration's X-Authorization slots.
+
+        Configuration.auth_settings() emits the header only when the security
+        scheme is already present in configuration.api_key, so the slot has to be
+        seeded at construction time before the hook can ever take over.
+        """
+        token = self._token_info.token
+        if not token:
+            return
+        configuration.api_key[_SECURITY_SCHEME] = token
+        configuration.api_key_prefix[_SECURITY_SCHEME] = (
+            _API_KEY_PREFIX if self._auth_type == "api_key" else _JWT_PREFIX
+        )
+
     def hook(self, configuration) -> None:
         """refresh_api_key_hook implementation.
 
@@ -159,10 +181,7 @@ class _AuthManager:
             # API key auth — hook is a no-op; the key is set at construction time
             return
         self._refresh_if_needed()
-        token = self._token_info.token
-        if token:
-            configuration.api_key["ApiKeyForm"] = token
-            configuration.api_key_prefix["ApiKeyForm"] = "Bearer"
+        self.install_header(configuration)
 
     # ------------------------------------------------------------------
     # Internal refresh logic

@@ -38,16 +38,10 @@ _CE_DIR = str(_REPO_ROOT / "ce")
 if _CE_DIR not in sys.path:
     sys.path.insert(0, _CE_DIR)
 
-# Also copy common/client.py to ce/tb_ce_client/client.py if it's missing __getattr__
-# (after implementation the copy happens at test time to avoid stale state)
-import shutil
+# Do not overlay common/client.py onto the ce copy here: the committed copy is what
+# users install, and repairing it at import time would defeat tests/test_common_overlay.py.
 
-_COMMON_CLIENT = _REPO_ROOT / "common" / "client.py"
-_CE_CLIENT = _CE_PKG_DIR / "client.py"
-if _COMMON_CLIENT.exists():
-    shutil.copy2(str(_COMMON_CLIENT), str(_CE_CLIENT))
-
-# Evict any stale tb_ce_client imports so the updated client.py is picked up
+# Evict any stale tb_ce_client imports so the committed client.py is picked up
 for mod_name in list(sys.modules.keys()):
     if mod_name == "tb_ce_client" or mod_name.startswith("tb_ce_client."):
         del sys.modules[mod_name]

@@ -53,6 +53,8 @@ class ThingsboardClient:
          ThingsboardClient(url, token="jwt", refresh_token="jwt")
          Injects an externally obtained JWT; no login call made.
 
+    The three modes are mutually exclusive — passing more than one raises ValueError.
+
     Context manager usage:
          with ThingsboardClient(url, api_key="key") as client:
              devices = client.get_tenant_devices(page_size=10, page=0)
@@ -85,10 +87,28 @@ class ThingsboardClient:
             max_retry_delay_ms: Maximum backoff cap in milliseconds (default 30000).
             retry_on_rate_limit: If True (default), wraps rest_client with
                 _RetryingRESTClient. If False, uses plain RESTClientObject.
+
+        Raises:
+            ValueError: If more than one of username=, api_key= or token= is given.
         """
         # Must be the very first assignment — prevents __getattr__ infinite recursion
         # if __init__ raises partway through (before self.api_client is set).
         self._controllers: dict = {}
+
+        # The three auth modes share a single X-Authorization slot, so combining
+        # them is ambiguous: whichever ran last would win, and under api_key auth
+        # the refresh hook is a no-op, so a JWT installed alongside a key would be
+        # frozen at its initial value and never refreshed.
+        modes = [
+            name
+            for name, value in (("username", username), ("api_key", api_key), ("token", token))
+            if value is not None
+        ]
+        if len(modes) > 1:
+            raise ValueError(
+                "ThingsboardClient authentication modes are mutually exclusive; "
+                f"got {', '.join(modes)}"
+            )
 
         configuration = Configuration(host=url)
 
@@ -98,11 +118,6 @@ class ThingsboardClient:
 
         # Install the refresh hook so the hook fires before every API request
         configuration.refresh_api_key_hook = auth_manager.hook
-
-        # API key auth: set header at construction time
-        if api_key is not None:
-            configuration.api_key["ApiKeyForm"] = api_key
-            configuration.api_key_prefix["ApiKeyForm"] = "ApiKey"
 
         # Build the ApiClient
         api_client = ApiClient(configuration=configuration)
@@ -126,22 +141,17 @@ class ThingsboardClient:
             login_api = LoginEndpointApi(api_client)
             response = login_api.login(LoginRequest(username=username, password=password))
             auth_manager.on_login(username, password, response.token, response.refresh_token)
-            # Seed the header slot, exactly as the api_key and token= branches do.
-            # Configuration.auth_settings() emits X-Authorization only when
-            # 'ApiKeyForm' is already in configuration.api_key, and the hook that
-            # would install it runs inside that same check (via
-            # get_api_key_with_prefix) — so without this seed the hook can never
-            # fire and every request goes out unauthenticated (HTTP 401).
-            # One seed is enough: from here on the hook runs before each request
-            # and keeps the header in step with refresh / re-login.
-            configuration.api_key["ApiKeyForm"] = response.token
-            configuration.api_key_prefix["ApiKeyForm"] = "Bearer"
 
         # Pre-existing token
         if token is not None:
             auth_manager.set_external_token(token, refresh_token)
-            configuration.api_key["ApiKeyForm"] = token
-            configuration.api_key_prefix["ApiKeyForm"] = "Bearer"
+
+        # Seed the X-Authorization slot for whichever mode was used:
+        # Configuration.auth_settings() only emits the header when the security
+        # scheme is already present in configuration.api_key, so the hook that
+        # would install it can never fire until the slot exists. One seed is
+        # enough — from here the hook keeps the header in step with every refresh.
+        auth_manager.install_header(configuration)
 
     # ------------------------------------------------------------------
     # Controller delegation
