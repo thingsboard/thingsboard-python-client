@@ -20,26 +20,30 @@ import pytest
 _REPO_ROOT = Path(__file__).parent.parent
 _COMMON_DIR = _REPO_ROOT / "common"
 
-# Entries in common/ that are deliberately NOT byte-identical in the editions:
+# Excluded only where they sit at the top level of common/ — a nested file of the
+# same name would still be overlaid verbatim and must stay checked:
 #   docs        — generate-client.sh overlays it into <edition>/docs, not the package
 #   __init__.py — post_process.py merges it with the generated package __init__
-#   __pycache__ — build output, never committed
 _EXCLUDED_TOP_LEVEL = {"docs", "__init__.py"}
-_EXCLUDED_DIRS = {"__pycache__"}
+
+# Excluded at any depth, because they are build output that is never committed:
+_EXCLUDED_DIRS_ANY_DEPTH = {"__pycache__"}
 
 
-def _overlaid_filenames() -> list[str]:
-    """Paths under common/ that must appear verbatim in every edition package.
+def _overlaid_filenames(root: Path = _COMMON_DIR) -> list[str]:
+    """Paths under root that must appear verbatim in every edition package.
 
-    Walks recursively and returns paths relative to common/, because
+    Walks recursively and returns paths relative to root, because
     generate-client.sh `cp -r`s every entry — subdirectories included.
     """
     names = []
-    for path in _COMMON_DIR.rglob("*"):
+    for path in root.rglob("*"):
         if not path.is_file():
             continue
-        rel = path.relative_to(_COMMON_DIR)
-        if rel.parts[0] in _EXCLUDED_TOP_LEVEL or _EXCLUDED_DIRS.intersection(rel.parts):
+        rel = path.relative_to(root)
+        if rel.parts[0] in _EXCLUDED_TOP_LEVEL:
+            continue
+        if _EXCLUDED_DIRS_ANY_DEPTH.intersection(rel.parts):
             continue
         names.append(str(rel))
     return sorted(names)
@@ -61,6 +65,30 @@ def test_discovery_finds_filenames_and_editions():
     """
     assert _overlaid_filenames(), "no overlaid files discovered in common/"
     assert _editions(), "no editions parsed from generate-client.sh"
+
+
+def test_walk_exclusion_semantics(tmp_path):
+    """The two exclusion sets are anchored differently — pin that against a fixture.
+
+    common/ is flat today apart from docs/, so nothing real exercises the recursion
+    or the any-depth filter; this checks them now rather than the first time someone
+    adds a subdirectory.
+    """
+    (tmp_path / "client.py").write_text("x")
+    (tmp_path / "__init__.py").write_text("x")  # excluded: top level
+    (tmp_path / "docs").mkdir()
+    (tmp_path / "docs" / "guide.md").write_text("x")  # excluded: under top-level docs
+    (tmp_path / "sub").mkdir()
+    (tmp_path / "sub" / "mod.py").write_text("x")  # kept: nested file
+    (tmp_path / "sub" / "__init__.py").write_text("x")  # kept: not at the top level
+    (tmp_path / "sub" / "__pycache__").mkdir()
+    (tmp_path / "sub" / "__pycache__" / "mod.pyc").write_bytes(b"x")  # excluded: any depth
+
+    assert _overlaid_filenames(tmp_path) == [
+        "client.py",
+        str(Path("sub") / "__init__.py"),
+        str(Path("sub") / "mod.py"),
+    ]
 
 
 @pytest.mark.parametrize("edition", _editions())

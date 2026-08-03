@@ -23,6 +23,35 @@ from tb_ce_client import ThingsboardClient
 client = ThingsboardClient("http://localhost:9090", api_key="your-api-key")
 ```
 
+## Pre-existing Token
+
+Injects an externally obtained JWT; no login call is made.
+
+```python
+from tb_ce_client import ThingsboardClient
+
+client = ThingsboardClient(
+    "http://localhost:9090",
+    token="eyJhbGciOi...",
+    refresh_token="eyJhbGciOi...",
+)
+```
+
+## No Authentication
+
+All auth arguments are optional. Omit them for a client that sends no
+`X-Authorization` header, for use with the `/api/noauth` endpoints.
+
+```python
+from tb_ce_client import ThingsboardClient
+
+client = ThingsboardClient("http://localhost:9090")
+```
+
+The three authenticated modes above are mutually exclusive — passing more than one
+raises `ValueError`, as does passing `username=`, `password=`, `token=` or
+`refresh_token=` without its companion argument.
+
 ## Context Manager
 
 ```python

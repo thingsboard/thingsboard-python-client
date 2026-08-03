@@ -67,7 +67,7 @@ class TestParseJwtClaimMs(unittest.TestCase):
 class TestJwtLogin(unittest.TestCase):
     def test_jwt_login(self):
         """on_login stores credentials and builds _TokenInfo from provided JWTs."""
-        auth = _AuthManager("http://tb:9090", "jwt", None)
+        auth = _AuthManager("http://tb:9090")
         token = make_token(exp_offset_s=3600, iat_offset_s=0)
         refresh = make_refresh_token(exp_offset_s=86400)
 
@@ -91,7 +91,7 @@ class TestJwtLogin(unittest.TestCase):
 class TestHookRefreshesExpiredToken(unittest.TestCase):
     def test_hook_refreshes_expired_token(self):
         """hook() calls /api/auth/token when access token is expired but refresh is valid."""
-        auth = _AuthManager("http://tb:9090", "jwt", None)
+        auth = _AuthManager("http://tb:9090")
         # expired access token (exp in the past)
         old_token = make_token(exp_offset_s=-3600, iat_offset_s=0)
         # valid refresh token
@@ -112,7 +112,7 @@ class TestHookRefreshesExpiredToken(unittest.TestCase):
 
     def test_hook_skips_when_token_valid(self):
         """hook() does not call HTTP when access token is still valid."""
-        auth = _AuthManager("http://tb:9090", "jwt", None)
+        auth = _AuthManager("http://tb:9090")
         # token valid for an hour
         token = make_token(exp_offset_s=3600, iat_offset_s=0)
         refresh = make_refresh_token(exp_offset_s=86400)
@@ -135,7 +135,7 @@ class TestHookRefreshesExpiredToken(unittest.TestCase):
 class TestClockSkewCompensation(unittest.TestCase):
     def test_clock_skew_compensation(self):
         """clock_diff is computed from iat; a 5s server-ahead skew is absorbed into estimates."""
-        auth = _AuthManager("http://tb:9090", "jwt", None)
+        auth = _AuthManager("http://tb:9090")
         # iat is 5 seconds ahead of "now" (simulates server clock being 5s ahead)
         skew_s = 5
         token = make_token(exp_offset_s=skew_s + 35, iat_offset_s=skew_s)
@@ -164,7 +164,7 @@ class TestClockSkewCompensation(unittest.TestCase):
 class TestReloginOnRefreshExpiry(unittest.TestCase):
     def test_relogin_on_refresh_expiry(self):
         """hook() calls /api/auth/login when both access and refresh tokens are expired."""
-        auth = _AuthManager("http://tb:9090", "jwt", None)
+        auth = _AuthManager("http://tb:9090")
         expired_token = make_token(exp_offset_s=-7200, iat_offset_s=0)
         expired_refresh = make_refresh_token(exp_offset_s=-3600)
         auth.on_login("user@tb.io", "password", expired_token, expired_refresh)
@@ -182,7 +182,7 @@ class TestReloginOnRefreshExpiry(unittest.TestCase):
 
     def test_refresh_failure_falls_back_to_relogin(self):
         """When refresh fails, _do_login is called as fallback (AUTH-04)."""
-        auth = _AuthManager("http://tb:9090", "jwt", None)
+        auth = _AuthManager("http://tb:9090")
         # expired access token, but valid refresh token so _do_refresh_token will be tried first
         expired_token = make_token(exp_offset_s=-7200, iat_offset_s=0)
         valid_refresh = make_refresh_token(exp_offset_s=86400)
@@ -220,7 +220,7 @@ class TestReloginOnRefreshExpiry(unittest.TestCase):
 class TestApiKeyAuthNoRefresh(unittest.TestCase):
     def test_api_key_auth_no_refresh(self):
         """hook() returns immediately for api_key auth without making HTTP calls."""
-        auth = _AuthManager("http://tb:9090", "api_key", "test-key-12345")
+        auth = _AuthManager("http://tb:9090", "test-key-12345")
 
         with patch.object(auth, "_raw_post") as mock_post:
             config = _mock_configuration()
@@ -239,7 +239,7 @@ class TestApiKeyAuthNoRefresh(unittest.TestCase):
 class TestPreexistingToken(unittest.TestCase):
     def test_preexisting_token(self):
         """set_external_token parses exp times correctly from provided JWTs."""
-        auth = _AuthManager("http://tb:9090", "jwt", None)
+        auth = _AuthManager("http://tb:9090")
         now_s = int(time.time())
         token = make_jwt({"exp": now_s + 3600, "iat": now_s})
         refresh = make_jwt({"exp": now_s + 86400})

@@ -113,20 +113,20 @@ class _AuthManager:
     lock and skip the refresh once the first thread completes.
     """
 
-    def __init__(self, base_url: str, auth_type: str, api_key=None):
+    def __init__(self, base_url: str, api_key=None):
         """
         Args:
-            base_url:  ThingsBoard server URL (e.g. "http://tb-server:9090").
-                       Trailing slashes are stripped.
-            auth_type: Either 'jwt' (username/password or token) or 'api_key'.
-            api_key:   The API key string when auth_type='api_key', else None.
+            base_url: ThingsBoard server URL (e.g. "http://tb-server:9090").
+                      Trailing slashes are stripped.
+            api_key:  The API key string for API key auth, or None for JWT auth
+                      (username/password or an externally supplied token).
         """
         self._base_url = base_url.rstrip("/")
-        # Resolve the auth mode once: it never changes, and every later decision
-        # (initial token state, header prefix, whether the hook refreshes) follows
-        # from it. Keeping the string comparison here means an unexpected auth_type
-        # can't be read as api_key by one branch and jwt by another.
-        self._is_api_key = auth_type == "api_key"
+        # The auth mode is derived from api_key rather than passed in as a mode
+        # name: it never changes, every later decision follows from it (initial
+        # token state, header prefix, whether the hook refreshes), and there is no
+        # spelling of a mode that silently means something other than intended.
+        self._is_api_key = api_key is not None
         self._header_prefix = _API_KEY_PREFIX if self._is_api_key else _JWT_PREFIX
         self._lock = threading.Lock()
         self._refreshing = False

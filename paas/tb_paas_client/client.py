@@ -39,7 +39,7 @@ class ThingsboardClient:
     """User-facing ThingsBoard client.
 
     Wraps the generated per-controller APIs with authentication management and
-    transparent 429 retry. Supports three authentication modes:
+    transparent 429 retry. Supports three authentication modes, plus unauthenticated:
 
     1. Username + password (JWT):
          ThingsboardClient(url, username, password)
@@ -92,7 +92,8 @@ class ThingsboardClient:
 
         Raises:
             ValueError: If more than one of username=, api_key= or token= is given,
-                or if password=/refresh_token= is given without its own mode.
+                or if either half of username=/password= or of token=/refresh_token=
+                is given without the other.
         """
         # Must be the very first assignment — prevents __getattr__ infinite recursion
         # if __init__ raises partway through (before self.api_client is set).
@@ -125,9 +126,8 @@ class ThingsboardClient:
 
         configuration = Configuration(host=url)
 
-        # Determine auth type
-        auth_type = "api_key" if api_key is not None else "jwt"
-        auth_manager = _AuthManager(url, auth_type, api_key)
+        # api_key selects the auth mode: present means API key auth, absent means JWT
+        auth_manager = _AuthManager(url, api_key)
 
         # Install the refresh hook so the hook fires before every API request
         configuration.refresh_api_key_hook = auth_manager.hook

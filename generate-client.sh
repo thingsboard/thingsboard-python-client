@@ -61,6 +61,8 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+# tests/test_common_overlay.py parses this array to know which editions to check,
+# so keep it on one line at column 0 with double-quoted entries.
 EDITIONS=("ce" "pe" "paas")
 
 VERBOSE=false
