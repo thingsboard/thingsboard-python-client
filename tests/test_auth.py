@@ -3,6 +3,7 @@ Unit tests for common._auth module.
 Covers AUTH-01 through AUTH-06 requirements.
 """
 
+import http.server
 import threading
 import time
 import unittest
@@ -256,18 +257,21 @@ class TestRawPostBounds(unittest.TestCase):
 
         self.assertIsInstance(retries, urllib3.Retry)
         self.assertEqual(
-            (retries.connect, retries.read, retries.status, retries.other), (0, 0, 0, 0)
+            (retries.total, retries.connect, retries.read, retries.status, retries.other),
+            (0, 0, 0, 0, 0),
         )
 
-    def test_still_follows_redirects(self):
-        """Not spelled `retries=False`, which would disable redirect following too.
+    def test_does_not_follow_redirects(self):
+        """The hop count is load-bearing, so pin the exact value like its neighbour.
 
-        The generated RESTClientObject follows redirects, so auth alone breaking against
-        a redirecting deployment would be a confusing partial failure.
+        urllib3 gives each hop a fresh timeout budget, so any allowance multiplies the
+        ceiling; and a followed redirect re-sends username/password to whatever Location
+        names. See _AUTH_RETRIES.
         """
         retries = _raw_post_kwargs(_AuthManager("http://tb:9090")).get("retries")
 
-        self.assertTrue(retries.redirect, "auth requests would stop following redirects")
+        # urllib3 normalises redirect=False to 0.
+        self.assertEqual(retries.redirect, 0)
 
     def test_timeout_is_configurable(self):
         """auth_timeout_ms reaches the request, in seconds."""
@@ -286,6 +290,58 @@ class TestRawPostBounds(unittest.TestCase):
             with self.subTest(auth_timeout_ms=bad):
                 with self.assertRaisesRegex(ValueError, "auth_timeout_ms must be positive"):
                     _AuthManager("http://tb:9090", auth_timeout_ms=bad)
+
+
+class _StubAuthServer:
+    """Local HTTP server answering one canned response, for real _raw_post calls.
+
+    The kwargs tests above prove a setting reaches urllib3; these prove the behaviour
+    that setting exists for.
+    """
+
+    def __init__(self, status, headers=(), body=b""):
+        class Handler(http.server.BaseHTTPRequestHandler):
+            def do_POST(handler):
+                handler.send_response(status)
+                for name, value in headers:
+                    handler.send_header(name, value)
+                handler.send_header("Content-Length", str(len(body)))
+                handler.end_headers()
+                handler.wfile.write(body)
+
+            def log_message(handler, *args):
+                pass
+
+        self._server = http.server.HTTPServer(("127.0.0.1", 0), Handler)
+        self.url = f"http://127.0.0.1:{self._server.server_port}"
+
+    def __enter__(self):
+        threading.Thread(target=self._server.serve_forever, daemon=True).start()
+        return self
+
+    def __exit__(self, *exc):
+        self._server.shutdown()
+        self._server.server_close()
+
+
+class TestRawPostAgainstAServer(unittest.TestCase):
+    def test_successful_login_is_parsed(self):
+        """The happy path works against a real socket, not just a mock."""
+        with _StubAuthServer(200, body=b'{"token": "t", "refreshToken": "r"}') as server:
+            result = _AuthManager(server.url)._raw_post("/api/auth/login", b"{}")
+
+        self.assertEqual(result, {"token": "t", "refreshToken": "r"})
+
+    def test_redirect_is_not_followed_and_says_why(self):
+        """A 3xx surfaces as an error naming the remedy, rather than being followed.
+
+        Following it would forward username/password to the redirect target, so this is
+        the deliberate behaviour rather than a gap — the message has to explain that.
+        """
+        with _StubAuthServer(307, headers=[("Location", "/elsewhere")]) as server:
+            auth = _AuthManager(server.url)
+            with self.assertRaisesRegex(RuntimeError, r"HTTP 307.*pass the final auth URL"):
+                auth._raw_post("/api/auth/login", b"{}")
 
 
 class TestConcurrentRefresh(unittest.TestCase):

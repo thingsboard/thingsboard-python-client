@@ -9,7 +9,7 @@ Validates:
 
 The examples are checked at their source in common/docs/ rather than in one edition's
 copy: that is the file people edit, and test_common_overlay.py already proves every
-<edition>/docs/ copy is byte-identical to it, so all three editions are covered here.
+<edition>/docs/ copy is byte-identical to it, so every edition is covered here.
 
 Checks that apply to both documents are parametrized over DOCUMENTS rather than written
 twice, so a rule added for one cannot silently miss the other.

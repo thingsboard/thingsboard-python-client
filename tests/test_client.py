@@ -218,6 +218,19 @@ class TestThingsboardClientAuthArgValidation(unittest.TestCase):
                         ThingsboardClient(URL, **kwargs)
                 mock_login.assert_not_called()
 
+    def test_non_positive_auth_timeout_rejected(self):
+        """auth_timeout_ms is validated through the public constructor too.
+
+        Rejection happens before the eager login, so a bad value cannot reach the
+        network — the same guarantee the other cases in this class pin.
+        """
+        for bad in (0, -1):
+            with self.subTest(auth_timeout_ms=bad):
+                with patch(_LOGIN_PATCH_TARGET) as mock_login:
+                    with self.assertRaisesRegex(ValueError, "auth_timeout_ms must be positive"):
+                        ThingsboardClient(URL, "user@tb.io", "pass123", auth_timeout_ms=bad)
+                mock_login.assert_not_called()
+
     def test_empty_argument_message_says_what_to_do(self):
         """The empty-argument message carries a remedy, like the mutual-exclusion one."""
         with self.assertRaisesRegex(

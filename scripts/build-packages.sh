@@ -25,9 +25,9 @@
 # What it does:
 #   1. Reads version from root pyproject.toml
 #   2. Cleans dist/
-#   3. Generates all 3 editions via generate-client.sh all
+#   3. Generates each edition in editions.txt via generate-client.sh <edition>
 #   4. For each edition: stamps version, builds wheel + sdist, smoke-tests in clean venv
-#   5. Asserts all 3 wheels have the same version in their filenames
+#   5. Asserts one wheel per edition, all with the same version in their filenames
 #   6. Prints summary of built artifacts
 #
 # Prerequisites:
@@ -200,7 +200,7 @@ for edition in "${EDITIONS[@]}"; do
 done
 
 # ---------------------------------------------------------------------------
-# 6. Final verification: assert all 3 wheels have the same version
+# 6. Final verification: one wheel per edition, all at the same version
 # ---------------------------------------------------------------------------
 info "Final verification"
 

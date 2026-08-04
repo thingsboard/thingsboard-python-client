@@ -38,11 +38,14 @@ AVG_REQUEST_TIMEOUT_MS = 30_000
 # and every API thread now blocks behind an in-flight refresh, so an unresponsive auth
 # endpoint would otherwise hang the whole process rather than one thread.
 #
-# Applied as Timeout(total=...) so it is the real ceiling: a bare float sets connect and
-# read separately and leaves total unbounded.
+# Applied as Timeout(total=...) rather than a bare float, which would set connect and
+# read separately and leave total unbounded. Because _AUTH_RETRIES makes exactly one
+# request — no retry, no redirect — total is the whole ceiling; urllib3 gives each
+# attempt its own budget, so any allowance there would multiply this number.
 DEFAULT_AUTH_TIMEOUT_MS = 30_000
 
-# Retry policy for the raw auth calls, spelled out rather than left to urllib3.
+# Retry policy for the raw auth calls, spelled out rather than left to urllib3, so that
+# exactly one request goes out and DEFAULT_AUTH_TIMEOUT_MS means what it says.
 #
 # No retries: Retry.DEFAULT is total=3, and its connection-error branch never consults
 # allowed_methods, so this POST would retry and cost 4x the ceiling above. Auth POSTs are
@@ -51,11 +54,22 @@ DEFAULT_AUTH_TIMEOUT_MS = 30_000
 # should retry ThingsboardClient(...) itself, since urllib3 has no global deadline that
 # would let us have both.
 #
-# redirect is left on: `retries=False` would be the obvious spelling, but it means
-# Retry(0, read=False), which disables redirect *following* too. The generated
-# RESTClientObject still follows redirects, so auth alone would break against a
-# deployment that redirects (a proxy forcing https, or path normalisation).
-_AUTH_RETRIES = urllib3.Retry(connect=0, read=0, status=0, other=0, redirect=3)
+# No redirects either, which is a departure from the generated RESTClientObject:
+#   - urllib3 clones the timeout per hop instead of drawing down a shared budget, so
+#     following N redirects costs (1 + N) x auth_timeout_ms on the one round-trip every
+#     other API thread is blocked behind.
+#   - the body is re-sent to whatever Location names, with no same-origin restriction,
+#     so a redirect out of the configured server hands username/password to a third host
+#     and _do_login would install the token it returns.
+# The case this gives up is a deployment that redirects auth (a proxy forcing https,
+# path normalisation). Failing loudly is the better answer there: on an http -> https
+# redirect the credentials have already gone out in cleartext, so the fix is to pass the
+# final auth URL as url=, which _raw_post's error tells the caller to do.
+#
+# total is set explicitly: it defaults to 10, and leaving it there would contradict the
+# "exactly one request" this whole block is for, even though the per-class zeros already
+# exhaust first. urllib3 normalises redirect=False to 0.
+_AUTH_RETRIES = urllib3.Retry(total=0, connect=0, read=0, status=0, other=0, redirect=False)
 
 # Security scheme name and prefixes dictated by the generated configuration.py.
 # Keep them in one place so a spec regeneration that renames the scheme has a
@@ -299,9 +313,8 @@ class _AuthManager:
         of using a separate raw HttpClient for AuthManager calls).
 
         Bounded by auth_timeout_ms and _AUTH_RETRIES: this call is on the critical path
-        for every thread waiting on a refresh, so it must not be able to hang forever,
-        and it does not retry. See _AUTH_RETRIES for why that trade is deliberate and
-        why redirects are still followed.
+        for every thread waiting on a refresh, so it makes exactly one request — no
+        retry, no redirect. See _AUTH_RETRIES for why both trades are deliberate.
         """
         http = urllib3.PoolManager()
         response = http.request(
@@ -313,7 +326,14 @@ class _AuthManager:
             retries=_AUTH_RETRIES,
         )
         if response.status != 200:
-            raise RuntimeError(f"Auth request to {path} returned HTTP {response.status}")
+            # 3xx arrives here rather than being followed — say so, since the remedy is
+            # specific and not guessable from the status alone.
+            hint = (
+                "; auth requests do not follow redirects, so pass the final auth URL as url="
+                if 300 <= response.status < 400
+                else ""
+            )
+            raise RuntimeError(f"Auth request to {path} returned HTTP {response.status}{hint}")
         return json.loads(response.data)
 
     def _build_token_info(self, token: str, refresh_token: "str | None") -> "_TokenInfo":
