@@ -14,6 +14,7 @@ whichever directories happen to exist, an edition whose package directory is mis
 fails instead of quietly dropping out.
 """
 
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -76,7 +77,13 @@ def _editions(path: Path = _EDITIONS_FILE) -> list[str]:
     One name per line; blank lines and # comments ignored, matching the read loop in
     generate-client.sh. Reading the list rather than parsing it out of the shell script
     means neither side's formatting is load-bearing for the other.
+
+    A missing file yields an empty list rather than raising, matching the two walk
+    helpers: this runs at collection time from the parametrize decorators below, so
+    raising here would take the unrelated package-sync cases down with it.
     """
+    if not path.is_file():
+        return []
     lines = path.read_text(encoding="utf-8").splitlines()
     return sorted(s for line in lines if (s := line.strip()) and not s.startswith("#"))
 
@@ -89,7 +96,7 @@ def test_discovery_finds_filenames_and_editions():
     """
     assert _overlaid_filenames(), "no overlaid files discovered in common/"
     assert _overlaid_doc_filenames(), "no overlaid docs discovered in common/docs/"
-    assert _editions(), "no editions parsed from generate-client.sh"
+    assert _editions(), f"no editions listed in {_EDITIONS_FILE.name}"
 
 
 def _assert_identical(source: Path, copy: Path, destinations: str) -> None:
@@ -137,12 +144,41 @@ def test_walk_exclusion_semantics(tmp_path):
     ]
 
 
-def test_editions_parsing_matches_the_script(tmp_path):
-    """Blank lines and # comments are ignored, mirroring the script's grep."""
-    listing = tmp_path / "editions.txt"
-    listing.write_text("# a comment\n\nce\n  pe  \n\n# paas is not shipped yet\npaas\n")
+# Lines chosen so that a parser disagreeing with the script's fails: interior
+# whitespace separates `tr -d [:space:]` from str.strip(), a trailing comment separates
+# a naive '#' strip from a whole-line one, and the file ends without a newline.
+_EDITIONS_FIXTURE = "# a comment\n\nce\n  pe  \n\n#  not shipped yet\npa as\nce # note"
 
-    assert _editions(listing) == ["ce", "paas", "pe"]
+
+def test_editions_parsing_matches_the_script(tmp_path):
+    """The Python parser agrees with generate-client.sh on the same file.
+
+    Runs the script rather than a restatement of its rules — the two implementations
+    are the thing at risk of drifting, so pinning only the Python side would let a
+    divergence sit here undetected.
+    """
+    listing = tmp_path / "editions.txt"
+    listing.write_text(_EDITIONS_FIXTURE, encoding="utf-8")
+    script = tmp_path / "generate-client.sh"
+    script.write_bytes((_REPO_ROOT / "generate-client.sh").read_bytes())
+    script.chmod(0o755)
+
+    result = subprocess.run(
+        ["bash", str(script), "--list-editions"],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    from_script = sorted(result.stdout.splitlines())
+
+    assert from_script == _editions(listing)
+    # Spelled out too, so a change that broke both sides identically still fails.
+    assert from_script == ["ce", "ce # note", "pa as", "pe"]
+
+
+def test_editions_missing_file_yields_empty_list(tmp_path):
+    """A lost editions.txt is reported by the discovery test, not by a collection error."""
+    assert _editions(tmp_path / "editions.txt") == []
 
 
 def test_doc_walk_is_flat(tmp_path):

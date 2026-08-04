@@ -27,7 +27,7 @@ ThingsboardClient wires:
 
 import importlib
 
-from ._auth import _AuthManager
+from ._auth import DEFAULT_AUTH_TIMEOUT_MS, _AuthManager
 from ._controller_map import _CONTROLLER_ATTR_MAP, _CONTROLLER_MAP
 from ._retry import _RetryingRESTClient
 from .api_client import ApiClient
@@ -49,7 +49,8 @@ def _validate_auth_args(
     # An empty string passes every "is not None" check below but installs no header,
     # so the client would silently send no credentials at all — the failure mode this
     # validation exists to prevent. Easy to reach via os.environ.get("TB_API_KEY", "").
-    # Checked first so that reaches the caller instead of a downstream collision.
+    # Checked before the rules below so an empty value reports itself rather than the
+    # companion-argument error it would also trip.
     for name, value in (
         ("username", username),
         ("password", password),
@@ -83,12 +84,16 @@ def _validate_auth_args(
     # left to LoginRequest, whose password is a required StrictStr — otherwise the
     # caller gets a pydantic ValidationError from inside the generated model.
     if password is not None and username is None:
-        raise ValueError("password= requires username=")
+        raise ValueError(
+            "password= requires username=; pass both, or omit both for an unauthenticated client."
+        )
     if username is not None and password is None:
-        raise ValueError("username= requires password=")
+        raise ValueError(
+            "username= requires password=; pass both, or omit both for an unauthenticated client."
+        )
     # refresh_token= is likewise read only by the token branch.
     if refresh_token is not None and token is None:
-        raise ValueError("refresh_token= requires token=")
+        raise ValueError("refresh_token= requires token=; pass token=, or omit both.")
 
 
 class ThingsboardClient:
@@ -131,6 +136,7 @@ class ThingsboardClient:
         initial_retry_delay_ms: int = 1_000,
         max_retry_delay_ms: int = 30_000,
         retry_on_rate_limit: bool = True,
+        auth_timeout_ms: int = DEFAULT_AUTH_TIMEOUT_MS,
     ):
         """Construct ThingsboardClient and authenticate.
 
@@ -147,6 +153,8 @@ class ThingsboardClient:
             max_retry_delay_ms: Maximum backoff cap in milliseconds (default 30000).
             retry_on_rate_limit: If True (default), wraps rest_client with
                 _RetryingRESTClient. If False, uses plain RESTClientObject.
+            auth_timeout_ms: Ceiling for a single /api/auth call (default 30000).
+                Bounds how long other threads block behind a token refresh.
 
         Raises:
             ValueError: If more than one of username=, api_key= or token= is given;
@@ -168,7 +176,7 @@ class ThingsboardClient:
 
         configuration = Configuration(host=url)
 
-        auth_manager = _AuthManager(url, api_key)
+        auth_manager = _AuthManager(url, api_key, auth_timeout_ms)
 
         # Install the refresh hook so the hook fires before every API request
         configuration.refresh_api_key_hook = auth_manager.hook

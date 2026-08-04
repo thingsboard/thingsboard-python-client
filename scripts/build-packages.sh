@@ -41,7 +41,12 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$SCRIPT_DIR/.."
 DIST_DIR="$ROOT_DIR/dist"
-EDITIONS=("ce" "pe" "paas")
+# Editions come from generate-client.sh's own parse of editions.txt, so this script
+# never reimplements that format — see the comment on the EDITIONS block there.
+EDITIONS=()
+while read -r line; do
+  EDITIONS+=("$line")
+done < <("$ROOT_DIR/generate-client.sh" --list-editions)
 
 # Add project venv to PATH so that tools installed via pip install (e.g. poetry)
 # are accessible without requiring a manual `source .venv/bin/activate`.

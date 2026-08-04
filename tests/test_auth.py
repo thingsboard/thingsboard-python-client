@@ -8,7 +8,9 @@ import time
 import unittest
 from unittest.mock import MagicMock, patch
 
-from common._auth import _AuthManager, _parse_jwt_claim_ms
+import urllib3
+
+from common._auth import DEFAULT_AUTH_TIMEOUT_MS, _AuthManager, _parse_jwt_claim_ms
 from tests._jwt import make_jwt, make_refresh_token, make_token
 
 # ---------------------------------------------------------------------------
@@ -218,25 +220,45 @@ class TestReloginOnRefreshExpiry(unittest.TestCase):
 # ---------------------------------------------------------------------------
 
 
-class TestRawPostTimeout(unittest.TestCase):
-    def test_raw_post_bounds_the_request(self):
-        """_raw_post passes a timeout — urllib3 defaults to none.
+def _raw_post_kwargs(auth):
+    """Run _raw_post against a mocked PoolManager and return the request kwargs."""
+    response = MagicMock()
+    response.status = 200
+    response.data = b'{"token": "t", "refreshToken": "r"}'
+    with patch("common._auth.urllib3.PoolManager") as mock_pool:
+        mock_pool.return_value.request.return_value = response
+        auth._raw_post("/api/auth/login", b"{}")
+    return mock_pool.return_value.request.call_args.kwargs
 
-        Every API thread blocks behind an in-flight refresh, so an unresponsive auth
-        endpoint without this would hang the process rather than a single thread.
+
+class TestRawPostBounds(unittest.TestCase):
+    """The auth round-trip is the one call every other thread waits on."""
+
+    def test_timeout_is_a_total_and_uses_the_configured_value(self):
+        """The ceiling is a Timeout(total=...), not a bare float.
+
+        A bare float sets connect and read separately and leaves total unbounded, so a
+        slow-drip response would never hit the limit the constant advertises.
         """
-        auth = _AuthManager("http://tb:9090")
-        response = MagicMock()
-        response.status = 200
-        response.data = b'{"token": "t", "refreshToken": "r"}'
+        kwargs = _raw_post_kwargs(_AuthManager("http://tb:9090"))
 
-        with patch("common._auth.urllib3.PoolManager") as mock_pool:
-            mock_pool.return_value.request.return_value = response
-            auth._raw_post("/api/auth/login", b"{}")
+        timeout = kwargs.get("timeout")
+        self.assertIsInstance(timeout, urllib3.Timeout)
+        self.assertEqual(timeout.total, DEFAULT_AUTH_TIMEOUT_MS / 1000)
 
-        timeout = mock_pool.return_value.request.call_args.kwargs.get("timeout")
-        self.assertIsNotNone(timeout, "_raw_post sent no timeout")
-        self.assertGreater(timeout, 0)
+    def test_retries_disabled(self):
+        """urllib3 would otherwise apply Retry.DEFAULT (total=3).
+
+        Its connection-error branch never consults allowed_methods, so this POST would
+        retry too and cost 4x the advertised ceiling before _do_login tries again.
+        """
+        self.assertIs(_raw_post_kwargs(_AuthManager("http://tb:9090")).get("retries"), False)
+
+    def test_timeout_is_configurable(self):
+        """auth_timeout_ms reaches the request, in seconds."""
+        kwargs = _raw_post_kwargs(_AuthManager("http://tb:9090", auth_timeout_ms=1_500))
+
+        self.assertEqual(kwargs["timeout"].total, 1.5)
 
 
 class TestConcurrentRefresh(unittest.TestCase):

@@ -22,7 +22,7 @@
 #   ./generate-client.sh [options] <edition> [base-url]
 #
 # Arguments:
-#   edition    ce | pe | paas | all
+#   edition    one of the names in editions.txt, or "all"
 #   base-url   Optional. Fetches spec from <base-url>/v3/api-docs/thingsboard
 #              and updates the local spec file before generation.
 #              Not supported with "all".
@@ -61,16 +61,25 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# The edition list lives in editions.txt so this script and the tests that check its
-# output read the same source. One name per line; blank lines and # comments ignored.
+# Which editions exist. editions.txt is the shared source for this script,
+# scripts/build-packages.sh and tests/test_common_overlay.py, so none of them has to
+# parse another's formatting. It governs that list only — the per-edition controller
+# thresholds below, and the spec/ directories, still need their own edits.
+#
+# Format: one name per line; blank lines and # comments ignored, surrounding whitespace
+# trimmed. `read -r line` with the default IFS does that trimming, which is exactly
+# str.strip() in the Python mirror — do not add `tr -d [:space:]`, which would also
+# delete whitespace *inside* a line and silently disagree with it.
 EDITIONS=()
+edition_count=0  # counted rather than ${#EDITIONS[@]}, which is unbound under set -u
+                 # on bash < 4.4 when the array is empty
 # `|| [ -n "$line" ]` so a final line with no trailing newline is not dropped.
 while read -r line || [ -n "$line" ]; do
-  line="$(echo "$line" | tr -d '[:space:]')"
   case "$line" in ''|'#'*) continue ;; esac
   EDITIONS+=("$line")
+  edition_count=$((edition_count + 1))
 done < "$SCRIPT_DIR/editions.txt"
-if [ ${#EDITIONS[@]} -eq 0 ]; then
+if [ "$edition_count" -eq 0 ]; then
   echo "Error: no editions listed in $SCRIPT_DIR/editions.txt"; exit 1
 fi
 
@@ -80,14 +89,17 @@ while [ $# -gt 0 ]; do
   case "$1" in
     --verbose) VERBOSE=true; shift ;;
     --dry-run) DRY_RUN=true; shift ;;
+    # Lets tests assert against this script's own parse of editions.txt rather than a
+    # reimplementation of it. Must stay ahead of the JAR download below.
+    --list-editions) printf '%s\n' "${EDITIONS[@]}"; exit 0 ;;
     -*) echo "Unknown option: $1"; exit 1 ;;
     *) break ;;
   esac
 done
 
 if [ $# -eq 0 ]; then
-  echo "Usage: $0 [--verbose] [--dry-run] <edition> [base-url]"
-  echo "  edition: ce | pe | paas | all"
+  echo "Usage: $0 [--verbose] [--dry-run] [--list-editions] <edition> [base-url]"
+  echo "  edition: ${EDITIONS[*]} | all"
   echo "  base-url: optional, fetches spec from <base-url>/v3/api-docs/thingsboard"
   exit 1
 fi

@@ -34,10 +34,15 @@ logger = logging.getLogger(__name__)
 # Matches Java's AuthManager.AVG_REQUEST_TIMEOUT (30 seconds in ms)
 AVG_REQUEST_TIMEOUT_MS = 30_000
 
-# Socket timeout for the raw auth calls. urllib3 defaults to no timeout at all, and
-# every API thread now blocks behind an in-flight refresh, so an unresponsive auth
+# Wall-clock ceiling for a single raw auth call. urllib3 defaults to no timeout at all,
+# and every API thread now blocks behind an in-flight refresh, so an unresponsive auth
 # endpoint would otherwise hang the whole process rather than one thread.
-AUTH_REQUEST_TIMEOUT_S = 30.0
+#
+# Applied as Timeout(total=...) with retries disabled, so it is the real ceiling: a bare
+# float sets connect and read separately and leaves total unbounded, and PoolManager
+# otherwise applies Retry.DEFAULT (total=3) — whose connection-error branch does not
+# consult allowed_methods, so even POST would retry and cost 4x this value.
+DEFAULT_AUTH_TIMEOUT_MS = 30_000
 
 # Security scheme name and prefixes dictated by the generated configuration.py.
 # Keep them in one place so a spec regeneration that renames the scheme has a
@@ -121,14 +126,24 @@ class _AuthManager:
     The auth mode is decided once in __init__ and never re-derived per request.
     """
 
-    def __init__(self, base_url: str, api_key: "str | None" = None):
+    def __init__(
+        self,
+        base_url: str,
+        api_key: "str | None" = None,
+        auth_timeout_ms: int = DEFAULT_AUTH_TIMEOUT_MS,
+    ):
         """
         Args:
             base_url: ThingsBoard server URL (e.g. "http://tb-server:9090").
                       Trailing slashes are stripped.
             api_key:  The API key string for API key auth, or None for JWT auth
                       (username/password or an externally supplied token).
+            auth_timeout_ms: Ceiling for a single /api/auth call, in milliseconds.
+                      Bounds how long every other thread can be blocked behind a
+                      refresh, so it is a knob a slow on-prem server or a
+                      latency-sensitive caller will want to change.
         """
+        self._auth_timeout_s = auth_timeout_ms / 1000
         self._base_url = base_url.rstrip("/")
         self._is_api_key = api_key is not None
         self._header_prefix = _API_KEY_PREFIX if self._is_api_key else _JWT_PREFIX
@@ -265,8 +280,11 @@ class _AuthManager:
         inside the hook, causing infinite recursion (mirrors Java's pattern
         of using a separate raw HttpClient for AuthManager calls).
 
-        Bounded by AUTH_REQUEST_TIMEOUT_S: this call is on the critical path for
-        every thread waiting on a refresh, so it must not be able to hang forever.
+        Bounded by auth_timeout_ms: this call is on the critical path for every thread
+        waiting on a refresh, so it must not be able to hang forever. retries=False
+        because urllib3 would otherwise retry this POST on connection errors — see
+        DEFAULT_AUTH_TIMEOUT_MS — and auth POSTs are not idempotent anyway; a failed
+        refresh already falls back to _do_login.
         """
         http = urllib3.PoolManager()
         response = http.request(
@@ -274,7 +292,8 @@ class _AuthManager:
             self._base_url + path,
             body=body,
             headers={"Content-Type": "application/json"},
-            timeout=AUTH_REQUEST_TIMEOUT_S,
+            timeout=urllib3.Timeout(total=self._auth_timeout_s),
+            retries=False,
         )
         if response.status != 200:
             raise RuntimeError(f"Auth request to {path} returned HTTP {response.status}")
