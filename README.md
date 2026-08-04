@@ -87,6 +87,10 @@ The three authenticated modes are mutually exclusive — passing more than one r
 `refresh_token=` without `token=`. `token=` on its own is valid; it simply means the
 token is never refreshed.
 
+An empty string is also rejected, so `api_key=os.environ.get("TB_API_KEY", "")` raises
+rather than building a client that silently sends no credentials. Omit the auth
+arguments entirely for an unauthenticated client.
+
 ## Resource cleanup
 
 Use the client as a context manager so `close()` is called automatically on exit:

@@ -7,19 +7,20 @@ CI compares them, so a fix landed in common/ but overlaid into only some edition
 ship stale code — or stale documentation — to the rest.
 
 Every list is taken from the thing that defines it rather than hardcoded here:
-filenames from common/ itself, editions from generate-client.sh. Adding either a file
-or an edition extends the check with no test edit — and, because the editions come
-from the script rather than from whichever directories happen to exist, an edition
-whose package directory is missing fails instead of quietly dropping out.
+filenames from common/ itself, editions from editions.txt — the same file
+generate-client.sh reads. Adding either a file or an edition extends the check with no
+test edit — and, because the editions come from that shared list rather than from
+whichever directories happen to exist, an edition whose package directory is missing
+fails instead of quietly dropping out.
 """
 
-import re
 from pathlib import Path
 
 import pytest
 
 _REPO_ROOT = Path(__file__).parent.parent
 _COMMON_DIR = _REPO_ROOT / "common"
+_EDITIONS_FILE = _REPO_ROOT / "editions.txt"
 
 # generate-client.sh overlays common/docs into <edition>/docs rather than into the
 # package, so the package check excludes it and the docs check reads from it.
@@ -69,12 +70,15 @@ def _overlaid_doc_filenames(root: Path = _COMMON_DIR / _DOCS_DIRNAME) -> list[st
     return sorted(p.name for p in root.iterdir() if p.is_file())
 
 
-def _editions() -> list[str]:
-    """Edition names parsed from the EDITIONS array in generate-client.sh."""
-    script = (_REPO_ROOT / "generate-client.sh").read_text(encoding="utf-8")
-    match = re.search(r"^EDITIONS=\(([^)]*)\)", script, re.MULTILINE)
-    assert match, "could not find the EDITIONS=(...) array in generate-client.sh"
-    return sorted(re.findall(r'"([^"]+)"', match.group(1)))
+def _editions(path: Path = _EDITIONS_FILE) -> list[str]:
+    """Edition names read from editions.txt — the same file generate-client.sh reads.
+
+    One name per line; blank lines and # comments ignored, matching the read loop in
+    generate-client.sh. Reading the list rather than parsing it out of the shell script
+    means neither side's formatting is load-bearing for the other.
+    """
+    lines = path.read_text(encoding="utf-8").splitlines()
+    return sorted(s for line in lines if (s := line.strip()) and not s.startswith("#"))
 
 
 def test_discovery_finds_filenames_and_editions():
@@ -131,6 +135,14 @@ def test_walk_exclusion_semantics(tmp_path):
         "sub/docs/guide.md",
         "sub/mod.py",
     ]
+
+
+def test_editions_parsing_matches_the_script(tmp_path):
+    """Blank lines and # comments are ignored, mirroring the script's grep."""
+    listing = tmp_path / "editions.txt"
+    listing.write_text("# a comment\n\nce\n  pe  \n\n# paas is not shipped yet\npaas\n")
+
+    assert _editions(listing) == ["ce", "paas", "pe"]
 
 
 def test_doc_walk_is_flat(tmp_path):

@@ -196,23 +196,34 @@ class TestThingsboardClientAuthArgValidation(unittest.TestCase):
                 ThingsboardClient(URL, "user@tb.io")
         mock_login.assert_not_called()
 
-    def test_empty_api_key_rejected(self):
-        """api_key="" installs no header, so it raises rather than yielding a client
-        that silently sends no credentials — reachable via os.environ.get(..., "")."""
-        with self.assertRaisesRegex(ValueError, "api_key= must not be empty"):
+    def test_empty_auth_arguments_rejected(self):
+        """Every auth argument rejects "", which would otherwise install no header.
+
+        The empty check runs ahead of the companion rules, so username="" reports the
+        empty argument rather than falling through to "username= requires password=".
+        Covering all five means reordering the checks fails here instead of silently
+        changing which message a caller sees.
+        """
+        cases = (
+            ("username", {"username": "", "password": "pass123"}),
+            ("password", {"username": "user@tb.io", "password": ""}),
+            ("api_key", {"api_key": ""}),
+            ("token", {"token": ""}),
+            ("refresh_token", {"token": "jwt.payload.sig", "refresh_token": ""}),
+        )
+        for name, kwargs in cases:
+            with self.subTest(argument=name):
+                with patch(_LOGIN_PATCH_TARGET) as mock_login:
+                    with self.assertRaisesRegex(ValueError, f"{name}= must not be empty"):
+                        ThingsboardClient(URL, **kwargs)
+                mock_login.assert_not_called()
+
+    def test_empty_argument_message_says_what_to_do(self):
+        """The empty-argument message carries a remedy, like the mutual-exclusion one."""
+        with self.assertRaisesRegex(
+            ValueError, r"pass a value, or omit all auth arguments for an unauthenticated"
+        ):
             ThingsboardClient(URL, api_key="")
-
-    def test_empty_token_rejected(self):
-        """token="" has the same silent-no-header failure mode as api_key=""."""
-        with self.assertRaisesRegex(ValueError, "token= must not be empty"):
-            ThingsboardClient(URL, token="")
-
-    def test_empty_username_rejected(self):
-        """username="" would reach /api/auth/login with an empty credential."""
-        with patch(_LOGIN_PATCH_TARGET) as mock_login:
-            with self.assertRaisesRegex(ValueError, "username= must not be empty"):
-                ThingsboardClient(URL, "", "pass123")
-        mock_login.assert_not_called()
 
 
 class TestThingsboardClientStructure(unittest.TestCase):

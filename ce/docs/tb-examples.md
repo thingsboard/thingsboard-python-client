@@ -53,6 +53,10 @@ raises `ValueError`, as does passing `username=` without `password=` or vice ver
 `refresh_token=` without `token=`. `token=` on its own is valid; it simply means the
 token is never refreshed.
 
+An empty string is also rejected, so `api_key=os.environ.get("TB_API_KEY", "")` raises
+rather than building a client that silently sends no credentials. Omit the auth
+arguments entirely for an unauthenticated client.
+
 ## Context Manager
 
 ```python

@@ -34,6 +34,11 @@ logger = logging.getLogger(__name__)
 # Matches Java's AuthManager.AVG_REQUEST_TIMEOUT (30 seconds in ms)
 AVG_REQUEST_TIMEOUT_MS = 30_000
 
+# Socket timeout for the raw auth calls. urllib3 defaults to no timeout at all, and
+# every API thread now blocks behind an in-flight refresh, so an unresponsive auth
+# endpoint would otherwise hang the whole process rather than one thread.
+AUTH_REQUEST_TIMEOUT_S = 30.0
+
 # Security scheme name and prefixes dictated by the generated configuration.py.
 # Keep them in one place so a spec regeneration that renames the scheme has a
 # single owner instead of literals scattered across client.py and _auth.py.
@@ -203,8 +208,7 @@ class _AuthManager:
                 # Another thread is already refreshing. Block rather than return:
                 # returning here would send the expired token that thread is busy
                 # replacing, and nothing retries the resulting 401.
-                while self._refreshing:
-                    self._refresh_state.wait()
+                self._refresh_state.wait_for(lambda: not self._refreshing)
                 # Its outcome is ours. Refreshing again on failure would multiply one
                 # failed round-trip by however many threads were waiting.
                 return
@@ -260,6 +264,9 @@ class _AuthManager:
         if we used ApiClient here, the hook would fire again while already
         inside the hook, causing infinite recursion (mirrors Java's pattern
         of using a separate raw HttpClient for AuthManager calls).
+
+        Bounded by AUTH_REQUEST_TIMEOUT_S: this call is on the critical path for
+        every thread waiting on a refresh, so it must not be able to hang forever.
         """
         http = urllib3.PoolManager()
         response = http.request(
@@ -267,6 +274,7 @@ class _AuthManager:
             self._base_url + path,
             body=body,
             headers={"Content-Type": "application/json"},
+            timeout=AUTH_REQUEST_TIMEOUT_S,
         )
         if response.status != 200:
             raise RuntimeError(f"Auth request to {path} returned HTTP {response.status}")

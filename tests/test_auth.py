@@ -218,6 +218,27 @@ class TestReloginOnRefreshExpiry(unittest.TestCase):
 # ---------------------------------------------------------------------------
 
 
+class TestRawPostTimeout(unittest.TestCase):
+    def test_raw_post_bounds_the_request(self):
+        """_raw_post passes a timeout — urllib3 defaults to none.
+
+        Every API thread blocks behind an in-flight refresh, so an unresponsive auth
+        endpoint without this would hang the process rather than a single thread.
+        """
+        auth = _AuthManager("http://tb:9090")
+        response = MagicMock()
+        response.status = 200
+        response.data = b'{"token": "t", "refreshToken": "r"}'
+
+        with patch("common._auth.urllib3.PoolManager") as mock_pool:
+            mock_pool.return_value.request.return_value = response
+            auth._raw_post("/api/auth/login", b"{}")
+
+        timeout = mock_pool.return_value.request.call_args.kwargs.get("timeout")
+        self.assertIsNotNone(timeout, "_raw_post sent no timeout")
+        self.assertGreater(timeout, 0)
+
+
 class TestConcurrentRefresh(unittest.TestCase):
     def test_second_thread_waits_for_in_flight_refresh(self):
         """A thread arriving mid-refresh blocks, then sends the refreshed token.
@@ -246,10 +267,17 @@ class TestConcurrentRefresh(unittest.TestCase):
             return {"token": new_token, "refreshToken": make_refresh_token(exp_offset_s=172800)}
 
         configs = {}
+        errors = []
 
         def run_hook(name):
-            configs[name] = _mock_configuration()
-            auth.hook(configs[name])
+            # An exception in a thread target only reaches stderr, which would surface
+            # here as a misleading "did not wait" — collect it and re-raise in the main
+            # thread instead.
+            try:
+                configs[name] = _mock_configuration()
+                auth.hook(configs[name])
+            except BaseException as exc:  # noqa: BLE001 - re-raised below
+                errors.append(exc)
 
         with patch.object(auth, "_raw_post", side_effect=blocking_post):
             first = threading.Thread(target=run_hook, args=("first",))
@@ -259,12 +287,18 @@ class TestConcurrentRefresh(unittest.TestCase):
             second = threading.Thread(target=run_hook, args=("second",))
             second.start()
             second.join(timeout=0.2)
+            if errors:
+                raise errors[0]
             self.assertTrue(second.is_alive(), "second thread did not wait for the refresh")
 
             release_refresh.set()
             first.join(timeout=5)
             second.join(timeout=5)
 
+        if errors:
+            raise errors[0]
+        self.assertFalse(first.is_alive(), "refreshing thread never finished")
+        self.assertFalse(second.is_alive(), "waiting thread was never released")
         # One round-trip, not one per waiting thread, and both threads send its result.
         self.assertEqual(posts, ["/api/auth/token"])
         self.assertEqual(configs["first"].api_key["ApiKeyForm"], new_token)

@@ -61,9 +61,18 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# tests/test_common_overlay.py parses this array to know which editions to check,
-# so keep it on one line at column 0 with double-quoted entries.
-EDITIONS=("ce" "pe" "paas")
+# The edition list lives in editions.txt so this script and the tests that check its
+# output read the same source. One name per line; blank lines and # comments ignored.
+EDITIONS=()
+# `|| [ -n "$line" ]` so a final line with no trailing newline is not dropped.
+while read -r line || [ -n "$line" ]; do
+  line="$(echo "$line" | tr -d '[:space:]')"
+  case "$line" in ''|'#'*) continue ;; esac
+  EDITIONS+=("$line")
+done < "$SCRIPT_DIR/editions.txt"
+if [ ${#EDITIONS[@]} -eq 0 ]; then
+  echo "Error: no editions listed in $SCRIPT_DIR/editions.txt"; exit 1
+fi
 
 VERBOSE=false
 DRY_RUN=false

@@ -35,7 +35,13 @@ from .configuration import Configuration
 from .models.login_request import LoginRequest
 
 
-def _validate_auth_args(username, password, api_key, token, refresh_token) -> None:
+def _validate_auth_args(
+    username: "str | None",
+    password: "str | None",
+    api_key: "str | None",
+    token: "str | None",
+    refresh_token: "str | None",
+) -> None:
     """Reject auth argument combinations that cannot be honoured.
 
     Raises ValueError describing the offending arguments; returns None otherwise.
@@ -43,6 +49,7 @@ def _validate_auth_args(username, password, api_key, token, refresh_token) -> No
     # An empty string passes every "is not None" check below but installs no header,
     # so the client would silently send no credentials at all — the failure mode this
     # validation exists to prevent. Easy to reach via os.environ.get("TB_API_KEY", "").
+    # Checked first so that reaches the caller instead of a downstream collision.
     for name, value in (
         ("username", username),
         ("password", password),
@@ -51,7 +58,10 @@ def _validate_auth_args(username, password, api_key, token, refresh_token) -> No
         ("refresh_token", refresh_token),
     ):
         if value is not None and not value:
-            raise ValueError(f"{name}= must not be empty")
+            raise ValueError(
+                f"{name}= must not be empty; pass a value, or omit all auth "
+                "arguments for an unauthenticated client."
+            )
 
     # The three auth modes share a single X-Authorization slot, so combining them is
     # ambiguous: whichever ran last would win, and under api_key auth the refresh hook
@@ -148,7 +158,13 @@ class ThingsboardClient:
         # if __init__ raises partway through (before self.api_client is set).
         self._controllers: dict = {}
 
-        _validate_auth_args(username, password, api_key, token, refresh_token)
+        _validate_auth_args(
+            username=username,
+            password=password,
+            api_key=api_key,
+            token=token,
+            refresh_token=refresh_token,
+        )
 
         configuration = Configuration(host=url)
 
