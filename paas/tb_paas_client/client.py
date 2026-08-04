@@ -35,6 +35,52 @@ from .configuration import Configuration
 from .models.login_request import LoginRequest
 
 
+def _validate_auth_args(username, password, api_key, token, refresh_token) -> None:
+    """Reject auth argument combinations that cannot be honoured.
+
+    Raises ValueError describing the offending arguments; returns None otherwise.
+    """
+    # An empty string passes every "is not None" check below but installs no header,
+    # so the client would silently send no credentials at all — the failure mode this
+    # validation exists to prevent. Easy to reach via os.environ.get("TB_API_KEY", "").
+    for name, value in (
+        ("username", username),
+        ("password", password),
+        ("api_key", api_key),
+        ("token", token),
+        ("refresh_token", refresh_token),
+    ):
+        if value is not None and not value:
+            raise ValueError(f"{name}= must not be empty")
+
+    # The three auth modes share a single X-Authorization slot, so combining them is
+    # ambiguous: whichever ran last would win, and under api_key auth the refresh hook
+    # is a no-op, so a JWT installed alongside a key would be frozen at its initial
+    # value and never refreshed.
+    modes = [
+        f"{name}="
+        for name, value in (("username", username), ("api_key", api_key), ("token", token))
+        if value is not None
+    ]
+    if len(modes) > 1:
+        raise ValueError(
+            "ThingsboardClient authentication modes are mutually exclusive; got "
+            f"{', '.join(modes)}. Pass exactly one of username=, api_key= or token=."
+        )
+
+    # password= is only read by the username branch, so on its own it would be silently
+    # dropped and surface later as a 401. username= alone is rejected here rather than
+    # left to LoginRequest, whose password is a required StrictStr — otherwise the
+    # caller gets a pydantic ValidationError from inside the generated model.
+    if password is not None and username is None:
+        raise ValueError("password= requires username=")
+    if username is not None and password is None:
+        raise ValueError("username= requires password=")
+    # refresh_token= is likewise read only by the token branch.
+    if refresh_token is not None and token is None:
+        raise ValueError("refresh_token= requires token=")
+
+
 class ThingsboardClient:
     """User-facing ThingsBoard client.
 
@@ -94,37 +140,15 @@ class ThingsboardClient:
 
         Raises:
             ValueError: If more than one of username=, api_key= or token= is given;
-                if password= is given without username= or vice versa; or if
-                refresh_token= is given without token=.
+                if password= is given without username= or vice versa; if
+                refresh_token= is given without token=; or if any auth argument is
+                an empty string.
         """
         # Must be the very first assignment — prevents __getattr__ infinite recursion
         # if __init__ raises partway through (before self.api_client is set).
         self._controllers: dict = {}
 
-        # The three auth modes share a single X-Authorization slot, so combining
-        # them is ambiguous: whichever ran last would win, and under api_key auth
-        # the refresh hook is a no-op, so a JWT installed alongside a key would be
-        # frozen at its initial value and never refreshed.
-        modes = [
-            name
-            for name, value in (("username", username), ("api_key", api_key), ("token", token))
-            if value is not None
-        ]
-        if len(modes) > 1:
-            raise ValueError(
-                "ThingsboardClient authentication modes are mutually exclusive; "
-                f"got {', '.join(modes)}"
-            )
-        # password= and refresh_token= are only read by their own mode's branch, so
-        # on their own they would be silently dropped and surface later as a 401.
-        if password is not None and username is None:
-            raise ValueError("password= requires username=")
-        if refresh_token is not None and token is None:
-            raise ValueError("refresh_token= requires token=")
-        # LoginRequest.password is a required StrictStr, so without this the caller
-        # gets a pydantic ValidationError from inside the generated model instead.
-        if username is not None and password is None:
-            raise ValueError("username= requires password=")
+        _validate_auth_args(username, password, api_key, token, refresh_token)
 
         configuration = Configuration(host=url)
 

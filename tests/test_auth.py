@@ -3,6 +3,7 @@ Unit tests for common._auth module.
 Covers AUTH-01 through AUTH-06 requirements.
 """
 
+import threading
 import time
 import unittest
 from unittest.mock import MagicMock, patch
@@ -210,6 +211,64 @@ class TestReloginOnRefreshExpiry(unittest.TestCase):
         self.assertEqual(calls[0][0][0], "/api/auth/token")
         self.assertEqual(calls[1][0][0], "/api/auth/login")
         self.assertEqual(config.api_key["ApiKeyForm"], new_token)
+
+
+# ---------------------------------------------------------------------------
+# Concurrent refresh
+# ---------------------------------------------------------------------------
+
+
+class TestConcurrentRefresh(unittest.TestCase):
+    def test_second_thread_waits_for_in_flight_refresh(self):
+        """A thread arriving mid-refresh blocks, then sends the refreshed token.
+
+        Returning early instead would install the expired token the in-flight refresh
+        is replacing, and nothing retries the resulting 401 — _RetryingRESTClient only
+        handles 429 — so it would surface to the caller as a spurious ApiException.
+        """
+        auth = _AuthManager("http://tb:9090")
+        auth.on_login(
+            "user@tb.io",
+            "password",
+            make_token(exp_offset_s=-3600),
+            make_refresh_token(exp_offset_s=86400),
+        )
+        new_token = make_token(exp_offset_s=7200)
+
+        refresh_started = threading.Event()
+        release_refresh = threading.Event()
+        posts = []
+
+        def blocking_post(path, _body):
+            posts.append(path)
+            refresh_started.set()
+            release_refresh.wait(timeout=5)
+            return {"token": new_token, "refreshToken": make_refresh_token(exp_offset_s=172800)}
+
+        configs = {}
+
+        def run_hook(name):
+            configs[name] = _mock_configuration()
+            auth.hook(configs[name])
+
+        with patch.object(auth, "_raw_post", side_effect=blocking_post):
+            first = threading.Thread(target=run_hook, args=("first",))
+            first.start()
+            self.assertTrue(refresh_started.wait(timeout=5), "first thread never refreshed")
+
+            second = threading.Thread(target=run_hook, args=("second",))
+            second.start()
+            second.join(timeout=0.2)
+            self.assertTrue(second.is_alive(), "second thread did not wait for the refresh")
+
+            release_refresh.set()
+            first.join(timeout=5)
+            second.join(timeout=5)
+
+        # One round-trip, not one per waiting thread, and both threads send its result.
+        self.assertEqual(posts, ["/api/auth/token"])
+        self.assertEqual(configs["first"].api_key["ApiKeyForm"], new_token)
+        self.assertEqual(configs["second"].api_key["ApiKeyForm"], new_token)
 
 
 # ---------------------------------------------------------------------------

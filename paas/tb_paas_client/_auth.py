@@ -108,9 +108,10 @@ class _AuthManager:
 
     Mirrors the Java ThingsboardClient.java inner AuthManager class.
 
-    Thread safety: a threading.Lock protects the _refreshing flag so that only
-    one concurrent API thread triggers a refresh call. Other threads wait at the
-    lock and skip the refresh once the first thread completes.
+    Thread safety: a threading.Condition guards the _refreshing flag so that only
+    one concurrent API thread performs a refresh. The others block until that
+    refresh finishes and then use its result — they must not proceed meanwhile,
+    since the token they would send is the expired one being replaced.
 
     The auth mode is decided once in __init__ and never re-derived per request.
     """
@@ -126,7 +127,7 @@ class _AuthManager:
         self._base_url = base_url.rstrip("/")
         self._is_api_key = api_key is not None
         self._header_prefix = _API_KEY_PREFIX if self._is_api_key else _JWT_PREFIX
-        self._lock = threading.Lock()
+        self._refresh_state = threading.Condition()
         self._refreshing = False
         self._username = None
         self._password = None
@@ -197,9 +198,15 @@ class _AuthManager:
     def _refresh_if_needed(self) -> None:
         """Check token expiry and trigger refresh if the estimated server time
         exceeds the token expiry (with AVG_REQUEST_TIMEOUT buffer)."""
-        with self._lock:
+        with self._refresh_state:
             if self._refreshing:
-                # Another thread is already refreshing — skip
+                # Another thread is already refreshing. Block rather than return:
+                # returning here would send the expired token that thread is busy
+                # replacing, and nothing retries the resulting 401.
+                while self._refreshing:
+                    self._refresh_state.wait()
+                # Its outcome is ours. Refreshing again on failure would multiply one
+                # failed round-trip by however many threads were waiting.
                 return
             info = self._token_info
             if info.token is None or info.token_exp_ts < 0:
@@ -222,8 +229,9 @@ class _AuthManager:
             elif self._username:
                 self._do_login()
         finally:
-            with self._lock:
+            with self._refresh_state:
                 self._refreshing = False
+                self._refresh_state.notify_all()
 
     def _do_refresh_token(self, info: "_TokenInfo") -> None:
         """POST to /api/auth/token with the refresh token. Falls back to login on error."""

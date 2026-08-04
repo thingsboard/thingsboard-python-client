@@ -36,24 +36,22 @@ def _logged_in_client(token="test.jwt.token", refresh_token="test.jwt.refresh"):
         return ThingsboardClient(URL, "user@tb.io", "pass123")
 
 
-class TestThingsboardClientJWTLogin(unittest.TestCase):
-    """WRAP-01, AUTH-01 integration: username/password login flow."""
+def _assert_header_slot(case, client, token, prefix):
+    """The X-Authorization slot holds this token, and emits it under this prefix.
 
-    def _assert_header_slot(self, client, token, prefix):
-        """The X-Authorization slot holds this token, and emits it under this prefix.
+    Reading auth_settings() runs the refresh hook, so these are the header name and
+    value an API request actually sends rather than a pure state inspection.
+    """
+    cfg = client.api_client.configuration
+    case.assertEqual(cfg.api_key.get("ApiKeyForm"), token)
+    case.assertEqual(cfg.api_key_prefix.get("ApiKeyForm"), prefix)
+    emitted = cfg.auth_settings()["ApiKeyForm"]
+    case.assertEqual(emitted["key"], "X-Authorization")
+    case.assertEqual(emitted["value"], f"{prefix} {token}")
 
-        The auth_settings() assertions are the ones a user observes — they are the
-        header name and value an API request actually sends. Reading auth_settings()
-        runs the refresh hook, which is the real request path rather than a pure state
-        inspection. The header name is scheme-wide rather than per-mode, but asserting
-        it here is what makes the helper cover what its name claims.
-        """
-        cfg = client.api_client.configuration
-        self.assertEqual(cfg.api_key.get("ApiKeyForm"), token)
-        self.assertEqual(cfg.api_key_prefix.get("ApiKeyForm"), prefix)
-        emitted = cfg.auth_settings()["ApiKeyForm"]
-        self.assertEqual(emitted["key"], "X-Authorization")
-        self.assertEqual(emitted["value"], f"{prefix} {token}")
+
+class TestThingsboardClientAuthModes(unittest.TestCase):
+    """WRAP-01, AUTH-01/05/06 integration: every auth mode, plus unauthenticated."""
 
     def test_jwt_login(self):
         """ThingsboardClient(url, username, password) calls login() and stores tokens."""
@@ -67,10 +65,9 @@ class TestThingsboardClientJWTLogin(unittest.TestCase):
     def test_jwt_login_emits_x_authorization_header(self):
         """AUTH-01: auth_settings() yields the header an API request actually sends.
 
-        The login path is the one mode _assert_header_slot's other callers do not
-        cover — api_key=, token= and token-without-refresh all skip /api/auth/login.
+        Covers the username/password mode, the one path that calls /api/auth/login.
         """
-        self._assert_header_slot(_logged_in_client(), "test.jwt.token", "Bearer")
+        _assert_header_slot(self, _logged_in_client(), "test.jwt.token", "Bearer")
 
     def test_jwt_header_follows_token_rotation(self):
         """AUTH-02: seeding at login does not freeze the first token.
@@ -95,7 +92,7 @@ class TestThingsboardClientJWTLogin(unittest.TestCase):
         with patch(_LOGIN_PATCH_TARGET) as mock_login:
             client = ThingsboardClient(URL, api_key="test-key")
         mock_login.assert_not_called()
-        self._assert_header_slot(client, "test-key", "ApiKey")
+        _assert_header_slot(self, client, "test-key", "ApiKey")
 
     def test_preexisting_token(self):
         """WRAP-01, AUTH-06: pre-existing token sets header without login()."""
@@ -104,7 +101,7 @@ class TestThingsboardClientJWTLogin(unittest.TestCase):
                 URL, token="jwt.payload.sig", refresh_token="jwt.refresh.sig"
             )
         mock_login.assert_not_called()
-        self._assert_header_slot(client, "jwt.payload.sig", "Bearer")
+        _assert_header_slot(self, client, "jwt.payload.sig", "Bearer")
         self.assertEqual(client.get_refresh_token(), "jwt.refresh.sig")
 
     def test_preexisting_token_without_refresh_token(self):
@@ -117,7 +114,7 @@ class TestThingsboardClientJWTLogin(unittest.TestCase):
         with patch(_LOGIN_PATCH_TARGET) as mock_login:
             client = ThingsboardClient(URL, token="jwt.payload.sig")
         mock_login.assert_not_called()
-        self._assert_header_slot(client, "jwt.payload.sig", "Bearer")
+        _assert_header_slot(self, client, "jwt.payload.sig", "Bearer")
         self.assertIsNone(client.get_refresh_token())
 
     def test_no_auth_leaves_header_slot_absent(self):
@@ -135,7 +132,12 @@ class TestThingsboardClientJWTLogin(unittest.TestCase):
 
 
 class TestThingsboardClientAuthArgValidation(unittest.TestCase):
-    """The three auth modes share one X-Authorization slot, so mixing them is rejected."""
+    """Auth argument combinations that cannot be honoured are rejected in __init__.
+
+    Cases that pass username= patch the login endpoint and assert it was not called,
+    which is what proves validation runs before the network. The rest cannot reach
+    login at any point, so the raise is the whole assertion.
+    """
 
     def test_api_key_with_username_rejected(self):
         """api_key= plus username= raises before any login call is made.
@@ -145,28 +147,37 @@ class TestThingsboardClientAuthArgValidation(unittest.TestCase):
         failing with 401 once it expired.
         """
         with patch(_LOGIN_PATCH_TARGET) as mock_login:
-            with self.assertRaisesRegex(ValueError, "username, api_key"):
+            with self.assertRaisesRegex(ValueError, "username=, api_key="):
                 ThingsboardClient(URL, "user@tb.io", "pass123", api_key="test-key")
         mock_login.assert_not_called()
 
     def test_api_key_with_token_rejected(self):
         """api_key= plus token= raises."""
-        with self.assertRaisesRegex(ValueError, "api_key, token"):
+        with self.assertRaisesRegex(ValueError, "api_key=, token="):
             ThingsboardClient(URL, api_key="test-key", token="jwt.payload.sig")
 
     def test_username_with_token_rejected(self):
         """username= plus token= raises."""
-        with patch(_LOGIN_PATCH_TARGET):
-            with self.assertRaisesRegex(ValueError, "username, token"):
+        with patch(_LOGIN_PATCH_TARGET) as mock_login:
+            with self.assertRaisesRegex(ValueError, "username=, token="):
                 ThingsboardClient(URL, "user@tb.io", "pass123", token="jwt.payload.sig")
+        mock_login.assert_not_called()
 
     def test_all_three_modes_rejected(self):
         """All three at once raises and the message names every colliding mode."""
-        with patch(_LOGIN_PATCH_TARGET):
-            with self.assertRaisesRegex(ValueError, "username, api_key, token"):
+        with patch(_LOGIN_PATCH_TARGET) as mock_login:
+            with self.assertRaisesRegex(ValueError, "username=, api_key=, token="):
                 ThingsboardClient(
                     URL, "user@tb.io", "pass123", api_key="test-key", token="jwt.payload.sig"
                 )
+        mock_login.assert_not_called()
+
+    def test_mutual_exclusion_message_says_what_to_do(self):
+        """The message names the fix, not only the collision."""
+        with self.assertRaisesRegex(
+            ValueError, r"Pass exactly one of username=, api_key= or token=\."
+        ):
+            ThingsboardClient(URL, api_key="test-key", token="jwt.payload.sig")
 
     def test_password_without_username_rejected(self):
         """password= alone would be silently dropped, so it raises instead."""
@@ -183,6 +194,24 @@ class TestThingsboardClientAuthArgValidation(unittest.TestCase):
         with patch(_LOGIN_PATCH_TARGET) as mock_login:
             with self.assertRaisesRegex(ValueError, "username= requires password="):
                 ThingsboardClient(URL, "user@tb.io")
+        mock_login.assert_not_called()
+
+    def test_empty_api_key_rejected(self):
+        """api_key="" installs no header, so it raises rather than yielding a client
+        that silently sends no credentials — reachable via os.environ.get(..., "")."""
+        with self.assertRaisesRegex(ValueError, "api_key= must not be empty"):
+            ThingsboardClient(URL, api_key="")
+
+    def test_empty_token_rejected(self):
+        """token="" has the same silent-no-header failure mode as api_key=""."""
+        with self.assertRaisesRegex(ValueError, "token= must not be empty"):
+            ThingsboardClient(URL, token="")
+
+    def test_empty_username_rejected(self):
+        """username="" would reach /api/auth/login with an empty credential."""
+        with patch(_LOGIN_PATCH_TARGET) as mock_login:
+            with self.assertRaisesRegex(ValueError, "username= must not be empty"):
+                ThingsboardClient(URL, "", "pass123")
         mock_login.assert_not_called()
 
 

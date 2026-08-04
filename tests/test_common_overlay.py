@@ -21,11 +21,8 @@ import pytest
 _REPO_ROOT = Path(__file__).parent.parent
 _COMMON_DIR = _REPO_ROOT / "common"
 
-# The directory generate-client.sh overlays into <edition>/docs rather than into the
-# package. Named once for the two source-side uses — the package check excludes it and
-# the docs check reads from it. The destination happens to share the name, but the
-# script hardcodes that separately (`cp "$common_docs_dir/"* "$module_dir/docs/"`), so
-# renaming this constant would not rename the edition directories.
+# generate-client.sh overlays common/docs into <edition>/docs rather than into the
+# package, so the package check excludes it and the docs check reads from it.
 _DOCS_DIRNAME = "docs"
 
 # Excluded only where they sit at the top level of common/ — a nested file of the
@@ -65,10 +62,7 @@ def _overlaid_doc_filenames(root: Path = _COMMON_DIR / _DOCS_DIRNAME) -> list[st
     passes no -r.
 
     A missing directory yields an empty list rather than raising, matching what rglob
-    does for _overlaid_filenames. Both then shrink to zero parametrized cases, and
-    test_discovery_finds_filenames_and_editions is the single place that reports it —
-    as a plain test failure, rather than a collection-time error that would take the
-    unrelated package-sync cases down with it.
+    does for _overlaid_filenames — see test_missing_directory_yields_empty_list.
     """
     if not root.is_dir():
         return []
@@ -102,8 +96,8 @@ def _assert_identical(source: Path, copy: Path, destinations: str) -> None:
     """
     source_rel = source.relative_to(_REPO_ROOT).as_posix()
     copy_rel = copy.relative_to(_REPO_ROOT).as_posix()
-    # Action-first and with no trailing "after editing it": on the missing-copy branch
-    # the source is fine and re-running the script is the only step needed.
+    # Shared with the missing-copy branch, where the source is fine and re-running the
+    # script is the only step needed — hence the single action and no "after editing it".
     remediation = f"Run generate-client.sh (or copy {source_rel} into {destinations})."
 
     assert copy.is_file(), f"{copy_rel} is missing. {remediation}"
@@ -156,8 +150,9 @@ def test_doc_walk_is_flat(tmp_path):
 def test_missing_directory_yields_empty_list(walk, tmp_path):
     """Both helpers degrade to [] rather than raising when their root is absent.
 
-    Parametrized over both so the parity _overlaid_doc_filenames claims in its
-    docstring is enforced rather than asserted.
+    An absent root is then reported by test_discovery_finds_filenames_and_editions as
+    a plain failure, instead of a collection-time error that would take the unrelated
+    package-sync cases down with it.
     """
     assert walk(tmp_path / "missing") == []
 
