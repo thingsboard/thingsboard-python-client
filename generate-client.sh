@@ -71,15 +71,14 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 # str.strip() in the Python mirror — do not add `tr -d [:space:]`, which would also
 # delete whitespace *inside* a line and silently disagree with it.
 EDITIONS=()
-edition_count=0  # counted rather than ${#EDITIONS[@]}, which is unbound under set -u
-                 # on bash < 4.4 when the array is empty
 # `|| [ -n "$line" ]` so a final line with no trailing newline is not dropped.
 while read -r line || [ -n "$line" ]; do
   case "$line" in ''|'#'*) continue ;; esac
   EDITIONS+=("$line")
-  edition_count=$((edition_count + 1))
 done < "$SCRIPT_DIR/editions.txt"
-if [ "$edition_count" -eq 0 ]; then
+# `${EDITIONS[*]:-}` rather than ${#EDITIONS[@]}: the latter is unbound under set -u on
+# bash < 4.4 when the array is empty, which is exactly the case being tested for.
+if [ -z "${EDITIONS[*]:-}" ]; then
   echo "Error: no editions listed in $SCRIPT_DIR/editions.txt"; exit 1
 fi
 

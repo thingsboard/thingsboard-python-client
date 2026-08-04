@@ -16,8 +16,8 @@
 #
 
 #
-# Builds Python wheel and sdist packages for all three ThingsBoard client editions
-# (CE, PE, PaaS), including version stamping, generation, and smoke testing.
+# Builds Python wheel and sdist packages for every ThingsBoard client edition listed in
+# editions.txt, including version stamping, generation, and smoke testing.
 #
 # Usage:
 #   ./scripts/build-packages.sh
@@ -43,10 +43,18 @@ ROOT_DIR="$SCRIPT_DIR/.."
 DIST_DIR="$ROOT_DIR/dist"
 # Editions come from generate-client.sh's own parse of editions.txt, so this script
 # never reimplements that format — see the comment on the EDITIONS block there.
+# Captured into a variable first: process substitution discards the child's exit status,
+# so `set -e` would not see --list-editions fail and we would build nothing, silently.
+editions_output="$("$ROOT_DIR/generate-client.sh" --list-editions)"
 EDITIONS=()
 while read -r line; do
-  EDITIONS+=("$line")
-done < <("$ROOT_DIR/generate-client.sh" --list-editions)
+  [ -n "$line" ] && EDITIONS+=("$line")
+done <<< "$editions_output"
+if [ -z "${EDITIONS[*]:-}" ]; then
+  echo "Error: generate-client.sh --list-editions returned no editions" >&2
+  exit 1
+fi
+EDITION_COUNT=${#EDITIONS[@]}
 
 # Add project venv to PATH so that tools installed via pip install (e.g. poetry)
 # are accessible without requiring a manual `source .venv/bin/activate`.
@@ -207,11 +215,11 @@ for edition in "${EDITIONS[@]}"; do
     ok "  ${edition}: $(basename "$wheel")"
 done
 
-if [ "$WHEEL_COUNT" -ne 3 ]; then
-    fail "Expected 3 wheels, found $WHEEL_COUNT"
+if [ "$WHEEL_COUNT" -ne "$EDITION_COUNT" ]; then
+    fail "Expected $EDITION_COUNT wheels, found $WHEEL_COUNT"
 fi
 
-ok "All 3 editions built with version ${VERSION}"
+ok "All $EDITION_COUNT editions built with version ${VERSION}"
 
 # ---------------------------------------------------------------------------
 # 7. Print summary

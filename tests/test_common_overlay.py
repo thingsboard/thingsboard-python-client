@@ -75,8 +75,11 @@ def _editions(path: Path = _EDITIONS_FILE) -> list[str]:
     """Edition names read from editions.txt — the same file generate-client.sh reads.
 
     One name per line; blank lines and # comments ignored, matching the read loop in
-    generate-client.sh. Reading the list rather than parsing it out of the shell script
-    means neither side's formatting is load-bearing for the other.
+    generate-client.sh. That script's --list-editions is the canonical parser; this is a
+    mirror of it, kept rather than shelled out to because it runs at collection time from
+    the parametrize decorators below — where a subprocess would be paid on every run, and
+    would make collection depend on bash and on the script succeeding.
+    test_editions_parsing_matches_the_script holds the two together.
 
     A missing file yields an empty list rather than raising, matching the two walk
     helpers: this runs at collection time from the parametrize decorators below, so

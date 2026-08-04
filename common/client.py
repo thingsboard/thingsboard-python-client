@@ -93,7 +93,9 @@ def _validate_auth_args(
         )
     # refresh_token= is likewise read only by the token branch.
     if refresh_token is not None and token is None:
-        raise ValueError("refresh_token= requires token=; pass token=, or omit both.")
+        raise ValueError(
+            "refresh_token= requires token=; pass both, or omit both for an unauthenticated client."
+        )
 
 
 class ThingsboardClient:
@@ -159,8 +161,8 @@ class ThingsboardClient:
         Raises:
             ValueError: If more than one of username=, api_key= or token= is given;
                 if password= is given without username= or vice versa; if
-                refresh_token= is given without token=; or if any auth argument is
-                an empty string.
+                refresh_token= is given without token=; if any auth argument is
+                an empty string; or if auth_timeout_ms is not positive.
         """
         # Must be the very first assignment — prevents __getattr__ infinite recursion
         # if __init__ raises partway through (before self.api_client is set).

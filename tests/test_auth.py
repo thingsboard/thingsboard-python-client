@@ -246,19 +246,46 @@ class TestRawPostBounds(unittest.TestCase):
         self.assertIsInstance(timeout, urllib3.Timeout)
         self.assertEqual(timeout.total, DEFAULT_AUTH_TIMEOUT_MS / 1000)
 
-    def test_retries_disabled(self):
+    def test_does_not_retry(self):
         """urllib3 would otherwise apply Retry.DEFAULT (total=3).
 
         Its connection-error branch never consults allowed_methods, so this POST would
         retry too and cost 4x the advertised ceiling before _do_login tries again.
         """
-        self.assertIs(_raw_post_kwargs(_AuthManager("http://tb:9090")).get("retries"), False)
+        retries = _raw_post_kwargs(_AuthManager("http://tb:9090")).get("retries")
+
+        self.assertIsInstance(retries, urllib3.Retry)
+        self.assertEqual(
+            (retries.connect, retries.read, retries.status, retries.other), (0, 0, 0, 0)
+        )
+
+    def test_still_follows_redirects(self):
+        """Not spelled `retries=False`, which would disable redirect following too.
+
+        The generated RESTClientObject follows redirects, so auth alone breaking against
+        a redirecting deployment would be a confusing partial failure.
+        """
+        retries = _raw_post_kwargs(_AuthManager("http://tb:9090")).get("retries")
+
+        self.assertTrue(retries.redirect, "auth requests would stop following redirects")
 
     def test_timeout_is_configurable(self):
         """auth_timeout_ms reaches the request, in seconds."""
         kwargs = _raw_post_kwargs(_AuthManager("http://tb:9090", auth_timeout_ms=1_500))
 
         self.assertEqual(kwargs["timeout"].total, 1.5)
+
+    def test_non_positive_timeout_rejected(self):
+        """Rejected at construction, not on the first refresh.
+
+        urllib3.Timeout raises for a non-positive total, but only inside _raw_post,
+        where _do_refresh_token and _do_login catch Exception and log — so the client
+        would build fine and then silently stop refreshing.
+        """
+        for bad in (0, -1):
+            with self.subTest(auth_timeout_ms=bad):
+                with self.assertRaisesRegex(ValueError, "auth_timeout_ms must be positive"):
+                    _AuthManager("http://tb:9090", auth_timeout_ms=bad)
 
 
 class TestConcurrentRefresh(unittest.TestCase):

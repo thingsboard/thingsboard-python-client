@@ -38,11 +38,24 @@ AVG_REQUEST_TIMEOUT_MS = 30_000
 # and every API thread now blocks behind an in-flight refresh, so an unresponsive auth
 # endpoint would otherwise hang the whole process rather than one thread.
 #
-# Applied as Timeout(total=...) with retries disabled, so it is the real ceiling: a bare
-# float sets connect and read separately and leaves total unbounded, and PoolManager
-# otherwise applies Retry.DEFAULT (total=3) — whose connection-error branch does not
-# consult allowed_methods, so even POST would retry and cost 4x this value.
+# Applied as Timeout(total=...) so it is the real ceiling: a bare float sets connect and
+# read separately and leaves total unbounded.
 DEFAULT_AUTH_TIMEOUT_MS = 30_000
+
+# Retry policy for the raw auth calls, spelled out rather than left to urllib3.
+#
+# No retries: Retry.DEFAULT is total=3, and its connection-error branch never consults
+# allowed_methods, so this POST would retry and cost 4x the ceiling above. Auth POSTs are
+# not idempotent, and the timeout exists precisely to bound how long every other thread
+# sits blocked, so a single attempt is the deliberate trade — a caller wanting tolerance
+# should retry ThingsboardClient(...) itself, since urllib3 has no global deadline that
+# would let us have both.
+#
+# redirect is left on: `retries=False` would be the obvious spelling, but it means
+# Retry(0, read=False), which disables redirect *following* too. The generated
+# RESTClientObject still follows redirects, so auth alone would break against a
+# deployment that redirects (a proxy forcing https, or path normalisation).
+_AUTH_RETRIES = urllib3.Retry(connect=0, read=0, status=0, other=0, redirect=3)
 
 # Security scheme name and prefixes dictated by the generated configuration.py.
 # Keep them in one place so a spec regeneration that renames the scheme has a
@@ -143,6 +156,11 @@ class _AuthManager:
                       refresh, so it is a knob a slow on-prem server or a
                       latency-sensitive caller will want to change.
         """
+        # urllib3.Timeout rejects a non-positive total, but it would only raise inside
+        # _raw_post — where _do_refresh_token and _do_login catch Exception and log —
+        # so a bad value would construct fine and then silently never refresh.
+        if auth_timeout_ms <= 0:
+            raise ValueError(f"auth_timeout_ms must be positive; got {auth_timeout_ms}")
         self._auth_timeout_s = auth_timeout_ms / 1000
         self._base_url = base_url.rstrip("/")
         self._is_api_key = api_key is not None
@@ -280,11 +298,10 @@ class _AuthManager:
         inside the hook, causing infinite recursion (mirrors Java's pattern
         of using a separate raw HttpClient for AuthManager calls).
 
-        Bounded by auth_timeout_ms: this call is on the critical path for every thread
-        waiting on a refresh, so it must not be able to hang forever. retries=False
-        because urllib3 would otherwise retry this POST on connection errors — see
-        DEFAULT_AUTH_TIMEOUT_MS — and auth POSTs are not idempotent anyway; a failed
-        refresh already falls back to _do_login.
+        Bounded by auth_timeout_ms and _AUTH_RETRIES: this call is on the critical path
+        for every thread waiting on a refresh, so it must not be able to hang forever,
+        and it does not retry. See _AUTH_RETRIES for why that trade is deliberate and
+        why redirects are still followed.
         """
         http = urllib3.PoolManager()
         response = http.request(
@@ -293,7 +310,7 @@ class _AuthManager:
             body=body,
             headers={"Content-Type": "application/json"},
             timeout=urllib3.Timeout(total=self._auth_timeout_s),
-            retries=False,
+            retries=_AUTH_RETRIES,
         )
         if response.status != 200:
             raise RuntimeError(f"Auth request to {path} returned HTTP {response.status}")
