@@ -40,8 +40,12 @@ AVG_REQUEST_TIMEOUT_MS = 30_000
 #
 # Applied as Timeout(total=...) rather than a bare float, which would set connect and
 # read separately and leave total unbounded. Because _AUTH_RETRIES makes exactly one
-# request — no retry, no redirect — total is the whole ceiling; urllib3 gives each
+# request — no retry, no redirect — total is the per-call ceiling; urllib3 gives each
 # attempt its own budget, so any allowance there would multiply this number.
+#
+# A blocked thread can wait twice this: _do_refresh_token falls back to _do_login, which
+# is a second call. That is the worst case behind one refresh, and the fallback is what
+# recovers an expired refresh token, so the 2x is deliberate rather than a leak.
 DEFAULT_AUTH_TIMEOUT_MS = 30_000
 
 # Retry policy for the raw auth calls, spelled out rather than left to urllib3, so that
@@ -63,12 +67,18 @@ DEFAULT_AUTH_TIMEOUT_MS = 30_000
 #     and _do_login would install the token it returns.
 # The case this gives up is a deployment that redirects auth (a proxy forcing https,
 # path normalisation). Failing loudly is the better answer there: on an http -> https
-# redirect the credentials have already gone out in cleartext, so the fix is to pass the
-# final auth URL as url=, which _raw_post's error tells the caller to do.
+# redirect the credentials have already gone out in cleartext, so the fix is to point url=
+# at the redirect target's base URL, which _raw_post's error tells the caller to do.
 #
 # total is set explicitly: it defaults to 10, and leaving it there would contradict the
 # "exactly one request" this whole block is for, even though the per-class zeros already
-# exhaust first. urllib3 normalises redirect=False to 0.
+# exhaust first.
+#
+# Spelled redirect=False rather than redirect=0, which is not the same thing: Retry
+# normalises False to 0 *and* clears raise_on_redirect, and that is what lets a 3xx come
+# back as a response for the status check below to report. With redirect=0 the same reply
+# raises MaxRetryError("too many redirects") instead and the remedy never reaches the
+# caller. Both spellings leave .redirect == 0, so only raise_on_redirect tells them apart.
 _AUTH_RETRIES = urllib3.Retry(total=0, connect=0, read=0, status=0, other=0, redirect=False)
 
 # Security scheme name and prefixes dictated by the generated configuration.py.
@@ -326,11 +336,15 @@ class _AuthManager:
             retries=_AUTH_RETRIES,
         )
         if response.status != 200:
-            # 3xx arrives here rather than being followed — say so, since the remedy is
-            # specific and not guessable from the status alone.
+            # A redirect arrives here rather than being followed — say so, since the
+            # remedy is specific and not guessable from the status alone. Gated on
+            # get_redirect_location() rather than the 3xx range because that is the
+            # predicate urllib3 itself would have followed: it covers 301/302/303/307/308
+            # and excludes 300 and 304, which carry no Location worth chasing.
             hint = (
-                "; auth requests do not follow redirects, so pass the final auth URL as url="
-                if 300 <= response.status < 400
+                "; auth requests do not follow redirects, so set url= to the redirect "
+                "target's base URL instead."
+                if response.get_redirect_location()
                 else ""
             )
             raise RuntimeError(f"Auth request to {path} returned HTTP {response.status}{hint}")

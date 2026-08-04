@@ -272,6 +272,11 @@ class TestRawPostBounds(unittest.TestCase):
 
         # urllib3 normalises redirect=False to 0.
         self.assertEqual(retries.redirect, 0)
+        # The half that redirect=0 would not give: without raise_on_redirect cleared, a
+        # 3xx raises MaxRetryError instead of reaching _raw_post's status check, and the
+        # remedy in that message never reaches the caller. .redirect alone cannot tell
+        # the two spellings apart, so this is the assertion that pins redirect=False.
+        self.assertIs(retries.raise_on_redirect, False)
 
     def test_timeout_is_configurable(self):
         """auth_timeout_ms reaches the request, in seconds."""
@@ -300,8 +305,14 @@ class _StubAuthServer:
     """
 
     def __init__(self, status, headers=(), body=b""):
+        # Every path the server is asked for, so a test can assert on what was *not*
+        # requested — a followed redirect shows up here as a second entry.
+        self.requests = []
+        requests = self.requests
+
         class Handler(http.server.BaseHTTPRequestHandler):
             def do_POST(handler):
+                requests.append(handler.path)
                 handler.send_response(status)
                 for name, value in headers:
                     handler.send_header(name, value)
@@ -333,15 +344,20 @@ class TestRawPostAgainstAServer(unittest.TestCase):
         self.assertEqual(result, {"token": "t", "refreshToken": "r"})
 
     def test_redirect_is_not_followed_and_says_why(self):
-        """A 3xx surfaces as an error naming the remedy, rather than being followed.
+        """A redirect surfaces as an error naming the remedy, rather than being followed.
 
         Following it would forward username/password to the redirect target, so this is
         the deliberate behaviour rather than a gap — the message has to explain that.
+
+        The request count is the load-bearing assertion: the message alone would still
+        match if a later change forwarded the body once and reported the second reply.
         """
         with _StubAuthServer(307, headers=[("Location", "/elsewhere")]) as server:
             auth = _AuthManager(server.url)
-            with self.assertRaisesRegex(RuntimeError, r"HTTP 307.*pass the final auth URL"):
+            with self.assertRaisesRegex(RuntimeError, r"HTTP 307.*set url= to the redirect"):
                 auth._raw_post("/api/auth/login", b"{}")
+
+        self.assertEqual(server.requests, ["/api/auth/login"], "the redirect was followed")
 
 
 class TestConcurrentRefresh(unittest.TestCase):
