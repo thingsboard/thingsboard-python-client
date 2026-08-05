@@ -126,16 +126,11 @@ class ThingsboardClient:
             login_api = LoginEndpointApi(api_client)
             response = login_api.login(LoginRequest(username=username, password=password))
             auth_manager.on_login(username, password, response.token, response.refresh_token)
-            # Seed the header slot, exactly as the api_key and token= branches do.
-            # Configuration.auth_settings() emits X-Authorization only when
-            # 'ApiKeyForm' is already in configuration.api_key, and the hook that
-            # would install it runs inside that same check (via
-            # get_api_key_with_prefix) — so without this seed the hook can never
-            # fire and every request goes out unauthenticated (HTTP 401).
-            # One seed is enough: from here on the hook runs before each request
-            # and keeps the header in step with refresh / re-login.
-            configuration.api_key["ApiKeyForm"] = response.token
-            configuration.api_key_prefix["ApiKeyForm"] = "Bearer"
+            # Seed the header slot by running the hook once: auth_settings() only
+            # emits X-Authorization when 'ApiKeyForm' is already in api_key, and
+            # the hook that fills it runs inside that same check — so unseeded, it
+            # never fires. After this the per-request hook keeps the header current.
+            auth_manager.hook(configuration)
 
         # Pre-existing token
         if token is not None:
