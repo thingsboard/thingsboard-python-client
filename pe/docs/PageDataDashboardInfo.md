@@ -32,7 +32,7 @@
 | assigned_customers | List[ShortCustomerInfo] | List of assigned customers with their info. | [optional] |
 | mobile_hide | bool | Hide dashboard from mobile devices. Useful if the dashboard is not designed for small screens. | [optional] [readonly] |
 | mobile_order | int | Order on mobile devices. Useful to adjust sorting of the dashboards for mobile applications | [optional] [readonly] |
-| configuration | object |  | [optional] |
+| configuration | object | JSON object with main configuration of the dashboard: layouts, widgets, aliases, etc. The JSON structure of the dashboard configuration is quite complex. The easiest way to learn it is to export existing dashboard to JSON. | [optional] |
 | resources | List[ResourceExportData] |  | [optional] |
 | version | int |  | [optional] |
 | groups | List[EntityInfo] | Groups | [optional] |

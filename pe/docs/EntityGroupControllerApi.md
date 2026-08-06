@@ -929,16 +929,16 @@ None client.share_entity_group_to_child_owner_user_group(entity_group_id: str, u
 
 Share the Entity Group with User group (shareEntityGroupToChildOwnerUserGroup)
 
-Share the entity group with specified user group using specified role.   Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority. Security check is performed to verify that the user has 'WRITE' permission for specified group.
+Share the entity group with the specified user group using the specified role. Unlike the 'shareEntityGroup' API method, this method is designed for sharing 'down' the owner hierarchy and does not require 'WRITE' permission for the shared entity group or the target user group. In particular, it allows the current user to re-share an entity group that was shared with them by the parent owner: for example, a customer user may re-share a tenant-owned dashboard group with a user group of their sub-customer.  The following security checks are performed:  * the target user group must belong to the current user's owner or to one of its sub-customers; * the current user must have the 'SHARE_GROUP' operation granted for the shared entity group: either as a generic permission for the corresponding entity group resource (applies only if the shared entity group belongs to the current user's owner hierarchy), or as a group permission created when the entity group was shared with the current user's user group using a group role that includes the 'SHARE_GROUP' operation; * the specified role must be a group role that is readable by the current user, so it must belong to the current user's owner or to one of its sub-customers; * the operations of the specified role must be a subset of the operations the current user was granted for the shared entity group (always passes if the current user was granted the 'ALL' operation).  If the specified role also includes the 'SHARE_GROUP' operation, the members of the target user group will be able to re-share the entity group further down their own owner hierarchy in the same way.  Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
 
 
 ### Parameters
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **entity_group_id** | **str** | A string value representing the Entity Group Id that you would like to share. For example, '784f394c-42b6-435a-983c-b7beff2784f9' | |
-| **user_group_id** | **str** | A string value representing the Entity(User) Group Id that you would like to share with. For example, '784f394c-42b6-435a-983c-b7beff2784f9' | |
-| **role_id** | **str** | A string value representing the Role Id that describes set of permissions you would like to share (read, write, etc). For example, '784f394c-42b6-435a-983c-b7beff2784f9' | |
+| **entity_group_id** | **str** | ID of the entity group to share | |
+| **user_group_id** | **str** | ID of the user group to share the entity group with. The user group must belong to the current user's owner or to one of its sub-customers | |
+| **role_id** | **str** | ID of the group role that defines the set of operations to grant to the target user group | |
 
 ### Return type
 

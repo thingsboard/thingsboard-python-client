@@ -7,7 +7,7 @@ object client.create_chat(body: object)  # createChat
 None client.delete_chat(chat_id: UUID)  # deleteChat
 object client.get_chat_messages(chat_id: UUID)  # getChatMessages
 object client.list_chats(chat_type: ChatType)  # listChats
-List[object] client.send_chat_message(chat_id: UUID, x_authorization: str, body: str, accept_language: Optional[str] = None)  # sendChatMessage
+List[object] client.send_chat_message(chat_id: UUID, x_authorization: str, body: object, accept_language: Optional[str] = None)  # sendChatMessage
 None client.update_chat(chat_id: UUID, body: object)  # updateChat
 ```
 
@@ -103,7 +103,7 @@ listChats
 ## send_chat_message
 
 ```python
-List[object] client.send_chat_message(chat_id: UUID, x_authorization: str, body: str, accept_language: Optional[str] = None)
+List[object] client.send_chat_message(chat_id: UUID, x_authorization: str, body: object, accept_language: Optional[str] = None)
 ```
 
 **POST** `/api/ai/chats/{chatId}/messages`
@@ -117,7 +117,7 @@ sendChatMessage
 |------------- | ------------- | ------------- | -------------|
 | **chat_id** | **UUID** |  | |
 | **x_authorization** | **str** |  | |
-| **body** | **str** |  | |
+| **body** | **object** |  | |
 | **accept_language** | **str** |  | [optional] |
 
 ### Return type

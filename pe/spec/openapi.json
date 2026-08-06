@@ -12,11 +12,11 @@
       "name": "Apache License Version 2.0",
       "url": "https://github.com/thingsboard/thingsboard/blob/master/LICENSE"
     },
-    "version": "4.3.1.3PE"
+    "version": "4.3.1.4PE"
   },
   "servers": [
     {
-      "url": "http://localhost:8080",
+      "url": "http://localhost:41237",
       "description": "Generated server url"
     }
   ],
@@ -4409,11 +4409,6 @@
         ],
         "requestBody": {
           "content": {
-            "text/plain": {
-              "schema": {
-                "type": "string"
-              }
-            },
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/JsonNode"
@@ -4542,7 +4537,6 @@
             }
           }
         },
-        "deprecated": true,
         "security": [
           {
             "HttpLoginForm": []
@@ -7753,7 +7747,7 @@
           "alarm-controller"
         ],
         "summary": "Create or Update Alarm (saveAlarm)",
-        "description": "Creates or Updates the Alarm. When creating alarm, platform generates Alarm Id as [time-based UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier#Version_1_(date-time_and_MAC_address)). The newly created Alarm id will be present in the response. Specify existing Alarm id to update the alarm. Referencing non-existing Alarm Id will cause 'Not Found' error. \n\nPlatform also deduplicate the alarms based on the entity id of originator and alarm 'type'. For example, if the user or system component create the alarm with the type 'HighTemperature' for device 'Device A' the new active alarm is created. If the user tries to create 'HighTemperature' alarm for the same device again, the previous alarm will be updated (the 'end_ts' will be set to current timestamp). If the user clears the alarm (see 'Clear Alarm(clearAlarm)'), than new alarm with the same type and same device may be created. Remove 'id', 'tenantId' and optionally 'customerId' from the request body example (below) to create new Alarm entity. \n\nAvailable for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority. Security check is performed to verify that the user has 'WRITE' permission for the entity (entities).",
+        "description": "Creates or Updates the Alarm. When creating alarm, platform generates Alarm Id as [time-based UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier#Version_1_(date-time_and_MAC_address)). The newly created Alarm id will be present in the response. Specify existing Alarm id to update the alarm. Referencing non-existing Alarm Id will cause 'Not Found' error. \n\nPlatform also deduplicate the alarms based on the entity id of originator and alarm 'type'. For example, if the user or system component create the alarm with the type 'HighTemperature' for device 'Device A' the new active alarm is created. If the user tries to create 'HighTemperature' alarm for the same device again, the previous alarm will be updated (the 'end_ts' will be set to current timestamp). If the user clears the alarm (see 'Clear Alarm(clearAlarm)'), than new alarm with the same type and same device may be created. Remove 'id', 'tenantId' and optionally 'customerId' from the request body example (below) to create new Alarm entity. \n\nThe alarm originator is an immutable routing key: when updating an existing alarm, the 'originator' in the request body must match the stored alarm's originator. A request that references an existing alarm id but carries a different originator is treated as a lookup miss and causes a 'Not Found' error. \n\nAvailable for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority. Security check is performed to verify that the user has 'WRITE' permission for the entity (entities).",
         "operationId": "saveAlarm",
         "requestBody": {
           "description": "A JSON value representing the alarm.",
@@ -49564,13 +49558,13 @@
           "entity-group-controller"
         ],
         "summary": "Share the Entity Group with User group (shareEntityGroupToChildOwnerUserGroup)",
-        "description": "Share the entity group with specified user group using specified role. \n\nAvailable for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority. Security check is performed to verify that the user has 'WRITE' permission for specified group.",
+        "description": "Share the entity group with the specified user group using the specified role. Unlike the 'shareEntityGroup' API method, this method is designed for sharing 'down' the owner hierarchy and does not require 'WRITE' permission for the shared entity group or the target user group. In particular, it allows the current user to re-share an entity group that was shared with them by the parent owner: for example, a customer user may re-share a tenant-owned dashboard group with a user group of their sub-customer.\n\nThe following security checks are performed:\n\n* the target user group must belong to the current user's owner or to one of its sub-customers;\n* the current user must have the 'SHARE_GROUP' operation granted for the shared entity group: either as a generic permission for the corresponding entity group resource (applies only if the shared entity group belongs to the current user's owner hierarchy), or as a group permission created when the entity group was shared with the current user's user group using a group role that includes the 'SHARE_GROUP' operation;\n* the specified role must be a group role that is readable by the current user, so it must belong to the current user's owner or to one of its sub-customers;\n* the operations of the specified role must be a subset of the operations the current user was granted for the shared entity group (always passes if the current user was granted the 'ALL' operation).\n\nIf the specified role also includes the 'SHARE_GROUP' operation, the members of the target user group will be able to re-share the entity group further down their own owner hierarchy in the same way.\n\nAvailable for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.",
         "operationId": "shareEntityGroupToChildOwnerUserGroup",
         "parameters": [
           {
             "name": "entityGroupId",
             "in": "path",
-            "description": "A string value representing the Entity Group Id that you would like to share. For example, '784f394c-42b6-435a-983c-b7beff2784f9'",
+            "description": "ID of the entity group to share",
             "required": true,
             "schema": {
               "type": "string"
@@ -49579,7 +49573,7 @@
           {
             "name": "userGroupId",
             "in": "path",
-            "description": "A string value representing the Entity(User) Group Id that you would like to share with. For example, '784f394c-42b6-435a-983c-b7beff2784f9'",
+            "description": "ID of the user group to share the entity group with. The user group must belong to the current user's owner or to one of its sub-customers",
             "required": true,
             "schema": {
               "type": "string"
@@ -49588,7 +49582,7 @@
           {
             "name": "roleId",
             "in": "path",
-            "description": "A string value representing the Role Id that describes set of permissions you would like to share (read, write, etc). For example, '784f394c-42b6-435a-983c-b7beff2784f9'",
+            "description": "ID of the group role that defines the set of operations to grant to the target user group",
             "required": true,
             "schema": {
               "type": "string"
@@ -123699,7 +123693,8 @@
             "readOnly": true
           },
           "configuration": {
-            "$ref": "#/components/schemas/JsonNode"
+            "$ref": "#/components/schemas/JsonNode",
+            "description": "JSON object with main configuration of the dashboard: layouts, widgets, aliases, etc. The JSON structure of the dashboard configuration is quite complex. The easiest way to learn it is to export existing dashboard to JSON."
           },
           "resources": {
             "type": "array",
@@ -123907,7 +123902,8 @@
             "readOnly": true
           },
           "configuration": {
-            "$ref": "#/components/schemas/JsonNode"
+            "$ref": "#/components/schemas/JsonNode",
+            "description": "JSON object with main configuration of the dashboard: layouts, widgets, aliases, etc. The JSON structure of the dashboard configuration is quite complex. The easiest way to learn it is to export existing dashboard to JSON."
           },
           "resources": {
             "type": "array",
@@ -130090,7 +130086,8 @@
             "readOnly": true
           },
           "configuration": {
-            "$ref": "#/components/schemas/JsonNode"
+            "$ref": "#/components/schemas/JsonNode",
+            "description": "JSON object with main configuration of the dashboard: layouts, widgets, aliases, etc. The JSON structure of the dashboard configuration is quite complex. The easiest way to learn it is to export existing dashboard to JSON."
           },
           "resources": {
             "type": "array",
@@ -143219,10 +143216,11 @@
       },
       "TelemetryObserveStrategy": {
         "type": "string",
+        "description": "Observation strategy for telemetry. SINGLE (0): one resource equals one single observe request. COMPOSITE_ALL (1): all resources in one composite observe request. COMPOSITE_BY_OBJECT (2): grouped composite observe requests by object.",
         "enum": [
-          "SINGLE (0): One resource equals one single observe request",
-          "COMPOSITE_ALL (1): All resources in one composite observe request",
-          "COMPOSITE_BY_OBJECT (2): Grouped composite observe requests by object"
+          "SINGLE",
+          "COMPOSITE_ALL",
+          "COMPOSITE_BY_OBJECT"
         ]
       },
       "TelemetryQueryingSnmpCommunicationConfig": {
