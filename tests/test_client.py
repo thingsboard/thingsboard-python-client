@@ -15,9 +15,15 @@ from tb_ce_client.client import ThingsboardClient
 from tb_ce_client.rest import RESTClientObject
 
 URL = "http://tb-server:9090"
+TOKEN = "test.jwt.token"
+REFRESH_TOKEN = "test.jwt.refresh"
+
+# Module-path patch target, so the mock works even if the module was evicted
+# and re-imported by test_split.py lazy-load tests.
+LOGIN_TARGET = "tb_ce_client.api.login_endpoint_api.LoginEndpointApi.login"
 
 
-def _mock_login_response(token="test.jwt.token", refresh_token="test.jwt.refresh"):
+def _mock_login_response(token=TOKEN, refresh_token=REFRESH_TOKEN):
     """Build a mock LoginResponse object."""
     resp = MagicMock()
     resp.token = token
@@ -25,25 +31,56 @@ def _mock_login_response(token="test.jwt.token", refresh_token="test.jwt.refresh
     return resp
 
 
+def _login_client(token=TOKEN, refresh_token=REFRESH_TOKEN, **kwargs):
+    """Construct a JWT client with login() mocked; return (client, mock_login)."""
+    with patch(LOGIN_TARGET, return_value=_mock_login_response(token, refresh_token)) as mock_login:
+        client = ThingsboardClient(URL, "user@tb.io", "pass123", **kwargs)
+    return client, mock_login
+
+
 class TestThingsboardClientJWTLogin(unittest.TestCase):
     """WRAP-01, AUTH-01 integration: username/password login flow."""
 
     def test_jwt_login(self):
         """ThingsboardClient(url, username, password) calls login() and stores tokens."""
-        mock_resp = _mock_login_response()
-        # Use module-path patch so the mock works even if the module was
-        # evicted and re-imported by test_split.py lazy-load tests.
-        with patch(
-            "tb_ce_client.api.login_endpoint_api.LoginEndpointApi.login", return_value=mock_resp
-        ) as mock_login:
-            client = ThingsboardClient(URL, "user@tb.io", "pass123")
+        client, mock_login = _login_client()
         mock_login.assert_called_once()
         # Token stored in auth manager
-        self.assertEqual(client.get_token(), mock_resp.token)
+        self.assertEqual(client.get_token(), TOKEN)
+
+    def test_jwt_login_seeds_configuration_api_key(self):
+        """AUTH-01: the login token is installed into configuration, not only the auth manager.
+
+        Without the seed, auth_settings() never emits X-Authorization and every
+        request goes out unauthenticated — see the comment in client.py.
+        """
+        client, _ = _login_client()
+        cfg = client.api_client.configuration
+        self.assertEqual(cfg.api_key.get("ApiKeyForm"), TOKEN)
+        self.assertEqual(cfg.api_key_prefix.get("ApiKeyForm"), "Bearer")
+
+    def test_jwt_login_emits_x_authorization_header(self):
+        """AUTH-01: auth_settings() yields the header an API request actually sends."""
+        client, _ = _login_client()
+        auth = client.api_client.configuration.auth_settings()
+        self.assertIn("ApiKeyForm", auth)
+        self.assertEqual(auth["ApiKeyForm"]["key"], "X-Authorization")
+        self.assertEqual(auth["ApiKeyForm"]["value"], f"Bearer {TOKEN}")
+
+    def test_jwt_header_follows_token_rotation(self):
+        """AUTH-02: seeding at login does not freeze the first token — the hook
+        runs before every request, so refresh / re-login is picked up."""
+        client, _ = _login_client()
+        # Simulate what _do_refresh_token / _do_login do on expiry: swap in new tokens.
+        client._auth_manager.on_login(
+            "user@tb.io", "pass123", "rotated.jwt.token", "rotated.jwt.refresh"
+        )
+        auth = client.api_client.configuration.auth_settings()
+        self.assertEqual(auth["ApiKeyForm"]["value"], "Bearer rotated.jwt.token")
 
     def test_api_key_auth(self):
         """WRAP-01, AUTH-05: api_key sets header without calling login()."""
-        with patch("tb_ce_client.api.login_endpoint_api.LoginEndpointApi.login") as mock_login:
+        with patch(LOGIN_TARGET) as mock_login:
             client = ThingsboardClient(URL, api_key="test-key")
         mock_login.assert_not_called()
         cfg = client.api_client.configuration
@@ -52,7 +89,7 @@ class TestThingsboardClientJWTLogin(unittest.TestCase):
 
     def test_preexisting_token(self):
         """WRAP-01, AUTH-06: pre-existing token sets header without login()."""
-        with patch("tb_ce_client.api.login_endpoint_api.LoginEndpointApi.login") as mock_login:
+        with patch(LOGIN_TARGET) as mock_login:
             client = ThingsboardClient(
                 URL, token="jwt.payload.sig", refresh_token="jwt.payload.sig"
             )
@@ -143,20 +180,12 @@ class TestThingsboardClientTokenAccessors(unittest.TestCase):
 
     def test_get_token_jwt(self):
         """get_token() returns the JWT after successful login."""
-        mock_resp = _mock_login_response(token="access.jwt.here")
-        with patch(
-            "tb_ce_client.api.login_endpoint_api.LoginEndpointApi.login", return_value=mock_resp
-        ):
-            client = ThingsboardClient(URL, "u", "p")
+        client, _ = _login_client(token="access.jwt.here")
         self.assertEqual(client.get_token(), "access.jwt.here")
 
     def test_get_refresh_token_jwt(self):
         """get_refresh_token() returns the refresh JWT after login."""
-        mock_resp = _mock_login_response(refresh_token="refresh.jwt.here")
-        with patch(
-            "tb_ce_client.api.login_endpoint_api.LoginEndpointApi.login", return_value=mock_resp
-        ):
-            client = ThingsboardClient(URL, "u", "p")
+        client, _ = _login_client(refresh_token="refresh.jwt.here")
         self.assertEqual(client.get_refresh_token(), "refresh.jwt.here")
 
 
