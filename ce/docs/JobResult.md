@@ -39,6 +39,18 @@ Job execution result
 | error | str |  | [optional] |
 | job_type | str |  |  |
 
+#### DummyTaskResult  *(extends TaskResult, job_type=`DUMMY`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| failure | DummyTaskFailure |  | [optional] |
+
+#### DummyTaskFailure
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| error | str |  | [optional] |
+| number | int |  | [optional] |
+| fail_always | bool |  | [optional] |
+
 ---
 
 ### Conventions

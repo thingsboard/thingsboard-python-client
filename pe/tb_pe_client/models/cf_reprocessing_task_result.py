@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict
+from pydantic import ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_pe_client.models.cf_reprocessing_task_failure import CfReprocessingTaskFailure
 from tb_pe_client.models.task_result import TaskResult
@@ -32,6 +32,7 @@ class CfReprocessingTaskResult(TaskResult):
     """
     CfReprocessingTaskResult
     """ # noqa: E501
+    job_type: StrictStr = Field(default="CF_REPROCESSING", serialization_alias="jobType")  # post_process: discriminator default
     failure: Optional[CfReprocessingTaskFailure] = None
     __properties: ClassVar[List[str]] = ["key", "success", "discarded", "finishTs", "error", "jobType", "failure"]
 

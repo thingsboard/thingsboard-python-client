@@ -83,6 +83,21 @@
 | error | str |  | [optional] |
 | job_type | str |  |  |
 
+#### CfReprocessingTaskResult  *(extends TaskResult, job_type=`CF_REPROCESSING`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| failure | CfReprocessingTaskFailure |  | [optional] |
+
+#### DummyTaskResult  *(extends TaskResult, job_type=`DUMMY`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| failure | DummyTaskFailure |  | [optional] |
+
+#### ReportTaskResult  *(extends TaskResult, job_type=`REPORT`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| report | Report |  | [optional] |
+
 #### NotificationTemplate
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
@@ -140,6 +155,32 @@
 | user_id | UserId |  | [optional] |
 | timezone | str |  | [optional] |
 
+#### CfReprocessingTaskFailure
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| error | str |  | [optional] |
+| entity_info | EntityInfo |  | [optional] |
+
+#### Report
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | ReportId |  | [optional] |
+| created_time | int | Entity creation timestamp in milliseconds since Unix epoch | [optional] [readonly] |
+| tenant_id | TenantId |  |  |
+| customer_id | CustomerId |  | [optional] |
+| template_id | ReportTemplateId |  |  |
+| format | TbReportFormat |  |  |
+| name | str |  |  |
+| user_id | UserId |  |  |
+| owner_id | EntityId | JSON object with Customer or Tenant Id | [optional] [readonly] |
+
+#### DummyTaskFailure
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| error | str |  | [optional] |
+| number | int |  | [optional] |
+| fail_always | bool |  | [optional] |
+
 #### DeliveryMethodNotificationTemplate
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
@@ -176,6 +217,9 @@
 |------|------|-------------|-------|
 | subject | str | Subject line for the web notification |  |
 | additional_config | object | Additional JSON configuration for web buttons/actions | [optional] |
+
+#### TbReportFormat (enum)
+`PDF` | `CSV`
 
 #### Button
 | Name | Type | Description | Notes |
