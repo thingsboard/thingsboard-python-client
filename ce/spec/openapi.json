@@ -12,11 +12,11 @@
       "name": "Apache License Version 2.0",
       "url": "https://github.com/thingsboard/thingsboard/blob/master/LICENSE"
     },
-    "version": "4.3.1.3"
+    "version": "4.3.1.4"
   },
   "servers": [
     {
-      "url": "http://localhost:8080",
+      "url": "http://localhost:45567",
       "description": "Generated server url"
     }
   ],
@@ -88322,7 +88322,20 @@
               }
             }
           }
-        ]
+        ],
+        "example": {
+          "key": null,
+          "success": null,
+          "discarded": null,
+          "finishTs": null,
+          "error": null,
+          "jobType": "DUMMY",
+          "failure": {
+            "error": null,
+            "number": null,
+            "failAlways": null
+          }
+        }
       },
       "DurationAlarmCondition": {
         "allOf": [
@@ -91537,7 +91550,28 @@
       },
       "LwM2MBootstrapServerCredential": {
         "discriminator": {
-          "propertyName": "securityMode"
+          "propertyName": "securityMode",
+          "mapping": {
+            "NO_SEC": "#/components/schemas/NoSecLwM2MBootstrapServerCredential",
+            "PSK": "#/components/schemas/PSKLwM2MBootstrapServerCredential",
+            "RPK": "#/components/schemas/RPKLwM2MBootstrapServerCredential",
+            "X509": "#/components/schemas/X509LwM2MBootstrapServerCredential"
+          }
+        },
+        "example": {
+          "securityMode": "NO_SEC",
+          "shortServerId": 123,
+          "bootstrapServerIs": true,
+          "host": "0.0.0.0",
+          "port": "'5685' or '5687'",
+          "clientHoldOffTime": 1,
+          "serverPublicKey": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEAZ0pSaGKHk/GrDaUDnQZpeEdGwX7m3Ws+U/kiVat\n+44sgk3c8g0LotfMpLlZJPhPwJ6ipXV+O1r7IZUjBs3LNA==",
+          "serverCertificate": "MMIICODCCAd6gAwIBAgIUI88U1zowOdrxDK/dOV+36gJxI2MwCgYIKoZIzj0EAwIwejELMAkGA1UEBhMCVUs\nxEjAQBgNVBAgTCUt5aXYgY2l0eTENMAsGA1UEBxMES3lpdjEUMBIGA1UEChMLVGhpbmdzYm9hcmQxFzAVBgNVBAsMDkRFVkVMT1BFUl9URVNUMRkwFwYDVQQDDBBpbnRlcm1lZGlhdGVfY2EwMB4XDTIyMDEwOTEzMDMwMFoXDTI3MDEwODEzMDMwMFowFDESMBAGA1UEAxM\nJbG9jYWxob3N0MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEUO3vBo/JTv0eooY7XHiKAIVDoWKFqtrU7C6q8AIKqpLcqhCdW+haFeBOH3PjY6EwaWkY04Bir4oanU0s7tz2uKOBpzCBpDAOBgNVHQ8BAf8EBAMCBaAwEwYDVR0lBAwwCgYIKwYBBQUHAwEwDAYDVR0TAQH/\nBAIwADAdBgNVHQ4EFgQUEjc3Q4a0TxzP/3x3EV4fHxYUg0YwHwYDVR0jBBgwFoAUuSquGycMU6Q0SYNcbtSkSD3TfH0wLwYDVR0RBCgwJoIVbG9jYWxob3N0LmxvY2FsZG9tYWlugglsb2NhbGhvc3SCAiAtMAoGCCqGSM49BAMCA0gAMEUCIQD7dbZObyUaoDiNbX+9fUNp\nAWrD7N7XuJUwZ9FcN75R3gIgb2RNjDkHoyUyF1YajwkBk+7XmIXNClmizNJigj908mw=",
+          "bootstrapServerAccountTimeout": 0,
+          "lifetime": 300,
+          "defaultMinPeriod": 1,
+          "notifIfDisabled": true,
+          "binding": "U"
         },
         "properties": {
           "securityMode": {
@@ -92651,7 +92685,22 @@
               }
             }
           }
-        ]
+        ],
+        "example": {
+          "securityMode": "NO_SEC",
+          "shortServerId": 123,
+          "bootstrapServerIs": true,
+          "host": "0.0.0.0",
+          "port": "'5685' or '5687'",
+          "clientHoldOffTime": 1,
+          "serverPublicKey": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEAZ0pSaGKHk/GrDaUDnQZpeEdGwX7m3Ws+U/kiVat\n+44sgk3c8g0LotfMpLlZJPhPwJ6ipXV+O1r7IZUjBs3LNA==",
+          "serverCertificate": "MMIICODCCAd6gAwIBAgIUI88U1zowOdrxDK/dOV+36gJxI2MwCgYIKoZIzj0EAwIwejELMAkGA1UEBhMCVUs\nxEjAQBgNVBAgTCUt5aXYgY2l0eTENMAsGA1UEBxMES3lpdjEUMBIGA1UEChMLVGhpbmdzYm9hcmQxFzAVBgNVBAsMDkRFVkVMT1BFUl9URVNUMRkwFwYDVQQDDBBpbnRlcm1lZGlhdGVfY2EwMB4XDTIyMDEwOTEzMDMwMFoXDTI3MDEwODEzMDMwMFowFDESMBAGA1UEAxM\nJbG9jYWxob3N0MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEUO3vBo/JTv0eooY7XHiKAIVDoWKFqtrU7C6q8AIKqpLcqhCdW+haFeBOH3PjY6EwaWkY04Bir4oanU0s7tz2uKOBpzCBpDAOBgNVHQ8BAf8EBAMCBaAwEwYDVR0lBAwwCgYIKwYBBQUHAwEwDAYDVR0TAQH/\nBAIwADAdBgNVHQ4EFgQUEjc3Q4a0TxzP/3x3EV4fHxYUg0YwHwYDVR0jBBgwFoAUuSquGycMU6Q0SYNcbtSkSD3TfH0wLwYDVR0RBCgwJoIVbG9jYWxob3N0LmxvY2FsZG9tYWlugglsb2NhbGhvc3SCAiAtMAoGCCqGSM49BAMCA0gAMEUCIQD7dbZObyUaoDiNbX+9fUNp\nAWrD7N7XuJUwZ9FcN75R3gIgb2RNjDkHoyUyF1YajwkBk+7XmIXNClmizNJigj908mw=",
+          "bootstrapServerAccountTimeout": 0,
+          "lifetime": 300,
+          "defaultMinPeriod": 1,
+          "notifIfDisabled": true,
+          "binding": "U"
+        }
       },
       "NodeConnectionInfo": {
         "type": "object",
@@ -94616,7 +94665,22 @@
               }
             }
           }
-        ]
+        ],
+        "example": {
+          "securityMode": "PSK",
+          "shortServerId": 123,
+          "bootstrapServerIs": true,
+          "host": "0.0.0.0",
+          "port": "'5685' or '5687'",
+          "clientHoldOffTime": 1,
+          "serverPublicKey": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEAZ0pSaGKHk/GrDaUDnQZpeEdGwX7m3Ws+U/kiVat\n+44sgk3c8g0LotfMpLlZJPhPwJ6ipXV+O1r7IZUjBs3LNA==",
+          "serverCertificate": "MMIICODCCAd6gAwIBAgIUI88U1zowOdrxDK/dOV+36gJxI2MwCgYIKoZIzj0EAwIwejELMAkGA1UEBhMCVUs\nxEjAQBgNVBAgTCUt5aXYgY2l0eTENMAsGA1UEBxMES3lpdjEUMBIGA1UEChMLVGhpbmdzYm9hcmQxFzAVBgNVBAsMDkRFVkVMT1BFUl9URVNUMRkwFwYDVQQDDBBpbnRlcm1lZGlhdGVfY2EwMB4XDTIyMDEwOTEzMDMwMFoXDTI3MDEwODEzMDMwMFowFDESMBAGA1UEAxM\nJbG9jYWxob3N0MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEUO3vBo/JTv0eooY7XHiKAIVDoWKFqtrU7C6q8AIKqpLcqhCdW+haFeBOH3PjY6EwaWkY04Bir4oanU0s7tz2uKOBpzCBpDAOBgNVHQ8BAf8EBAMCBaAwEwYDVR0lBAwwCgYIKwYBBQUHAwEwDAYDVR0TAQH/\nBAIwADAdBgNVHQ4EFgQUEjc3Q4a0TxzP/3x3EV4fHxYUg0YwHwYDVR0jBBgwFoAUuSquGycMU6Q0SYNcbtSkSD3TfH0wLwYDVR0RBCgwJoIVbG9jYWxob3N0LmxvY2FsZG9tYWlugglsb2NhbGhvc3SCAiAtMAoGCCqGSM49BAMCA0gAMEUCIQD7dbZObyUaoDiNbX+9fUNp\nAWrD7N7XuJUwZ9FcN75R3gIgb2RNjDkHoyUyF1YajwkBk+7XmIXNClmizNJigj908mw=",
+          "bootstrapServerAccountTimeout": 0,
+          "lifetime": 300,
+          "defaultMinPeriod": 1,
+          "notifIfDisabled": true,
+          "binding": "U"
+        }
       },
       "PageDataAiModel": {
         "type": "object",
@@ -96756,7 +96820,22 @@
               }
             }
           }
-        ]
+        ],
+        "example": {
+          "securityMode": "RPK",
+          "shortServerId": 123,
+          "bootstrapServerIs": true,
+          "host": "0.0.0.0",
+          "port": "'5685' or '5687'",
+          "clientHoldOffTime": 1,
+          "serverPublicKey": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEAZ0pSaGKHk/GrDaUDnQZpeEdGwX7m3Ws+U/kiVat\n+44sgk3c8g0LotfMpLlZJPhPwJ6ipXV+O1r7IZUjBs3LNA==",
+          "serverCertificate": "MMIICODCCAd6gAwIBAgIUI88U1zowOdrxDK/dOV+36gJxI2MwCgYIKoZIzj0EAwIwejELMAkGA1UEBhMCVUs\nxEjAQBgNVBAgTCUt5aXYgY2l0eTENMAsGA1UEBxMES3lpdjEUMBIGA1UEChMLVGhpbmdzYm9hcmQxFzAVBgNVBAsMDkRFVkVMT1BFUl9URVNUMRkwFwYDVQQDDBBpbnRlcm1lZGlhdGVfY2EwMB4XDTIyMDEwOTEzMDMwMFoXDTI3MDEwODEzMDMwMFowFDESMBAGA1UEAxM\nJbG9jYWxob3N0MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEUO3vBo/JTv0eooY7XHiKAIVDoWKFqtrU7C6q8AIKqpLcqhCdW+haFeBOH3PjY6EwaWkY04Bir4oanU0s7tz2uKOBpzCBpDAOBgNVHQ8BAf8EBAMCBaAwEwYDVR0lBAwwCgYIKwYBBQUHAwEwDAYDVR0TAQH/\nBAIwADAdBgNVHQ4EFgQUEjc3Q4a0TxzP/3x3EV4fHxYUg0YwHwYDVR0jBBgwFoAUuSquGycMU6Q0SYNcbtSkSD3TfH0wLwYDVR0RBCgwJoIVbG9jYWxob3N0LmxvY2FsZG9tYWlugglsb2NhbGhvc3SCAiAtMAoGCCqGSM49BAMCA0gAMEUCIQD7dbZObyUaoDiNbX+9fUNp\nAWrD7N7XuJUwZ9FcN75R3gIgb2RNjDkHoyUyF1YajwkBk+7XmIXNClmizNJigj908mw=",
+          "bootstrapServerAccountTimeout": 0,
+          "lifetime": 300,
+          "defaultMinPeriod": 1,
+          "notifIfDisabled": true,
+          "binding": "U"
+        }
       },
       "RateLimitsNotificationRuleTriggerConfig": {
         "allOf": [
@@ -99195,7 +99274,23 @@
       "TaskResult": {
         "type": "object",
         "discriminator": {
-          "propertyName": "jobType"
+          "propertyName": "jobType",
+          "mapping": {
+            "DUMMY": "#/components/schemas/DummyTaskResult"
+          }
+        },
+        "example": {
+          "key": null,
+          "success": null,
+          "discarded": null,
+          "finishTs": null,
+          "error": null,
+          "jobType": "DUMMY",
+          "failure": {
+            "error": null,
+            "number": null,
+            "failAlways": null
+          }
         },
         "properties": {
           "key": {
@@ -99665,10 +99760,11 @@
       },
       "TelemetryObserveStrategy": {
         "type": "string",
+        "description": "Observation strategy for telemetry. SINGLE (0): one resource equals one single observe request. COMPOSITE_ALL (1): all resources in one composite observe request. COMPOSITE_BY_OBJECT (2): grouped composite observe requests by object.",
         "enum": [
-          "SINGLE (0): One resource equals one single observe request",
-          "COMPOSITE_ALL (1): All resources in one composite observe request",
-          "COMPOSITE_BY_OBJECT (2): Grouped composite observe requests by object"
+          "SINGLE",
+          "COMPOSITE_ALL",
+          "COMPOSITE_BY_OBJECT"
         ]
       },
       "TelemetryQueryingSnmpCommunicationConfig": {
@@ -101880,7 +101976,22 @@
               }
             }
           }
-        ]
+        ],
+        "example": {
+          "securityMode": "X509",
+          "shortServerId": 123,
+          "bootstrapServerIs": true,
+          "host": "0.0.0.0",
+          "port": "'5685' or '5687'",
+          "clientHoldOffTime": 1,
+          "serverPublicKey": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEAZ0pSaGKHk/GrDaUDnQZpeEdGwX7m3Ws+U/kiVat\n+44sgk3c8g0LotfMpLlZJPhPwJ6ipXV+O1r7IZUjBs3LNA==",
+          "serverCertificate": "MMIICODCCAd6gAwIBAgIUI88U1zowOdrxDK/dOV+36gJxI2MwCgYIKoZIzj0EAwIwejELMAkGA1UEBhMCVUs\nxEjAQBgNVBAgTCUt5aXYgY2l0eTENMAsGA1UEBxMES3lpdjEUMBIGA1UEChMLVGhpbmdzYm9hcmQxFzAVBgNVBAsMDkRFVkVMT1BFUl9URVNUMRkwFwYDVQQDDBBpbnRlcm1lZGlhdGVfY2EwMB4XDTIyMDEwOTEzMDMwMFoXDTI3MDEwODEzMDMwMFowFDESMBAGA1UEAxM\nJbG9jYWxob3N0MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEUO3vBo/JTv0eooY7XHiKAIVDoWKFqtrU7C6q8AIKqpLcqhCdW+haFeBOH3PjY6EwaWkY04Bir4oanU0s7tz2uKOBpzCBpDAOBgNVHQ8BAf8EBAMCBaAwEwYDVR0lBAwwCgYIKwYBBQUHAwEwDAYDVR0TAQH/\nBAIwADAdBgNVHQ4EFgQUEjc3Q4a0TxzP/3x3EV4fHxYUg0YwHwYDVR0jBBgwFoAUuSquGycMU6Q0SYNcbtSkSD3TfH0wLwYDVR0RBCgwJoIVbG9jYWxob3N0LmxvY2FsZG9tYWlugglsb2NhbGhvc3SCAiAtMAoGCCqGSM49BAMCA0gAMEUCIQD7dbZObyUaoDiNbX+9fUNp\nAWrD7N7XuJUwZ9FcN75R3gIgb2RNjDkHoyUyF1YajwkBk+7XmIXNClmizNJigj908mw=",
+          "bootstrapServerAccountTimeout": 0,
+          "lifetime": 300,
+          "defaultMinPeriod": 1,
+          "notifIfDisabled": true,
+          "binding": "U"
+        }
       },
       "YearInterval": {
         "allOf": [

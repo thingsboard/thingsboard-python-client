@@ -53,7 +53,7 @@ class LwM2MBootstrapServerCredential(BaseModel):
 
     # discriminator mappings
     __discriminator_value_class_map: ClassVar[Dict[str, str]] = {
-        'NoSecLwM2MBootstrapServerCredential': 'NoSecLwM2MBootstrapServerCredential','PSKLwM2MBootstrapServerCredential': 'PSKLwM2MBootstrapServerCredential','RPKLwM2MBootstrapServerCredential': 'RPKLwM2MBootstrapServerCredential','X509LwM2MBootstrapServerCredential': 'X509LwM2MBootstrapServerCredential'
+        'NO_SEC': 'NoSecLwM2MBootstrapServerCredential','PSK': 'PSKLwM2MBootstrapServerCredential','RPK': 'RPKLwM2MBootstrapServerCredential','X509': 'X509LwM2MBootstrapServerCredential'
     }
 
     @classmethod

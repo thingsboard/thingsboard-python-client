@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict
+from pydantic import ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_pe_client.models.dummy_task_failure import DummyTaskFailure
 from tb_pe_client.models.task_result import TaskResult
@@ -32,6 +32,7 @@ class DummyTaskResult(TaskResult):
     """
     DummyTaskResult
     """ # noqa: E501
+    job_type: StrictStr = Field(default="DUMMY", serialization_alias="jobType")  # post_process: discriminator default
     failure: Optional[DummyTaskFailure] = None
     __properties: ClassVar[List[str]] = ["key", "success", "discarded", "finishTs", "error", "jobType", "failure"]
 
