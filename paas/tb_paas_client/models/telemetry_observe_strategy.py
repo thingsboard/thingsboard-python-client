@@ -24,15 +24,15 @@ from typing_extensions import Self
 
 class TelemetryObserveStrategy(str, Enum):
     """
-    TelemetryObserveStrategy
+    Observation strategy for telemetry. SINGLE (0): one resource equals one single observe request. COMPOSITE_ALL (1): all resources in one composite observe request. COMPOSITE_BY_OBJECT (2): grouped composite observe requests by object.
     """
 
     """
     allowed enum values
     """
-    SINGLE_LEFT_PARENTHESIS_0_RIGHT_PARENTHESIS_COLON__ONE_RESOURCE_EQUALS_ONE_SINGLE_OBSERVE_REQUEST = 'SINGLE (0): One resource equals one single observe request'
-    COMPOSITE_ALL_LEFT_PARENTHESIS_1_RIGHT_PARENTHESIS_COLON__ALL_RESOURCES_IN_ONE_COMPOSITE_OBSERVE_REQUEST = 'COMPOSITE_ALL (1): All resources in one composite observe request'
-    COMPOSITE_BY_OBJECT_LEFT_PARENTHESIS_2_RIGHT_PARENTHESIS_COLON__GROUPED_COMPOSITE_OBSERVE_REQUESTS_BY_OBJECT = 'COMPOSITE_BY_OBJECT (2): Grouped composite observe requests by object'
+    SINGLE = 'SINGLE'
+    COMPOSITE_ALL = 'COMPOSITE_ALL'
+    COMPOSITE_BY_OBJECT = 'COMPOSITE_BY_OBJECT'
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:
