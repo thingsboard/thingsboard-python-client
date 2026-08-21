@@ -65,6 +65,21 @@
 | error | str |  | [optional] |
 | job_type | str |  |  |
 
+#### CfReprocessingTaskResult  *(extends TaskResult, job_type=`CF_REPROCESSING`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| failure | CfReprocessingTaskFailure |  | [optional] |
+
+#### DummyTaskResult  *(extends TaskResult, job_type=`DUMMY`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| failure | DummyTaskFailure |  | [optional] |
+
+#### ReportTaskResult  *(extends TaskResult, job_type=`REPORT`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| report | Report |  | [optional] |
+
 #### NotificationRequest
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
@@ -149,6 +164,32 @@
 | all_enabled | bool | Debug All. Used as a trigger for updating debugAllUntil. | [optional] |
 | all_enabled_until | int | Timestamp of the end time for the processing debug events. | [optional] |
 
+#### CfReprocessingTaskFailure
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| error | str |  | [optional] |
+| entity_info | EntityInfo |  | [optional] |
+
+#### Report
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | ReportId |  | [optional] |
+| created_time | int | Entity creation timestamp in milliseconds since Unix epoch | [optional] [readonly] |
+| tenant_id | TenantId |  |  |
+| customer_id | CustomerId |  | [optional] |
+| template_id | ReportTemplateId |  |  |
+| format | TbReportFormat |  |  |
+| name | str |  |  |
+| user_id | UserId |  |  |
+| owner_id | EntityId | JSON object with Customer or Tenant Id | [optional] [readonly] |
+
+#### DummyTaskFailure
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| error | str |  | [optional] |
+| number | int |  | [optional] |
+| fail_always | bool |  | [optional] |
+
 #### NotificationType (enum)
 `GENERAL` | `ALARM` | `DEVICE_ACTIVITY` | `ENTITY_ACTION` | `ALARM_COMMENT` | `RULE_ENGINE_COMPONENT_LIFECYCLE_EVENT` | `ALARM_ASSIGNMENT` | `NEW_PLATFORM_VERSION` | `ENTITIES_LIMIT` | `ENTITIES_LIMIT_INCREASE_REQUEST` | … (24 values total)
 
@@ -160,6 +201,9 @@
 | report_template_id | ReportTemplateId |  | [optional] |
 | user_id | UserId |  | [optional] |
 | timezone | str |  | [optional] |
+
+#### TbReportFormat (enum)
+`PDF` | `CSV`
 
 #### DeliveryMethodNotificationTemplate
 | Name | Type | Description | Notes |
