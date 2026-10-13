@@ -37,6 +37,7 @@ class RelationTypeGroup(str, Enum):
     RULE_NODE = 'RULE_NODE'
     EDGE = 'EDGE'
     EDGE_AUTO_ASSIGN_RULE_CHAIN = 'EDGE_AUTO_ASSIGN_RULE_CHAIN'
+    AGENT = 'AGENT'
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:

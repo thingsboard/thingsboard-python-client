@@ -7,10 +7,8 @@ object client.chat(solution_id: UUID, step: SolutionStep, body: str)  # chat
 None client.clear_step(solution_id: UUID, step: SolutionStep)  # clearStep
 object client.create_solution(solution_id: UUID)  # createSolution
 None client.delete_solution(solution_id: UUID)  # deleteSolution
-object client.export_solution(solution_id: UUID)  # exportSolution
 object client.get_solution(solution_id: UUID)  # getSolution
 object client.get_solutions()  # getSolutions
-object client.import_solution(body: object)  # importSolution
 object client.install_solution(solution_id: UUID, x_authorization: str)  # installSolution
 object client.start_new()  # startNew
 object client.uninstall_solution(solution_id: UUID, x_authorization: str)  # uninstallSolution
@@ -109,28 +107,6 @@ deleteSolution
 None (empty response body)
 
 
-## export_solution
-
-```python
-object client.export_solution(solution_id: UUID)
-```
-
-**GET** `/api/ai/solution/{solutionId}/export`
-
-exportSolution
-
-
-### Parameters
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **solution_id** | **UUID** |  | |
-
-### Return type
-
-**object**
-
-
 ## get_solution
 
 ```python
@@ -162,28 +138,6 @@ object client.get_solutions()
 **GET** `/api/ai/solution/infos`
 
 getSolutions
-
-### Return type
-
-**object**
-
-
-## import_solution
-
-```python
-object client.import_solution(body: object)
-```
-
-**POST** `/api/ai/solution/import`
-
-importSolution
-
-
-### Parameters
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **body** | **object** |  | |
 
 ### Return type
 

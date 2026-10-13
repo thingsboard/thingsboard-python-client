@@ -24,9 +24,7 @@ import json
 from pydantic import ConfigDict, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_paas_client.models.alarm_schedule import AlarmSchedule
-from tb_paas_client.models.alarm_schedule_type import AlarmScheduleType
 from tb_paas_client.models.custom_time_schedule_item import CustomTimeScheduleItem
-from tb_paas_client.models.dynamic_value_string import DynamicValueString
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -36,7 +34,7 @@ class CustomTimeSchedule(AlarmSchedule):
     """ # noqa: E501
     timezone: Optional[StrictStr] = None
     items: Optional[List[CustomTimeScheduleItem]] = None
-    __properties: ClassVar[List[str]] = ["dynamicValue", "type", "timezone", "items"]
+    __properties: ClassVar[List[str]] = ["type", "timezone", "items"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -82,9 +80,6 @@ class CustomTimeSchedule(AlarmSchedule):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of dynamic_value
-        if self.dynamic_value:
-            _dict['dynamicValue'] = self.dynamic_value.to_dict()
         # override the default output from pydantic by calling `to_dict()` of each item in items (list)
         _items = []
         if self.items:
@@ -104,7 +99,6 @@ class CustomTimeSchedule(AlarmSchedule):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "dynamic_value": DynamicValueString.from_dict(obj["dynamicValue"]) if obj.get("dynamicValue") is not None else None,
             "type": obj.get("type"),
             "timezone": obj.get("timezone"),
             "items": [CustomTimeScheduleItem.from_dict(_item) for _item in obj["items"]] if obj.get("items") is not None else None

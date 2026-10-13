@@ -13,7 +13,7 @@ A JSON value representing the entity group.
 | **created_time** | **int** | Timestamp of the entity group creation, in milliseconds | [optional] [readonly] |
 | **type** | **TypeEnum** |  | |
 | **name** | **str** | Name of the entity group | |
-| **owner_id** | [**EntityId**](EntityId.md) | JSON object with the owner of the group - Tenant or Customer Id. | [optional] |
+| **owner_id** | [**EntityId**](EntityId.md) | JSON object with the owner of the group - Tenant or Customer Id. When omitted or null on creation, defaults to the current user's owner (Tenant for tenant admins, Customer for customer users). | [optional] |
 | **additional_info** | **object** | Additional parameters of the entity group. May include: 'description' (string), 'isPublic' (boolean, whether this group is shared publicly), 'publicCustomerId' (string, UUID of the public customer associated with this group). | [optional] |
 | **configuration** | **object** | JSON with the configuration for UI components: list of columns, settings, actions, etc  | [optional] |
 | **version** | **int** |  | [optional] |
@@ -72,6 +72,13 @@ A JSON value representing the entity group.
 | &#39;ADMIN_SETTINGS&#39; | 'ADMIN_SETTINGS' |
 | &#39;AI_MODEL&#39; | 'AI_MODEL' |
 | &#39;API_KEY&#39; | 'API_KEY' |
+| &#39;AGENT&#39; | 'AGENT' |
+| &#39;AGENT_APPLICATION&#39; | 'AGENT_APPLICATION' |
+| &#39;AGENT_APP_EVENT&#39; | 'AGENT_APP_EVENT' |
+| &#39;AGENT_APP_UNIT&#39; | 'AGENT_APP_UNIT' |
+| &#39;AGENT_APP_PROFILE&#39; | 'AGENT_APP_PROFILE' |
+| &#39;AGENT_PROFILE&#39; | 'AGENT_PROFILE' |
+| &#39;AGENT_BULK_ACTION&#39; | 'AGENT_BULK_ACTION' |
 | &#39;BILLING_CUSTOMER&#39; | 'BILLING_CUSTOMER' |
 | &#39;SUBSCRIPTION_PLAN&#39; | 'SUBSCRIPTION_PLAN' |
 | &#39;SUBSCRIPTION&#39; | 'SUBSCRIPTION' |
@@ -83,10 +90,10 @@ A JSON value representing the entity group.
 
 ## Referenced Types
 
-> **EntityId types** (`AdminSettingsId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BillingCustomerId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CouponId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `ProductId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `SubscriptionAddonId`, `SubscriptionId`, `SubscriptionPlanId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+> **EntityId types** (`AdminSettingsId`, `AgentAppEventId`, `AgentAppProfileId`, `AgentAppUnitId`, `AgentApplicationId`, `AgentBulkActionId`, `AgentId`, `AgentProfileId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BillingCustomerId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CouponId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `ProductId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `SubscriptionAddonId`, `SubscriptionId`, `SubscriptionPlanId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
 
 #### EntityType (enum)
-`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (59 values total)
 
 ---
 

@@ -23,6 +23,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
+from tb_ce_client.models.alarm_rule_complex_operation import AlarmRuleComplexOperation
 from tb_ce_client.models.entity_filter import EntityFilter
 from tb_ce_client.models.key_filter import KeyFilter
 from typing import Optional, Set
@@ -34,7 +35,9 @@ class EntityCountQuery(BaseModel):
     """ # noqa: E501
     entity_filter: Optional[EntityFilter] = Field(default=None, serialization_alias="entityFilter")
     key_filters: Optional[List[KeyFilter]] = Field(default=None, serialization_alias="keyFilters")
-    __properties: ClassVar[List[str]] = ["entityFilter", "keyFilters"]
+    key_filters_operation: Optional[AlarmRuleComplexOperation] = Field(default=None, serialization_alias="keyFiltersOperation")
+    key_filters_operation_or_default: Optional[AlarmRuleComplexOperation] = Field(default=None, serialization_alias="keyFiltersOperationOrDefault")
+    __properties: ClassVar[List[str]] = ["entityFilter", "keyFilters", "keyFiltersOperation", "keyFiltersOperationOrDefault"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -103,7 +106,9 @@ class EntityCountQuery(BaseModel):
 
         _obj = cls.model_validate({
             "entity_filter": EntityFilter.from_dict(obj["entityFilter"]) if obj.get("entityFilter") is not None else None,
-            "key_filters": [KeyFilter.from_dict(_item) for _item in obj["keyFilters"]] if obj.get("keyFilters") is not None else None
+            "key_filters": [KeyFilter.from_dict(_item) for _item in obj["keyFilters"]] if obj.get("keyFilters") is not None else None,
+            "key_filters_operation": obj.get("keyFiltersOperation"),
+            "key_filters_operation_or_default": obj.get("keyFiltersOperationOrDefault")
         })
         return _obj
 

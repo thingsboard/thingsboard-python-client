@@ -40,7 +40,7 @@ class Alarm(BaseModel):
     id: Optional[AlarmId] = Field(default=None, description="JSON object with the alarm Id. Specify this field to update the alarm. Referencing non-existing alarm Id will cause error. Omit this field to create new alarm.")
     created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the alarm creation, in milliseconds", serialization_alias="createdTime")
     tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id", serialization_alias="tenantId")
-    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id", serialization_alias="customerId")
+    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id. Derived from the originator entity owner and cannot be set independently; any value supplied in the request body must match the originator's customer or the request is rejected.", serialization_alias="customerId")
     type: StrictStr = Field(description="representing type of the Alarm")
     originator: EntityId = Field(description="JSON object with alarm originator id")
     severity: AlarmSeverity = Field(description="Alarm severity")

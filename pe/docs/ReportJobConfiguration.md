@@ -12,6 +12,7 @@
 | **report_template_id** | [**ReportTemplateId**](ReportTemplateId.md) |  | [optional] |
 | **user_id** | [**UserId**](UserId.md) |  | [optional] |
 | **timezone** | **str** |  | [optional] |
+| **make_public** | **bool** |  | [optional] |
 | **targets** | **List[UUID]** |  | [optional] |
 | **notification_template_id** | [**NotificationTemplateId**](NotificationTemplateId.md) |  | [optional] |
 | **notification_requests** | [**List[NotificationRequest]**](NotificationRequest.md) |  | [optional] |
@@ -25,7 +26,7 @@
 
 ## Referenced Types
 
-> **EntityId types** (`AdminSettingsId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+> **EntityId types** (`AdminSettingsId`, `AgentAppEventId`, `AgentAppProfileId`, `AgentAppUnitId`, `AgentApplicationId`, `AgentBulkActionId`, `AgentId`, `AgentProfileId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
 
 #### JobConfiguration
 | Name | Type | Description | Notes |
@@ -83,6 +84,21 @@
 | error | str |  | [optional] |
 | job_type | str |  |  |
 
+#### CfReprocessingTaskResult  *(extends TaskResult, job_type=`CF_REPROCESSING`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| failure | CfReprocessingTaskFailure |  | [optional] |
+
+#### DummyTaskResult  *(extends TaskResult, job_type=`DUMMY`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| failure | DummyTaskFailure |  | [optional] |
+
+#### ReportTaskResult  *(extends TaskResult, job_type=`REPORT`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| report | Report |  | [optional] |
+
 #### NotificationTemplate
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
@@ -119,7 +135,7 @@
 | total_sent | int |  | [optional] |
 
 #### EntityType (enum)
-`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (46 values total)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (53 values total)
 
 #### DebugSettings
 | Name | Type | Description | Notes |
@@ -139,6 +155,35 @@
 | report_template_id | ReportTemplateId |  | [optional] |
 | user_id | UserId |  | [optional] |
 | timezone | str |  | [optional] |
+| make_public | bool |  | [optional] |
+
+#### CfReprocessingTaskFailure
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| error | str |  | [optional] |
+| entity_info | EntityInfo |  | [optional] |
+
+#### Report
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | ReportId |  | [optional] |
+| created_time | int | Entity creation timestamp in milliseconds since Unix epoch | [optional] [readonly] |
+| tenant_id | TenantId |  |  |
+| customer_id | CustomerId |  | [optional] |
+| template_id | ReportTemplateId |  |  |
+| format | TbReportFormat |  |  |
+| name | str |  |  |
+| user_id | UserId |  |  |
+| public_key | str |  | [optional] |
+| owner_id | EntityId | JSON object with Customer or Tenant Id | [optional] [readonly] |
+| public | bool |  | [optional] |
+
+#### DummyTaskFailure
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| error | str |  | [optional] |
+| number | int |  | [optional] |
+| fail_always | bool |  | [optional] |
 
 #### DeliveryMethodNotificationTemplate
 | Name | Type | Description | Notes |
@@ -176,6 +221,9 @@
 |------|------|-------------|-------|
 | subject | str | Subject line for the web notification |  |
 | additional_config | object | Additional JSON configuration for web buttons/actions | [optional] |
+
+#### TbReportFormat (enum)
+`PDF` | `CSV`
 
 #### Button
 | Name | Type | Description | Notes |

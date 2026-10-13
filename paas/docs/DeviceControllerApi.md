@@ -198,7 +198,7 @@ Returns a page of device info objects owned by the tenant or the customer of a c
 |------------- | ------------- | ------------- | -------------|
 | **page_size** | **int** | Maximum amount of entities in a one page | |
 | **page** | **int** | Sequence number of page starting from 0 | |
-| **include_customers** | **bool** | Include customer or sub-customer entities | [optional] |
+| **include_customers** | **bool** | Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers. | [optional] |
 | **device_profile_id** | **str** | A string value representing the device profile id. For example, '784f394c-42b6-435a-983c-b7beff2784f9' | [optional] |
 | **active** | **bool** | A boolean value representing the device active flag. | [optional] |
 | **text_search** | **str** | The case insensitive 'substring' filter based on the device name. | [optional] |
@@ -230,7 +230,7 @@ Returns a page of device info objects owned by the specified customer. Device In
 | **customer_id** | **str** | A string value representing the customer id. For example, '784f394c-42b6-435a-983c-b7beff2784f9' | |
 | **page_size** | **int** | Maximum amount of entities in a one page | |
 | **page** | **int** | Sequence number of page starting from 0 | |
-| **include_customers** | **bool** | Include customer or sub-customer entities | [optional] |
+| **include_customers** | **bool** | Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers. | [optional] |
 | **device_profile_id** | **str** | A string value representing the device profile id. For example, '784f394c-42b6-435a-983c-b7beff2784f9' | [optional] |
 | **active** | **bool** | A boolean value representing the device active flag. | [optional] |
 | **text_search** | **str** | The case insensitive 'substring' filter based on the device name. | [optional] |

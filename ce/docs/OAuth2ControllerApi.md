@@ -4,7 +4,7 @@
 
 ```python
 None client.delete_oauth2_client(id: UUID)  # Delete oauth2 client (deleteOauth2Client)
-PageDataOAuth2ClientInfo client.find_tenant_o_auth2_client_infos(page_size: int, page: int, text_search: Optional[str] = None, sort_property: Optional[str] = None, sort_order: Optional[str] = None)  # Get OAuth2 Client infos (findTenantOAuth2ClientInfos)
+PageDataOAuth2ClientInfo client.find_o_auth2_client_infos(page_size: int, page: int, text_search: Optional[str] = None, sort_property: Optional[str] = None, sort_order: Optional[str] = None)  # Get OAuth2 Client infos (findOAuth2ClientInfos)
 List[OAuth2ClientInfo] client.find_tenant_o_auth2_client_infos_by_ids(client_ids: List[str])  # Get OAuth2 Client infos By Ids (findTenantOAuth2ClientInfosByIds)
 str client.get_login_processing_url()  # Get OAuth2 log in processing URL (getLoginProcessingUrl)
 OAuth2Client client.get_o_auth2_client_by_id(id: UUID)  # Get OAuth2 Client by id (getOAuth2ClientById)
@@ -37,15 +37,15 @@ Deletes the oauth2 client. Referencing non-existing oauth2 client Id will cause 
 None (empty response body)
 
 
-## find_tenant_o_auth2_client_infos
+## find_o_auth2_client_infos
 
 ```python
-PageDataOAuth2ClientInfo client.find_tenant_o_auth2_client_infos(page_size: int, page: int, text_search: Optional[str] = None, sort_property: Optional[str] = None, sort_order: Optional[str] = None)
+PageDataOAuth2ClientInfo client.find_o_auth2_client_infos(page_size: int, page: int, text_search: Optional[str] = None, sort_property: Optional[str] = None, sort_order: Optional[str] = None)
 ```
 
 **GET** `/api/oauth2/client/infos`
 
-Get OAuth2 Client infos (findTenantOAuth2ClientInfos)
+Get OAuth2 Client infos (findOAuth2ClientInfos)
 
   Available for users with 'SYS_ADMIN' or 'TENANT_ADMIN' authority.
 

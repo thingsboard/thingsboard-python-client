@@ -24,9 +24,9 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_paas_client.models.dashboard_id import DashboardId
+from tb_paas_client.models.device_profile_id import DeviceProfileId
 from tb_paas_client.models.device_profile_type import DeviceProfileType
 from tb_paas_client.models.device_transport_type import DeviceTransportType
-from tb_paas_client.models.entity_id import EntityId
 from tb_paas_client.models.tenant_id import TenantId
 from typing import Optional, Set
 from typing_extensions import Self
@@ -35,7 +35,7 @@ class DeviceProfileInfo(BaseModel):
     """
     DeviceProfileInfo
     """ # noqa: E501
-    id: Optional[EntityId] = Field(default=None, description="JSON object with the entity Id. ")
+    id: Optional[DeviceProfileId] = Field(default=None, description="JSON object with the Device Profile Id.")
     name: Optional[StrictStr] = Field(default=None, description="Entity Name")
     image: Optional[StrictStr] = Field(default=None, description="Either URL or Base64 data of the icon. Used in the mobile application to visualize set of device profiles in the grid view. ")
     default_dashboard_id: Optional[DashboardId] = Field(default=None, description="Reference to the dashboard. Used in the mobile application to open the default dashboard when user navigates to device details.", serialization_alias="defaultDashboardId")
@@ -109,7 +109,7 @@ class DeviceProfileInfo(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "id": EntityId.from_dict(obj["id"]) if obj.get("id") is not None else None,
+            "id": DeviceProfileId.from_dict(obj["id"]) if obj.get("id") is not None else None,
             "name": obj.get("name"),
             "image": obj.get("image"),
             "default_dashboard_id": DashboardId.from_dict(obj["defaultDashboardId"]) if obj.get("defaultDashboardId") is not None else None,

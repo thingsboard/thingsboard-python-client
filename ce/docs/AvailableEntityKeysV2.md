@@ -10,7 +10,7 @@ Contains unique time series and attribute key names discovered from entities mat
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
 | **entity_types** | [**List[EntityType]**](EntityType.md) | Set of entity types found among the matched entities. | |
-| **timeseries** | [**List[KeyInfo]**](KeyInfo.md) |  | [optional] |
+| **timeseries** | [**List[KeyInfo]**](KeyInfo.md) | List of unique time series keys available on the matched entities, sorted alphabetically. Omitted when timeseries keys were not requested. | [optional] |
 | **attributes** | **Dict[str, List[KeyInfo]]** | Map of attribute scope to the list of unique attribute keys available on the matched entities. Only scopes supported by the matched entity types are included. Omitted when attribute keys were not requested or when none of the requested scopes apply to the matched entity types. | [optional] |
 
 

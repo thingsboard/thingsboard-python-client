@@ -35,9 +35,11 @@ class LoginWhiteLabelingParams(BaseModel):
     """ # noqa: E501
     logo_image_url: Optional[StrictStr] = Field(default=None, description="Logo image URL", serialization_alias="logoImageUrl")
     logo_image_height: Optional[StrictInt] = Field(default=None, description="The height of a logo container. Logo image will be automatically scaled.", serialization_alias="logoImageHeight")
+    collapsed_logo_image_url: Optional[StrictStr] = Field(default=None, description="Logo shown when side menu is collapsed", serialization_alias="collapsedLogoImageUrl")
     app_title: Optional[StrictStr] = Field(default=None, description="White-labeled name of the platform", serialization_alias="appTitle")
     favicon: Optional[Favicon] = Field(default=None, description="JSON object that contains website icon url and type")
     palette_settings: Optional[PaletteSettings] = Field(default=None, description="Complex JSON that describes structure of the Angular Material Palette. See [theming](https://material.angular.io/guide/theming) for more details", serialization_alias="paletteSettings")
+    primary_color_panels: Optional[StrictBool] = Field(default=None, description="Whether primary-color panels (top toolbar, side navigation, dialog and entity-details headers) use the primary palette color as background. When false, they render on a white background", serialization_alias="primaryColorPanels")
     help_link_base_url: Optional[StrictStr] = Field(default=None, description="Base URL for help link", serialization_alias="helpLinkBaseUrl")
     ui_help_base_url: Optional[StrictStr] = Field(default=None, description="Base URL for the repository with the UI help components (markdown)", serialization_alias="uiHelpBaseUrl")
     enable_help_links: Optional[StrictBool] = Field(default=None, description="Enable or Disable help links", serialization_alias="enableHelpLinks")
@@ -56,7 +58,7 @@ class LoginWhiteLabelingParams(BaseModel):
     prohibit_different_url: Optional[StrictBool] = Field(default=None, description="Prohibit use of other URLs. It is recommended to enable this setting", serialization_alias="prohibitDifferentUrl")
     admin_settings_id: Optional[StrictStr] = Field(default=None, description="Id of the settings object that store this parameters", serialization_alias="adminSettingsId")
     show_name_bottom: Optional[StrictBool] = Field(default=None, description="Show platform name and version on login page", serialization_alias="showNameBottom")
-    __properties: ClassVar[List[str]] = ["logoImageUrl", "logoImageHeight", "appTitle", "favicon", "paletteSettings", "helpLinkBaseUrl", "uiHelpBaseUrl", "enableHelpLinks", "whiteLabelingEnabled", "showNameVersion", "platformName", "platformVersion", "customCss", "hideConnectivityDialog", "overrideTrendzName", "hideChatBot", "pageBackgroundColor", "darkForeground", "domainId", "baseUrl", "prohibitDifferentUrl", "adminSettingsId", "showNameBottom"]
+    __properties: ClassVar[List[str]] = ["logoImageUrl", "logoImageHeight", "collapsedLogoImageUrl", "appTitle", "favicon", "paletteSettings", "primaryColorPanels", "helpLinkBaseUrl", "uiHelpBaseUrl", "enableHelpLinks", "whiteLabelingEnabled", "showNameVersion", "platformName", "platformVersion", "customCss", "hideConnectivityDialog", "overrideTrendzName", "hideChatBot", "pageBackgroundColor", "darkForeground", "domainId", "baseUrl", "prohibitDifferentUrl", "adminSettingsId", "showNameBottom"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -127,9 +129,11 @@ class LoginWhiteLabelingParams(BaseModel):
         _obj = cls.model_validate({
             "logo_image_url": obj.get("logoImageUrl"),
             "logo_image_height": obj.get("logoImageHeight"),
+            "collapsed_logo_image_url": obj.get("collapsedLogoImageUrl"),
             "app_title": obj.get("appTitle"),
             "favicon": Favicon.from_dict(obj["favicon"]) if obj.get("favicon") is not None else None,
             "palette_settings": PaletteSettings.from_dict(obj["paletteSettings"]) if obj.get("paletteSettings") is not None else None,
+            "primary_color_panels": obj.get("primaryColorPanels"),
             "help_link_base_url": obj.get("helpLinkBaseUrl"),
             "ui_help_base_url": obj.get("uiHelpBaseUrl"),
             "enable_help_links": obj.get("enableHelpLinks"),

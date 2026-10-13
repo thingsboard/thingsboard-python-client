@@ -34,6 +34,8 @@
 | **max_alarms** | **int** |  | [optional] |
 | **reports** | **int** |  | [optional] |
 | **max_reports** | **int** |  | [optional] |
+| **ai_credits** | **int** |  | [optional] |
+| **max_ai_credits** | **int** |  | [optional] |
 
 
 

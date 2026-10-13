@@ -47,7 +47,7 @@ class HomeDashboard(BaseModel):
     assigned_customers: Optional[List[ShortCustomerInfo]] = Field(default=None, description="List of assigned customers with their info.", serialization_alias="assignedCustomers")
     mobile_hide: Optional[StrictBool] = Field(default=None, description="Hide dashboard from mobile devices. Useful if the dashboard is not designed for small screens.", serialization_alias="mobileHide")
     mobile_order: Optional[StrictInt] = Field(default=None, description="Order on mobile devices. Useful to adjust sorting of the dashboards for mobile applications", serialization_alias="mobileOrder")
-    configuration: Optional[Any] = None
+    configuration: Optional[Any] = Field(default=None, description="JSON object with main configuration of the dashboard: layouts, widgets, aliases, etc. The JSON structure of the dashboard configuration is quite complex. The easiest way to learn it is to export existing dashboard to JSON.")
     resources: Optional[List[ResourceExportData]] = None
     version: Optional[StrictInt] = None
     hide_dashboard_toolbar: Optional[StrictBool] = Field(default=None, description="Hide dashboard toolbar flag. Useful for rendering dashboards on mobile.", serialization_alias="hideDashboardToolbar")

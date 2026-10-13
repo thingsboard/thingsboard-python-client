@@ -15,7 +15,7 @@
 
 ## Referenced Types
 
-> **EntityId types** (`AdminSettingsId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+> **EntityId types** (`AdminSettingsId`, `AgentAppEventId`, `AgentAppProfileId`, `AgentAppUnitId`, `AgentApplicationId`, `AgentBulkActionId`, `AgentId`, `AgentProfileId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
 
 #### ReportComponent
 | Name | Type | Description | Notes |
@@ -484,8 +484,8 @@
 | decimals | int |  | [optional] |
 | interval | float |  | [optional] |
 | split_number | int |  | [optional] |
-| min | float |  | [optional] |
-| max | float |  | [optional] |
+| min | SimpleValueSourceConfig |  | [optional] |
+| max | SimpleValueSourceConfig |  | [optional] |
 
 #### TimeSeriesChartXAxisSettings
 | Name | Type | Description | Notes |
@@ -562,8 +562,8 @@
 | method_name | str |  | [optional] |
 | file_name | str |  | [optional] |
 | line_number | int |  | [optional] |
-| native_method | bool |  | [optional] |
 | class_name | str |  | [optional] |
+| native_method | bool |  | [optional] |
 
 #### Aggregation (enum)
 `MIN` | `MAX` | `AVG` | `SUM` | `COUNT` | `NONE`
@@ -631,6 +631,17 @@
 #### AxisPosition (enum)
 `LEFT` | `RIGHT` | `TOP` | `BOTTOM`
 
+#### SimpleValueSourceConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | ValueSourceType |  | [optional] |
+| value | float |  | [optional] |
+| latest_key_type | str |  | [optional] |
+| latest_key | str |  | [optional] |
+| entity_key_type | str |  | [optional] |
+| entity_alias | str |  | [optional] |
+| entity_key | str |  | [optional] |
+
 #### TimeSeriesChartNoAggregationBarWidthStrategy (enum)
 `GROUP` | `SEPARATE`
 
@@ -645,7 +656,7 @@
 `CONSTANT` | `RANGE`
 
 #### EntityType (enum)
-`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (46 values total)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (53 values total)
 
 #### IntervalType (enum)
 `MILLISECONDS` | `WEEK` | `WEEK_ISO` | `MONTH` | `QUARTER`

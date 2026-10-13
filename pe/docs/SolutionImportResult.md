@@ -10,7 +10,7 @@ Result of a solution import operation.
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
 | **success** | **bool** | 'true' if all entities were imported successfully. | [optional] |
-| **created** | **Dict[str, int]** | Number of newly created entities per entity type. Entity types with zero created entities are omitted. | [optional] |
+| **created** | **Dict[str, int]** | Number of newly created entities per entity type. Entity types with zero created entities are omitted. Entity groups are reported under the ENTITY_GROUP key regardless of their inner type (e.g. a user group and a device group both contribute to ENTITY_GROUP). | [optional] |
 | **id_mapping** | **Dict[str, UUID]** | Mapping from external entity IDs (as they appear in the solution file) to the internal entity IDs assigned during import. | [optional] |
 
 

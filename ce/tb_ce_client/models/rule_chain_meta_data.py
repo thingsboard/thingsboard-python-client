@@ -26,6 +26,7 @@ from typing import Any, ClassVar, Dict, List, Optional
 from tb_ce_client.models.node_connection_info import NodeConnectionInfo
 from tb_ce_client.models.rule_chain_connection_info import RuleChainConnectionInfo
 from tb_ce_client.models.rule_chain_id import RuleChainId
+from tb_ce_client.models.rule_chain_note import RuleChainNote
 from tb_ce_client.models.rule_node import RuleNode
 from typing import Optional, Set
 from typing_extensions import Self
@@ -40,7 +41,8 @@ class RuleChainMetaData(BaseModel):
     nodes: List[RuleNode] = Field(description="List of rule node JSON objects")
     connections: List[NodeConnectionInfo] = Field(description="List of JSON objects that represent connections between rule nodes")
     rule_chain_connections: List[RuleChainConnectionInfo] = Field(description="List of JSON objects that represent connections between rule nodes and other rule chains.", serialization_alias="ruleChainConnections")
-    __properties: ClassVar[List[str]] = ["ruleChainId", "version", "firstNodeIndex", "nodes", "connections", "ruleChainConnections"]
+    notes: Optional[List[RuleChainNote]] = Field(default=None, description="List of sticky notes placed on the rule chain canvas")
+    __properties: ClassVar[List[str]] = ["ruleChainId", "version", "firstNodeIndex", "nodes", "connections", "ruleChainConnections", "notes"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -112,6 +114,13 @@ class RuleChainMetaData(BaseModel):
                 if _item_rule_chain_connections:
                     _items.append(_item_rule_chain_connections.to_dict())
             _dict['ruleChainConnections'] = _items
+        # override the default output from pydantic by calling `to_dict()` of each item in notes (list)
+        _items = []
+        if self.notes:
+            for _item_notes in self.notes:
+                if _item_notes:
+                    _items.append(_item_notes.to_dict())
+            _dict['notes'] = _items
         return _dict
 
     @classmethod
@@ -129,7 +138,8 @@ class RuleChainMetaData(BaseModel):
             "first_node_index": obj.get("firstNodeIndex"),
             "nodes": [RuleNode.from_dict(_item) for _item in obj["nodes"]] if obj.get("nodes") is not None else None,
             "connections": [NodeConnectionInfo.from_dict(_item) for _item in obj["connections"]] if obj.get("connections") is not None else None,
-            "rule_chain_connections": [RuleChainConnectionInfo.from_dict(_item) for _item in obj["ruleChainConnections"]] if obj.get("ruleChainConnections") is not None else None
+            "rule_chain_connections": [RuleChainConnectionInfo.from_dict(_item) for _item in obj["ruleChainConnections"]] if obj.get("ruleChainConnections") is not None else None,
+            "notes": [RuleChainNote.from_dict(_item) for _item in obj["notes"]] if obj.get("notes") is not None else None
         })
         return _obj
 

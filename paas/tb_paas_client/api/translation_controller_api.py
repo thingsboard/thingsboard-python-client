@@ -873,7 +873,7 @@ class TranslationControllerApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> None:
+    ) -> object:
         """Get end-user all-to-one translation (getFullTranslation)
 
         Fetch the end-user translation for specified locale. The result is the merge of user custom translation, system language translation and default locale translation.
@@ -917,7 +917,7 @@ class TranslationControllerApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': None,
+            '200': "object",
             '400': "ThingsboardErrorResponse",
             '401': "ThingsboardErrorResponse",
             '403': "ThingsboardErrorResponse",
@@ -953,7 +953,7 @@ class TranslationControllerApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[None]:
+    ) -> ApiResponse[object]:
         """Get end-user all-to-one translation (getFullTranslation)
 
         Fetch the end-user translation for specified locale. The result is the merge of user custom translation, system language translation and default locale translation.
@@ -997,7 +997,7 @@ class TranslationControllerApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': None,
+            '200': "object",
             '400': "ThingsboardErrorResponse",
             '401': "ThingsboardErrorResponse",
             '403': "ThingsboardErrorResponse",
@@ -1077,7 +1077,7 @@ class TranslationControllerApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': None,
+            '200': "object",
             '400': "ThingsboardErrorResponse",
             '401': "ThingsboardErrorResponse",
             '403': "ThingsboardErrorResponse",

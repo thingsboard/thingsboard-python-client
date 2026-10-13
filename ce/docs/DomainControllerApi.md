@@ -5,7 +5,7 @@
 ```python
 None client.delete_domain(id: UUID)  # Delete Domain by ID (deleteDomain)
 DomainInfo client.get_domain_info_by_id(id: UUID)  # Get Domain info by Id (getDomainInfoById)
-PageDataDomainInfo client.get_tenant_domain_infos(page_size: int, page: int, text_search: Optional[str] = None, sort_property: Optional[str] = None, sort_order: Optional[str] = None)  # Get Domain infos (getTenantDomainInfos)
+PageDataDomainInfo client.get_domain_infos(page_size: int, page: int, text_search: Optional[str] = None, sort_property: Optional[str] = None, sort_order: Optional[str] = None)  # Get Domain infos (getDomainInfos)
 Domain client.save_domain(domain: Domain, oauth2_client_ids: Optional[List[str]] = None)  # Save or Update Domain (saveDomain)
 None client.update_domain_oauth2_clients(id: UUID, request_body: List[UUID])  # Update oauth2 clients (updateDomainOauth2Clients)
 ```
@@ -59,15 +59,15 @@ Get Domain info by Id (getDomainInfoById)
 **DomainInfo**
 
 
-## get_tenant_domain_infos
+## get_domain_infos
 
 ```python
-PageDataDomainInfo client.get_tenant_domain_infos(page_size: int, page: int, text_search: Optional[str] = None, sort_property: Optional[str] = None, sort_order: Optional[str] = None)
+PageDataDomainInfo client.get_domain_infos(page_size: int, page: int, text_search: Optional[str] = None, sort_property: Optional[str] = None, sort_order: Optional[str] = None)
 ```
 
 **GET** `/api/domain/infos`
 
-Get Domain infos (getTenantDomainInfos)
+Get Domain infos (getDomainInfos)
 
   Available for users with 'SYS_ADMIN' authority.
 

@@ -57,7 +57,7 @@ class TaskResult(BaseModel):
 
     # discriminator mappings
     __discriminator_value_class_map: ClassVar[Dict[str, str]] = {
-        'CfReprocessingTaskResult': 'CfReprocessingTaskResult','DummyTaskResult': 'DummyTaskResult','ReportTaskResult': 'ReportTaskResult'
+        'CF_REPROCESSING': 'CfReprocessingTaskResult','DUMMY': 'DummyTaskResult','REPORT': 'ReportTaskResult'
     }
 
     @classmethod

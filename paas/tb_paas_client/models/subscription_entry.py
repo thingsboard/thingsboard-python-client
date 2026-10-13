@@ -41,6 +41,8 @@ class SubscriptionEntry(int, Enum):
     NUMBER_9 = 9
     NUMBER_10 = 10
     NUMBER_11 = 11
+    NUMBER_12 = 12
+    NUMBER_13 = 13
     NUMBER_30 = 30
     NUMBER_31 = 31
 

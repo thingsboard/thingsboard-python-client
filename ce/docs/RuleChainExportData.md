@@ -35,6 +35,7 @@
 | nodes | List[RuleNode] | List of rule node JSON objects |  |
 | connections | List[NodeConnectionInfo] | List of JSON objects that represent connections between rule nodes |  |
 | rule_chain_connections | List[RuleChainConnectionInfo] | List of JSON objects that represent connections between rule nodes and other rule chains. |  |
+| notes | List[RuleChainNote] | List of sticky notes placed on the rule chain canvas | [optional] |
 
 #### ExportableEntity
 | Name | Type | Description | Notes |
@@ -104,6 +105,21 @@
 | target_rule_chain_id | RuleChainId | JSON object with the Rule Chain Id. |  |
 | additional_info | object | JSON object with the additional information about the connection. |  |
 | type | str | Type of the relation. Typically indicated the result of processing by the 'from' rule node. For example, 'Success' or 'Failure' |  |
+
+#### RuleChainNote
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | str | Unique identifier of the note on the canvas | [optional] |
+| x | int | Horizontal position of the note on the canvas, in pixels | [optional] |
+| y | int | Vertical position of the note on the canvas, in pixels | [optional] |
+| width | int | Width of the note, in pixels | [optional] |
+| height | int | Height of the note, in pixels | [optional] |
+| content | str | Markdown or HTML content of the note | [optional] |
+| background_color | str | Background color of the note in CSS hex format, e.g. '#FFF9C4' | [optional] |
+| border_color | str | Border color of the note in CSS hex format, e.g. '#E6C800' | [optional] |
+| border_width | int | Border width of the note in pixels | [optional] |
+| apply_default_markdown_style | bool | Whether to apply the default markdown stylesheet to the note content | [optional] |
+| markdown_css | str | Custom CSS styles applied to the note content | [optional] |
 
 #### RelationTypeGroup (enum)
 `COMMON` | `DASHBOARD` | `RULE_CHAIN` | `RULE_NODE` | `EDGE` | `EDGE_AUTO_ASSIGN_RULE_CHAIN`

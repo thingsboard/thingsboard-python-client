@@ -37,7 +37,7 @@ class RuleChain(BaseModel):
     id: Optional[RuleChainId] = Field(default=None, description="JSON object with the Rule Chain Id. Specify this field to update the Rule Chain. Referencing non-existing Rule Chain Id will cause error. Omit this field to create new rule chain.")
     created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the rule chain creation, in milliseconds", serialization_alias="createdTime")
     additional_info: Optional[Any] = Field(default=None, serialization_alias="additionalInfo")
-    tenant_id: TenantId = Field(description="JSON object with Tenant Id.", serialization_alias="tenantId")
+    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id.", serialization_alias="tenantId")
     name: StrictStr = Field(description="Rule Chain name")
     type: Optional[RuleChainType] = Field(default=None, description="Rule Chain type. 'EDGE' rule chains are processing messages on the edge devices only.")
     first_rule_node_id: Optional[RuleNodeId] = Field(default=None, description="JSON object with Rule Chain Id. Pointer to the first rule node that should receive all messages pushed to this rule chain.", serialization_alias="firstRuleNodeId")

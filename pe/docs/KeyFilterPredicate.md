@@ -24,7 +24,7 @@ Filter predicate for key-based filtering
 #### ComplexFilterPredicate  *(type=`COMPLEX`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| operation | ComplexOperation |  | [optional] |
+| operation | AlarmRuleComplexOperation |  | [optional] |
 | predicates | List[KeyFilterPredicate] |  | [optional] |
 
 #### NumericFilterPredicate  *(type=`NUMERIC`)*
@@ -52,7 +52,7 @@ Filter predicate for key-based filtering
 | user_value | bool |  | [optional] |
 | dynamic_value | DynamicValueBoolean |  | [optional] |
 
-#### ComplexOperation (enum)
+#### AlarmRuleComplexOperation (enum)
 `AND` | `OR`
 
 #### NumericOperation (enum)

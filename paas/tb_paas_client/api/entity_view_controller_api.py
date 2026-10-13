@@ -631,7 +631,7 @@ class EntityViewControllerApi:
         self,
         page_size: Annotated[StrictInt, Field(description="Maximum amount of entities in a one page")],
         page: Annotated[StrictInt, Field(description="Sequence number of page starting from 0")],
-        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities")] = None,
+        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.")] = None,
         type: Annotated[Optional[StrictStr], Field(description="  ## Entity View Filter  Allows to filter entity views based on their type and the **'starts with'** expression over their name. For example, this entity filter selects all 'Concrete Mixer' entity views which name starts with 'CAT':  ```json {   \"type\": \"entityViewType\",   \"entityViewType\": \"Concrete Mixer\",   \"entityViewNameFilter\": \"CAT\" } ```")] = None,
         text_search: Annotated[Optional[StrictStr], Field(description="The case insensitive 'substring' filter based on the entity view name.")] = None,
         sort_property: Annotated[Optional[StrictStr], Field(description="Property of entity to sort by")] = None,
@@ -657,7 +657,7 @@ class EntityViewControllerApi:
         :type page_size: int
         :param page: Sequence number of page starting from 0 (required)
         :type page: int
-        :param include_customers: Include customer or sub-customer entities
+        :param include_customers: Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.
         :type include_customers: bool
         :param type:   ## Entity View Filter  Allows to filter entity views based on their type and the **'starts with'** expression over their name. For example, this entity filter selects all 'Concrete Mixer' entity views which name starts with 'CAT':  ```json {   \"type\": \"entityViewType\",   \"entityViewType\": \"Concrete Mixer\",   \"entityViewNameFilter\": \"CAT\" } ```
         :type type: str
@@ -727,7 +727,7 @@ class EntityViewControllerApi:
         self,
         page_size: Annotated[StrictInt, Field(description="Maximum amount of entities in a one page")],
         page: Annotated[StrictInt, Field(description="Sequence number of page starting from 0")],
-        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities")] = None,
+        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.")] = None,
         type: Annotated[Optional[StrictStr], Field(description="  ## Entity View Filter  Allows to filter entity views based on their type and the **'starts with'** expression over their name. For example, this entity filter selects all 'Concrete Mixer' entity views which name starts with 'CAT':  ```json {   \"type\": \"entityViewType\",   \"entityViewType\": \"Concrete Mixer\",   \"entityViewNameFilter\": \"CAT\" } ```")] = None,
         text_search: Annotated[Optional[StrictStr], Field(description="The case insensitive 'substring' filter based on the entity view name.")] = None,
         sort_property: Annotated[Optional[StrictStr], Field(description="Property of entity to sort by")] = None,
@@ -753,7 +753,7 @@ class EntityViewControllerApi:
         :type page_size: int
         :param page: Sequence number of page starting from 0 (required)
         :type page: int
-        :param include_customers: Include customer or sub-customer entities
+        :param include_customers: Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.
         :type include_customers: bool
         :param type:   ## Entity View Filter  Allows to filter entity views based on their type and the **'starts with'** expression over their name. For example, this entity filter selects all 'Concrete Mixer' entity views which name starts with 'CAT':  ```json {   \"type\": \"entityViewType\",   \"entityViewType\": \"Concrete Mixer\",   \"entityViewNameFilter\": \"CAT\" } ```
         :type type: str
@@ -823,7 +823,7 @@ class EntityViewControllerApi:
         self,
         page_size: Annotated[StrictInt, Field(description="Maximum amount of entities in a one page")],
         page: Annotated[StrictInt, Field(description="Sequence number of page starting from 0")],
-        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities")] = None,
+        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.")] = None,
         type: Annotated[Optional[StrictStr], Field(description="  ## Entity View Filter  Allows to filter entity views based on their type and the **'starts with'** expression over their name. For example, this entity filter selects all 'Concrete Mixer' entity views which name starts with 'CAT':  ```json {   \"type\": \"entityViewType\",   \"entityViewType\": \"Concrete Mixer\",   \"entityViewNameFilter\": \"CAT\" } ```")] = None,
         text_search: Annotated[Optional[StrictStr], Field(description="The case insensitive 'substring' filter based on the entity view name.")] = None,
         sort_property: Annotated[Optional[StrictStr], Field(description="Property of entity to sort by")] = None,
@@ -849,7 +849,7 @@ class EntityViewControllerApi:
         :type page_size: int
         :param page: Sequence number of page starting from 0 (required)
         :type page: int
-        :param include_customers: Include customer or sub-customer entities
+        :param include_customers: Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.
         :type include_customers: bool
         :param type:   ## Entity View Filter  Allows to filter entity views based on their type and the **'starts with'** expression over their name. For example, this entity filter selects all 'Concrete Mixer' entity views which name starts with 'CAT':  ```json {   \"type\": \"entityViewType\",   \"entityViewType\": \"Concrete Mixer\",   \"entityViewNameFilter\": \"CAT\" } ```
         :type type: str
@@ -1013,7 +1013,7 @@ class EntityViewControllerApi:
         customer_id: Annotated[StrictStr, Field(description="A string value representing the customer id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")],
         page_size: Annotated[StrictInt, Field(description="Maximum amount of entities in a one page")],
         page: Annotated[StrictInt, Field(description="Sequence number of page starting from 0")],
-        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities")] = None,
+        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.")] = None,
         type: Annotated[Optional[StrictStr], Field(description="  ## Entity View Filter  Allows to filter entity views based on their type and the **'starts with'** expression over their name. For example, this entity filter selects all 'Concrete Mixer' entity views which name starts with 'CAT':  ```json {   \"type\": \"entityViewType\",   \"entityViewType\": \"Concrete Mixer\",   \"entityViewNameFilter\": \"CAT\" } ```")] = None,
         text_search: Annotated[Optional[StrictStr], Field(description="The case insensitive 'substring' filter based on the entity view name.")] = None,
         sort_property: Annotated[Optional[StrictStr], Field(description="Property of entity to sort by")] = None,
@@ -1041,7 +1041,7 @@ class EntityViewControllerApi:
         :type page_size: int
         :param page: Sequence number of page starting from 0 (required)
         :type page: int
-        :param include_customers: Include customer or sub-customer entities
+        :param include_customers: Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.
         :type include_customers: bool
         :param type:   ## Entity View Filter  Allows to filter entity views based on their type and the **'starts with'** expression over their name. For example, this entity filter selects all 'Concrete Mixer' entity views which name starts with 'CAT':  ```json {   \"type\": \"entityViewType\",   \"entityViewType\": \"Concrete Mixer\",   \"entityViewNameFilter\": \"CAT\" } ```
         :type type: str
@@ -1113,7 +1113,7 @@ class EntityViewControllerApi:
         customer_id: Annotated[StrictStr, Field(description="A string value representing the customer id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")],
         page_size: Annotated[StrictInt, Field(description="Maximum amount of entities in a one page")],
         page: Annotated[StrictInt, Field(description="Sequence number of page starting from 0")],
-        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities")] = None,
+        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.")] = None,
         type: Annotated[Optional[StrictStr], Field(description="  ## Entity View Filter  Allows to filter entity views based on their type and the **'starts with'** expression over their name. For example, this entity filter selects all 'Concrete Mixer' entity views which name starts with 'CAT':  ```json {   \"type\": \"entityViewType\",   \"entityViewType\": \"Concrete Mixer\",   \"entityViewNameFilter\": \"CAT\" } ```")] = None,
         text_search: Annotated[Optional[StrictStr], Field(description="The case insensitive 'substring' filter based on the entity view name.")] = None,
         sort_property: Annotated[Optional[StrictStr], Field(description="Property of entity to sort by")] = None,
@@ -1141,7 +1141,7 @@ class EntityViewControllerApi:
         :type page_size: int
         :param page: Sequence number of page starting from 0 (required)
         :type page: int
-        :param include_customers: Include customer or sub-customer entities
+        :param include_customers: Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.
         :type include_customers: bool
         :param type:   ## Entity View Filter  Allows to filter entity views based on their type and the **'starts with'** expression over their name. For example, this entity filter selects all 'Concrete Mixer' entity views which name starts with 'CAT':  ```json {   \"type\": \"entityViewType\",   \"entityViewType\": \"Concrete Mixer\",   \"entityViewNameFilter\": \"CAT\" } ```
         :type type: str
@@ -1213,7 +1213,7 @@ class EntityViewControllerApi:
         customer_id: Annotated[StrictStr, Field(description="A string value representing the customer id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")],
         page_size: Annotated[StrictInt, Field(description="Maximum amount of entities in a one page")],
         page: Annotated[StrictInt, Field(description="Sequence number of page starting from 0")],
-        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities")] = None,
+        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.")] = None,
         type: Annotated[Optional[StrictStr], Field(description="  ## Entity View Filter  Allows to filter entity views based on their type and the **'starts with'** expression over their name. For example, this entity filter selects all 'Concrete Mixer' entity views which name starts with 'CAT':  ```json {   \"type\": \"entityViewType\",   \"entityViewType\": \"Concrete Mixer\",   \"entityViewNameFilter\": \"CAT\" } ```")] = None,
         text_search: Annotated[Optional[StrictStr], Field(description="The case insensitive 'substring' filter based on the entity view name.")] = None,
         sort_property: Annotated[Optional[StrictStr], Field(description="Property of entity to sort by")] = None,
@@ -1241,7 +1241,7 @@ class EntityViewControllerApi:
         :type page_size: int
         :param page: Sequence number of page starting from 0 (required)
         :type page: int
-        :param include_customers: Include customer or sub-customer entities
+        :param include_customers: Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.
         :type include_customers: bool
         :param type:   ## Entity View Filter  Allows to filter entity views based on their type and the **'starts with'** expression over their name. For example, this entity filter selects all 'Concrete Mixer' entity views which name starts with 'CAT':  ```json {   \"type\": \"entityViewType\",   \"entityViewType\": \"Concrete Mixer\",   \"entityViewNameFilter\": \"CAT\" } ```
         :type type: str

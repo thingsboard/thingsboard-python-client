@@ -19,30 +19,15 @@
 #### AlarmSchedule
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| dynamic_value | DynamicValueString |  | [optional] |
-| type | AlarmScheduleType |  | [optional] |
+| type | str |  |  |
 
 #### CustomTimeScheduleItem
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| day_of_week | int |  | [optional] |
 | enabled | bool |  | [optional] |
-| ends_on | int |  | [optional] |
+| day_of_week | int |  | [optional] |
 | starts_on | int |  | [optional] |
-
-#### DynamicValueString
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| resolved_value | str |  | [optional] |
-| source_type | DynamicValueSourceType |  | [optional] |
-| source_attribute | str |  | [optional] |
-| inherit | bool |  | [optional] |
-
-#### AlarmScheduleType (enum)
-`ANY_TIME` | `SPECIFIC_TIME` | `CUSTOM`
-
-#### DynamicValueSourceType (enum)
-`CURRENT_TENANT` | `CURRENT_CUSTOMER` | `CURRENT_USER` | `CURRENT_DEVICE`
+| ends_on | int |  | [optional] |
 
 ---
 

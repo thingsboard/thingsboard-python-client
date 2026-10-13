@@ -8,11 +8,11 @@ List[Dashboard] client.export_group_dashboards(entity_group_id: str, limit: int,
 PageDataDashboardInfo client.get_all_dashboards(page_size: int, page: int, include_customers: Optional[bool] = None, text_search: Optional[str] = None, sort_property: Optional[str] = None, sort_order: Optional[str] = None)  # Get All Dashboards for current user (getAllDashboards)
 PageDataDashboardInfo client.get_customer_dashboards(customer_id: str, page_size: int, page: int, include_customers: Optional[bool] = None, text_search: Optional[str] = None, sort_property: Optional[str] = None, sort_order: Optional[str] = None)  # Get Customer Dashboards (getCustomerDashboards)
 HomeDashboardInfo client.get_customer_home_dashboard_info()  # Get Customer Home Dashboard Info (getCustomerHomeDashboardInfo)
-None client.get_dashboard_by_id(dashboard_id: str, include_resources: Optional[bool] = None, accept_encoding: Optional[str] = None)  # Get Dashboard (getDashboardById)
+Dashboard client.get_dashboard_by_id(dashboard_id: str, include_resources: Optional[bool] = None, accept_encoding: Optional[str] = None)  # Get Dashboard (getDashboardById)
 DashboardInfo client.get_dashboard_info_by_id(dashboard_id: str)  # Get Dashboard Info (getDashboardInfoById)
 PageDataDashboardInfo client.get_dashboards_by_entity_group_id(entity_group_id: str, page_size: int, page: int, text_search: Optional[str] = None, sort_property: Optional[str] = None, sort_order: Optional[str] = None)  # Get dashboards by Entity Group Id (getDashboardsByEntityGroupId)
 List[DashboardInfo] client.get_dashboards_by_ids(dashboard_ids: List[str])  # Get dashboards by Dashboard Ids (getDashboardsByIds)
-None client.get_home_dashboard(accept_encoding: Optional[str] = None)  # Get Home Dashboard (getHomeDashboard)
+HomeDashboard client.get_home_dashboard(accept_encoding: Optional[str] = None)  # Get Home Dashboard (getHomeDashboard)
 HomeDashboardInfo client.get_home_dashboard_info()  # Get Home Dashboard Info (getHomeDashboardInfo)
 int client.get_max_datapoints_limit()  # Get max data points limit (getMaxDatapointsLimit)
 int client.get_server_time()  # Get server time (getServerTime)
@@ -96,7 +96,7 @@ Returns a page of dashboard info objects owned by the tenant or the customer of 
 |------------- | ------------- | ------------- | -------------|
 | **page_size** | **int** | Maximum amount of entities in a one page | |
 | **page** | **int** | Sequence number of page starting from 0 | |
-| **include_customers** | **bool** | Include customer or sub-customer entities | [optional] |
+| **include_customers** | **bool** | Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers. | [optional] |
 | **text_search** | **str** | The case insensitive 'substring' filter based on the dashboard title. | [optional] |
 | **sort_property** | **str** | Property of entity to sort by | [optional] [enum: createdTime, title] |
 | **sort_order** | **str** | Sort order. ASC (ASCENDING) or DESC (DESCENDING) | [optional] [enum: ASC, DESC] |
@@ -126,7 +126,7 @@ Returns a page of dashboard info objects owned by the specified customer. The Da
 | **customer_id** | **str** | A string value representing the customer id. For example, '784f394c-42b6-435a-983c-b7beff2784f9' | |
 | **page_size** | **int** | Maximum amount of entities in a one page | |
 | **page** | **int** | Sequence number of page starting from 0 | |
-| **include_customers** | **bool** | Include customer or sub-customer entities | [optional] |
+| **include_customers** | **bool** | Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers. | [optional] |
 | **text_search** | **str** | The case insensitive 'substring' filter based on the dashboard title. | [optional] |
 | **sort_property** | **str** | Property of entity to sort by | [optional] [enum: createdTime, title] |
 | **sort_order** | **str** | Sort order. ASC (ASCENDING) or DESC (DESCENDING) | [optional] [enum: ASC, DESC] |
@@ -156,7 +156,7 @@ Returns the home dashboard info object that is configured as 'homeDashboardId' p
 ## get_dashboard_by_id
 
 ```python
-None client.get_dashboard_by_id(dashboard_id: str, include_resources: Optional[bool] = None, accept_encoding: Optional[str] = None)
+Dashboard client.get_dashboard_by_id(dashboard_id: str, include_resources: Optional[bool] = None, accept_encoding: Optional[str] = None)
 ```
 
 **GET** `/api/dashboard/{dashboardId}`
@@ -176,7 +176,7 @@ Get the dashboard based on 'dashboardId' parameter. The Dashboard object is a he
 
 ### Return type
 
-None (empty response body)
+**Dashboard**
 
 
 ## get_dashboard_info_by_id
@@ -259,7 +259,7 @@ Returns a list of DashboardInfo objects based on the provided ids. Filters the l
 ## get_home_dashboard
 
 ```python
-None client.get_home_dashboard(accept_encoding: Optional[str] = None)
+HomeDashboard client.get_home_dashboard(accept_encoding: Optional[str] = None)
 ```
 
 **GET** `/api/dashboard/home`
@@ -277,7 +277,7 @@ Returns the home dashboard object that is configured as 'homeDashboardId' parame
 
 ### Return type
 
-None (empty response body)
+**HomeDashboard**
 
 
 ## get_home_dashboard_info

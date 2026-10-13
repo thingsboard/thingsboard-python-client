@@ -38,7 +38,7 @@
 #### ComplexFilterPredicate  *(extends KeyFilterPredicate, type=`COMPLEX`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| operation | ComplexOperation |  | [optional] |
+| operation | AlarmRuleComplexOperation |  | [optional] |
 | predicates | List[KeyFilterPredicate] |  | [optional] |
 
 #### NumericFilterPredicate  *(extends KeyFilterPredicate, type=`NUMERIC`)*
@@ -87,7 +87,7 @@
 | user_value | bool |  | [optional] |
 | dynamic_value | DynamicValueBoolean |  | [optional] |
 
-#### ComplexOperation (enum)
+#### AlarmRuleComplexOperation (enum)
 `AND` | `OR`
 
 #### DynamicValueString

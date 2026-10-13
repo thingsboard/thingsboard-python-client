@@ -76,6 +76,13 @@ class EntityType(str, Enum):
     ADMIN_SETTINGS = 'ADMIN_SETTINGS'
     AI_MODEL = 'AI_MODEL'
     API_KEY = 'API_KEY'
+    AGENT = 'AGENT'
+    AGENT_APPLICATION = 'AGENT_APPLICATION'
+    AGENT_APP_EVENT = 'AGENT_APP_EVENT'
+    AGENT_APP_UNIT = 'AGENT_APP_UNIT'
+    AGENT_APP_PROFILE = 'AGENT_APP_PROFILE'
+    AGENT_PROFILE = 'AGENT_PROFILE'
+    AGENT_BULK_ACTION = 'AGENT_BULK_ACTION'
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:

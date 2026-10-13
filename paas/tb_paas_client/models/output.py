@@ -37,12 +37,12 @@ class Output(BaseModel):
     """
     Output
     """ # noqa: E501
+    decimals_by_default: Optional[StrictInt] = Field(default=None, serialization_alias="decimalsByDefault")
     name: Optional[StrictStr] = None
     scope: Optional[AttributeScope] = None
-    decimals_by_default: Optional[StrictInt] = Field(default=None, serialization_alias="decimalsByDefault")
     strategy: Optional[Any] = None
     type: StrictStr
-    __properties: ClassVar[List[str]] = ["name", "scope", "decimalsByDefault", "strategy", "type"]
+    __properties: ClassVar[List[str]] = ["decimalsByDefault", "name", "scope", "strategy", "type"]
 
     model_config = ConfigDict(
         populate_by_name=True,

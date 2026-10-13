@@ -118,8 +118,8 @@
 | decimals | int |  | [optional] |
 | interval | float |  | [optional] |
 | split_number | int |  | [optional] |
-| min | float |  | [optional] |
-| max | float |  | [optional] |
+| min | SimpleValueSourceConfig |  | [optional] |
+| max | SimpleValueSourceConfig |  | [optional] |
 
 #### TimeSeriesChartXAxisSettings
 | Name | Type | Description | Notes |
@@ -224,6 +224,17 @@
 
 #### AxisPosition (enum)
 `LEFT` | `RIGHT` | `TOP` | `BOTTOM`
+
+#### SimpleValueSourceConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | ValueSourceType |  | [optional] |
+| value | float |  | [optional] |
+| latest_key_type | str |  | [optional] |
+| latest_key | str |  | [optional] |
+| entity_key_type | str |  | [optional] |
+| entity_alias | str |  | [optional] |
+| entity_key | str |  | [optional] |
 
 #### TimeSeriesChartNoAggregationBarWidthStrategy (enum)
 `GROUP` | `SEPARATE`

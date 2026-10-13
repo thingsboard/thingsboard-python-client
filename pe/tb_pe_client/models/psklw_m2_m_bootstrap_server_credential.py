@@ -31,7 +31,7 @@ class PSKLwM2MBootstrapServerCredential(LwM2MBootstrapServerCredential):
     """
     PSKLwM2MBootstrapServerCredential
     """ # noqa: E501
-    short_server_id: Optional[StrictInt] = Field(default=None, description="Server short Id. Used as link to associate server Object Instance. This identifier uniquely identifies each LwM2M Server configured for the LwM2M Client. This Resource MUST be set when the Bootstrap-Server Resource has a value of 'false'. The values ID:0 and ID:65535 values MUST NOT be used for identifying the LwM2M Server.", serialization_alias="shortServerId")
+    short_server_id: Optional[StrictInt] = Field(default=None, description="Server short Id. Used as link to associate server Object Instance. This identifier uniquely identifies each LwM2M Server configured for the LwM2M Client. This Resource MUST be set when the Bootstrap-Server Resource has a value of 'false' and MUST be null when Bootstrap-Server is 'true'. The values 0 and 65535 MUST NOT be used for identifying the LwM2M Server.", serialization_alias="shortServerId")
     bootstrap_server_is: Optional[StrictBool] = Field(default=None, description="Is Bootstrap Server or Lwm2m Server. The LwM2M Client MAY be configured to use one or more LwM2M Server Account(s). The LwM2M Client MUST have at most one LwM2M Bootstrap-Server Account. (*) The LwM2M client MUST have at least one LwM2M server account after completing the boot sequence specified.", serialization_alias="bootstrapServerIs")
     host: Optional[StrictStr] = Field(default=None, description="Host for 'No Security' mode")
     port: Optional[StrictInt] = Field(default=None, description="Port for  Lwm2m Server: 'No Security' mode: Lwm2m Server or Bootstrap Server")

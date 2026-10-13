@@ -24,6 +24,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
+from tb_paas_client.models.customer_id import CustomerId
 from tb_paas_client.models.entity_id import EntityId
 from tb_paas_client.models.job_configuration import JobConfiguration
 from tb_paas_client.models.job_id import JobId
@@ -41,6 +42,7 @@ class Job(BaseModel):
     id: Optional[JobId] = None
     created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", serialization_alias="createdTime")
     tenant_id: TenantId = Field(serialization_alias="tenantId")
+    customer_id: Optional[CustomerId] = Field(default=None, serialization_alias="customerId")
     type: JobType
     key: Annotated[str, Field(min_length=1, strict=True)]
     entity_id: EntityId = Field(serialization_alias="entityId")
@@ -48,7 +50,8 @@ class Job(BaseModel):
     status: JobStatus
     configuration: JobConfiguration
     result: JobResult
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "type", "key", "entityId", "entityName", "status", "configuration", "result"]
+    owner_id: Optional[EntityId] = Field(default=None, description="JSON object with Customer or Tenant Id", serialization_alias="ownerId")
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "customerId", "type", "key", "entityId", "entityName", "status", "configuration", "result", "ownerId"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -86,9 +89,11 @@ class Job(BaseModel):
           were set at model initialization. Other fields with value `None`
           are ignored.
         * OpenAPI `readOnly` fields are excluded.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
             "created_time",
+            "owner_id",
         ])
 
         _dict = self.model_dump(
@@ -102,6 +107,9 @@ class Job(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of tenant_id
         if self.tenant_id:
             _dict['tenantId'] = self.tenant_id.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of customer_id
+        if self.customer_id:
+            _dict['customerId'] = self.customer_id.to_dict()
         # override the default output from pydantic by calling `to_dict()` of entity_id
         if self.entity_id:
             _dict['entityId'] = self.entity_id.to_dict()
@@ -111,6 +119,9 @@ class Job(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of result
         if self.result:
             _dict['result'] = self.result.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of owner_id
+        if self.owner_id:
+            _dict['ownerId'] = self.owner_id.to_dict()
         return _dict
 
     @classmethod
@@ -126,13 +137,15 @@ class Job(BaseModel):
             "id": JobId.from_dict(obj["id"]) if obj.get("id") is not None else None,
             "created_time": obj.get("createdTime"),
             "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "customer_id": CustomerId.from_dict(obj["customerId"]) if obj.get("customerId") is not None else None,
             "type": obj.get("type"),
             "key": obj.get("key"),
             "entity_id": EntityId.from_dict(obj["entityId"]) if obj.get("entityId") is not None else None,
             "entity_name": obj.get("entityName"),
             "status": obj.get("status"),
             "configuration": JobConfiguration.from_dict(obj["configuration"]) if obj.get("configuration") is not None else None,
-            "result": JobResult.from_dict(obj["result"]) if obj.get("result") is not None else None
+            "result": JobResult.from_dict(obj["result"]) if obj.get("result") is not None else None,
+            "owner_id": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None
         })
         return _obj
 

@@ -32,7 +32,7 @@ class SolutionImportResult(BaseModel):
     Result of a solution import operation.
     """ # noqa: E501
     success: Optional[StrictBool] = Field(default=None, description="'true' if all entities were imported successfully.")
-    created: Optional[Dict[str, StrictInt]] = Field(default=None, description="Number of newly created entities per entity type. Entity types with zero created entities are omitted.")
+    created: Optional[Dict[str, StrictInt]] = Field(default=None, description="Number of newly created entities per entity type. Entity types with zero created entities are omitted. Entity groups are reported under the ENTITY_GROUP key regardless of their inner type (e.g. a user group and a device group both contribute to ENTITY_GROUP).")
     id_mapping: Optional[Dict[str, UUID]] = Field(default=None, description="Mapping from external entity IDs (as they appear in the solution file) to the internal entity IDs assigned during import.", serialization_alias="idMapping")
     __properties: ClassVar[List[str]] = ["success", "created", "idMapping"]
 

@@ -38,7 +38,8 @@ class NotificationTemplateConfig(BaseModel):
     report_template_id: Optional[ReportTemplateId] = Field(default=None, serialization_alias="reportTemplateId")
     user_id: Optional[UserId] = Field(default=None, serialization_alias="userId")
     timezone: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["deliveryMethodsTemplates", "attachReport", "reportTemplateId", "userId", "timezone"]
+    make_public: Optional[StrictBool] = Field(default=None, serialization_alias="makePublic")
+    __properties: ClassVar[List[str]] = ["deliveryMethodsTemplates", "attachReport", "reportTemplateId", "userId", "timezone", "makePublic"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -118,7 +119,8 @@ class NotificationTemplateConfig(BaseModel):
             "attach_report": obj.get("attachReport"),
             "report_template_id": ReportTemplateId.from_dict(obj["reportTemplateId"]) if obj.get("reportTemplateId") is not None else None,
             "user_id": UserId.from_dict(obj["userId"]) if obj.get("userId") is not None else None,
-            "timezone": obj.get("timezone")
+            "timezone": obj.get("timezone"),
+            "make_public": obj.get("makePublic")
         })
         return _obj
 

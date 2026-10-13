@@ -13,6 +13,7 @@
 | **export_calculated_fields** | **bool** |  | [optional] |
 | **export_permissions** | **bool** |  | [optional] |
 | **export_group_entities** | **bool** |  | [optional] |
+| **embed_group_members** | **bool** |  | [optional] |
 
 
 

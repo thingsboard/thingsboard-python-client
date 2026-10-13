@@ -96,7 +96,7 @@ Returns a page of dashboard info objects owned by the tenant or the customer of 
 |------------- | ------------- | ------------- | -------------|
 | **page_size** | **int** | Maximum amount of entities in a one page | |
 | **page** | **int** | Sequence number of page starting from 0 | |
-| **include_customers** | **bool** | Include customer or sub-customer entities | [optional] |
+| **include_customers** | **bool** | Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers. | [optional] |
 | **text_search** | **str** | The case insensitive 'substring' filter based on the dashboard title. | [optional] |
 | **sort_property** | **str** | Property of entity to sort by | [optional] [enum: createdTime, title] |
 | **sort_order** | **str** | Sort order. ASC (ASCENDING) or DESC (DESCENDING) | [optional] [enum: ASC, DESC] |
@@ -126,7 +126,7 @@ Returns a page of dashboard info objects owned by the specified customer. The Da
 | **customer_id** | **str** | A string value representing the customer id. For example, '784f394c-42b6-435a-983c-b7beff2784f9' | |
 | **page_size** | **int** | Maximum amount of entities in a one page | |
 | **page** | **int** | Sequence number of page starting from 0 | |
-| **include_customers** | **bool** | Include customer or sub-customer entities | [optional] |
+| **include_customers** | **bool** | Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers. | [optional] |
 | **text_search** | **str** | The case insensitive 'substring' filter based on the dashboard title. | [optional] |
 | **sort_property** | **str** | Property of entity to sort by | [optional] [enum: createdTime, title] |
 | **sort_order** | **str** | Sort order. ASC (ASCENDING) or DESC (DESCENDING) | [optional] [enum: ASC, DESC] |

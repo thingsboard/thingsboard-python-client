@@ -27,6 +27,52 @@ __all__ = [
     "AdminSettingsId",
     "AffectedTenantAdministratorsFilter",
     "AffectedUserFilter",
+    "Agent",
+    "AgentAppArgument",
+    "AgentAppArgumentFormat",
+    "AgentAppArgumentSource",
+    "AgentAppArgumentValueType",
+    "AgentAppConfig",
+    "AgentAppConfigType",
+    "AgentAppEvent",
+    "AgentAppEventActionType",
+    "AgentAppEventId",
+    "AgentAppEventInfo",
+    "AgentAppEventRequest",
+    "AgentAppEventStepStatesValue",
+    "AgentAppInstallResponse",
+    "AgentAppProfile",
+    "AgentAppProfileId",
+    "AgentAppProfileInfo",
+    "AgentAppProfileRelationInfo",
+    "AgentAppStep",
+    "AgentAppStepState",
+    "AgentAppStepType",
+    "AgentAppTemplate",
+    "AgentAppTemplateStartStepsInner",
+    "AgentAppUnit",
+    "AgentAppUnitId",
+    "AgentAppUnitType",
+    "AgentApplication",
+    "AgentApplicationId",
+    "AgentApplicationInfo",
+    "AgentApplicationOrigin",
+    "AgentApplicationType",
+    "AgentBulkAction",
+    "AgentBulkActionEventStats",
+    "AgentBulkActionId",
+    "AgentBulkActionStatus",
+    "AgentFinalizeStep",
+    "AgentId",
+    "AgentInfo",
+    "AgentInstructions",
+    "AgentPrepareStep",
+    "AgentProcessingStatus",
+    "AgentProfile",
+    "AgentProfileId",
+    "AgentProfileInfo",
+    "AgentProvisionType",
+    "AgentUpgradeRequest",
     "AggFunction",
     "AggFunctionInput",
     "AggInput",
@@ -36,7 +82,7 @@ __all__ = [
     "Aggregation",
     "AggregationConfiguration",
     "AggregationParams",
-    "AiChatModelConfigObject",
+    "AiChatModelConfig",
     "AiModel",
     "AiModelConfig",
     "AiModelExportData",
@@ -57,10 +103,7 @@ __all__ = [
     "AlarmCondition",
     "AlarmConditionExpression",
     "AlarmConditionFilter",
-    "AlarmConditionFilterKey",
-    "AlarmConditionKeyType",
-    "AlarmConditionSpec",
-    "AlarmConditionValueAlarmRuleSchedule",
+    "AlarmConditionValueAlarmSchedule",
     "AlarmConditionValueBoolean",
     "AlarmConditionValueDouble",
     "AlarmConditionValueInteger",
@@ -75,25 +118,18 @@ __all__ = [
     "AlarmInfo",
     "AlarmNotificationRuleTriggerConfig",
     "AlarmRule",
-    "AlarmRuleAnyTimeSchedule",
     "AlarmRuleBooleanFilterPredicate",
+    "AlarmRuleBooleanOperation",
     "AlarmRuleComplexFilterPredicate",
-    "AlarmRuleCondition",
-    "AlarmRuleConditionFilter",
-    "AlarmRuleCustomTimeSchedule",
-    "AlarmRuleCustomTimeScheduleItem",
+    "AlarmRuleComplexOperation",
     "AlarmRuleDefinition",
-    "AlarmRuleDurationCondition",
+    "AlarmRuleDefinitionInfo",
     "AlarmRuleKeyFilterPredicate",
-    "AlarmRuleNoDataFilterPredicate",
     "AlarmRuleNumericFilterPredicate",
-    "AlarmRuleRepeatingCondition",
-    "AlarmRuleSchedule",
-    "AlarmRuleSimpleCondition",
-    "AlarmRuleSpecificTimeSchedule",
+    "AlarmRuleNumericOperation",
     "AlarmRuleStringFilterPredicate",
+    "AlarmRuleStringOperation",
     "AlarmSchedule",
-    "AlarmScheduleType",
     "AlarmSearchStatus",
     "AlarmSeverity",
     "AlarmStatus",
@@ -151,6 +187,9 @@ __all__ = [
     "AzureOpenAiProviderConfig",
     "BackupCodeTwoFaAccountConfig",
     "BackupCodeTwoFaProviderConfig",
+    "BackupVolumesRemoveStep",
+    "BackupVolumesStep",
+    "BackupVolumesStepState",
     "BadgePosition",
     "BarSeriesSettings",
     "BaseReadTsKvQuery",
@@ -169,6 +208,8 @@ __all__ = [
     "BulkImportResultAsset",
     "BulkImportResultDevice",
     "BulkImportResultEdge",
+    "BulkOperationPreview",
+    "BulkOperationRequest",
     "Button",
     "CMAssigneeType",
     "CMItemLinkType",
@@ -198,12 +239,13 @@ __all__ = [
     "ChartLabelPosition",
     "ChartLineType",
     "ChartShape",
-    "ChatType",
     "CheckPreProvisionedDevicesDeviceProfileProvisionConfiguration",
     "ChecksumAlgorithm",
     "ClaimRequest",
     "ClearRule",
     "ClientAttributesQueryingSnmpCommunicationConfig",
+    "CloudDomainId",
+    "CloudDomainInfo",
     "CoapDeviceProfileTransportConfiguration",
     "CoapDeviceTransportConfiguration",
     "CoapDeviceTypeConfiguration",
@@ -213,7 +255,6 @@ __all__ = [
     "ComparisonDuration",
     "ComparisonTsValue",
     "ComplexFilterPredicate",
-    "ComplexOperation",
     "ComplexVersionCreateRequest",
     "ComponentClusteringMode",
     "ComponentDescriptor",
@@ -221,6 +262,13 @@ __all__ = [
     "ComponentLifecycleEvent",
     "ComponentScope",
     "ComponentType",
+    "ComposeDownStep",
+    "ComposeDownStepState",
+    "ComposeRestartStep",
+    "ComposeStartStep",
+    "ComposeStep",
+    "ComposeStepState",
+    "ComposeTypeChoiceStep",
     "ContactBasedObject",
     "Converter",
     "ConverterExportData",
@@ -293,7 +341,6 @@ __all__ = [
     "DeviceId",
     "DeviceInfo",
     "DeviceProfile",
-    "DeviceProfileAlarm",
     "DeviceProfileConfiguration",
     "DeviceProfileData",
     "DeviceProfileExportData",
@@ -312,6 +359,7 @@ __all__ = [
     "DisabledDeviceProfileProvisionConfiguration",
     "Discount",
     "DividerComponent",
+    "DockerComposeConfig",
     "Domain",
     "DomainId",
     "DomainInfo",
@@ -320,11 +368,9 @@ __all__ = [
     "DummyJobResult",
     "DummyTaskFailure",
     "DummyTaskResult",
-    "DurationAlarmConditionSpec",
+    "DurationAlarmCondition",
     "DynamicValueBoolean",
     "DynamicValueDouble",
-    "DynamicValueInteger",
-    "DynamicValueLong",
     "DynamicValueSourceType",
     "DynamicValueString",
     "Edge",
@@ -370,13 +416,13 @@ __all__ = [
     "EntityDataQuery",
     "EntityDataSortOrder",
     "EntityExportData",
+    "EntityExportSettings",
     "EntityFilter",
     "EntityGroup",
     "EntityGroupExportData",
     "EntityGroupFilter",
     "EntityGroupId",
     "EntityGroupInfo",
-    "EntityGroupInfoOwnerIdsInner",
     "EntityGroupListFilter",
     "EntityGroupNameFilter",
     "EntityId",
@@ -424,8 +470,6 @@ __all__ = [
     "Filter",
     "FilterPredicateValueBoolean",
     "FilterPredicateValueDouble",
-    "FilterPredicateValueInteger",
-    "FilterPredicateValueLong",
     "FilterPredicateValueString",
     "FixedTimeWindow",
     "Font",
@@ -433,6 +477,7 @@ __all__ = [
     "FontWeight",
     "GeofencingCalculatedFieldConfiguration",
     "GeofencingReportStrategy",
+    "GetManagedRelatedEntityIds200ResponseInner",
     "GitHubModelsChatModelConfig",
     "GitHubModelsProviderConfig",
     "GoogleAiGeminiChatModelConfig",
@@ -447,6 +492,7 @@ __all__ = [
     "Heading",
     "HeadingComponent",
     "History",
+    "HomeDashboard",
     "HomeDashboardInfo",
     "HomeDashboardParams",
     "HomeMenuItem",
@@ -536,6 +582,7 @@ __all__ = [
     "NameConflictPolicy",
     "NewPlatformVersionNotificationRuleTriggerConfig",
     "NewPlatformVersionRecipientsConfig",
+    "NoDataFilterPredicate",
     "NoSecLwM2MBootstrapServerCredential",
     "NodeConnectionInfo",
     "Notification",
@@ -599,10 +646,22 @@ __all__ = [
     "Output",
     "PSKLwM2MBootstrapServerCredential",
     "PageBreakComponent",
+    "PageDataAgent",
+    "PageDataAgentAppEvent",
+    "PageDataAgentAppEventInfo",
+    "PageDataAgentAppProfile",
+    "PageDataAgentAppUnit",
+    "PageDataAgentApplicationInfo",
+    "PageDataAgentBulkAction",
+    "PageDataAgentInfo",
+    "PageDataAgentProfile",
+    "PageDataAgentProfileInfo",
     "PageDataAiModel",
     "PageDataAlarmCommentInfo",
     "PageDataAlarmData",
     "PageDataAlarmInfo",
+    "PageDataAlarmRuleDefinition",
+    "PageDataAlarmRuleDefinitionInfo",
     "PageDataApiKeyInfo",
     "PageDataAsset",
     "PageDataAssetInfo",
@@ -681,6 +740,7 @@ __all__ = [
     "PowerMode",
     "PowerSavingConfiguration",
     "PrivacyProtocol",
+    "ProcessingStartStatus",
     "ProcessingStrategy",
     "ProcessingStrategyType",
     "ProductId",
@@ -709,7 +769,7 @@ __all__ = [
     "RelationTypeGroup",
     "RelationsQueryFilter",
     "RelationsSearchParameters",
-    "RepeatingAlarmConditionSpec",
+    "RepeatingAlarmCondition",
     "Report",
     "ReportBarChartSettings",
     "ReportBarChartWithLabelsSettings",
@@ -749,6 +809,8 @@ __all__ = [
     "RoleExportData",
     "RoleId",
     "RoleType",
+    "RollBackStep",
+    "RollBackStepState",
     "Rpc",
     "RpcId",
     "RpcStatus",
@@ -768,6 +830,8 @@ __all__ = [
     "RuleNode",
     "RuleNodeDebugEventFilter",
     "RuleNodeId",
+    "RunJobStep",
+    "RunJobStepState",
     "SaveDeviceWithCredentialsRequest",
     "SaveOtaPackageInfoRequest",
     "ScheduledReportInfo",
@@ -795,13 +859,16 @@ __all__ = [
     "SignUpRequest",
     "SignUpResult",
     "SignUpSelfRegistrationParams",
+    "SimpleAlarmCondition",
     "SimpleAlarmConditionExpression",
-    "SimpleAlarmConditionSpec",
     "SimpleCalculatedFieldConfiguration",
     "SimpleEntity",
+    "SimpleValueSourceConfig",
     "SingleEntityFilter",
     "SingleEntityVersionCreateRequest",
     "SingleEntityVersionLoadRequest",
+    "SkipReason",
+    "SkippedApp",
     "SlackConversation",
     "SlackConversationType",
     "SlackDeliveryMethodNotificationTemplate",
@@ -819,15 +886,23 @@ __all__ = [
     "SnmpDeviceTransportConfiguration",
     "SnmpMapping",
     "SnmpProtocolVersion",
-    "SolutionInstallResponse",
+    "SolutionData",
+    "SolutionExportRequest",
+    "SolutionExportResponse",
+    "SolutionImportResult",
     "SolutionStep",
-    "SolutionTemplateLevel",
+    "SolutionValidationResult",
     "SpecificTimeSchedule",
     "SplitViewComponent",
     "StarredDashboardInfo",
     "StateEntityFilter",
     "StateEntityOwnerFilter",
     "StatisticsEventFilter",
+    "StepFieldAgentAppEventId",
+    "StepFieldBoolean",
+    "StepFieldInteger",
+    "StepFieldListString",
+    "StepFieldString",
     "StoreInfo",
     "StringFilterPredicate",
     "StringOperation",
@@ -847,6 +922,7 @@ __all__ = [
     "SystemAdministratorsFilter",
     "SystemInfo",
     "SystemInfoData",
+    "TableSortDirection",
     "TableSortOrder",
     "TaskProcessingFailureNotificationRuleTriggerConfig",
     "TaskProcessingFailureRecipientsConfig",
@@ -880,9 +956,6 @@ __all__ = [
     "TenantProfileData",
     "TenantProfileId",
     "TenantProfileQueueConfiguration",
-    "TenantSolutionTemplateDetails",
-    "TenantSolutionTemplateInfo",
-    "TenantSolutionTemplateInstructions",
     "TestSmsRequest",
     "TextAlignment",
     "ThingsboardCredentialsExpiredResponse",
@@ -942,6 +1015,7 @@ __all__ = [
     "UserActivationLink",
     "UserDashboardsInfo",
     "UserEmailInfo",
+    "UserExportData",
     "UserGroupListFilter",
     "UserId",
     "UserInfo",
@@ -1000,6 +1074,52 @@ if TYPE_CHECKING:
     from tb_paas_client.models.admin_settings_id import AdminSettingsId
     from tb_paas_client.models.affected_tenant_administrators_filter import AffectedTenantAdministratorsFilter
     from tb_paas_client.models.affected_user_filter import AffectedUserFilter
+    from tb_paas_client.models.agent import Agent
+    from tb_paas_client.models.agent_app_argument import AgentAppArgument
+    from tb_paas_client.models.agent_app_argument_format import AgentAppArgumentFormat
+    from tb_paas_client.models.agent_app_argument_source import AgentAppArgumentSource
+    from tb_paas_client.models.agent_app_argument_value_type import AgentAppArgumentValueType
+    from tb_paas_client.models.agent_app_config import AgentAppConfig
+    from tb_paas_client.models.agent_app_config_type import AgentAppConfigType
+    from tb_paas_client.models.agent_app_event import AgentAppEvent
+    from tb_paas_client.models.agent_app_event_action_type import AgentAppEventActionType
+    from tb_paas_client.models.agent_app_event_id import AgentAppEventId
+    from tb_paas_client.models.agent_app_event_info import AgentAppEventInfo
+    from tb_paas_client.models.agent_app_event_request import AgentAppEventRequest
+    from tb_paas_client.models.agent_app_event_step_states_value import AgentAppEventStepStatesValue
+    from tb_paas_client.models.agent_app_install_response import AgentAppInstallResponse
+    from tb_paas_client.models.agent_app_profile import AgentAppProfile
+    from tb_paas_client.models.agent_app_profile_id import AgentAppProfileId
+    from tb_paas_client.models.agent_app_profile_info import AgentAppProfileInfo
+    from tb_paas_client.models.agent_app_profile_relation_info import AgentAppProfileRelationInfo
+    from tb_paas_client.models.agent_app_step import AgentAppStep
+    from tb_paas_client.models.agent_app_step_state import AgentAppStepState
+    from tb_paas_client.models.agent_app_step_type import AgentAppStepType
+    from tb_paas_client.models.agent_app_template import AgentAppTemplate
+    from tb_paas_client.models.agent_app_template_start_steps_inner import AgentAppTemplateStartStepsInner
+    from tb_paas_client.models.agent_app_unit import AgentAppUnit
+    from tb_paas_client.models.agent_app_unit_id import AgentAppUnitId
+    from tb_paas_client.models.agent_app_unit_type import AgentAppUnitType
+    from tb_paas_client.models.agent_application import AgentApplication
+    from tb_paas_client.models.agent_application_id import AgentApplicationId
+    from tb_paas_client.models.agent_application_info import AgentApplicationInfo
+    from tb_paas_client.models.agent_application_origin import AgentApplicationOrigin
+    from tb_paas_client.models.agent_application_type import AgentApplicationType
+    from tb_paas_client.models.agent_bulk_action import AgentBulkAction
+    from tb_paas_client.models.agent_bulk_action_event_stats import AgentBulkActionEventStats
+    from tb_paas_client.models.agent_bulk_action_id import AgentBulkActionId
+    from tb_paas_client.models.agent_bulk_action_status import AgentBulkActionStatus
+    from tb_paas_client.models.agent_finalize_step import AgentFinalizeStep
+    from tb_paas_client.models.agent_id import AgentId
+    from tb_paas_client.models.agent_info import AgentInfo
+    from tb_paas_client.models.agent_instructions import AgentInstructions
+    from tb_paas_client.models.agent_prepare_step import AgentPrepareStep
+    from tb_paas_client.models.agent_processing_status import AgentProcessingStatus
+    from tb_paas_client.models.agent_profile import AgentProfile
+    from tb_paas_client.models.agent_profile_id import AgentProfileId
+    from tb_paas_client.models.agent_profile_info import AgentProfileInfo
+    from tb_paas_client.models.agent_provision_type import AgentProvisionType
+    from tb_paas_client.models.agent_upgrade_request import AgentUpgradeRequest
     from tb_paas_client.models.agg_function import AggFunction
     from tb_paas_client.models.agg_function_input import AggFunctionInput
     from tb_paas_client.models.agg_input import AggInput
@@ -1009,7 +1129,7 @@ if TYPE_CHECKING:
     from tb_paas_client.models.aggregation import Aggregation
     from tb_paas_client.models.aggregation_configuration import AggregationConfiguration
     from tb_paas_client.models.aggregation_params import AggregationParams
-    from tb_paas_client.models.ai_chat_model_config_object import AiChatModelConfigObject
+    from tb_paas_client.models.ai_chat_model_config import AiChatModelConfig
     from tb_paas_client.models.ai_model import AiModel
     from tb_paas_client.models.ai_model_config import AiModelConfig
     from tb_paas_client.models.ai_model_export_data import AiModelExportData
@@ -1030,10 +1150,7 @@ if TYPE_CHECKING:
     from tb_paas_client.models.alarm_condition import AlarmCondition
     from tb_paas_client.models.alarm_condition_expression import AlarmConditionExpression
     from tb_paas_client.models.alarm_condition_filter import AlarmConditionFilter
-    from tb_paas_client.models.alarm_condition_filter_key import AlarmConditionFilterKey
-    from tb_paas_client.models.alarm_condition_key_type import AlarmConditionKeyType
-    from tb_paas_client.models.alarm_condition_spec import AlarmConditionSpec
-    from tb_paas_client.models.alarm_condition_value_alarm_rule_schedule import AlarmConditionValueAlarmRuleSchedule
+    from tb_paas_client.models.alarm_condition_value_alarm_schedule import AlarmConditionValueAlarmSchedule
     from tb_paas_client.models.alarm_condition_value_boolean import AlarmConditionValueBoolean
     from tb_paas_client.models.alarm_condition_value_double import AlarmConditionValueDouble
     from tb_paas_client.models.alarm_condition_value_integer import AlarmConditionValueInteger
@@ -1048,25 +1165,18 @@ if TYPE_CHECKING:
     from tb_paas_client.models.alarm_info import AlarmInfo
     from tb_paas_client.models.alarm_notification_rule_trigger_config import AlarmNotificationRuleTriggerConfig
     from tb_paas_client.models.alarm_rule import AlarmRule
-    from tb_paas_client.models.alarm_rule_any_time_schedule import AlarmRuleAnyTimeSchedule
     from tb_paas_client.models.alarm_rule_boolean_filter_predicate import AlarmRuleBooleanFilterPredicate
+    from tb_paas_client.models.alarm_rule_boolean_operation import AlarmRuleBooleanOperation
     from tb_paas_client.models.alarm_rule_complex_filter_predicate import AlarmRuleComplexFilterPredicate
-    from tb_paas_client.models.alarm_rule_condition import AlarmRuleCondition
-    from tb_paas_client.models.alarm_rule_condition_filter import AlarmRuleConditionFilter
-    from tb_paas_client.models.alarm_rule_custom_time_schedule import AlarmRuleCustomTimeSchedule
-    from tb_paas_client.models.alarm_rule_custom_time_schedule_item import AlarmRuleCustomTimeScheduleItem
+    from tb_paas_client.models.alarm_rule_complex_operation import AlarmRuleComplexOperation
     from tb_paas_client.models.alarm_rule_definition import AlarmRuleDefinition
-    from tb_paas_client.models.alarm_rule_duration_condition import AlarmRuleDurationCondition
+    from tb_paas_client.models.alarm_rule_definition_info import AlarmRuleDefinitionInfo
     from tb_paas_client.models.alarm_rule_key_filter_predicate import AlarmRuleKeyFilterPredicate
-    from tb_paas_client.models.alarm_rule_no_data_filter_predicate import AlarmRuleNoDataFilterPredicate
     from tb_paas_client.models.alarm_rule_numeric_filter_predicate import AlarmRuleNumericFilterPredicate
-    from tb_paas_client.models.alarm_rule_repeating_condition import AlarmRuleRepeatingCondition
-    from tb_paas_client.models.alarm_rule_schedule import AlarmRuleSchedule
-    from tb_paas_client.models.alarm_rule_simple_condition import AlarmRuleSimpleCondition
-    from tb_paas_client.models.alarm_rule_specific_time_schedule import AlarmRuleSpecificTimeSchedule
+    from tb_paas_client.models.alarm_rule_numeric_operation import AlarmRuleNumericOperation
     from tb_paas_client.models.alarm_rule_string_filter_predicate import AlarmRuleStringFilterPredicate
+    from tb_paas_client.models.alarm_rule_string_operation import AlarmRuleStringOperation
     from tb_paas_client.models.alarm_schedule import AlarmSchedule
-    from tb_paas_client.models.alarm_schedule_type import AlarmScheduleType
     from tb_paas_client.models.alarm_search_status import AlarmSearchStatus
     from tb_paas_client.models.alarm_severity import AlarmSeverity
     from tb_paas_client.models.alarm_status import AlarmStatus
@@ -1124,6 +1234,9 @@ if TYPE_CHECKING:
     from tb_paas_client.models.azure_open_ai_provider_config import AzureOpenAiProviderConfig
     from tb_paas_client.models.backup_code_two_fa_account_config import BackupCodeTwoFaAccountConfig
     from tb_paas_client.models.backup_code_two_fa_provider_config import BackupCodeTwoFaProviderConfig
+    from tb_paas_client.models.backup_volumes_remove_step import BackupVolumesRemoveStep
+    from tb_paas_client.models.backup_volumes_step import BackupVolumesStep
+    from tb_paas_client.models.backup_volumes_step_state import BackupVolumesStepState
     from tb_paas_client.models.badge_position import BadgePosition
     from tb_paas_client.models.bar_series_settings import BarSeriesSettings
     from tb_paas_client.models.base_read_ts_kv_query import BaseReadTsKvQuery
@@ -1142,6 +1255,8 @@ if TYPE_CHECKING:
     from tb_paas_client.models.bulk_import_result_asset import BulkImportResultAsset
     from tb_paas_client.models.bulk_import_result_device import BulkImportResultDevice
     from tb_paas_client.models.bulk_import_result_edge import BulkImportResultEdge
+    from tb_paas_client.models.bulk_operation_preview import BulkOperationPreview
+    from tb_paas_client.models.bulk_operation_request import BulkOperationRequest
     from tb_paas_client.models.button import Button
     from tb_paas_client.models.cm_assignee_type import CMAssigneeType
     from tb_paas_client.models.cm_item_link_type import CMItemLinkType
@@ -1171,12 +1286,13 @@ if TYPE_CHECKING:
     from tb_paas_client.models.chart_label_position import ChartLabelPosition
     from tb_paas_client.models.chart_line_type import ChartLineType
     from tb_paas_client.models.chart_shape import ChartShape
-    from tb_paas_client.models.chat_type import ChatType
     from tb_paas_client.models.check_pre_provisioned_devices_device_profile_provision_configuration import CheckPreProvisionedDevicesDeviceProfileProvisionConfiguration
     from tb_paas_client.models.checksum_algorithm import ChecksumAlgorithm
     from tb_paas_client.models.claim_request import ClaimRequest
     from tb_paas_client.models.clear_rule import ClearRule
     from tb_paas_client.models.client_attributes_querying_snmp_communication_config import ClientAttributesQueryingSnmpCommunicationConfig
+    from tb_paas_client.models.cloud_domain_id import CloudDomainId
+    from tb_paas_client.models.cloud_domain_info import CloudDomainInfo
     from tb_paas_client.models.coap_device_profile_transport_configuration import CoapDeviceProfileTransportConfiguration
     from tb_paas_client.models.coap_device_transport_configuration import CoapDeviceTransportConfiguration
     from tb_paas_client.models.coap_device_type_configuration import CoapDeviceTypeConfiguration
@@ -1186,7 +1302,6 @@ if TYPE_CHECKING:
     from tb_paas_client.models.comparison_duration import ComparisonDuration
     from tb_paas_client.models.comparison_ts_value import ComparisonTsValue
     from tb_paas_client.models.complex_filter_predicate import ComplexFilterPredicate
-    from tb_paas_client.models.complex_operation import ComplexOperation
     from tb_paas_client.models.complex_version_create_request import ComplexVersionCreateRequest
     from tb_paas_client.models.component_clustering_mode import ComponentClusteringMode
     from tb_paas_client.models.component_descriptor import ComponentDescriptor
@@ -1194,6 +1309,13 @@ if TYPE_CHECKING:
     from tb_paas_client.models.component_lifecycle_event import ComponentLifecycleEvent
     from tb_paas_client.models.component_scope import ComponentScope
     from tb_paas_client.models.component_type import ComponentType
+    from tb_paas_client.models.compose_down_step import ComposeDownStep
+    from tb_paas_client.models.compose_down_step_state import ComposeDownStepState
+    from tb_paas_client.models.compose_restart_step import ComposeRestartStep
+    from tb_paas_client.models.compose_start_step import ComposeStartStep
+    from tb_paas_client.models.compose_step import ComposeStep
+    from tb_paas_client.models.compose_step_state import ComposeStepState
+    from tb_paas_client.models.compose_type_choice_step import ComposeTypeChoiceStep
     from tb_paas_client.models.contact_based_object import ContactBasedObject
     from tb_paas_client.models.converter import Converter
     from tb_paas_client.models.converter_export_data import ConverterExportData
@@ -1266,7 +1388,6 @@ if TYPE_CHECKING:
     from tb_paas_client.models.device_id import DeviceId
     from tb_paas_client.models.device_info import DeviceInfo
     from tb_paas_client.models.device_profile import DeviceProfile
-    from tb_paas_client.models.device_profile_alarm import DeviceProfileAlarm
     from tb_paas_client.models.device_profile_configuration import DeviceProfileConfiguration
     from tb_paas_client.models.device_profile_data import DeviceProfileData
     from tb_paas_client.models.device_profile_export_data import DeviceProfileExportData
@@ -1285,6 +1406,7 @@ if TYPE_CHECKING:
     from tb_paas_client.models.disabled_device_profile_provision_configuration import DisabledDeviceProfileProvisionConfiguration
     from tb_paas_client.models.discount import Discount
     from tb_paas_client.models.divider_component import DividerComponent
+    from tb_paas_client.models.docker_compose_config import DockerComposeConfig
     from tb_paas_client.models.domain import Domain
     from tb_paas_client.models.domain_id import DomainId
     from tb_paas_client.models.domain_info import DomainInfo
@@ -1293,11 +1415,9 @@ if TYPE_CHECKING:
     from tb_paas_client.models.dummy_job_result import DummyJobResult
     from tb_paas_client.models.dummy_task_failure import DummyTaskFailure
     from tb_paas_client.models.dummy_task_result import DummyTaskResult
-    from tb_paas_client.models.duration_alarm_condition_spec import DurationAlarmConditionSpec
+    from tb_paas_client.models.duration_alarm_condition import DurationAlarmCondition
     from tb_paas_client.models.dynamic_value_boolean import DynamicValueBoolean
     from tb_paas_client.models.dynamic_value_double import DynamicValueDouble
-    from tb_paas_client.models.dynamic_value_integer import DynamicValueInteger
-    from tb_paas_client.models.dynamic_value_long import DynamicValueLong
     from tb_paas_client.models.dynamic_value_source_type import DynamicValueSourceType
     from tb_paas_client.models.dynamic_value_string import DynamicValueString
     from tb_paas_client.models.edge import Edge
@@ -1343,13 +1463,13 @@ if TYPE_CHECKING:
     from tb_paas_client.models.entity_data_query import EntityDataQuery
     from tb_paas_client.models.entity_data_sort_order import EntityDataSortOrder
     from tb_paas_client.models.entity_export_data import EntityExportData
+    from tb_paas_client.models.entity_export_settings import EntityExportSettings
     from tb_paas_client.models.entity_filter import EntityFilter
     from tb_paas_client.models.entity_group import EntityGroup
     from tb_paas_client.models.entity_group_export_data import EntityGroupExportData
     from tb_paas_client.models.entity_group_filter import EntityGroupFilter
     from tb_paas_client.models.entity_group_id import EntityGroupId
     from tb_paas_client.models.entity_group_info import EntityGroupInfo
-    from tb_paas_client.models.entity_group_info_owner_ids_inner import EntityGroupInfoOwnerIdsInner
     from tb_paas_client.models.entity_group_list_filter import EntityGroupListFilter
     from tb_paas_client.models.entity_group_name_filter import EntityGroupNameFilter
     from tb_paas_client.models.entity_id import EntityId
@@ -1397,8 +1517,6 @@ if TYPE_CHECKING:
     from tb_paas_client.models.filter import Filter
     from tb_paas_client.models.filter_predicate_value_boolean import FilterPredicateValueBoolean
     from tb_paas_client.models.filter_predicate_value_double import FilterPredicateValueDouble
-    from tb_paas_client.models.filter_predicate_value_integer import FilterPredicateValueInteger
-    from tb_paas_client.models.filter_predicate_value_long import FilterPredicateValueLong
     from tb_paas_client.models.filter_predicate_value_string import FilterPredicateValueString
     from tb_paas_client.models.fixed_time_window import FixedTimeWindow
     from tb_paas_client.models.font import Font
@@ -1406,6 +1524,7 @@ if TYPE_CHECKING:
     from tb_paas_client.models.font_weight import FontWeight
     from tb_paas_client.models.geofencing_calculated_field_configuration import GeofencingCalculatedFieldConfiguration
     from tb_paas_client.models.geofencing_report_strategy import GeofencingReportStrategy
+    from tb_paas_client.models.get_managed_related_entity_ids200_response_inner import GetManagedRelatedEntityIds200ResponseInner
     from tb_paas_client.models.git_hub_models_chat_model_config import GitHubModelsChatModelConfig
     from tb_paas_client.models.git_hub_models_provider_config import GitHubModelsProviderConfig
     from tb_paas_client.models.google_ai_gemini_chat_model_config import GoogleAiGeminiChatModelConfig
@@ -1420,6 +1539,7 @@ if TYPE_CHECKING:
     from tb_paas_client.models.heading import Heading
     from tb_paas_client.models.heading_component import HeadingComponent
     from tb_paas_client.models.history import History
+    from tb_paas_client.models.home_dashboard import HomeDashboard
     from tb_paas_client.models.home_dashboard_info import HomeDashboardInfo
     from tb_paas_client.models.home_dashboard_params import HomeDashboardParams
     from tb_paas_client.models.home_menu_item import HomeMenuItem
@@ -1509,6 +1629,7 @@ if TYPE_CHECKING:
     from tb_paas_client.models.name_conflict_policy import NameConflictPolicy
     from tb_paas_client.models.new_platform_version_notification_rule_trigger_config import NewPlatformVersionNotificationRuleTriggerConfig
     from tb_paas_client.models.new_platform_version_recipients_config import NewPlatformVersionRecipientsConfig
+    from tb_paas_client.models.no_data_filter_predicate import NoDataFilterPredicate
     from tb_paas_client.models.no_sec_lw_m2_m_bootstrap_server_credential import NoSecLwM2MBootstrapServerCredential
     from tb_paas_client.models.node_connection_info import NodeConnectionInfo
     from tb_paas_client.models.notification import Notification
@@ -1572,10 +1693,22 @@ if TYPE_CHECKING:
     from tb_paas_client.models.output import Output
     from tb_paas_client.models.psklw_m2_m_bootstrap_server_credential import PSKLwM2MBootstrapServerCredential
     from tb_paas_client.models.page_break_component import PageBreakComponent
+    from tb_paas_client.models.page_data_agent import PageDataAgent
+    from tb_paas_client.models.page_data_agent_app_event import PageDataAgentAppEvent
+    from tb_paas_client.models.page_data_agent_app_event_info import PageDataAgentAppEventInfo
+    from tb_paas_client.models.page_data_agent_app_profile import PageDataAgentAppProfile
+    from tb_paas_client.models.page_data_agent_app_unit import PageDataAgentAppUnit
+    from tb_paas_client.models.page_data_agent_application_info import PageDataAgentApplicationInfo
+    from tb_paas_client.models.page_data_agent_bulk_action import PageDataAgentBulkAction
+    from tb_paas_client.models.page_data_agent_info import PageDataAgentInfo
+    from tb_paas_client.models.page_data_agent_profile import PageDataAgentProfile
+    from tb_paas_client.models.page_data_agent_profile_info import PageDataAgentProfileInfo
     from tb_paas_client.models.page_data_ai_model import PageDataAiModel
     from tb_paas_client.models.page_data_alarm_comment_info import PageDataAlarmCommentInfo
     from tb_paas_client.models.page_data_alarm_data import PageDataAlarmData
     from tb_paas_client.models.page_data_alarm_info import PageDataAlarmInfo
+    from tb_paas_client.models.page_data_alarm_rule_definition import PageDataAlarmRuleDefinition
+    from tb_paas_client.models.page_data_alarm_rule_definition_info import PageDataAlarmRuleDefinitionInfo
     from tb_paas_client.models.page_data_api_key_info import PageDataApiKeyInfo
     from tb_paas_client.models.page_data_asset import PageDataAsset
     from tb_paas_client.models.page_data_asset_info import PageDataAssetInfo
@@ -1654,6 +1787,7 @@ if TYPE_CHECKING:
     from tb_paas_client.models.power_mode import PowerMode
     from tb_paas_client.models.power_saving_configuration import PowerSavingConfiguration
     from tb_paas_client.models.privacy_protocol import PrivacyProtocol
+    from tb_paas_client.models.processing_start_status import ProcessingStartStatus
     from tb_paas_client.models.processing_strategy import ProcessingStrategy
     from tb_paas_client.models.processing_strategy_type import ProcessingStrategyType
     from tb_paas_client.models.product_id import ProductId
@@ -1682,7 +1816,7 @@ if TYPE_CHECKING:
     from tb_paas_client.models.relation_type_group import RelationTypeGroup
     from tb_paas_client.models.relations_query_filter import RelationsQueryFilter
     from tb_paas_client.models.relations_search_parameters import RelationsSearchParameters
-    from tb_paas_client.models.repeating_alarm_condition_spec import RepeatingAlarmConditionSpec
+    from tb_paas_client.models.repeating_alarm_condition import RepeatingAlarmCondition
     from tb_paas_client.models.report import Report
     from tb_paas_client.models.report_bar_chart_settings import ReportBarChartSettings
     from tb_paas_client.models.report_bar_chart_with_labels_settings import ReportBarChartWithLabelsSettings
@@ -1722,6 +1856,8 @@ if TYPE_CHECKING:
     from tb_paas_client.models.role_export_data import RoleExportData
     from tb_paas_client.models.role_id import RoleId
     from tb_paas_client.models.role_type import RoleType
+    from tb_paas_client.models.roll_back_step import RollBackStep
+    from tb_paas_client.models.roll_back_step_state import RollBackStepState
     from tb_paas_client.models.rpc import Rpc
     from tb_paas_client.models.rpc_id import RpcId
     from tb_paas_client.models.rpc_status import RpcStatus
@@ -1741,6 +1877,8 @@ if TYPE_CHECKING:
     from tb_paas_client.models.rule_node import RuleNode
     from tb_paas_client.models.rule_node_debug_event_filter import RuleNodeDebugEventFilter
     from tb_paas_client.models.rule_node_id import RuleNodeId
+    from tb_paas_client.models.run_job_step import RunJobStep
+    from tb_paas_client.models.run_job_step_state import RunJobStepState
     from tb_paas_client.models.save_device_with_credentials_request import SaveDeviceWithCredentialsRequest
     from tb_paas_client.models.save_ota_package_info_request import SaveOtaPackageInfoRequest
     from tb_paas_client.models.scheduled_report_info import ScheduledReportInfo
@@ -1768,13 +1906,16 @@ if TYPE_CHECKING:
     from tb_paas_client.models.sign_up_request import SignUpRequest
     from tb_paas_client.models.sign_up_result import SignUpResult
     from tb_paas_client.models.sign_up_self_registration_params import SignUpSelfRegistrationParams
+    from tb_paas_client.models.simple_alarm_condition import SimpleAlarmCondition
     from tb_paas_client.models.simple_alarm_condition_expression import SimpleAlarmConditionExpression
-    from tb_paas_client.models.simple_alarm_condition_spec import SimpleAlarmConditionSpec
     from tb_paas_client.models.simple_calculated_field_configuration import SimpleCalculatedFieldConfiguration
     from tb_paas_client.models.simple_entity import SimpleEntity
+    from tb_paas_client.models.simple_value_source_config import SimpleValueSourceConfig
     from tb_paas_client.models.single_entity_filter import SingleEntityFilter
     from tb_paas_client.models.single_entity_version_create_request import SingleEntityVersionCreateRequest
     from tb_paas_client.models.single_entity_version_load_request import SingleEntityVersionLoadRequest
+    from tb_paas_client.models.skip_reason import SkipReason
+    from tb_paas_client.models.skipped_app import SkippedApp
     from tb_paas_client.models.slack_conversation import SlackConversation
     from tb_paas_client.models.slack_conversation_type import SlackConversationType
     from tb_paas_client.models.slack_delivery_method_notification_template import SlackDeliveryMethodNotificationTemplate
@@ -1792,15 +1933,23 @@ if TYPE_CHECKING:
     from tb_paas_client.models.snmp_device_transport_configuration import SnmpDeviceTransportConfiguration
     from tb_paas_client.models.snmp_mapping import SnmpMapping
     from tb_paas_client.models.snmp_protocol_version import SnmpProtocolVersion
-    from tb_paas_client.models.solution_install_response import SolutionInstallResponse
+    from tb_paas_client.models.solution_data import SolutionData
+    from tb_paas_client.models.solution_export_request import SolutionExportRequest
+    from tb_paas_client.models.solution_export_response import SolutionExportResponse
+    from tb_paas_client.models.solution_import_result import SolutionImportResult
     from tb_paas_client.models.solution_step import SolutionStep
-    from tb_paas_client.models.solution_template_level import SolutionTemplateLevel
+    from tb_paas_client.models.solution_validation_result import SolutionValidationResult
     from tb_paas_client.models.specific_time_schedule import SpecificTimeSchedule
     from tb_paas_client.models.split_view_component import SplitViewComponent
     from tb_paas_client.models.starred_dashboard_info import StarredDashboardInfo
     from tb_paas_client.models.state_entity_filter import StateEntityFilter
     from tb_paas_client.models.state_entity_owner_filter import StateEntityOwnerFilter
     from tb_paas_client.models.statistics_event_filter import StatisticsEventFilter
+    from tb_paas_client.models.step_field_agent_app_event_id import StepFieldAgentAppEventId
+    from tb_paas_client.models.step_field_boolean import StepFieldBoolean
+    from tb_paas_client.models.step_field_integer import StepFieldInteger
+    from tb_paas_client.models.step_field_list_string import StepFieldListString
+    from tb_paas_client.models.step_field_string import StepFieldString
     from tb_paas_client.models.store_info import StoreInfo
     from tb_paas_client.models.string_filter_predicate import StringFilterPredicate
     from tb_paas_client.models.string_operation import StringOperation
@@ -1820,6 +1969,7 @@ if TYPE_CHECKING:
     from tb_paas_client.models.system_administrators_filter import SystemAdministratorsFilter
     from tb_paas_client.models.system_info import SystemInfo
     from tb_paas_client.models.system_info_data import SystemInfoData
+    from tb_paas_client.models.table_sort_direction import TableSortDirection
     from tb_paas_client.models.table_sort_order import TableSortOrder
     from tb_paas_client.models.task_processing_failure_notification_rule_trigger_config import TaskProcessingFailureNotificationRuleTriggerConfig
     from tb_paas_client.models.task_processing_failure_recipients_config import TaskProcessingFailureRecipientsConfig
@@ -1853,9 +2003,6 @@ if TYPE_CHECKING:
     from tb_paas_client.models.tenant_profile_data import TenantProfileData
     from tb_paas_client.models.tenant_profile_id import TenantProfileId
     from tb_paas_client.models.tenant_profile_queue_configuration import TenantProfileQueueConfiguration
-    from tb_paas_client.models.tenant_solution_template_details import TenantSolutionTemplateDetails
-    from tb_paas_client.models.tenant_solution_template_info import TenantSolutionTemplateInfo
-    from tb_paas_client.models.tenant_solution_template_instructions import TenantSolutionTemplateInstructions
     from tb_paas_client.models.test_sms_request import TestSmsRequest
     from tb_paas_client.models.text_alignment import TextAlignment
     from tb_paas_client.models.thingsboard_credentials_expired_response import ThingsboardCredentialsExpiredResponse
@@ -1915,6 +2062,7 @@ if TYPE_CHECKING:
     from tb_paas_client.models.user_activation_link import UserActivationLink
     from tb_paas_client.models.user_dashboards_info import UserDashboardsInfo
     from tb_paas_client.models.user_email_info import UserEmailInfo
+    from tb_paas_client.models.user_export_data import UserExportData
     from tb_paas_client.models.user_group_list_filter import UserGroupListFilter
     from tb_paas_client.models.user_id import UserId
     from tb_paas_client.models.user_info import UserInfo
@@ -1972,6 +2120,52 @@ _MODEL_CLASSES = {
     "AdminSettingsId": "tb_paas_client.models.admin_settings_id",
     "AffectedTenantAdministratorsFilter": "tb_paas_client.models.affected_tenant_administrators_filter",
     "AffectedUserFilter": "tb_paas_client.models.affected_user_filter",
+    "Agent": "tb_paas_client.models.agent",
+    "AgentAppArgument": "tb_paas_client.models.agent_app_argument",
+    "AgentAppArgumentFormat": "tb_paas_client.models.agent_app_argument_format",
+    "AgentAppArgumentSource": "tb_paas_client.models.agent_app_argument_source",
+    "AgentAppArgumentValueType": "tb_paas_client.models.agent_app_argument_value_type",
+    "AgentAppConfig": "tb_paas_client.models.agent_app_config",
+    "AgentAppConfigType": "tb_paas_client.models.agent_app_config_type",
+    "AgentAppEvent": "tb_paas_client.models.agent_app_event",
+    "AgentAppEventActionType": "tb_paas_client.models.agent_app_event_action_type",
+    "AgentAppEventId": "tb_paas_client.models.agent_app_event_id",
+    "AgentAppEventInfo": "tb_paas_client.models.agent_app_event_info",
+    "AgentAppEventRequest": "tb_paas_client.models.agent_app_event_request",
+    "AgentAppEventStepStatesValue": "tb_paas_client.models.agent_app_event_step_states_value",
+    "AgentAppInstallResponse": "tb_paas_client.models.agent_app_install_response",
+    "AgentAppProfile": "tb_paas_client.models.agent_app_profile",
+    "AgentAppProfileId": "tb_paas_client.models.agent_app_profile_id",
+    "AgentAppProfileInfo": "tb_paas_client.models.agent_app_profile_info",
+    "AgentAppProfileRelationInfo": "tb_paas_client.models.agent_app_profile_relation_info",
+    "AgentAppStep": "tb_paas_client.models.agent_app_step",
+    "AgentAppStepState": "tb_paas_client.models.agent_app_step_state",
+    "AgentAppStepType": "tb_paas_client.models.agent_app_step_type",
+    "AgentAppTemplate": "tb_paas_client.models.agent_app_template",
+    "AgentAppTemplateStartStepsInner": "tb_paas_client.models.agent_app_template_start_steps_inner",
+    "AgentAppUnit": "tb_paas_client.models.agent_app_unit",
+    "AgentAppUnitId": "tb_paas_client.models.agent_app_unit_id",
+    "AgentAppUnitType": "tb_paas_client.models.agent_app_unit_type",
+    "AgentApplication": "tb_paas_client.models.agent_application",
+    "AgentApplicationId": "tb_paas_client.models.agent_application_id",
+    "AgentApplicationInfo": "tb_paas_client.models.agent_application_info",
+    "AgentApplicationOrigin": "tb_paas_client.models.agent_application_origin",
+    "AgentApplicationType": "tb_paas_client.models.agent_application_type",
+    "AgentBulkAction": "tb_paas_client.models.agent_bulk_action",
+    "AgentBulkActionEventStats": "tb_paas_client.models.agent_bulk_action_event_stats",
+    "AgentBulkActionId": "tb_paas_client.models.agent_bulk_action_id",
+    "AgentBulkActionStatus": "tb_paas_client.models.agent_bulk_action_status",
+    "AgentFinalizeStep": "tb_paas_client.models.agent_finalize_step",
+    "AgentId": "tb_paas_client.models.agent_id",
+    "AgentInfo": "tb_paas_client.models.agent_info",
+    "AgentInstructions": "tb_paas_client.models.agent_instructions",
+    "AgentPrepareStep": "tb_paas_client.models.agent_prepare_step",
+    "AgentProcessingStatus": "tb_paas_client.models.agent_processing_status",
+    "AgentProfile": "tb_paas_client.models.agent_profile",
+    "AgentProfileId": "tb_paas_client.models.agent_profile_id",
+    "AgentProfileInfo": "tb_paas_client.models.agent_profile_info",
+    "AgentProvisionType": "tb_paas_client.models.agent_provision_type",
+    "AgentUpgradeRequest": "tb_paas_client.models.agent_upgrade_request",
     "AggFunction": "tb_paas_client.models.agg_function",
     "AggFunctionInput": "tb_paas_client.models.agg_function_input",
     "AggInput": "tb_paas_client.models.agg_input",
@@ -1981,7 +2175,7 @@ _MODEL_CLASSES = {
     "Aggregation": "tb_paas_client.models.aggregation",
     "AggregationConfiguration": "tb_paas_client.models.aggregation_configuration",
     "AggregationParams": "tb_paas_client.models.aggregation_params",
-    "AiChatModelConfigObject": "tb_paas_client.models.ai_chat_model_config_object",
+    "AiChatModelConfig": "tb_paas_client.models.ai_chat_model_config",
     "AiModel": "tb_paas_client.models.ai_model",
     "AiModelConfig": "tb_paas_client.models.ai_model_config",
     "AiModelExportData": "tb_paas_client.models.ai_model_export_data",
@@ -2002,10 +2196,7 @@ _MODEL_CLASSES = {
     "AlarmCondition": "tb_paas_client.models.alarm_condition",
     "AlarmConditionExpression": "tb_paas_client.models.alarm_condition_expression",
     "AlarmConditionFilter": "tb_paas_client.models.alarm_condition_filter",
-    "AlarmConditionFilterKey": "tb_paas_client.models.alarm_condition_filter_key",
-    "AlarmConditionKeyType": "tb_paas_client.models.alarm_condition_key_type",
-    "AlarmConditionSpec": "tb_paas_client.models.alarm_condition_spec",
-    "AlarmConditionValueAlarmRuleSchedule": "tb_paas_client.models.alarm_condition_value_alarm_rule_schedule",
+    "AlarmConditionValueAlarmSchedule": "tb_paas_client.models.alarm_condition_value_alarm_schedule",
     "AlarmConditionValueBoolean": "tb_paas_client.models.alarm_condition_value_boolean",
     "AlarmConditionValueDouble": "tb_paas_client.models.alarm_condition_value_double",
     "AlarmConditionValueInteger": "tb_paas_client.models.alarm_condition_value_integer",
@@ -2020,25 +2211,18 @@ _MODEL_CLASSES = {
     "AlarmInfo": "tb_paas_client.models.alarm_info",
     "AlarmNotificationRuleTriggerConfig": "tb_paas_client.models.alarm_notification_rule_trigger_config",
     "AlarmRule": "tb_paas_client.models.alarm_rule",
-    "AlarmRuleAnyTimeSchedule": "tb_paas_client.models.alarm_rule_any_time_schedule",
     "AlarmRuleBooleanFilterPredicate": "tb_paas_client.models.alarm_rule_boolean_filter_predicate",
+    "AlarmRuleBooleanOperation": "tb_paas_client.models.alarm_rule_boolean_operation",
     "AlarmRuleComplexFilterPredicate": "tb_paas_client.models.alarm_rule_complex_filter_predicate",
-    "AlarmRuleCondition": "tb_paas_client.models.alarm_rule_condition",
-    "AlarmRuleConditionFilter": "tb_paas_client.models.alarm_rule_condition_filter",
-    "AlarmRuleCustomTimeSchedule": "tb_paas_client.models.alarm_rule_custom_time_schedule",
-    "AlarmRuleCustomTimeScheduleItem": "tb_paas_client.models.alarm_rule_custom_time_schedule_item",
+    "AlarmRuleComplexOperation": "tb_paas_client.models.alarm_rule_complex_operation",
     "AlarmRuleDefinition": "tb_paas_client.models.alarm_rule_definition",
-    "AlarmRuleDurationCondition": "tb_paas_client.models.alarm_rule_duration_condition",
+    "AlarmRuleDefinitionInfo": "tb_paas_client.models.alarm_rule_definition_info",
     "AlarmRuleKeyFilterPredicate": "tb_paas_client.models.alarm_rule_key_filter_predicate",
-    "AlarmRuleNoDataFilterPredicate": "tb_paas_client.models.alarm_rule_no_data_filter_predicate",
     "AlarmRuleNumericFilterPredicate": "tb_paas_client.models.alarm_rule_numeric_filter_predicate",
-    "AlarmRuleRepeatingCondition": "tb_paas_client.models.alarm_rule_repeating_condition",
-    "AlarmRuleSchedule": "tb_paas_client.models.alarm_rule_schedule",
-    "AlarmRuleSimpleCondition": "tb_paas_client.models.alarm_rule_simple_condition",
-    "AlarmRuleSpecificTimeSchedule": "tb_paas_client.models.alarm_rule_specific_time_schedule",
+    "AlarmRuleNumericOperation": "tb_paas_client.models.alarm_rule_numeric_operation",
     "AlarmRuleStringFilterPredicate": "tb_paas_client.models.alarm_rule_string_filter_predicate",
+    "AlarmRuleStringOperation": "tb_paas_client.models.alarm_rule_string_operation",
     "AlarmSchedule": "tb_paas_client.models.alarm_schedule",
-    "AlarmScheduleType": "tb_paas_client.models.alarm_schedule_type",
     "AlarmSearchStatus": "tb_paas_client.models.alarm_search_status",
     "AlarmSeverity": "tb_paas_client.models.alarm_severity",
     "AlarmStatus": "tb_paas_client.models.alarm_status",
@@ -2096,6 +2280,9 @@ _MODEL_CLASSES = {
     "AzureOpenAiProviderConfig": "tb_paas_client.models.azure_open_ai_provider_config",
     "BackupCodeTwoFaAccountConfig": "tb_paas_client.models.backup_code_two_fa_account_config",
     "BackupCodeTwoFaProviderConfig": "tb_paas_client.models.backup_code_two_fa_provider_config",
+    "BackupVolumesRemoveStep": "tb_paas_client.models.backup_volumes_remove_step",
+    "BackupVolumesStep": "tb_paas_client.models.backup_volumes_step",
+    "BackupVolumesStepState": "tb_paas_client.models.backup_volumes_step_state",
     "BadgePosition": "tb_paas_client.models.badge_position",
     "BarSeriesSettings": "tb_paas_client.models.bar_series_settings",
     "BaseReadTsKvQuery": "tb_paas_client.models.base_read_ts_kv_query",
@@ -2114,6 +2301,8 @@ _MODEL_CLASSES = {
     "BulkImportResultAsset": "tb_paas_client.models.bulk_import_result_asset",
     "BulkImportResultDevice": "tb_paas_client.models.bulk_import_result_device",
     "BulkImportResultEdge": "tb_paas_client.models.bulk_import_result_edge",
+    "BulkOperationPreview": "tb_paas_client.models.bulk_operation_preview",
+    "BulkOperationRequest": "tb_paas_client.models.bulk_operation_request",
     "Button": "tb_paas_client.models.button",
     "CMAssigneeType": "tb_paas_client.models.cm_assignee_type",
     "CMItemLinkType": "tb_paas_client.models.cm_item_link_type",
@@ -2143,12 +2332,13 @@ _MODEL_CLASSES = {
     "ChartLabelPosition": "tb_paas_client.models.chart_label_position",
     "ChartLineType": "tb_paas_client.models.chart_line_type",
     "ChartShape": "tb_paas_client.models.chart_shape",
-    "ChatType": "tb_paas_client.models.chat_type",
     "CheckPreProvisionedDevicesDeviceProfileProvisionConfiguration": "tb_paas_client.models.check_pre_provisioned_devices_device_profile_provision_configuration",
     "ChecksumAlgorithm": "tb_paas_client.models.checksum_algorithm",
     "ClaimRequest": "tb_paas_client.models.claim_request",
     "ClearRule": "tb_paas_client.models.clear_rule",
     "ClientAttributesQueryingSnmpCommunicationConfig": "tb_paas_client.models.client_attributes_querying_snmp_communication_config",
+    "CloudDomainId": "tb_paas_client.models.cloud_domain_id",
+    "CloudDomainInfo": "tb_paas_client.models.cloud_domain_info",
     "CoapDeviceProfileTransportConfiguration": "tb_paas_client.models.coap_device_profile_transport_configuration",
     "CoapDeviceTransportConfiguration": "tb_paas_client.models.coap_device_transport_configuration",
     "CoapDeviceTypeConfiguration": "tb_paas_client.models.coap_device_type_configuration",
@@ -2158,7 +2348,6 @@ _MODEL_CLASSES = {
     "ComparisonDuration": "tb_paas_client.models.comparison_duration",
     "ComparisonTsValue": "tb_paas_client.models.comparison_ts_value",
     "ComplexFilterPredicate": "tb_paas_client.models.complex_filter_predicate",
-    "ComplexOperation": "tb_paas_client.models.complex_operation",
     "ComplexVersionCreateRequest": "tb_paas_client.models.complex_version_create_request",
     "ComponentClusteringMode": "tb_paas_client.models.component_clustering_mode",
     "ComponentDescriptor": "tb_paas_client.models.component_descriptor",
@@ -2166,6 +2355,13 @@ _MODEL_CLASSES = {
     "ComponentLifecycleEvent": "tb_paas_client.models.component_lifecycle_event",
     "ComponentScope": "tb_paas_client.models.component_scope",
     "ComponentType": "tb_paas_client.models.component_type",
+    "ComposeDownStep": "tb_paas_client.models.compose_down_step",
+    "ComposeDownStepState": "tb_paas_client.models.compose_down_step_state",
+    "ComposeRestartStep": "tb_paas_client.models.compose_restart_step",
+    "ComposeStartStep": "tb_paas_client.models.compose_start_step",
+    "ComposeStep": "tb_paas_client.models.compose_step",
+    "ComposeStepState": "tb_paas_client.models.compose_step_state",
+    "ComposeTypeChoiceStep": "tb_paas_client.models.compose_type_choice_step",
     "ContactBasedObject": "tb_paas_client.models.contact_based_object",
     "Converter": "tb_paas_client.models.converter",
     "ConverterExportData": "tb_paas_client.models.converter_export_data",
@@ -2238,7 +2434,6 @@ _MODEL_CLASSES = {
     "DeviceId": "tb_paas_client.models.device_id",
     "DeviceInfo": "tb_paas_client.models.device_info",
     "DeviceProfile": "tb_paas_client.models.device_profile",
-    "DeviceProfileAlarm": "tb_paas_client.models.device_profile_alarm",
     "DeviceProfileConfiguration": "tb_paas_client.models.device_profile_configuration",
     "DeviceProfileData": "tb_paas_client.models.device_profile_data",
     "DeviceProfileExportData": "tb_paas_client.models.device_profile_export_data",
@@ -2257,6 +2452,7 @@ _MODEL_CLASSES = {
     "DisabledDeviceProfileProvisionConfiguration": "tb_paas_client.models.disabled_device_profile_provision_configuration",
     "Discount": "tb_paas_client.models.discount",
     "DividerComponent": "tb_paas_client.models.divider_component",
+    "DockerComposeConfig": "tb_paas_client.models.docker_compose_config",
     "Domain": "tb_paas_client.models.domain",
     "DomainId": "tb_paas_client.models.domain_id",
     "DomainInfo": "tb_paas_client.models.domain_info",
@@ -2265,11 +2461,9 @@ _MODEL_CLASSES = {
     "DummyJobResult": "tb_paas_client.models.dummy_job_result",
     "DummyTaskFailure": "tb_paas_client.models.dummy_task_failure",
     "DummyTaskResult": "tb_paas_client.models.dummy_task_result",
-    "DurationAlarmConditionSpec": "tb_paas_client.models.duration_alarm_condition_spec",
+    "DurationAlarmCondition": "tb_paas_client.models.duration_alarm_condition",
     "DynamicValueBoolean": "tb_paas_client.models.dynamic_value_boolean",
     "DynamicValueDouble": "tb_paas_client.models.dynamic_value_double",
-    "DynamicValueInteger": "tb_paas_client.models.dynamic_value_integer",
-    "DynamicValueLong": "tb_paas_client.models.dynamic_value_long",
     "DynamicValueSourceType": "tb_paas_client.models.dynamic_value_source_type",
     "DynamicValueString": "tb_paas_client.models.dynamic_value_string",
     "Edge": "tb_paas_client.models.edge",
@@ -2315,13 +2509,13 @@ _MODEL_CLASSES = {
     "EntityDataQuery": "tb_paas_client.models.entity_data_query",
     "EntityDataSortOrder": "tb_paas_client.models.entity_data_sort_order",
     "EntityExportData": "tb_paas_client.models.entity_export_data",
+    "EntityExportSettings": "tb_paas_client.models.entity_export_settings",
     "EntityFilter": "tb_paas_client.models.entity_filter",
     "EntityGroup": "tb_paas_client.models.entity_group",
     "EntityGroupExportData": "tb_paas_client.models.entity_group_export_data",
     "EntityGroupFilter": "tb_paas_client.models.entity_group_filter",
     "EntityGroupId": "tb_paas_client.models.entity_group_id",
     "EntityGroupInfo": "tb_paas_client.models.entity_group_info",
-    "EntityGroupInfoOwnerIdsInner": "tb_paas_client.models.entity_group_info_owner_ids_inner",
     "EntityGroupListFilter": "tb_paas_client.models.entity_group_list_filter",
     "EntityGroupNameFilter": "tb_paas_client.models.entity_group_name_filter",
     "EntityId": "tb_paas_client.models.entity_id",
@@ -2369,8 +2563,6 @@ _MODEL_CLASSES = {
     "Filter": "tb_paas_client.models.filter",
     "FilterPredicateValueBoolean": "tb_paas_client.models.filter_predicate_value_boolean",
     "FilterPredicateValueDouble": "tb_paas_client.models.filter_predicate_value_double",
-    "FilterPredicateValueInteger": "tb_paas_client.models.filter_predicate_value_integer",
-    "FilterPredicateValueLong": "tb_paas_client.models.filter_predicate_value_long",
     "FilterPredicateValueString": "tb_paas_client.models.filter_predicate_value_string",
     "FixedTimeWindow": "tb_paas_client.models.fixed_time_window",
     "Font": "tb_paas_client.models.font",
@@ -2378,6 +2570,7 @@ _MODEL_CLASSES = {
     "FontWeight": "tb_paas_client.models.font_weight",
     "GeofencingCalculatedFieldConfiguration": "tb_paas_client.models.geofencing_calculated_field_configuration",
     "GeofencingReportStrategy": "tb_paas_client.models.geofencing_report_strategy",
+    "GetManagedRelatedEntityIds200ResponseInner": "tb_paas_client.models.get_managed_related_entity_ids200_response_inner",
     "GitHubModelsChatModelConfig": "tb_paas_client.models.git_hub_models_chat_model_config",
     "GitHubModelsProviderConfig": "tb_paas_client.models.git_hub_models_provider_config",
     "GoogleAiGeminiChatModelConfig": "tb_paas_client.models.google_ai_gemini_chat_model_config",
@@ -2392,6 +2585,7 @@ _MODEL_CLASSES = {
     "Heading": "tb_paas_client.models.heading",
     "HeadingComponent": "tb_paas_client.models.heading_component",
     "History": "tb_paas_client.models.history",
+    "HomeDashboard": "tb_paas_client.models.home_dashboard",
     "HomeDashboardInfo": "tb_paas_client.models.home_dashboard_info",
     "HomeDashboardParams": "tb_paas_client.models.home_dashboard_params",
     "HomeMenuItem": "tb_paas_client.models.home_menu_item",
@@ -2481,6 +2675,7 @@ _MODEL_CLASSES = {
     "NameConflictPolicy": "tb_paas_client.models.name_conflict_policy",
     "NewPlatformVersionNotificationRuleTriggerConfig": "tb_paas_client.models.new_platform_version_notification_rule_trigger_config",
     "NewPlatformVersionRecipientsConfig": "tb_paas_client.models.new_platform_version_recipients_config",
+    "NoDataFilterPredicate": "tb_paas_client.models.no_data_filter_predicate",
     "NoSecLwM2MBootstrapServerCredential": "tb_paas_client.models.no_sec_lw_m2_m_bootstrap_server_credential",
     "NodeConnectionInfo": "tb_paas_client.models.node_connection_info",
     "Notification": "tb_paas_client.models.notification",
@@ -2544,10 +2739,22 @@ _MODEL_CLASSES = {
     "Output": "tb_paas_client.models.output",
     "PSKLwM2MBootstrapServerCredential": "tb_paas_client.models.psklw_m2_m_bootstrap_server_credential",
     "PageBreakComponent": "tb_paas_client.models.page_break_component",
+    "PageDataAgent": "tb_paas_client.models.page_data_agent",
+    "PageDataAgentAppEvent": "tb_paas_client.models.page_data_agent_app_event",
+    "PageDataAgentAppEventInfo": "tb_paas_client.models.page_data_agent_app_event_info",
+    "PageDataAgentAppProfile": "tb_paas_client.models.page_data_agent_app_profile",
+    "PageDataAgentAppUnit": "tb_paas_client.models.page_data_agent_app_unit",
+    "PageDataAgentApplicationInfo": "tb_paas_client.models.page_data_agent_application_info",
+    "PageDataAgentBulkAction": "tb_paas_client.models.page_data_agent_bulk_action",
+    "PageDataAgentInfo": "tb_paas_client.models.page_data_agent_info",
+    "PageDataAgentProfile": "tb_paas_client.models.page_data_agent_profile",
+    "PageDataAgentProfileInfo": "tb_paas_client.models.page_data_agent_profile_info",
     "PageDataAiModel": "tb_paas_client.models.page_data_ai_model",
     "PageDataAlarmCommentInfo": "tb_paas_client.models.page_data_alarm_comment_info",
     "PageDataAlarmData": "tb_paas_client.models.page_data_alarm_data",
     "PageDataAlarmInfo": "tb_paas_client.models.page_data_alarm_info",
+    "PageDataAlarmRuleDefinition": "tb_paas_client.models.page_data_alarm_rule_definition",
+    "PageDataAlarmRuleDefinitionInfo": "tb_paas_client.models.page_data_alarm_rule_definition_info",
     "PageDataApiKeyInfo": "tb_paas_client.models.page_data_api_key_info",
     "PageDataAsset": "tb_paas_client.models.page_data_asset",
     "PageDataAssetInfo": "tb_paas_client.models.page_data_asset_info",
@@ -2626,6 +2833,7 @@ _MODEL_CLASSES = {
     "PowerMode": "tb_paas_client.models.power_mode",
     "PowerSavingConfiguration": "tb_paas_client.models.power_saving_configuration",
     "PrivacyProtocol": "tb_paas_client.models.privacy_protocol",
+    "ProcessingStartStatus": "tb_paas_client.models.processing_start_status",
     "ProcessingStrategy": "tb_paas_client.models.processing_strategy",
     "ProcessingStrategyType": "tb_paas_client.models.processing_strategy_type",
     "ProductId": "tb_paas_client.models.product_id",
@@ -2654,7 +2862,7 @@ _MODEL_CLASSES = {
     "RelationTypeGroup": "tb_paas_client.models.relation_type_group",
     "RelationsQueryFilter": "tb_paas_client.models.relations_query_filter",
     "RelationsSearchParameters": "tb_paas_client.models.relations_search_parameters",
-    "RepeatingAlarmConditionSpec": "tb_paas_client.models.repeating_alarm_condition_spec",
+    "RepeatingAlarmCondition": "tb_paas_client.models.repeating_alarm_condition",
     "Report": "tb_paas_client.models.report",
     "ReportBarChartSettings": "tb_paas_client.models.report_bar_chart_settings",
     "ReportBarChartWithLabelsSettings": "tb_paas_client.models.report_bar_chart_with_labels_settings",
@@ -2694,6 +2902,8 @@ _MODEL_CLASSES = {
     "RoleExportData": "tb_paas_client.models.role_export_data",
     "RoleId": "tb_paas_client.models.role_id",
     "RoleType": "tb_paas_client.models.role_type",
+    "RollBackStep": "tb_paas_client.models.roll_back_step",
+    "RollBackStepState": "tb_paas_client.models.roll_back_step_state",
     "Rpc": "tb_paas_client.models.rpc",
     "RpcId": "tb_paas_client.models.rpc_id",
     "RpcStatus": "tb_paas_client.models.rpc_status",
@@ -2713,6 +2923,8 @@ _MODEL_CLASSES = {
     "RuleNode": "tb_paas_client.models.rule_node",
     "RuleNodeDebugEventFilter": "tb_paas_client.models.rule_node_debug_event_filter",
     "RuleNodeId": "tb_paas_client.models.rule_node_id",
+    "RunJobStep": "tb_paas_client.models.run_job_step",
+    "RunJobStepState": "tb_paas_client.models.run_job_step_state",
     "SaveDeviceWithCredentialsRequest": "tb_paas_client.models.save_device_with_credentials_request",
     "SaveOtaPackageInfoRequest": "tb_paas_client.models.save_ota_package_info_request",
     "ScheduledReportInfo": "tb_paas_client.models.scheduled_report_info",
@@ -2740,13 +2952,16 @@ _MODEL_CLASSES = {
     "SignUpRequest": "tb_paas_client.models.sign_up_request",
     "SignUpResult": "tb_paas_client.models.sign_up_result",
     "SignUpSelfRegistrationParams": "tb_paas_client.models.sign_up_self_registration_params",
+    "SimpleAlarmCondition": "tb_paas_client.models.simple_alarm_condition",
     "SimpleAlarmConditionExpression": "tb_paas_client.models.simple_alarm_condition_expression",
-    "SimpleAlarmConditionSpec": "tb_paas_client.models.simple_alarm_condition_spec",
     "SimpleCalculatedFieldConfiguration": "tb_paas_client.models.simple_calculated_field_configuration",
     "SimpleEntity": "tb_paas_client.models.simple_entity",
+    "SimpleValueSourceConfig": "tb_paas_client.models.simple_value_source_config",
     "SingleEntityFilter": "tb_paas_client.models.single_entity_filter",
     "SingleEntityVersionCreateRequest": "tb_paas_client.models.single_entity_version_create_request",
     "SingleEntityVersionLoadRequest": "tb_paas_client.models.single_entity_version_load_request",
+    "SkipReason": "tb_paas_client.models.skip_reason",
+    "SkippedApp": "tb_paas_client.models.skipped_app",
     "SlackConversation": "tb_paas_client.models.slack_conversation",
     "SlackConversationType": "tb_paas_client.models.slack_conversation_type",
     "SlackDeliveryMethodNotificationTemplate": "tb_paas_client.models.slack_delivery_method_notification_template",
@@ -2764,15 +2979,23 @@ _MODEL_CLASSES = {
     "SnmpDeviceTransportConfiguration": "tb_paas_client.models.snmp_device_transport_configuration",
     "SnmpMapping": "tb_paas_client.models.snmp_mapping",
     "SnmpProtocolVersion": "tb_paas_client.models.snmp_protocol_version",
-    "SolutionInstallResponse": "tb_paas_client.models.solution_install_response",
+    "SolutionData": "tb_paas_client.models.solution_data",
+    "SolutionExportRequest": "tb_paas_client.models.solution_export_request",
+    "SolutionExportResponse": "tb_paas_client.models.solution_export_response",
+    "SolutionImportResult": "tb_paas_client.models.solution_import_result",
     "SolutionStep": "tb_paas_client.models.solution_step",
-    "SolutionTemplateLevel": "tb_paas_client.models.solution_template_level",
+    "SolutionValidationResult": "tb_paas_client.models.solution_validation_result",
     "SpecificTimeSchedule": "tb_paas_client.models.specific_time_schedule",
     "SplitViewComponent": "tb_paas_client.models.split_view_component",
     "StarredDashboardInfo": "tb_paas_client.models.starred_dashboard_info",
     "StateEntityFilter": "tb_paas_client.models.state_entity_filter",
     "StateEntityOwnerFilter": "tb_paas_client.models.state_entity_owner_filter",
     "StatisticsEventFilter": "tb_paas_client.models.statistics_event_filter",
+    "StepFieldAgentAppEventId": "tb_paas_client.models.step_field_agent_app_event_id",
+    "StepFieldBoolean": "tb_paas_client.models.step_field_boolean",
+    "StepFieldInteger": "tb_paas_client.models.step_field_integer",
+    "StepFieldListString": "tb_paas_client.models.step_field_list_string",
+    "StepFieldString": "tb_paas_client.models.step_field_string",
     "StoreInfo": "tb_paas_client.models.store_info",
     "StringFilterPredicate": "tb_paas_client.models.string_filter_predicate",
     "StringOperation": "tb_paas_client.models.string_operation",
@@ -2792,6 +3015,7 @@ _MODEL_CLASSES = {
     "SystemAdministratorsFilter": "tb_paas_client.models.system_administrators_filter",
     "SystemInfo": "tb_paas_client.models.system_info",
     "SystemInfoData": "tb_paas_client.models.system_info_data",
+    "TableSortDirection": "tb_paas_client.models.table_sort_direction",
     "TableSortOrder": "tb_paas_client.models.table_sort_order",
     "TaskProcessingFailureNotificationRuleTriggerConfig": "tb_paas_client.models.task_processing_failure_notification_rule_trigger_config",
     "TaskProcessingFailureRecipientsConfig": "tb_paas_client.models.task_processing_failure_recipients_config",
@@ -2825,9 +3049,6 @@ _MODEL_CLASSES = {
     "TenantProfileData": "tb_paas_client.models.tenant_profile_data",
     "TenantProfileId": "tb_paas_client.models.tenant_profile_id",
     "TenantProfileQueueConfiguration": "tb_paas_client.models.tenant_profile_queue_configuration",
-    "TenantSolutionTemplateDetails": "tb_paas_client.models.tenant_solution_template_details",
-    "TenantSolutionTemplateInfo": "tb_paas_client.models.tenant_solution_template_info",
-    "TenantSolutionTemplateInstructions": "tb_paas_client.models.tenant_solution_template_instructions",
     "TestSmsRequest": "tb_paas_client.models.test_sms_request",
     "TextAlignment": "tb_paas_client.models.text_alignment",
     "ThingsboardCredentialsExpiredResponse": "tb_paas_client.models.thingsboard_credentials_expired_response",
@@ -2887,6 +3108,7 @@ _MODEL_CLASSES = {
     "UserActivationLink": "tb_paas_client.models.user_activation_link",
     "UserDashboardsInfo": "tb_paas_client.models.user_dashboards_info",
     "UserEmailInfo": "tb_paas_client.models.user_email_info",
+    "UserExportData": "tb_paas_client.models.user_export_data",
     "UserGroupListFilter": "tb_paas_client.models.user_group_list_filter",
     "UserId": "tb_paas_client.models.user_id",
     "UserInfo": "tb_paas_client.models.user_info",

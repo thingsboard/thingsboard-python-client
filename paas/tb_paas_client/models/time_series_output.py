@@ -34,7 +34,7 @@ class TimeSeriesOutput(Output):
     TimeSeriesOutput
     """ # noqa: E501
     strategy: Optional[TimeSeriesOutputStrategy] = None
-    __properties: ClassVar[List[str]] = ["name", "scope", "decimalsByDefault", "strategy", "type"]
+    __properties: ClassVar[List[str]] = ["decimalsByDefault", "name", "scope", "strategy", "type"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -95,9 +95,9 @@ class TimeSeriesOutput(Output):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "decimals_by_default": obj.get("decimalsByDefault"),
             "name": obj.get("name"),
             "scope": obj.get("scope"),
-            "decimals_by_default": obj.get("decimalsByDefault"),
             "strategy": TimeSeriesOutputStrategy.from_dict(obj["strategy"]) if obj.get("strategy") is not None else None,
             "type": obj.get("type")
         })

@@ -16,7 +16,7 @@
 
 ## Referenced Types
 
-> **EntityId types** (`AdminSettingsId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+> **EntityId types** (`AdminSettingsId`, `AgentAppEventId`, `AgentAppProfileId`, `AgentAppUnitId`, `AgentApplicationId`, `AgentBulkActionId`, `AgentId`, `AgentProfileId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
 
 #### TenantProfile
 | Name | Type | Description | Notes |
@@ -57,6 +57,8 @@
 | max_integrations | int |  | [optional] |
 | max_converters | int |  | [optional] |
 | max_scheduler_events | int |  | [optional] |
+| max_agents | int |  | [optional] |
+| max_agent_applications | int |  | [optional] |
 | transport_tenant_msg_rate_limit | str |  | [optional] |
 | transport_tenant_telemetry_msg_rate_limit | str |  | [optional] |
 | transport_tenant_telemetry_data_points_rate_limit | str |  | [optional] |
@@ -89,6 +91,7 @@
 | max_sms | int |  | [optional] |
 | max_created_alarms | int |  | [optional] |
 | max_generated_reports | int |  | [optional] |
+| max_ai_credits | int |  | [optional] |
 | tenant_server_rest_limits_configuration | str |  | [optional] |
 | customer_server_rest_limits_configuration | str |  | [optional] |
 | max_ws_sessions_per_tenant | int |  | [optional] |
@@ -109,6 +112,10 @@
 | edge_event_rate_limits_per_edge | str |  | [optional] |
 | edge_uplink_messages_rate_limits | str |  | [optional] |
 | edge_uplink_messages_rate_limits_per_edge | str |  | [optional] |
+| agent_event_rate_limits | str |  | [optional] |
+| agent_event_rate_limits_per_agent | str |  | [optional] |
+| agent_log_chunk_rate_limits | str |  | [optional] |
+| agent_log_chunk_rate_limits_per_agent | str |  | [optional] |
 | default_storage_ttl_days | int |  | [optional] |
 | alarms_ttl_days | int |  | [optional] |
 | rpc_ttl_days | int |  | [optional] |
@@ -130,6 +137,7 @@
 | intermediate_aggregation_interval_in_sec_for_cf | int |  | [optional] |
 | cf_reevaluation_check_interval | int |  | [optional] |
 | alarms_reevaluation_interval | int |  | [optional] |
+| ai_chat_requests_per_tenant_rate_limit | str |  | [optional] |
 
 #### TenantProfileQueueConfiguration
 | Name | Type | Description | Notes |
@@ -145,7 +153,7 @@
 | additional_info | object |  | [optional] |
 
 #### EntityType (enum)
-`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (46 values total)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (53 values total)
 
 #### SubmitStrategy
 | Name | Type | Description | Notes |

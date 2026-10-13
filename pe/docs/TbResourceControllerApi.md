@@ -15,7 +15,7 @@ List[LwM2mObject] client.get_lwm2m_list_objects_page(page_size: int, page: int, 
 TbResource client.get_resource_by_id(resource_id: str)  # Get Resource (getResourceById)
 TbResourceInfo client.get_resource_info(resource_type: str, scope: str, key: str)  # Get resource info (getResourceInfo)
 TbResourceInfo client.get_resource_info_by_id(resource_id: str)  # Get Resource Info (getResourceInfoById)
-PageDataTbResourceInfo client.get_resources(page_size: int, page: int, resource_type: Optional[str] = None, resource_sub_type: Optional[str] = None, text_search: Optional[str] = None, sort_property: Optional[str] = None, sort_order: Optional[str] = None)  # Get Resource Infos (getResources)
+PageDataTbResourceInfo client.get_resources(page_size: int, page: int, resource_type: Optional[List[ResourceType]] = None, resource_sub_type: Optional[str] = None, text_search: Optional[str] = None, sort_property: Optional[str] = None, sort_order: Optional[str] = None)  # Get Resource Infos (getResources)
 List[TbResourceInfo] client.get_system_or_tenant_resources_by_ids(resource_ids: List[str])  # Get Resource Infos by ids (getSystemOrTenantResourcesByIds)
 PageDataTbResourceInfo client.get_tenant_resources(page_size: int, page: int, text_search: Optional[str] = None, sort_property: Optional[str] = None, sort_order: Optional[str] = None)  # Get All Resource Infos (getTenantResources)
 TbResourceInfo client.save_resource(tb_resource: TbResource)  # Create Or Update Resource (saveResource)
@@ -332,7 +332,7 @@ Fetch the Resource Info object based on the provided Resource Id. Resource Info 
 ## get_resources
 
 ```python
-PageDataTbResourceInfo client.get_resources(page_size: int, page: int, resource_type: Optional[str] = None, resource_sub_type: Optional[str] = None, text_search: Optional[str] = None, sort_property: Optional[str] = None, sort_order: Optional[str] = None)
+PageDataTbResourceInfo client.get_resources(page_size: int, page: int, resource_type: Optional[List[ResourceType]] = None, resource_sub_type: Optional[str] = None, text_search: Optional[str] = None, sort_property: Optional[str] = None, sort_order: Optional[str] = None)
 ```
 
 **GET** `/api/resource`
@@ -348,7 +348,7 @@ Returns a page of Resource Info objects owned by tenant or sysadmin. You can spe
 |------------- | ------------- | ------------- | -------------|
 | **page_size** | **int** | Maximum amount of entities in a one page | |
 | **page** | **int** | Sequence number of page starting from 0 | |
-| **resource_type** | **str** | A string value representing the resource type. | [optional] [enum: LWM2M_MODEL, JKS, PKCS_12, JS_MODULE] |
+| **resource_type** | **List[ResourceType]** | A list of resource types, separated by comma ','. | [optional] |
 | **resource_sub_type** | **str** | A string value representing the resource sub-type. | [optional] [enum: EXTENSION, MODULE] |
 | **text_search** | **str** | The case insensitive 'substring' filter based on the resource title. | [optional] |
 | **sort_property** | **str** | Property of entity to sort by | [optional] [enum: createdTime, title, resourceType, tenantId] |

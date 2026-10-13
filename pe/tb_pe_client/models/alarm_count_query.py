@@ -23,6 +23,7 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from tb_pe_client.models.alarm_rule_complex_operation import AlarmRuleComplexOperation
 from tb_pe_client.models.alarm_search_status import AlarmSearchStatus
 from tb_pe_client.models.alarm_severity import AlarmSeverity
 from tb_pe_client.models.entity_filter import EntityFilter
@@ -37,6 +38,7 @@ class AlarmCountQuery(BaseModel):
     """ # noqa: E501
     entity_filter: Optional[EntityFilter] = Field(default=None, serialization_alias="entityFilter")
     key_filters: Optional[List[KeyFilter]] = Field(default=None, serialization_alias="keyFilters")
+    key_filters_operation: Optional[AlarmRuleComplexOperation] = Field(default=None, serialization_alias="keyFiltersOperation")
     start_ts: Optional[StrictInt] = Field(default=None, serialization_alias="startTs")
     end_ts: Optional[StrictInt] = Field(default=None, serialization_alias="endTs")
     time_window: Optional[StrictInt] = Field(default=None, serialization_alias="timeWindow")
@@ -45,7 +47,8 @@ class AlarmCountQuery(BaseModel):
     severity_list: Optional[List[AlarmSeverity]] = Field(default=None, serialization_alias="severityList")
     search_propagated_alarms: Optional[StrictBool] = Field(default=None, serialization_alias="searchPropagatedAlarms")
     assignee_id: Optional[UserId] = Field(default=None, serialization_alias="assigneeId")
-    __properties: ClassVar[List[str]] = ["entityFilter", "keyFilters", "startTs", "endTs", "timeWindow", "typeList", "statusList", "severityList", "searchPropagatedAlarms", "assigneeId"]
+    key_filters_operation_or_default: Optional[AlarmRuleComplexOperation] = Field(default=None, serialization_alias="keyFiltersOperationOrDefault")
+    __properties: ClassVar[List[str]] = ["entityFilter", "keyFilters", "keyFiltersOperation", "startTs", "endTs", "timeWindow", "typeList", "statusList", "severityList", "searchPropagatedAlarms", "assigneeId", "keyFiltersOperationOrDefault"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -118,6 +121,7 @@ class AlarmCountQuery(BaseModel):
         _obj = cls.model_validate({
             "entity_filter": EntityFilter.from_dict(obj["entityFilter"]) if obj.get("entityFilter") is not None else None,
             "key_filters": [KeyFilter.from_dict(_item) for _item in obj["keyFilters"]] if obj.get("keyFilters") is not None else None,
+            "key_filters_operation": obj.get("keyFiltersOperation"),
             "start_ts": obj.get("startTs"),
             "end_ts": obj.get("endTs"),
             "time_window": obj.get("timeWindow"),
@@ -125,7 +129,8 @@ class AlarmCountQuery(BaseModel):
             "status_list": obj.get("statusList"),
             "severity_list": obj.get("severityList"),
             "search_propagated_alarms": obj.get("searchPropagatedAlarms"),
-            "assignee_id": UserId.from_dict(obj["assigneeId"]) if obj.get("assigneeId") is not None else None
+            "assignee_id": UserId.from_dict(obj["assigneeId"]) if obj.get("assigneeId") is not None else None,
+            "key_filters_operation_or_default": obj.get("keyFiltersOperationOrDefault")
         })
         return _obj
 

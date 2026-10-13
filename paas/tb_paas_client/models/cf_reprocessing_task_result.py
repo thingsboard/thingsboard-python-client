@@ -33,7 +33,7 @@ class CfReprocessingTaskResult(TaskResult):
     CfReprocessingTaskResult
     """ # noqa: E501
     failure: Optional[CfReprocessingTaskFailure] = None
-    __properties: ClassVar[List[str]] = ["key", "success", "discarded", "finishTs", "jobType", "failure"]
+    __properties: ClassVar[List[str]] = ["key", "success", "discarded", "finishTs", "error", "jobType", "failure"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -98,6 +98,7 @@ class CfReprocessingTaskResult(TaskResult):
             "success": obj.get("success"),
             "discarded": obj.get("discarded"),
             "finish_ts": obj.get("finishTs"),
+            "error": obj.get("error"),
             "job_type": obj.get("jobType"),
             "failure": CfReprocessingTaskFailure.from_dict(obj["failure"]) if obj.get("failure") is not None else None
         })

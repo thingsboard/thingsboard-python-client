@@ -21,9 +21,10 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_paas_client.models.entity_id import EntityId
+from tb_paas_client.models.tenant_id import TenantId
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -31,9 +32,11 @@ class ExportableEntity(BaseModel):
     """
     ExportableEntity
     """ # noqa: E501
+    created_time: Optional[StrictInt] = Field(default=None, serialization_alias="createdTime")
     id: Optional[EntityId] = None
     name: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["id", "name"]
+    tenant_id: Optional[TenantId] = Field(default=None, serialization_alias="tenantId")
+    __properties: ClassVar[List[str]] = ["createdTime", "id", "name", "tenantId"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -82,6 +85,9 @@ class ExportableEntity(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of id
         if self.id:
             _dict['id'] = self.id.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of tenant_id
+        if self.tenant_id:
+            _dict['tenantId'] = self.tenant_id.to_dict()
         return _dict
 
     @classmethod
@@ -94,8 +100,10 @@ class ExportableEntity(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "created_time": obj.get("createdTime"),
             "id": EntityId.from_dict(obj["id"]) if obj.get("id") is not None else None,
-            "name": obj.get("name")
+            "name": obj.get("name"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None
         })
         return _obj
 

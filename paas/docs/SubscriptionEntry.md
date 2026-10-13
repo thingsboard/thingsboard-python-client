@@ -30,6 +30,10 @@ Subscription entry
 
 * `NUMBER_11` (value: `11`)
 
+* `NUMBER_12` (value: `12`)
+
+* `NUMBER_13` (value: `13`)
+
 * `NUMBER_30` (value: `30`)
 
 * `NUMBER_31` (value: `31`)

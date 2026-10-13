@@ -24,7 +24,6 @@ import json
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_paas_client.models.entity_group_id import EntityGroupId
-from tb_paas_client.models.entity_group_info_owner_ids_inner import EntityGroupInfoOwnerIdsInner
 from tb_paas_client.models.entity_id import EntityId
 from tb_paas_client.models.entity_type import EntityType
 from tb_paas_client.models.tenant_id import TenantId
@@ -39,11 +38,11 @@ class EntityGroupInfo(BaseModel):
     created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the entity group creation, in milliseconds", serialization_alias="createdTime")
     type: EntityType
     name: StrictStr = Field(description="Name of the entity group")
-    owner_id: Optional[EntityId] = Field(default=None, description="JSON object with the owner of the group - Tenant or Customer Id.", serialization_alias="ownerId")
+    owner_id: Optional[EntityId] = Field(default=None, description="JSON object with the owner of the group - Tenant or Customer Id. When omitted or null on creation, defaults to the current user's owner (Tenant for tenant admins, Customer for customer users).", serialization_alias="ownerId")
     additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the entity group. May include: 'description' (string), 'isPublic' (boolean, whether this group is shared publicly), 'publicCustomerId' (string, UUID of the public customer associated with this group).", serialization_alias="additionalInfo")
     configuration: Optional[Any] = Field(default=None, description="JSON with the configuration for UI components: list of columns, settings, actions, etc ")
     version: Optional[StrictInt] = None
-    owner_ids: List[EntityGroupInfoOwnerIdsInner] = Field(description="List of the entity group owners.", serialization_alias="ownerIds")
+    owner_ids: List[EntityId] = Field(description="List of the entity group owners.", serialization_alias="ownerIds")
     edge_group_all: Optional[StrictBool] = Field(default=None, description="Indicates special edge group 'All' that contains all entities and can't be deleted.", serialization_alias="edgeGroupAll")
     group_all: Optional[StrictBool] = Field(default=None, description="Indicates special group 'All' that contains all entities and can't be deleted.", serialization_alias="groupAll")
     tenant_id: Optional[TenantId] = Field(default=None, serialization_alias="tenantId")
@@ -52,8 +51,8 @@ class EntityGroupInfo(BaseModel):
     @field_validator('type')
     def type_validate_enum(cls, value):
         """Validates the enum"""
-        if value not in set(['TENANT', 'CUSTOMER', 'USER', 'DASHBOARD', 'ASSET', 'DEVICE', 'ALARM', 'ENTITY_GROUP', 'CONVERTER', 'INTEGRATION', 'RULE_CHAIN', 'RULE_NODE', 'SCHEDULER_EVENT', 'BLOB_ENTITY', 'REPORT_TEMPLATE', 'REPORT', 'ENTITY_VIEW', 'WIDGETS_BUNDLE', 'WIDGET_TYPE', 'ROLE', 'GROUP_PERMISSION', 'TENANT_PROFILE', 'DEVICE_PROFILE', 'ASSET_PROFILE', 'API_USAGE_STATE', 'TB_RESOURCE', 'OTA_PACKAGE', 'EDGE', 'RPC', 'QUEUE', 'NOTIFICATION_TARGET', 'NOTIFICATION_TEMPLATE', 'NOTIFICATION_REQUEST', 'NOTIFICATION', 'NOTIFICATION_RULE', 'QUEUE_STATS', 'OAUTH2_CLIENT', 'DOMAIN', 'MOBILE_APP', 'MOBILE_APP_BUNDLE', 'CALCULATED_FIELD', 'JOB', 'SECRET', 'ADMIN_SETTINGS', 'AI_MODEL', 'API_KEY', 'BILLING_CUSTOMER', 'SUBSCRIPTION_PLAN', 'SUBSCRIPTION', 'COUPON', 'PRODUCT', 'SUBSCRIPTION_ADDON']):
-            raise ValueError("must be one of enum values ('TENANT', 'CUSTOMER', 'USER', 'DASHBOARD', 'ASSET', 'DEVICE', 'ALARM', 'ENTITY_GROUP', 'CONVERTER', 'INTEGRATION', 'RULE_CHAIN', 'RULE_NODE', 'SCHEDULER_EVENT', 'BLOB_ENTITY', 'REPORT_TEMPLATE', 'REPORT', 'ENTITY_VIEW', 'WIDGETS_BUNDLE', 'WIDGET_TYPE', 'ROLE', 'GROUP_PERMISSION', 'TENANT_PROFILE', 'DEVICE_PROFILE', 'ASSET_PROFILE', 'API_USAGE_STATE', 'TB_RESOURCE', 'OTA_PACKAGE', 'EDGE', 'RPC', 'QUEUE', 'NOTIFICATION_TARGET', 'NOTIFICATION_TEMPLATE', 'NOTIFICATION_REQUEST', 'NOTIFICATION', 'NOTIFICATION_RULE', 'QUEUE_STATS', 'OAUTH2_CLIENT', 'DOMAIN', 'MOBILE_APP', 'MOBILE_APP_BUNDLE', 'CALCULATED_FIELD', 'JOB', 'SECRET', 'ADMIN_SETTINGS', 'AI_MODEL', 'API_KEY', 'BILLING_CUSTOMER', 'SUBSCRIPTION_PLAN', 'SUBSCRIPTION', 'COUPON', 'PRODUCT', 'SUBSCRIPTION_ADDON')")
+        if value not in set(['TENANT', 'CUSTOMER', 'USER', 'DASHBOARD', 'ASSET', 'DEVICE', 'ALARM', 'ENTITY_GROUP', 'CONVERTER', 'INTEGRATION', 'RULE_CHAIN', 'RULE_NODE', 'SCHEDULER_EVENT', 'BLOB_ENTITY', 'REPORT_TEMPLATE', 'REPORT', 'ENTITY_VIEW', 'WIDGETS_BUNDLE', 'WIDGET_TYPE', 'ROLE', 'GROUP_PERMISSION', 'TENANT_PROFILE', 'DEVICE_PROFILE', 'ASSET_PROFILE', 'API_USAGE_STATE', 'TB_RESOURCE', 'OTA_PACKAGE', 'EDGE', 'RPC', 'QUEUE', 'NOTIFICATION_TARGET', 'NOTIFICATION_TEMPLATE', 'NOTIFICATION_REQUEST', 'NOTIFICATION', 'NOTIFICATION_RULE', 'QUEUE_STATS', 'OAUTH2_CLIENT', 'DOMAIN', 'MOBILE_APP', 'MOBILE_APP_BUNDLE', 'CALCULATED_FIELD', 'JOB', 'SECRET', 'ADMIN_SETTINGS', 'AI_MODEL', 'API_KEY', 'AGENT', 'AGENT_APPLICATION', 'AGENT_APP_EVENT', 'AGENT_APP_UNIT', 'AGENT_APP_PROFILE', 'AGENT_PROFILE', 'AGENT_BULK_ACTION', 'BILLING_CUSTOMER', 'SUBSCRIPTION_PLAN', 'SUBSCRIPTION', 'COUPON', 'PRODUCT', 'SUBSCRIPTION_ADDON']):
+            raise ValueError("must be one of enum values ('TENANT', 'CUSTOMER', 'USER', 'DASHBOARD', 'ASSET', 'DEVICE', 'ALARM', 'ENTITY_GROUP', 'CONVERTER', 'INTEGRATION', 'RULE_CHAIN', 'RULE_NODE', 'SCHEDULER_EVENT', 'BLOB_ENTITY', 'REPORT_TEMPLATE', 'REPORT', 'ENTITY_VIEW', 'WIDGETS_BUNDLE', 'WIDGET_TYPE', 'ROLE', 'GROUP_PERMISSION', 'TENANT_PROFILE', 'DEVICE_PROFILE', 'ASSET_PROFILE', 'API_USAGE_STATE', 'TB_RESOURCE', 'OTA_PACKAGE', 'EDGE', 'RPC', 'QUEUE', 'NOTIFICATION_TARGET', 'NOTIFICATION_TEMPLATE', 'NOTIFICATION_REQUEST', 'NOTIFICATION', 'NOTIFICATION_RULE', 'QUEUE_STATS', 'OAUTH2_CLIENT', 'DOMAIN', 'MOBILE_APP', 'MOBILE_APP_BUNDLE', 'CALCULATED_FIELD', 'JOB', 'SECRET', 'ADMIN_SETTINGS', 'AI_MODEL', 'API_KEY', 'AGENT', 'AGENT_APPLICATION', 'AGENT_APP_EVENT', 'AGENT_APP_UNIT', 'AGENT_APP_PROFILE', 'AGENT_PROFILE', 'AGENT_BULK_ACTION', 'BILLING_CUSTOMER', 'SUBSCRIPTION_PLAN', 'SUBSCRIPTION', 'COUPON', 'PRODUCT', 'SUBSCRIPTION_ADDON')")
         return value
 
     model_config = ConfigDict(
@@ -150,7 +149,7 @@ class EntityGroupInfo(BaseModel):
             "additional_info": obj.get("additionalInfo"),
             "configuration": obj.get("configuration"),
             "version": obj.get("version"),
-            "owner_ids": [EntityGroupInfoOwnerIdsInner.from_dict(_item) for _item in obj["ownerIds"]] if obj.get("ownerIds") is not None else None,
+            "owner_ids": [EntityId.from_dict(_item) for _item in obj["ownerIds"]] if obj.get("ownerIds") is not None else None,
             "edge_group_all": obj.get("edgeGroupAll"),
             "group_all": obj.get("groupAll"),
             "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None

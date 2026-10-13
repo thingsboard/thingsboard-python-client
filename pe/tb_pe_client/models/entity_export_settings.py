@@ -36,7 +36,8 @@ class EntityExportSettings(BaseModel):
     export_calculated_fields: Optional[StrictBool] = Field(default=None, serialization_alias="exportCalculatedFields")
     export_permissions: Optional[StrictBool] = Field(default=None, serialization_alias="exportPermissions")
     export_group_entities: Optional[StrictBool] = Field(default=None, serialization_alias="exportGroupEntities")
-    __properties: ClassVar[List[str]] = ["exportRelations", "exportAttributes", "exportCredentials", "exportCalculatedFields", "exportPermissions", "exportGroupEntities"]
+    embed_group_members: Optional[StrictBool] = Field(default=None, serialization_alias="embedGroupMembers")
+    __properties: ClassVar[List[str]] = ["exportRelations", "exportAttributes", "exportCredentials", "exportCalculatedFields", "exportPermissions", "exportGroupEntities", "embedGroupMembers"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -99,7 +100,8 @@ class EntityExportSettings(BaseModel):
             "export_credentials": obj.get("exportCredentials"),
             "export_calculated_fields": obj.get("exportCalculatedFields"),
             "export_permissions": obj.get("exportPermissions"),
-            "export_group_entities": obj.get("exportGroupEntities")
+            "export_group_entities": obj.get("exportGroupEntities"),
+            "embed_group_members": obj.get("embedGroupMembers")
         })
         return _obj
 

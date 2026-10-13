@@ -52,7 +52,7 @@ class MailConfigTemplateControllerApi:
 
 
     @validate_call
-    def get_client_registration_templates(
+    def get_mail_config_templates(
         self,
         _request_timeout: Union[
             None,
@@ -67,7 +67,7 @@ class MailConfigTemplateControllerApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> object:
-        """Get the list of all OAuth2 client registration templates (getClientRegistrationTemplates)  Available for users with 'SYS_ADMIN' or 'TENANT_ADMIN' authority.
+        """Get the list of all OAuth2 client registration templates (getMailConfigTemplates)  Available for users with 'SYS_ADMIN' or 'TENANT_ADMIN' authority.
 
         Mail configuration template is set of default smtp settings for mail server that specific provider supports
 
@@ -93,7 +93,7 @@ class MailConfigTemplateControllerApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_client_registration_templates_serialize(
+        _param = self._get_mail_config_templates_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -120,7 +120,7 @@ class MailConfigTemplateControllerApi:
 
 
     @validate_call
-    def get_client_registration_templates_with_http_info(
+    def get_mail_config_templates_with_http_info(
         self,
         _request_timeout: Union[
             None,
@@ -135,7 +135,7 @@ class MailConfigTemplateControllerApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[object]:
-        """Get the list of all OAuth2 client registration templates (getClientRegistrationTemplates)  Available for users with 'SYS_ADMIN' or 'TENANT_ADMIN' authority.
+        """Get the list of all OAuth2 client registration templates (getMailConfigTemplates)  Available for users with 'SYS_ADMIN' or 'TENANT_ADMIN' authority.
 
         Mail configuration template is set of default smtp settings for mail server that specific provider supports
 
@@ -161,7 +161,7 @@ class MailConfigTemplateControllerApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_client_registration_templates_serialize(
+        _param = self._get_mail_config_templates_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -188,7 +188,7 @@ class MailConfigTemplateControllerApi:
 
 
     @validate_call
-    def get_client_registration_templates_without_preload_content(
+    def get_mail_config_templates_without_preload_content(
         self,
         _request_timeout: Union[
             None,
@@ -203,7 +203,7 @@ class MailConfigTemplateControllerApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get the list of all OAuth2 client registration templates (getClientRegistrationTemplates)  Available for users with 'SYS_ADMIN' or 'TENANT_ADMIN' authority.
+        """Get the list of all OAuth2 client registration templates (getMailConfigTemplates)  Available for users with 'SYS_ADMIN' or 'TENANT_ADMIN' authority.
 
         Mail configuration template is set of default smtp settings for mail server that specific provider supports
 
@@ -229,7 +229,7 @@ class MailConfigTemplateControllerApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_client_registration_templates_serialize(
+        _param = self._get_mail_config_templates_serialize(
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -251,7 +251,7 @@ class MailConfigTemplateControllerApi:
         return response_data.response
 
 
-    def _get_client_registration_templates_serialize(
+    def _get_mail_config_templates_serialize(
         self,
         _request_auth,
         _content_type,

@@ -163,7 +163,6 @@ __all__ = [
     "ColumnMapping",
     "ComparisonTsValue",
     "ComplexFilterPredicate",
-    "ComplexOperation",
     "ComplexVersionCreateRequest",
     "ComponentClusteringMode",
     "ComponentDescriptor",
@@ -551,6 +550,7 @@ __all__ = [
     "RuleChainId",
     "RuleChainImportResult",
     "RuleChainMetaData",
+    "RuleChainNote",
     "RuleChainOutputLabelsUsage",
     "RuleChainType",
     "RuleEngineComponentLifecycleEventNotificationRuleTriggerConfig",
@@ -844,7 +844,6 @@ if TYPE_CHECKING:
     from tb_ce_client.models.column_mapping import ColumnMapping
     from tb_ce_client.models.comparison_ts_value import ComparisonTsValue
     from tb_ce_client.models.complex_filter_predicate import ComplexFilterPredicate
-    from tb_ce_client.models.complex_operation import ComplexOperation
     from tb_ce_client.models.complex_version_create_request import ComplexVersionCreateRequest
     from tb_ce_client.models.component_clustering_mode import ComponentClusteringMode
     from tb_ce_client.models.component_descriptor import ComponentDescriptor
@@ -1232,6 +1231,7 @@ if TYPE_CHECKING:
     from tb_ce_client.models.rule_chain_id import RuleChainId
     from tb_ce_client.models.rule_chain_import_result import RuleChainImportResult
     from tb_ce_client.models.rule_chain_meta_data import RuleChainMetaData
+    from tb_ce_client.models.rule_chain_note import RuleChainNote
     from tb_ce_client.models.rule_chain_output_labels_usage import RuleChainOutputLabelsUsage
     from tb_ce_client.models.rule_chain_type import RuleChainType
     from tb_ce_client.models.rule_engine_component_lifecycle_event_notification_rule_trigger_config import RuleEngineComponentLifecycleEventNotificationRuleTriggerConfig
@@ -1524,7 +1524,6 @@ _MODEL_CLASSES = {
     "ColumnMapping": "tb_ce_client.models.column_mapping",
     "ComparisonTsValue": "tb_ce_client.models.comparison_ts_value",
     "ComplexFilterPredicate": "tb_ce_client.models.complex_filter_predicate",
-    "ComplexOperation": "tb_ce_client.models.complex_operation",
     "ComplexVersionCreateRequest": "tb_ce_client.models.complex_version_create_request",
     "ComponentClusteringMode": "tb_ce_client.models.component_clustering_mode",
     "ComponentDescriptor": "tb_ce_client.models.component_descriptor",
@@ -1912,6 +1911,7 @@ _MODEL_CLASSES = {
     "RuleChainId": "tb_ce_client.models.rule_chain_id",
     "RuleChainImportResult": "tb_ce_client.models.rule_chain_import_result",
     "RuleChainMetaData": "tb_ce_client.models.rule_chain_meta_data",
+    "RuleChainNote": "tb_ce_client.models.rule_chain_note",
     "RuleChainOutputLabelsUsage": "tb_ce_client.models.rule_chain_output_labels_usage",
     "RuleChainType": "tb_ce_client.models.rule_chain_type",
     "RuleEngineComponentLifecycleEventNotificationRuleTriggerConfig": "tb_ce_client.models.rule_engine_component_lifecycle_event_notification_rule_trigger_config",

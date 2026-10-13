@@ -33,7 +33,7 @@ A JSON value representing the device profile.
 
 ## Referenced Types
 
-> **EntityId types** (`AdminSettingsId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BillingCustomerId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CouponId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `ProductId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `SubscriptionAddonId`, `SubscriptionId`, `SubscriptionPlanId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+> **EntityId types** (`AdminSettingsId`, `AgentAppEventId`, `AgentAppProfileId`, `AgentAppUnitId`, `AgentApplicationId`, `AgentBulkActionId`, `AgentId`, `AgentProfileId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BillingCustomerId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CouponId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `ProductId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `SubscriptionAddonId`, `SubscriptionId`, `SubscriptionPlanId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
 
 #### DeviceProfileType (enum)
 `DEFAULT`
@@ -50,7 +50,6 @@ A JSON value representing the device profile.
 | configuration | DeviceProfileConfiguration | JSON object of device profile configuration | [optional] |
 | transport_configuration | DeviceProfileTransportConfiguration | JSON object of device profile transport configuration | [optional] |
 | provision_configuration | DeviceProfileProvisionConfiguration | JSON object of provisioning strategy type per device profile | [optional] |
-| alarms | List[DeviceProfileAlarm] |  | [optional] |
 
 #### DeviceProfileConfiguration
 | Name | Type | Description | Notes |
@@ -121,29 +120,8 @@ A JSON value representing the device profile.
 | certificate_reg_ex_pattern | str |  | [optional] |
 | allow_create_new_devices_by_x509_certificate | bool |  | [optional] |
 
-#### DeviceProfileAlarm
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| id | str | String value representing the alarm rule id | [optional] |
-| alarm_type | str | String value representing type of the alarm | [optional] |
-| create_rules | Dict[str, AlarmRule] | Complex JSON object representing create alarm rules. The unique create alarm rule can be created for each alarm severity type. There can be 5 create alarm rules configured per a single alarm type. See method implementation notes and AlarmRule model for more details | [optional] |
-| clear_rule | AlarmRule | JSON object representing clear alarm rule | [optional] |
-| propagate | bool | Propagation flag to specify if alarm should be propagated to parent entities of alarm originator | [optional] |
-| propagate_to_owner | bool | Propagation flag to specify if alarm should be propagated to the owner (tenant or customer) of alarm originator | [optional] |
-| propagate_to_owner_hierarchy | bool | Propagation flag to specify if alarm should be propagated to the owner (tenant or customer) and all parent owners in the customer hierarchy | [optional] |
-| propagate_to_tenant | bool | Propagation flag to specify if alarm should be propagated to the tenant entity | [optional] |
-| propagate_relation_types | List[str] | JSON array of relation types that should be used for propagation. By default, 'propagateRelationTypes' array is empty which means that the alarm will be propagated based on any relation type to parent entities. This parameter should be used only in case when 'propagate' parameter is set to true, otherwise, 'propagateRelationTypes' array will be ignored. | [optional] |
-
 #### EntityType (enum)
-`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
-
-#### AlarmRule
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| condition | AlarmCondition | JSON object representing the alarm rule condition | [optional] |
-| alarm_details | str | String value representing the additional details for an alarm rule | [optional] |
-| dashboard_id | DashboardId | JSON object with the dashboard Id representing the reference to alarm details dashboard used by mobile application | [optional] |
-| schedule | AlarmSchedule | JSON object representing time interval during which the rule is active | [optional] |
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (59 values total)
 
 #### TransportPayloadTypeConfiguration
 | Name | Type | Description | Notes |
@@ -178,6 +156,70 @@ A JSON value representing the device profile.
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | security_mode | str |  |  |
+
+#### NoSecLwM2MBootstrapServerCredential  *(extends LwM2MBootstrapServerCredential, security_mode=`NO_SEC`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| short_server_id | int | Server short Id. Used as link to associate server Object Instance. This identifier uniquely identifies each LwM2M Server configured for the LwM2M Client. This Resource MUST be set when the Bootstrap-Server Resource has a value of 'false'. The values ID:0 and ID:65535 values MUST NOT be used for identifying the LwM2M Server. | [optional] [readonly] |
+| bootstrap_server_is | bool | Is Bootstrap Server or Lwm2m Server. The LwM2M Client MAY be configured to use one or more LwM2M Server Account(s). The LwM2M Client MUST have at most one LwM2M Bootstrap-Server Account. (*) The LwM2M client MUST have at least one LwM2M server account after completing the boot sequence specified. | [optional] [readonly] |
+| host | str | Host for 'No Security' mode | [optional] [readonly] |
+| port | int | Port for  Lwm2m Server: 'No Security' mode: Lwm2m Server or Bootstrap Server | [optional] [readonly] |
+| client_hold_off_time | int | Client Hold Off Time. The number of seconds to wait before initiating a Client Initiated Bootstrap once the LwM2M Client has determined it should initiate this bootstrap mode. (This information is relevant for use with a Bootstrap-Server only.) | [optional] [readonly] |
+| server_public_key | str | Server Public Key for 'Security' mode (DTLS): RPK or X509. Format: base64 encoded | [optional] [readonly] |
+| server_certificate | str | Server Public Key for 'Security' mode (DTLS): X509. Format: base64 encoded | [optional] [readonly] |
+| bootstrap_server_account_timeout | int | Bootstrap Server Account Timeout (If the value is set to 0, or if this resource is not instantiated, the Bootstrap-Server Account lifetime is infinite.) | [optional] [readonly] |
+| lifetime | int | Specify the lifetime of the registration in seconds. | [optional] [readonly] |
+| default_min_period | int | The default value the LwM2M Client should use for the Minimum Period of an Observation in the absence of this parameter being included in an Observation. If this Resource doesn’t exist, the default value is 0. | [optional] [readonly] |
+| notif_if_disabled | bool | If true, the LwM2M Client stores “Notify” operations to the LwM2M Server while the LwM2M Server account is disabled or the LwM2M Client is offline. After the LwM2M Server account is enabled or the LwM2M Client is online, the LwM2M Client reports the stored “Notify” operations to the Server. If false, the LwM2M Client discards all the “Notify” operations or temporarily disables the Observe function while the LwM2M Server is disabled or the LwM2M Client is offline. The default value is true. | [optional] [readonly] |
+| binding | str | This Resource defines the transport binding configured for the LwM2M Client. If the LwM2M Client supports the binding specified in this Resource, the LwM2M Client MUST use that transport for the Current Binding Mode. | [optional] [readonly] |
+
+#### PSKLwM2MBootstrapServerCredential  *(extends LwM2MBootstrapServerCredential, security_mode=`PSK`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| short_server_id | int | Server short Id. Used as link to associate server Object Instance. This identifier uniquely identifies each LwM2M Server configured for the LwM2M Client. This Resource MUST be set when the Bootstrap-Server Resource has a value of 'false'. The values ID:0 and ID:65535 values MUST NOT be used for identifying the LwM2M Server. | [optional] [readonly] |
+| bootstrap_server_is | bool | Is Bootstrap Server or Lwm2m Server. The LwM2M Client MAY be configured to use one or more LwM2M Server Account(s). The LwM2M Client MUST have at most one LwM2M Bootstrap-Server Account. (*) The LwM2M client MUST have at least one LwM2M server account after completing the boot sequence specified. | [optional] [readonly] |
+| host | str | Host for 'No Security' mode | [optional] [readonly] |
+| port | int | Port for  Lwm2m Server: 'No Security' mode: Lwm2m Server or Bootstrap Server | [optional] [readonly] |
+| client_hold_off_time | int | Client Hold Off Time. The number of seconds to wait before initiating a Client Initiated Bootstrap once the LwM2M Client has determined it should initiate this bootstrap mode. (This information is relevant for use with a Bootstrap-Server only.) | [optional] [readonly] |
+| server_public_key | str | Server Public Key for 'Security' mode (DTLS): RPK or X509. Format: base64 encoded | [optional] [readonly] |
+| server_certificate | str | Server Public Key for 'Security' mode (DTLS): X509. Format: base64 encoded | [optional] [readonly] |
+| bootstrap_server_account_timeout | int | Bootstrap Server Account Timeout (If the value is set to 0, or if this resource is not instantiated, the Bootstrap-Server Account lifetime is infinite.) | [optional] [readonly] |
+| lifetime | int | Specify the lifetime of the registration in seconds. | [optional] [readonly] |
+| default_min_period | int | The default value the LwM2M Client should use for the Minimum Period of an Observation in the absence of this parameter being included in an Observation. If this Resource doesn’t exist, the default value is 0. | [optional] [readonly] |
+| notif_if_disabled | bool | If true, the LwM2M Client stores “Notify” operations to the LwM2M Server while the LwM2M Server account is disabled or the LwM2M Client is offline. After the LwM2M Server account is enabled or the LwM2M Client is online, the LwM2M Client reports the stored “Notify” operations to the Server. If false, the LwM2M Client discards all the “Notify” operations or temporarily disables the Observe function while the LwM2M Server is disabled or the LwM2M Client is offline. The default value is true. | [optional] [readonly] |
+| binding | str | This Resource defines the transport binding configured for the LwM2M Client. If the LwM2M Client supports the binding specified in this Resource, the LwM2M Client MUST use that transport for the Current Binding Mode. | [optional] [readonly] |
+
+#### RPKLwM2MBootstrapServerCredential  *(extends LwM2MBootstrapServerCredential, security_mode=`RPK`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| short_server_id | int | Server short Id. Used as link to associate server Object Instance. This identifier uniquely identifies each LwM2M Server configured for the LwM2M Client. This Resource MUST be set when the Bootstrap-Server Resource has a value of 'false'. The values ID:0 and ID:65535 values MUST NOT be used for identifying the LwM2M Server. | [optional] [readonly] |
+| bootstrap_server_is | bool | Is Bootstrap Server or Lwm2m Server. The LwM2M Client MAY be configured to use one or more LwM2M Server Account(s). The LwM2M Client MUST have at most one LwM2M Bootstrap-Server Account. (*) The LwM2M client MUST have at least one LwM2M server account after completing the boot sequence specified. | [optional] [readonly] |
+| host | str | Host for 'No Security' mode | [optional] [readonly] |
+| port | int | Port for  Lwm2m Server: 'No Security' mode: Lwm2m Server or Bootstrap Server | [optional] [readonly] |
+| client_hold_off_time | int | Client Hold Off Time. The number of seconds to wait before initiating a Client Initiated Bootstrap once the LwM2M Client has determined it should initiate this bootstrap mode. (This information is relevant for use with a Bootstrap-Server only.) | [optional] [readonly] |
+| server_public_key | str | Server Public Key for 'Security' mode (DTLS): RPK or X509. Format: base64 encoded | [optional] [readonly] |
+| server_certificate | str | Server Public Key for 'Security' mode (DTLS): X509. Format: base64 encoded | [optional] [readonly] |
+| bootstrap_server_account_timeout | int | Bootstrap Server Account Timeout (If the value is set to 0, or if this resource is not instantiated, the Bootstrap-Server Account lifetime is infinite.) | [optional] [readonly] |
+| lifetime | int | Specify the lifetime of the registration in seconds. | [optional] [readonly] |
+| default_min_period | int | The default value the LwM2M Client should use for the Minimum Period of an Observation in the absence of this parameter being included in an Observation. If this Resource doesn’t exist, the default value is 0. | [optional] [readonly] |
+| notif_if_disabled | bool | If true, the LwM2M Client stores “Notify” operations to the LwM2M Server while the LwM2M Server account is disabled or the LwM2M Client is offline. After the LwM2M Server account is enabled or the LwM2M Client is online, the LwM2M Client reports the stored “Notify” operations to the Server. If false, the LwM2M Client discards all the “Notify” operations or temporarily disables the Observe function while the LwM2M Server is disabled or the LwM2M Client is offline. The default value is true. | [optional] [readonly] |
+| binding | str | This Resource defines the transport binding configured for the LwM2M Client. If the LwM2M Client supports the binding specified in this Resource, the LwM2M Client MUST use that transport for the Current Binding Mode. | [optional] [readonly] |
+
+#### X509LwM2MBootstrapServerCredential  *(extends LwM2MBootstrapServerCredential, security_mode=`X509`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| short_server_id | int | Server short Id. Used as link to associate server Object Instance. This identifier uniquely identifies each LwM2M Server configured for the LwM2M Client. This Resource MUST be set when the Bootstrap-Server Resource has a value of 'false'. The values ID:0 and ID:65535 values MUST NOT be used for identifying the LwM2M Server. | [optional] [readonly] |
+| bootstrap_server_is | bool | Is Bootstrap Server or Lwm2m Server. The LwM2M Client MAY be configured to use one or more LwM2M Server Account(s). The LwM2M Client MUST have at most one LwM2M Bootstrap-Server Account. (*) The LwM2M client MUST have at least one LwM2M server account after completing the boot sequence specified. | [optional] [readonly] |
+| host | str | Host for 'No Security' mode | [optional] [readonly] |
+| port | int | Port for  Lwm2m Server: 'No Security' mode: Lwm2m Server or Bootstrap Server | [optional] [readonly] |
+| client_hold_off_time | int | Client Hold Off Time. The number of seconds to wait before initiating a Client Initiated Bootstrap once the LwM2M Client has determined it should initiate this bootstrap mode. (This information is relevant for use with a Bootstrap-Server only.) | [optional] [readonly] |
+| server_public_key | str | Server Public Key for 'Security' mode (DTLS): RPK or X509. Format: base64 encoded | [optional] [readonly] |
+| server_certificate | str | Server Public Key for 'Security' mode (DTLS): X509. Format: base64 encoded | [optional] [readonly] |
+| bootstrap_server_account_timeout | int | Bootstrap Server Account Timeout (If the value is set to 0, or if this resource is not instantiated, the Bootstrap-Server Account lifetime is infinite.) | [optional] [readonly] |
+| lifetime | int | Specify the lifetime of the registration in seconds. | [optional] [readonly] |
+| default_min_period | int | The default value the LwM2M Client should use for the Minimum Period of an Observation in the absence of this parameter being included in an Observation. If this Resource doesn’t exist, the default value is 0. | [optional] [readonly] |
+| notif_if_disabled | bool | If true, the LwM2M Client stores “Notify” operations to the LwM2M Server while the LwM2M Server account is disabled or the LwM2M Client is offline. After the LwM2M Server account is enabled or the LwM2M Client is online, the LwM2M Client reports the stored “Notify” operations to the Server. If false, the LwM2M Client discards all the “Notify” operations or temporarily disables the Observe function while the LwM2M Server is disabled or the LwM2M Client is offline. The default value is true. | [optional] [readonly] |
+| binding | str | This Resource defines the transport binding configured for the LwM2M Client. If the LwM2M Client supports the binding specified in this Resource, the LwM2M Client MUST use that transport for the Current Binding Mode. | [optional] [readonly] |
 
 #### OtherConfiguration
 | Name | Type | Description | Notes |
@@ -247,35 +289,6 @@ A JSON value representing the device profile.
 |------|------|-------------|-------|
 | mappings | List[SnmpMapping] |  | [optional] |
 
-#### AlarmCondition
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| condition | List[AlarmConditionFilter] |  | [optional] |
-| spec | AlarmConditionSpec | JSON object representing alarm condition type | [optional] |
-
-#### AlarmSchedule
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| dynamic_value | DynamicValueString |  | [optional] |
-| type | AlarmScheduleType |  | [optional] |
-
-#### AnyTimeSchedule  *(extends AlarmSchedule, type=`ANY_TIME`)*
-*See AlarmSchedule for properties.*
-
-#### CustomTimeSchedule  *(extends AlarmSchedule, type=`CUSTOM`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| timezone | str |  | [optional] |
-| items | List[CustomTimeScheduleItem] |  | [optional] |
-
-#### SpecificTimeSchedule  *(extends AlarmSchedule, type=`SPECIFIC_TIME`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| days_of_week | List[int] |  | [optional] |
-| ends_on | int |  | [optional] |
-| starts_on | int |  | [optional] |
-| timezone | str |  | [optional] |
-
 #### ObjectAttributes
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
@@ -293,51 +306,13 @@ A JSON value representing the device profile.
 | epmax | int |  | [optional] |
 
 #### TelemetryObserveStrategy (enum)
-`SINGLE_LEFT_PARENTHESIS_0_RIGHT_PARENTHESIS_COLON__ONE_RESOURCE_EQUALS_ONE_SINGLE_OBSERVE_REQUEST` | `COMPOSITE_ALL_LEFT_PARENTHESIS_1_RIGHT_PARENTHESIS_COLON__ALL_RESOURCES_IN_ONE_COMPOSITE_OBSERVE_REQUEST` | `COMPOSITE_BY_OBJECT_LEFT_PARENTHESIS_2_RIGHT_PARENTHESIS_COLON__GROUPED_COMPOSITE_OBSERVE_REQUESTS_BY_OBJECT`
+`SINGLE` | `COMPOSITE_ALL` | `COMPOSITE_BY_OBJECT`
 
 #### PowerMode (enum)
 `PSM` | `DRX` | `E_DRX`
 
 #### SnmpCommunicationSpec (enum)
 `TELEMETRY_QUERYING` | `CLIENT_ATTRIBUTES_QUERYING` | `SHARED_ATTRIBUTES_SETTING` | `TO_DEVICE_RPC_REQUEST` | `TO_SERVER_RPC_REQUEST`
-
-#### AlarmConditionFilter
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| value_type | EntityKeyValueType | String representation of the type of the value | [optional] |
-| key | AlarmConditionFilterKey | JSON object for specifying alarm condition by specific key | [optional] |
-| predicate | KeyFilterPredicate | JSON object representing filter condition | [optional] |
-| value | object |  | [optional] |
-
-#### AlarmConditionSpec
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| type | str |  |  |
-
-#### DurationAlarmConditionSpec  *(extends AlarmConditionSpec, type=`DURATION`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| unit | TimeUnit | Duration time unit | [optional] |
-| predicate | FilterPredicateValueLong | Duration predicate | [optional] |
-
-#### RepeatingAlarmConditionSpec  *(extends AlarmConditionSpec, type=`REPEATING`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| predicate | FilterPredicateValueInteger | Repeating predicate | [optional] |
-
-#### SimpleAlarmConditionSpec  *(extends AlarmConditionSpec, type=`SIMPLE`)*
-*See AlarmConditionSpec for properties.*
-
-#### DynamicValueString
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| resolved_value | str |  | [optional] |
-| source_type | DynamicValueSourceType |  | [optional] |
-| source_attribute | str |  | [optional] |
-| inherit | bool |  | [optional] |
-
-#### AlarmScheduleType (enum)
-`ANY_TIME` | `SPECIFIC_TIME` | `CUSTOM`
 
 #### LwM2mVersion
 | Name | Type | Description | Notes |
@@ -351,143 +326,8 @@ A JSON value representing the device profile.
 | key | str |  | [optional] |
 | data_type | DataType |  | [optional] |
 
-#### EntityKeyValueType (enum)
-`STRING` | `NUMERIC` | `BOOLEAN` | `DATE_TIME`
-
-#### AlarmConditionFilterKey
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| type | AlarmConditionKeyType | The key type | [optional] |
-| key | str | String value representing the key | [optional] |
-
-#### KeyFilterPredicate
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| type | str |  |  |
-
-#### BooleanFilterPredicate  *(extends KeyFilterPredicate, type=`BOOLEAN`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| operation | BooleanOperation |  | [optional] |
-| value | FilterPredicateValueBoolean | The value associated with the filter predicate | [optional] |
-
-#### ComplexFilterPredicate  *(extends KeyFilterPredicate, type=`COMPLEX`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| operation | ComplexOperation |  | [optional] |
-| predicates | List[KeyFilterPredicate] |  | [optional] |
-
-#### NumericFilterPredicate  *(extends KeyFilterPredicate, type=`NUMERIC`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| operation | NumericOperation |  | [optional] |
-| value | FilterPredicateValueDouble | The value associated with the filter predicate | [optional] |
-
-#### StringFilterPredicate  *(extends KeyFilterPredicate, type=`STRING`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| operation | StringOperation |  | [optional] |
-| value | FilterPredicateValueString | The value associated with the filter predicate | [optional] |
-| ignore_case | bool |  | [optional] |
-
-#### DynamicValueSourceType (enum)
-`CURRENT_TENANT` | `CURRENT_CUSTOMER` | `CURRENT_USER` | `CURRENT_DEVICE`
-
-#### CustomTimeScheduleItem
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| day_of_week | int |  | [optional] |
-| enabled | bool |  | [optional] |
-| ends_on | int |  | [optional] |
-| starts_on | int |  | [optional] |
-
 #### DataType (enum)
 `BOOLEAN` | `LONG` | `DOUBLE` | `STRING` | `JSON`
-
-#### AlarmConditionKeyType (enum)
-`ATTRIBUTE` | `TIME_SERIES` | `ENTITY_FIELD` | `CONSTANT`
-
-#### TimeUnit (enum)
-`NANOSECONDS` | `MICROSECONDS` | `MILLISECONDS` | `SECONDS` | `MINUTES` | `HOURS` | `DAYS`
-
-#### FilterPredicateValueLong
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| default_value | int |  | [optional] |
-| user_value | int |  | [optional] |
-| dynamic_value | DynamicValueLong |  | [optional] |
-
-#### FilterPredicateValueInteger
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| default_value | int |  | [optional] |
-| user_value | int |  | [optional] |
-| dynamic_value | DynamicValueInteger |  | [optional] |
-
-#### StringOperation (enum)
-`EQUAL` | `NOT_EQUAL` | `STARTS_WITH` | `ENDS_WITH` | `CONTAINS` | `NOT_CONTAINS` | `IN` | `NOT_IN`
-
-#### FilterPredicateValueString
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| default_value | str |  | [optional] |
-| user_value | str |  | [optional] |
-| dynamic_value | DynamicValueString |  | [optional] |
-
-#### NumericOperation (enum)
-`EQUAL` | `NOT_EQUAL` | `GREATER` | `LESS` | `GREATER_OR_EQUAL` | `LESS_OR_EQUAL`
-
-#### FilterPredicateValueDouble
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| default_value | float |  | [optional] |
-| user_value | float |  | [optional] |
-| dynamic_value | DynamicValueDouble |  | [optional] |
-
-#### BooleanOperation (enum)
-`EQUAL` | `NOT_EQUAL`
-
-#### FilterPredicateValueBoolean
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| default_value | bool |  | [optional] |
-| user_value | bool |  | [optional] |
-| dynamic_value | DynamicValueBoolean |  | [optional] |
-
-#### ComplexOperation (enum)
-`AND` | `OR`
-
-#### DynamicValueLong
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| resolved_value | int |  | [optional] |
-| source_type | DynamicValueSourceType |  | [optional] |
-| source_attribute | str |  | [optional] |
-| inherit | bool |  | [optional] |
-
-#### DynamicValueInteger
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| resolved_value | int |  | [optional] |
-| source_type | DynamicValueSourceType |  | [optional] |
-| source_attribute | str |  | [optional] |
-| inherit | bool |  | [optional] |
-
-#### DynamicValueDouble
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| resolved_value | float |  | [optional] |
-| source_type | DynamicValueSourceType |  | [optional] |
-| source_attribute | str |  | [optional] |
-| inherit | bool |  | [optional] |
-
-#### DynamicValueBoolean
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| resolved_value | bool |  | [optional] |
-| source_type | DynamicValueSourceType |  | [optional] |
-| source_attribute | str |  | [optional] |
-| inherit | bool |  | [optional] |
 
 ---
 

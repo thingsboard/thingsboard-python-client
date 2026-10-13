@@ -7,181 +7,180 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-| **condition** | [**List[AlarmConditionFilter]**](AlarmConditionFilter.md) |  | [optional] |
-| **spec** | [**AlarmConditionSpec**](AlarmConditionSpec.md) | JSON object representing alarm condition type | [optional] |
+| **expression** | [**AlarmConditionExpression**](AlarmConditionExpression.md) |  | |
+| **schedule** | [**AlarmConditionValueAlarmSchedule**](AlarmConditionValueAlarmSchedule.md) |  | [optional] |
+| **type** | **str** |  | |
 
 
+
+## Subtypes
+
+#### DurationAlarmCondition  *(type=`DURATION`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| unit | TimeUnit |  |  |
+| value | AlarmConditionValueLong |  |  |
+
+#### RepeatingAlarmCondition  *(type=`REPEATING`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| count | AlarmConditionValueInteger |  |  |
+
+#### SimpleAlarmCondition  *(type=`SIMPLE`)*
+*(no additional properties)*
 
 ## Referenced Types
 
-#### AlarmConditionFilter
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| value_type | EntityKeyValueType | String representation of the type of the value | [optional] |
-| key | AlarmConditionFilterKey | JSON object for specifying alarm condition by specific key | [optional] |
-| predicate | KeyFilterPredicate | JSON object representing filter condition | [optional] |
-| value | object |  | [optional] |
-
-#### AlarmConditionSpec
+#### AlarmConditionExpression
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | type | str |  |  |
 
-#### DurationAlarmConditionSpec  *(extends AlarmConditionSpec, type=`DURATION`)*
+#### SimpleAlarmConditionExpression  *(extends AlarmConditionExpression, type=`SIMPLE`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| unit | TimeUnit | Duration time unit | [optional] |
-| predicate | FilterPredicateValueLong | Duration predicate | [optional] |
+| filters | List[AlarmConditionFilter] |  |  |
+| operation | AlarmRuleComplexOperation |  | [optional] |
 
-#### RepeatingAlarmConditionSpec  *(extends AlarmConditionSpec, type=`REPEATING`)*
+#### TbelAlarmConditionExpression  *(extends AlarmConditionExpression, type=`TBEL`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| predicate | FilterPredicateValueInteger | Repeating predicate | [optional] |
+| expression | str |  |  |
 
-#### SimpleAlarmConditionSpec  *(extends AlarmConditionSpec, type=`SIMPLE`)*
-*See AlarmConditionSpec for properties.*
-
-#### EntityKeyValueType (enum)
-`STRING` | `NUMERIC` | `BOOLEAN` | `DATE_TIME`
-
-#### AlarmConditionFilterKey
+#### AlarmConditionValueAlarmSchedule
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| type | AlarmConditionKeyType | The key type | [optional] |
-| key | str | String value representing the key | [optional] |
-
-#### KeyFilterPredicate
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| type | str |  |  |
-
-#### BooleanFilterPredicate  *(extends KeyFilterPredicate, type=`BOOLEAN`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| operation | BooleanOperation |  | [optional] |
-| value | FilterPredicateValueBoolean | The value associated with the filter predicate | [optional] |
-
-#### ComplexFilterPredicate  *(extends KeyFilterPredicate, type=`COMPLEX`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| operation | ComplexOperation |  | [optional] |
-| predicates | List[KeyFilterPredicate] |  | [optional] |
-
-#### NumericFilterPredicate  *(extends KeyFilterPredicate, type=`NUMERIC`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| operation | NumericOperation |  | [optional] |
-| value | FilterPredicateValueDouble | The value associated with the filter predicate | [optional] |
-
-#### StringFilterPredicate  *(extends KeyFilterPredicate, type=`STRING`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| operation | StringOperation |  | [optional] |
-| value | FilterPredicateValueString | The value associated with the filter predicate | [optional] |
-| ignore_case | bool |  | [optional] |
-
-#### AlarmConditionKeyType (enum)
-`ATTRIBUTE` | `TIME_SERIES` | `ENTITY_FIELD` | `CONSTANT`
+| static_value | AlarmSchedule |  | [optional] |
+| dynamic_value_argument | str |  | [optional] |
 
 #### TimeUnit (enum)
 `NANOSECONDS` | `MICROSECONDS` | `MILLISECONDS` | `SECONDS` | `MINUTES` | `HOURS` | `DAYS`
 
-#### FilterPredicateValueLong
+#### AlarmConditionValueLong
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| default_value | int |  | [optional] |
-| user_value | int |  | [optional] |
-| dynamic_value | DynamicValueLong |  | [optional] |
+| static_value | int |  | [optional] |
+| dynamic_value_argument | str |  | [optional] |
 
-#### FilterPredicateValueInteger
+#### AlarmConditionValueInteger
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| default_value | int |  | [optional] |
-| user_value | int |  | [optional] |
-| dynamic_value | DynamicValueInteger |  | [optional] |
+| static_value | int |  | [optional] |
+| dynamic_value_argument | str |  | [optional] |
 
-#### StringOperation (enum)
-`EQUAL` | `NOT_EQUAL` | `STARTS_WITH` | `ENDS_WITH` | `CONTAINS` | `NOT_CONTAINS` | `IN` | `NOT_IN`
-
-#### FilterPredicateValueString
+#### AlarmSchedule
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| default_value | str |  | [optional] |
-| user_value | str |  | [optional] |
-| dynamic_value | DynamicValueString |  | [optional] |
+| type | str |  |  |
 
-#### NumericOperation (enum)
-`EQUAL` | `NOT_EQUAL` | `GREATER` | `LESS` | `GREATER_OR_EQUAL` | `LESS_OR_EQUAL`
+#### AnyTimeSchedule  *(extends AlarmSchedule, type=`ANY_TIME`)*
+*See AlarmSchedule for properties.*
 
-#### FilterPredicateValueDouble
+#### CustomTimeSchedule  *(extends AlarmSchedule, type=`CUSTOM`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| default_value | float |  | [optional] |
-| user_value | float |  | [optional] |
-| dynamic_value | DynamicValueDouble |  | [optional] |
+| timezone | str |  | [optional] |
+| items | List[CustomTimeScheduleItem] |  | [optional] |
 
-#### BooleanOperation (enum)
-`EQUAL` | `NOT_EQUAL`
-
-#### FilterPredicateValueBoolean
+#### SpecificTimeSchedule  *(extends AlarmSchedule, type=`SPECIFIC_TIME`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| default_value | bool |  | [optional] |
-| user_value | bool |  | [optional] |
-| dynamic_value | DynamicValueBoolean |  | [optional] |
+| timezone | str |  | [optional] |
+| days_of_week | List[int] |  | [optional] |
+| starts_on | int |  | [optional] |
+| ends_on | int |  | [optional] |
 
-#### ComplexOperation (enum)
+#### AlarmConditionFilter
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| argument | str |  |  |
+| value_type | EntityKeyValueType |  |  |
+| operation | AlarmRuleComplexOperation |  | [optional] |
+| predicates | List[AlarmRuleKeyFilterPredicate] |  |  |
+
+#### AlarmRuleComplexOperation (enum)
 `AND` | `OR`
 
-#### DynamicValueLong
+#### EntityKeyValueType (enum)
+`STRING` | `NUMERIC` | `BOOLEAN` | `DATE_TIME`
+
+#### AlarmRuleKeyFilterPredicate
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| resolved_value | int |  | [optional] |
-| source_type | DynamicValueSourceType |  | [optional] |
-| source_attribute | str |  | [optional] |
-| inherit | bool |  | [optional] |
+| type | str |  |  |
 
-#### DynamicValueInteger
+#### AlarmRuleBooleanFilterPredicate  *(extends AlarmRuleKeyFilterPredicate, type=`BOOLEAN`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| resolved_value | int |  | [optional] |
-| source_type | DynamicValueSourceType |  | [optional] |
-| source_attribute | str |  | [optional] |
-| inherit | bool |  | [optional] |
+| operation | AlarmRuleBooleanOperation |  |  |
+| value | AlarmConditionValueBoolean |  |  |
 
-#### DynamicValueString
+#### AlarmRuleComplexFilterPredicate  *(extends AlarmRuleKeyFilterPredicate, type=`COMPLEX`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| resolved_value | str |  | [optional] |
-| source_type | DynamicValueSourceType |  | [optional] |
-| source_attribute | str |  | [optional] |
-| inherit | bool |  | [optional] |
+| operation | AlarmRuleComplexOperation |  | [optional] |
+| predicates | List[AlarmRuleKeyFilterPredicate] |  | [optional] |
 
-#### DynamicValueDouble
+#### NoDataFilterPredicate  *(extends AlarmRuleKeyFilterPredicate, type=`NO_DATA`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| resolved_value | float |  | [optional] |
-| source_type | DynamicValueSourceType |  | [optional] |
-| source_attribute | str |  | [optional] |
-| inherit | bool |  | [optional] |
+| unit | TimeUnit |  |  |
+| duration | AlarmConditionValueLong |  |  |
 
-#### DynamicValueBoolean
+#### AlarmRuleNumericFilterPredicate  *(extends AlarmRuleKeyFilterPredicate, type=`NUMERIC`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| resolved_value | bool |  | [optional] |
-| source_type | DynamicValueSourceType |  | [optional] |
-| source_attribute | str |  | [optional] |
-| inherit | bool |  | [optional] |
+| operation | AlarmRuleNumericOperation |  |  |
+| value | AlarmConditionValueDouble |  |  |
 
-#### DynamicValueSourceType (enum)
-`CURRENT_TENANT` | `CURRENT_CUSTOMER` | `CURRENT_USER` | `CURRENT_DEVICE`
+#### AlarmRuleStringFilterPredicate  *(extends AlarmRuleKeyFilterPredicate, type=`STRING`)*
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| operation | AlarmRuleStringOperation |  |  |
+| value | AlarmConditionValueString |  |  |
+| ignore_case | bool |  | [optional] |
+
+#### CustomTimeScheduleItem
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| enabled | bool |  | [optional] |
+| day_of_week | int |  | [optional] |
+| starts_on | int |  | [optional] |
+| ends_on | int |  | [optional] |
+
+#### AlarmRuleStringOperation (enum)
+`EQUAL` | `NOT_EQUAL` | `STARTS_WITH` | `ENDS_WITH` | `CONTAINS` | `NOT_CONTAINS` | `IN` | `NOT_IN`
+
+#### AlarmConditionValueString
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| static_value | str |  | [optional] |
+| dynamic_value_argument | str |  | [optional] |
+
+#### AlarmRuleNumericOperation (enum)
+`EQUAL` | `NOT_EQUAL` | `GREATER` | `LESS` | `GREATER_OR_EQUAL` | `LESS_OR_EQUAL`
+
+#### AlarmConditionValueDouble
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| static_value | float |  | [optional] |
+| dynamic_value_argument | str |  | [optional] |
+
+#### AlarmRuleBooleanOperation (enum)
+`EQUAL` | `NOT_EQUAL`
+
+#### AlarmConditionValueBoolean
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| static_value | bool |  | [optional] |
+| dynamic_value_argument | str |  | [optional] |
 
 ---
 
 ### Conventions
 
 - **Package:** `tb_paas_client.models`
-- **Attribute access:** `obj.condition`, `obj.name`, etc.
+- **Attribute access:** `obj.expression`, `obj.name`, etc.
 - **Serialize:** `obj.model_dump()` or `obj.model_dump(by_alias=True)` for camelCase JSON
 - **Deserialize:** `AlarmCondition.model_validate(data)` or `AlarmCondition.model_validate_json(json_str)`
 - **None fields:** Optional attributes default to `None`; accessing them never raises exceptions
