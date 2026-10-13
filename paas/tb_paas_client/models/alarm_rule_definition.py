@@ -21,10 +21,13 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from tb_paas_client.models.alarm_rule_condition import AlarmRuleCondition
-from tb_paas_client.models.dashboard_id import DashboardId
+from tb_paas_client.models.alarm_calculated_field_configuration import AlarmCalculatedFieldConfiguration
+from tb_paas_client.models.calculated_field_id import CalculatedFieldId
+from tb_paas_client.models.debug_settings import DebugSettings
+from tb_paas_client.models.entity_id import EntityId
+from tb_paas_client.models.tenant_id import TenantId
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -32,10 +35,18 @@ class AlarmRuleDefinition(BaseModel):
     """
     AlarmRuleDefinition
     """ # noqa: E501
-    alarm_details: Optional[StrictStr] = Field(default=None, serialization_alias="alarmDetails")
-    condition: AlarmRuleCondition
-    dashboard_id: Optional[DashboardId] = Field(default=None, serialization_alias="dashboardId")
-    __properties: ClassVar[List[str]] = ["alarmDetails", "condition", "dashboardId"]
+    id: Optional[CalculatedFieldId] = Field(default=None, description="JSON object with the Alarm Rule Id. Referencing non-existing Alarm Rule Id will cause error.")
+    created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the alarm rule creation, in milliseconds", serialization_alias="createdTime")
+    tenant_id: Optional[TenantId] = Field(default=None, serialization_alias="tenantId")
+    entity_id: Optional[EntityId] = Field(default=None, serialization_alias="entityId")
+    name: Optional[StrictStr] = Field(default=None, description="User defined name of the alarm rule.")
+    debug_settings: Optional[DebugSettings] = Field(default=None, description="Debug settings object.", serialization_alias="debugSettings")
+    configuration_version: Optional[StrictInt] = Field(default=None, description="Version of alarm rule configuration.", serialization_alias="configurationVersion")
+    configuration: AlarmCalculatedFieldConfiguration
+    version: Optional[StrictInt] = None
+    additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the alarm rule. May include: 'description' (string).", serialization_alias="additionalInfo")
+    debug_mode: Optional[StrictBool] = Field(default=None, serialization_alias="debugMode")
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "entityId", "name", "debugSettings", "configurationVersion", "configuration", "version", "additionalInfo", "debugMode"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -72,8 +83,10 @@ class AlarmRuleDefinition(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
+            "created_time",
         ])
 
         _dict = self.model_dump(
@@ -81,12 +94,26 @@ class AlarmRuleDefinition(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of condition
-        if self.condition:
-            _dict['condition'] = self.condition.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of dashboard_id
-        if self.dashboard_id:
-            _dict['dashboardId'] = self.dashboard_id.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of id
+        if self.id:
+            _dict['id'] = self.id.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of tenant_id
+        if self.tenant_id:
+            _dict['tenantId'] = self.tenant_id.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of entity_id
+        if self.entity_id:
+            _dict['entityId'] = self.entity_id.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of debug_settings
+        if self.debug_settings:
+            _dict['debugSettings'] = self.debug_settings.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of configuration
+        if self.configuration:
+            _dict['configuration'] = self.configuration.to_dict()
+        # set to None if additional_info (nullable) is None
+        # and model_fields_set contains the field
+        if self.additional_info is None and "additional_info" in self.model_fields_set:
+            _dict['additionalInfo'] = None
+
         return _dict
 
     @classmethod
@@ -99,9 +126,17 @@ class AlarmRuleDefinition(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "alarm_details": obj.get("alarmDetails"),
-            "condition": AlarmRuleCondition.from_dict(obj["condition"]) if obj.get("condition") is not None else None,
-            "dashboard_id": DashboardId.from_dict(obj["dashboardId"]) if obj.get("dashboardId") is not None else None
+            "id": CalculatedFieldId.from_dict(obj["id"]) if obj.get("id") is not None else None,
+            "created_time": obj.get("createdTime"),
+            "tenant_id": TenantId.from_dict(obj["tenantId"]) if obj.get("tenantId") is not None else None,
+            "entity_id": EntityId.from_dict(obj["entityId"]) if obj.get("entityId") is not None else None,
+            "name": obj.get("name"),
+            "debug_settings": DebugSettings.from_dict(obj["debugSettings"]) if obj.get("debugSettings") is not None else None,
+            "configuration_version": obj.get("configurationVersion"),
+            "configuration": AlarmCalculatedFieldConfiguration.from_dict(obj["configuration"]) if obj.get("configuration") is not None else None,
+            "version": obj.get("version"),
+            "additional_info": obj.get("additionalInfo"),
+            "debug_mode": obj.get("debugMode")
         })
         return _obj
 

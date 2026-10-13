@@ -23,9 +23,10 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
-from tb_paas_client.models.alarm_condition_filter_key import AlarmConditionFilterKey
+from typing_extensions import Annotated
+from tb_paas_client.models.alarm_rule_complex_operation import AlarmRuleComplexOperation
+from tb_paas_client.models.alarm_rule_key_filter_predicate import AlarmRuleKeyFilterPredicate
 from tb_paas_client.models.entity_key_value_type import EntityKeyValueType
-from tb_paas_client.models.key_filter_predicate import KeyFilterPredicate
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -33,11 +34,11 @@ class AlarmConditionFilter(BaseModel):
     """
     AlarmConditionFilter
     """ # noqa: E501
-    value_type: Optional[EntityKeyValueType] = Field(default=None, description="String representation of the type of the value", serialization_alias="valueType")
-    key: Optional[AlarmConditionFilterKey] = Field(default=None, description="JSON object for specifying alarm condition by specific key")
-    predicate: Optional[KeyFilterPredicate] = Field(default=None, description="JSON object representing filter condition")
-    value: Optional[Any] = None
-    __properties: ClassVar[List[str]] = ["valueType", "key", "predicate", "value"]
+    argument: Annotated[str, Field(min_length=1, strict=True)]
+    value_type: EntityKeyValueType = Field(serialization_alias="valueType")
+    operation: Optional[AlarmRuleComplexOperation] = None
+    predicates: Annotated[List[AlarmRuleKeyFilterPredicate], Field(min_length=1)]
+    __properties: ClassVar[List[str]] = ["argument", "valueType", "operation", "predicates"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -83,17 +84,13 @@ class AlarmConditionFilter(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of key
-        if self.key:
-            _dict['key'] = self.key.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of predicate
-        if self.predicate:
-            _dict['predicate'] = self.predicate.to_dict()
-        # set to None if value (nullable) is None
-        # and model_fields_set contains the field
-        if self.value is None and "value" in self.model_fields_set:
-            _dict['value'] = None
-
+        # override the default output from pydantic by calling `to_dict()` of each item in predicates (list)
+        _items = []
+        if self.predicates:
+            for _item_predicates in self.predicates:
+                if _item_predicates:
+                    _items.append(_item_predicates.to_dict())
+            _dict['predicates'] = _items
         return _dict
 
     @classmethod
@@ -106,10 +103,10 @@ class AlarmConditionFilter(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "argument": obj.get("argument"),
             "value_type": obj.get("valueType"),
-            "key": AlarmConditionFilterKey.from_dict(obj["key"]) if obj.get("key") is not None else None,
-            "predicate": KeyFilterPredicate.from_dict(obj["predicate"]) if obj.get("predicate") is not None else None,
-            "value": obj.get("value")
+            "operation": obj.get("operation"),
+            "predicates": [AlarmRuleKeyFilterPredicate.from_dict(_item) for _item in obj["predicates"]] if obj.get("predicates") is not None else None
         })
         return _obj
 

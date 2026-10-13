@@ -23,8 +23,8 @@ import json
 
 from pydantic import ConfigDict
 from typing import Any, ClassVar, Dict, List, Optional
+from tb_paas_client.models.alarm_rule_complex_operation import AlarmRuleComplexOperation
 from tb_paas_client.models.alarm_rule_key_filter_predicate import AlarmRuleKeyFilterPredicate
-from tb_paas_client.models.complex_operation import ComplexOperation
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -32,7 +32,7 @@ class AlarmRuleComplexFilterPredicate(AlarmRuleKeyFilterPredicate):
     """
     AlarmRuleComplexFilterPredicate
     """ # noqa: E501
-    operation: Optional[ComplexOperation] = None
+    operation: Optional[AlarmRuleComplexOperation] = None
     predicates: Optional[List[AlarmRuleKeyFilterPredicate]] = None
     __properties: ClassVar[List[str]] = ["type", "operation", "predicates"]
 

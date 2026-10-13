@@ -18,12 +18,20 @@ from typing import TYPE_CHECKING
 
 __all__ = [
     "AdminControllerApi",
+    "AgentAppProfileControllerApi",
+    "AgentAppTemplateControllerApi",
+    "AgentApplicationControllerApi",
+    "AgentBulkActionControllerApi",
+    "AgentControllerApi",
+    "AgentProfileControllerApi",
     "AiChatControllerApi",
+    "AiDeviceDashboardControllerApi",
     "AiModelControllerApi",
     "AiSolutionControllerApi",
     "AiToolControllerApi",
     "AlarmCommentControllerApi",
     "AlarmControllerApi",
+    "AlarmRuleControllerApi",
     "ApiKeyControllerApi",
     "AssetControllerApi",
     "AssetProfileControllerApi",
@@ -85,7 +93,7 @@ __all__ = [
     "SecretControllerApi",
     "SelfRegistrationControllerApi",
     "SignUpControllerApi",
-    "SolutionControllerApi",
+    "SolutionExportImportControllerApi",
     "SubscriptionControllerApi",
     "TbResourceControllerApi",
     "TelemetryControllerApi",
@@ -107,12 +115,20 @@ __all__ = [
 
 if TYPE_CHECKING:
     from tb_paas_client.api.admin_controller_api import AdminControllerApi
+    from tb_paas_client.api.agent_app_profile_controller_api import AgentAppProfileControllerApi
+    from tb_paas_client.api.agent_app_template_controller_api import AgentAppTemplateControllerApi
+    from tb_paas_client.api.agent_application_controller_api import AgentApplicationControllerApi
+    from tb_paas_client.api.agent_bulk_action_controller_api import AgentBulkActionControllerApi
+    from tb_paas_client.api.agent_controller_api import AgentControllerApi
+    from tb_paas_client.api.agent_profile_controller_api import AgentProfileControllerApi
     from tb_paas_client.api.ai_chat_controller_api import AiChatControllerApi
+    from tb_paas_client.api.ai_device_dashboard_controller_api import AiDeviceDashboardControllerApi
     from tb_paas_client.api.ai_model_controller_api import AiModelControllerApi
     from tb_paas_client.api.ai_solution_controller_api import AiSolutionControllerApi
     from tb_paas_client.api.ai_tool_controller_api import AiToolControllerApi
     from tb_paas_client.api.alarm_comment_controller_api import AlarmCommentControllerApi
     from tb_paas_client.api.alarm_controller_api import AlarmControllerApi
+    from tb_paas_client.api.alarm_rule_controller_api import AlarmRuleControllerApi
     from tb_paas_client.api.api_key_controller_api import ApiKeyControllerApi
     from tb_paas_client.api.asset_controller_api import AssetControllerApi
     from tb_paas_client.api.asset_profile_controller_api import AssetProfileControllerApi
@@ -174,7 +190,7 @@ if TYPE_CHECKING:
     from tb_paas_client.api.secret_controller_api import SecretControllerApi
     from tb_paas_client.api.self_registration_controller_api import SelfRegistrationControllerApi
     from tb_paas_client.api.sign_up_controller_api import SignUpControllerApi
-    from tb_paas_client.api.solution_controller_api import SolutionControllerApi
+    from tb_paas_client.api.solution_export_import_controller_api import SolutionExportImportControllerApi
     from tb_paas_client.api.subscription_controller_api import SubscriptionControllerApi
     from tb_paas_client.api.tb_resource_controller_api import TbResourceControllerApi
     from tb_paas_client.api.telemetry_controller_api import TelemetryControllerApi
@@ -195,12 +211,20 @@ if TYPE_CHECKING:
 
 _API_CLASSES = {
     "AdminControllerApi": "tb_paas_client.api.admin_controller_api",
+    "AgentAppProfileControllerApi": "tb_paas_client.api.agent_app_profile_controller_api",
+    "AgentAppTemplateControllerApi": "tb_paas_client.api.agent_app_template_controller_api",
+    "AgentApplicationControllerApi": "tb_paas_client.api.agent_application_controller_api",
+    "AgentBulkActionControllerApi": "tb_paas_client.api.agent_bulk_action_controller_api",
+    "AgentControllerApi": "tb_paas_client.api.agent_controller_api",
+    "AgentProfileControllerApi": "tb_paas_client.api.agent_profile_controller_api",
     "AiChatControllerApi": "tb_paas_client.api.ai_chat_controller_api",
+    "AiDeviceDashboardControllerApi": "tb_paas_client.api.ai_device_dashboard_controller_api",
     "AiModelControllerApi": "tb_paas_client.api.ai_model_controller_api",
     "AiSolutionControllerApi": "tb_paas_client.api.ai_solution_controller_api",
     "AiToolControllerApi": "tb_paas_client.api.ai_tool_controller_api",
     "AlarmCommentControllerApi": "tb_paas_client.api.alarm_comment_controller_api",
     "AlarmControllerApi": "tb_paas_client.api.alarm_controller_api",
+    "AlarmRuleControllerApi": "tb_paas_client.api.alarm_rule_controller_api",
     "ApiKeyControllerApi": "tb_paas_client.api.api_key_controller_api",
     "AssetControllerApi": "tb_paas_client.api.asset_controller_api",
     "AssetProfileControllerApi": "tb_paas_client.api.asset_profile_controller_api",
@@ -262,7 +286,7 @@ _API_CLASSES = {
     "SecretControllerApi": "tb_paas_client.api.secret_controller_api",
     "SelfRegistrationControllerApi": "tb_paas_client.api.self_registration_controller_api",
     "SignUpControllerApi": "tb_paas_client.api.sign_up_controller_api",
-    "SolutionControllerApi": "tb_paas_client.api.solution_controller_api",
+    "SolutionExportImportControllerApi": "tb_paas_client.api.solution_export_import_controller_api",
     "SubscriptionControllerApi": "tb_paas_client.api.subscription_controller_api",
     "TbResourceControllerApi": "tb_paas_client.api.tb_resource_controller_api",
     "TelemetryControllerApi": "tb_paas_client.api.telemetry_controller_api",

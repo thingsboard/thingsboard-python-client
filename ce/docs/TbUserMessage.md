@@ -7,7 +7,7 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-| **contents** | [**List[TbContent]**](TbContent.md) |  | |
+| **contents** | [**List[TbContent]**](TbContent.md) | A list of content parts that make up the complete user prompt | |
 
 
 

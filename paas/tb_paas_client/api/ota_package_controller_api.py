@@ -1890,7 +1890,7 @@ class OtaPackageControllerApi:
 
 
     @validate_call
-    def get_ota_packages_by_device_profile_id_and_type(
+    def get_ota_packages_by_device_profile_and_type(
         self,
         device_profile_id: Annotated[StrictStr, Field(description="A string value representing the device profile id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")],
         type: Annotated[StrictStr, Field(description="OTA Package type.")],
@@ -1912,7 +1912,7 @@ class OtaPackageControllerApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> PageDataOtaPackageInfo:
-        """Get OTA Package Infos by Device Profile and Type (getOtaPackagesByDeviceProfileIdAndType)
+        """Get OTA Package Infos by Device Profile and Type (getOtaPackagesByDeviceProfileAndType)
 
         Returns a page of OTA Package Info objects owned by tenant. You can specify parameters to filter the results. The result is wrapped with PageData object that allows you to iterate over result set using pagination. See response schema for more details. OTA Package Info is a lightweight object that includes main information about the OTA Package excluding the heavyweight data.   Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
 
@@ -1952,7 +1952,7 @@ class OtaPackageControllerApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_ota_packages_by_device_profile_id_and_type_serialize(
+        _param = self._get_ota_packages_by_device_profile_and_type_serialize(
             device_profile_id=device_profile_id,
             type=type,
             page_size=page_size,
@@ -1986,7 +1986,7 @@ class OtaPackageControllerApi:
 
 
     @validate_call
-    def get_ota_packages_by_device_profile_id_and_type_with_http_info(
+    def get_ota_packages_by_device_profile_and_type_with_http_info(
         self,
         device_profile_id: Annotated[StrictStr, Field(description="A string value representing the device profile id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")],
         type: Annotated[StrictStr, Field(description="OTA Package type.")],
@@ -2008,7 +2008,7 @@ class OtaPackageControllerApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> ApiResponse[PageDataOtaPackageInfo]:
-        """Get OTA Package Infos by Device Profile and Type (getOtaPackagesByDeviceProfileIdAndType)
+        """Get OTA Package Infos by Device Profile and Type (getOtaPackagesByDeviceProfileAndType)
 
         Returns a page of OTA Package Info objects owned by tenant. You can specify parameters to filter the results. The result is wrapped with PageData object that allows you to iterate over result set using pagination. See response schema for more details. OTA Package Info is a lightweight object that includes main information about the OTA Package excluding the heavyweight data.   Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
 
@@ -2048,7 +2048,7 @@ class OtaPackageControllerApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_ota_packages_by_device_profile_id_and_type_serialize(
+        _param = self._get_ota_packages_by_device_profile_and_type_serialize(
             device_profile_id=device_profile_id,
             type=type,
             page_size=page_size,
@@ -2082,7 +2082,7 @@ class OtaPackageControllerApi:
 
 
     @validate_call
-    def get_ota_packages_by_device_profile_id_and_type_without_preload_content(
+    def get_ota_packages_by_device_profile_and_type_without_preload_content(
         self,
         device_profile_id: Annotated[StrictStr, Field(description="A string value representing the device profile id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")],
         type: Annotated[StrictStr, Field(description="OTA Package type.")],
@@ -2104,7 +2104,7 @@ class OtaPackageControllerApi:
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
     ) -> RESTResponseType:
-        """Get OTA Package Infos by Device Profile and Type (getOtaPackagesByDeviceProfileIdAndType)
+        """Get OTA Package Infos by Device Profile and Type (getOtaPackagesByDeviceProfileAndType)
 
         Returns a page of OTA Package Info objects owned by tenant. You can specify parameters to filter the results. The result is wrapped with PageData object that allows you to iterate over result set using pagination. See response schema for more details. OTA Package Info is a lightweight object that includes main information about the OTA Package excluding the heavyweight data.   Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
 
@@ -2144,7 +2144,7 @@ class OtaPackageControllerApi:
         :return: Returns the result object.
         """ # noqa: E501
 
-        _param = self._get_ota_packages_by_device_profile_id_and_type_serialize(
+        _param = self._get_ota_packages_by_device_profile_and_type_serialize(
             device_profile_id=device_profile_id,
             type=type,
             page_size=page_size,
@@ -2173,7 +2173,7 @@ class OtaPackageControllerApi:
         return response_data.response
 
 
-    def _get_ota_packages_by_device_profile_id_and_type_serialize(
+    def _get_ota_packages_by_device_profile_and_type_serialize(
         self,
         device_profile_id,
         type,

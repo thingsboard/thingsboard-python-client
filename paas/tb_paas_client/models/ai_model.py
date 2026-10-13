@@ -36,8 +36,8 @@ class AiModel(BaseModel):
     """ # noqa: E501
     id: Optional[AiModelId] = None
     created_time: Optional[StrictInt] = Field(default=None, description="Entity creation timestamp in milliseconds since Unix epoch", serialization_alias="createdTime")
-    tenant_id: TenantId = Field(description="JSON object representing the ID of the tenant associated with this AI model", serialization_alias="tenantId")
-    version: StrictInt = Field(description="Version of the AI model record; increments automatically whenever the record is changed")
+    tenant_id: Optional[TenantId] = Field(default=None, description="JSON object representing the ID of the tenant associated with this AI model", serialization_alias="tenantId")
+    version: Optional[StrictInt] = Field(default=1, description="Version of the AI model record; increments automatically whenever the record is changed")
     name: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Display name for this AI model configuration; not the technical model identifier")
     configuration: Optional[AiModelConfig] = Field(default=None, description="Configuration of the AI model")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "version", "name", "configuration"]

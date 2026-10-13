@@ -32,6 +32,13 @@ from typing_extensions import Self
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from tb_paas_client.models.admin_settings_id import AdminSettingsId
+    from tb_paas_client.models.agent_id import AgentId
+    from tb_paas_client.models.agent_application_id import AgentApplicationId
+    from tb_paas_client.models.agent_app_event_id import AgentAppEventId
+    from tb_paas_client.models.agent_app_profile_id import AgentAppProfileId
+    from tb_paas_client.models.agent_app_unit_id import AgentAppUnitId
+    from tb_paas_client.models.agent_bulk_action_id import AgentBulkActionId
+    from tb_paas_client.models.agent_profile_id import AgentProfileId
     from tb_paas_client.models.ai_model_id import AiModelId
     from tb_paas_client.models.alarm_id import AlarmId
     from tb_paas_client.models.api_key_id import ApiKeyId
@@ -104,7 +111,7 @@ class EntityId(BaseModel):
 
     # discriminator mappings
     __discriminator_value_class_map: ClassVar[Dict[str, str]] = {
-        'ADMIN_SETTINGS': 'AdminSettingsId','AI_MODEL': 'AiModelId','ALARM': 'AlarmId','API_KEY': 'ApiKeyId','API_USAGE_STATE': 'ApiUsageStateId','ASSET': 'AssetId','ASSET_PROFILE': 'AssetProfileId','BILLING_CUSTOMER': 'BillingCustomerId','BLOB_ENTITY': 'BlobEntityId','CALCULATED_FIELD': 'CalculatedFieldId','CONVERTER': 'ConverterId','COUPON': 'CouponId','CUSTOMER': 'CustomerId','DASHBOARD': 'DashboardId','DEVICE': 'DeviceId','DEVICE_PROFILE': 'DeviceProfileId','DOMAIN': 'DomainId','EDGE': 'EdgeId','ENTITY_GROUP': 'EntityGroupId','ENTITY_VIEW': 'EntityViewId','GROUP_PERMISSION': 'GroupPermissionId','INTEGRATION': 'IntegrationId','JOB': 'JobId','MOBILE_APP': 'MobileAppId','MOBILE_APP_BUNDLE': 'MobileAppBundleId','NOTIFICATION': 'NotificationId','NOTIFICATION_REQUEST': 'NotificationRequestId','NOTIFICATION_RULE': 'NotificationRuleId','NOTIFICATION_TARGET': 'NotificationTargetId','NOTIFICATION_TEMPLATE': 'NotificationTemplateId','OAUTH2_CLIENT': 'OAuth2ClientId','OTA_PACKAGE': 'OtaPackageId','PRODUCT': 'ProductId','QUEUE': 'QueueId','QUEUE_STATS': 'QueueStatsId','REPORT': 'ReportId','REPORT_TEMPLATE': 'ReportTemplateId','ROLE': 'RoleId','RPC': 'RpcId','RULE_CHAIN': 'RuleChainId','RULE_NODE': 'RuleNodeId','SCHEDULER_EVENT': 'SchedulerEventId','SECRET': 'SecretId','SUBSCRIPTION': 'SubscriptionId','SUBSCRIPTION_ADDON': 'SubscriptionAddonId','SUBSCRIPTION_PLAN': 'SubscriptionPlanId','TB_RESOURCE': 'TbResourceId','TENANT': 'TenantId','TENANT_PROFILE': 'TenantProfileId','USER': 'UserId','WIDGETS_BUNDLE': 'WidgetsBundleId','WIDGET_TYPE': 'WidgetTypeId'
+        'ADMIN_SETTINGS': 'AdminSettingsId','AGENT': 'AgentId','AGENT_APPLICATION': 'AgentApplicationId','AGENT_APP_EVENT': 'AgentAppEventId','AGENT_APP_PROFILE': 'AgentAppProfileId','AGENT_APP_UNIT': 'AgentAppUnitId','AGENT_BULK_ACTION': 'AgentBulkActionId','AGENT_PROFILE': 'AgentProfileId','AI_MODEL': 'AiModelId','ALARM': 'AlarmId','API_KEY': 'ApiKeyId','API_USAGE_STATE': 'ApiUsageStateId','ASSET': 'AssetId','ASSET_PROFILE': 'AssetProfileId','BILLING_CUSTOMER': 'BillingCustomerId','BLOB_ENTITY': 'BlobEntityId','CALCULATED_FIELD': 'CalculatedFieldId','CONVERTER': 'ConverterId','COUPON': 'CouponId','CUSTOMER': 'CustomerId','DASHBOARD': 'DashboardId','DEVICE': 'DeviceId','DEVICE_PROFILE': 'DeviceProfileId','DOMAIN': 'DomainId','EDGE': 'EdgeId','ENTITY_GROUP': 'EntityGroupId','ENTITY_VIEW': 'EntityViewId','GROUP_PERMISSION': 'GroupPermissionId','INTEGRATION': 'IntegrationId','JOB': 'JobId','MOBILE_APP': 'MobileAppId','MOBILE_APP_BUNDLE': 'MobileAppBundleId','NOTIFICATION': 'NotificationId','NOTIFICATION_REQUEST': 'NotificationRequestId','NOTIFICATION_RULE': 'NotificationRuleId','NOTIFICATION_TARGET': 'NotificationTargetId','NOTIFICATION_TEMPLATE': 'NotificationTemplateId','OAUTH2_CLIENT': 'OAuth2ClientId','OTA_PACKAGE': 'OtaPackageId','PRODUCT': 'ProductId','QUEUE': 'QueueId','QUEUE_STATS': 'QueueStatsId','REPORT': 'ReportId','REPORT_TEMPLATE': 'ReportTemplateId','ROLE': 'RoleId','RPC': 'RpcId','RULE_CHAIN': 'RuleChainId','RULE_NODE': 'RuleNodeId','SCHEDULER_EVENT': 'SchedulerEventId','SECRET': 'SecretId','SUBSCRIPTION': 'SubscriptionId','SUBSCRIPTION_ADDON': 'SubscriptionAddonId','SUBSCRIPTION_PLAN': 'SubscriptionPlanId','TB_RESOURCE': 'TbResourceId','TENANT': 'TenantId','TENANT_PROFILE': 'TenantProfileId','USER': 'UserId','WIDGETS_BUNDLE': 'WidgetsBundleId','WIDGET_TYPE': 'WidgetTypeId'
     }
 
     @classmethod
@@ -135,7 +142,7 @@ class EntityId(BaseModel):
         return self.model_dump_json(by_alias=True, exclude_unset=True)
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Union[AdminSettingsId, AiModelId, AlarmId, ApiKeyId, ApiUsageStateId, AssetId, AssetProfileId, BillingCustomerId, BlobEntityId, CalculatedFieldId, ConverterId, CouponId, CustomerId, DashboardId, DeviceId, DeviceProfileId, DomainId, EdgeId, EntityGroupId, EntityViewId, GroupPermissionId, IntegrationId, JobId, MobileAppId, MobileAppBundleId, NotificationId, NotificationRequestId, NotificationRuleId, NotificationTargetId, NotificationTemplateId, OAuth2ClientId, OtaPackageId, ProductId, QueueId, QueueStatsId, ReportId, ReportTemplateId, RoleId, RpcId, RuleChainId, RuleNodeId, SchedulerEventId, SecretId, SubscriptionId, SubscriptionAddonId, SubscriptionPlanId, TbResourceId, TenantId, TenantProfileId, UserId, WidgetsBundleId, WidgetTypeId]]:
+    def from_json(cls, json_str: str) -> Optional[Union[AdminSettingsId, AgentId, AgentApplicationId, AgentAppEventId, AgentAppProfileId, AgentAppUnitId, AgentBulkActionId, AgentProfileId, AiModelId, AlarmId, ApiKeyId, ApiUsageStateId, AssetId, AssetProfileId, BillingCustomerId, BlobEntityId, CalculatedFieldId, ConverterId, CouponId, CustomerId, DashboardId, DeviceId, DeviceProfileId, DomainId, EdgeId, EntityGroupId, EntityViewId, GroupPermissionId, IntegrationId, JobId, MobileAppId, MobileAppBundleId, NotificationId, NotificationRequestId, NotificationRuleId, NotificationTargetId, NotificationTemplateId, OAuth2ClientId, OtaPackageId, ProductId, QueueId, QueueStatsId, ReportId, ReportTemplateId, RoleId, RpcId, RuleChainId, RuleNodeId, SchedulerEventId, SecretId, SubscriptionId, SubscriptionAddonId, SubscriptionPlanId, TbResourceId, TenantId, TenantProfileId, UserId, WidgetsBundleId, WidgetTypeId]]:
         """Create an instance of EntityId from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
@@ -160,12 +167,26 @@ class EntityId(BaseModel):
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Dict[str, Any]) -> Optional[Union[AdminSettingsId, AiModelId, AlarmId, ApiKeyId, ApiUsageStateId, AssetId, AssetProfileId, BillingCustomerId, BlobEntityId, CalculatedFieldId, ConverterId, CouponId, CustomerId, DashboardId, DeviceId, DeviceProfileId, DomainId, EdgeId, EntityGroupId, EntityViewId, GroupPermissionId, IntegrationId, JobId, MobileAppId, MobileAppBundleId, NotificationId, NotificationRequestId, NotificationRuleId, NotificationTargetId, NotificationTemplateId, OAuth2ClientId, OtaPackageId, ProductId, QueueId, QueueStatsId, ReportId, ReportTemplateId, RoleId, RpcId, RuleChainId, RuleNodeId, SchedulerEventId, SecretId, SubscriptionId, SubscriptionAddonId, SubscriptionPlanId, TbResourceId, TenantId, TenantProfileId, UserId, WidgetsBundleId, WidgetTypeId]]:
+    def from_dict(cls, obj: Dict[str, Any]) -> Optional[Union[AdminSettingsId, AgentId, AgentApplicationId, AgentAppEventId, AgentAppProfileId, AgentAppUnitId, AgentBulkActionId, AgentProfileId, AiModelId, AlarmId, ApiKeyId, ApiUsageStateId, AssetId, AssetProfileId, BillingCustomerId, BlobEntityId, CalculatedFieldId, ConverterId, CouponId, CustomerId, DashboardId, DeviceId, DeviceProfileId, DomainId, EdgeId, EntityGroupId, EntityViewId, GroupPermissionId, IntegrationId, JobId, MobileAppId, MobileAppBundleId, NotificationId, NotificationRequestId, NotificationRuleId, NotificationTargetId, NotificationTemplateId, OAuth2ClientId, OtaPackageId, ProductId, QueueId, QueueStatsId, ReportId, ReportTemplateId, RoleId, RpcId, RuleChainId, RuleNodeId, SchedulerEventId, SecretId, SubscriptionId, SubscriptionAddonId, SubscriptionPlanId, TbResourceId, TenantId, TenantProfileId, UserId, WidgetsBundleId, WidgetTypeId]]:
         """Create an instance of EntityId from a dict"""
         # look up the object type based on discriminator mapping
         object_type = cls.get_discriminator_value(obj)
         if object_type ==  'AdminSettingsId':
             return import_module("tb_paas_client.models.admin_settings_id").AdminSettingsId.from_dict(obj)
+        if object_type ==  'AgentId':
+            return import_module("tb_paas_client.models.agent_id").AgentId.from_dict(obj)
+        if object_type ==  'AgentApplicationId':
+            return import_module("tb_paas_client.models.agent_application_id").AgentApplicationId.from_dict(obj)
+        if object_type ==  'AgentAppEventId':
+            return import_module("tb_paas_client.models.agent_app_event_id").AgentAppEventId.from_dict(obj)
+        if object_type ==  'AgentAppProfileId':
+            return import_module("tb_paas_client.models.agent_app_profile_id").AgentAppProfileId.from_dict(obj)
+        if object_type ==  'AgentAppUnitId':
+            return import_module("tb_paas_client.models.agent_app_unit_id").AgentAppUnitId.from_dict(obj)
+        if object_type ==  'AgentBulkActionId':
+            return import_module("tb_paas_client.models.agent_bulk_action_id").AgentBulkActionId.from_dict(obj)
+        if object_type ==  'AgentProfileId':
+            return import_module("tb_paas_client.models.agent_profile_id").AgentProfileId.from_dict(obj)
         if object_type ==  'AiModelId':
             return import_module("tb_paas_client.models.ai_model_id").AiModelId.from_dict(obj)
         if object_type ==  'AlarmId':

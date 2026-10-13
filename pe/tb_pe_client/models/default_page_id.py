@@ -39,6 +39,7 @@ class DefaultPageId(str, Enum):
     NOTIFICATIONS = 'NOTIFICATIONS'
     DEVICE_LIST = 'DEVICE_LIST'
     DASHBOARDS = 'DASHBOARDS'
+    LIVE_LOCATION_TRACKING = 'LIVE_LOCATION_TRACKING'
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:

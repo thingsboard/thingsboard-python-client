@@ -45,7 +45,7 @@ class CustomerInfo(BaseModel):
     address2: Optional[StrictStr] = Field(default=None, description="Address Line 2")
     zip: Optional[StrictStr] = Field(default=None, description="Zip code")
     phone: Optional[StrictStr] = Field(default=None, description="Phone number")
-    email: StrictStr = Field(description="Email")
+    email: Optional[StrictStr] = Field(default=None, description="Email")
     title: StrictStr = Field(description="Title of the customer")
     tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id", serialization_alias="tenantId")
     parent_customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with parent Customer Id", serialization_alias="parentCustomerId")

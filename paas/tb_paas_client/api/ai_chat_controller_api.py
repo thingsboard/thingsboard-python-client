@@ -34,7 +34,6 @@ from typing_extensions import Annotated
 from pydantic import StrictStr
 from typing import Any, List, Optional
 from uuid import UUID
-from tb_paas_client.models.chat_type import ChatType
 
 from tb_paas_client.api_client import ApiClient, RequestSerialized
 from tb_paas_client.api_response import ApiResponse
@@ -892,7 +891,6 @@ class AiChatControllerApi:
     @validate_call
     def list_chats(
         self,
-        chat_type: ChatType,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -909,8 +907,6 @@ class AiChatControllerApi:
         """listChats
 
 
-        :param chat_type: (required)
-        :type chat_type: ChatType
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -934,7 +930,6 @@ class AiChatControllerApi:
         """ # noqa: E501
 
         _param = self._list_chats_serialize(
-            chat_type=chat_type,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -963,7 +958,6 @@ class AiChatControllerApi:
     @validate_call
     def list_chats_with_http_info(
         self,
-        chat_type: ChatType,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -980,8 +974,6 @@ class AiChatControllerApi:
         """listChats
 
 
-        :param chat_type: (required)
-        :type chat_type: ChatType
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1005,7 +997,6 @@ class AiChatControllerApi:
         """ # noqa: E501
 
         _param = self._list_chats_serialize(
-            chat_type=chat_type,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1034,7 +1025,6 @@ class AiChatControllerApi:
     @validate_call
     def list_chats_without_preload_content(
         self,
-        chat_type: ChatType,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1051,8 +1041,6 @@ class AiChatControllerApi:
         """listChats
 
 
-        :param chat_type: (required)
-        :type chat_type: ChatType
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1076,7 +1064,6 @@ class AiChatControllerApi:
         """ # noqa: E501
 
         _param = self._list_chats_serialize(
-            chat_type=chat_type,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1100,7 +1087,6 @@ class AiChatControllerApi:
 
     def _list_chats_serialize(
         self,
-        chat_type,
         _request_auth,
         _content_type,
         _headers,
@@ -1122,8 +1108,6 @@ class AiChatControllerApi:
         _body_params: Optional[bytes] = None
 
         # process the path parameters
-        if chat_type is not None:
-            _path_params['chatType'] = chat_type.value
         # process the query parameters
         # process the header parameters
         # process the form parameters
@@ -1147,7 +1131,7 @@ class AiChatControllerApi:
 
         return self.api_client.param_serialize(
             method='GET',
-            resource_path='/api/ai/chats/{chatType}',
+            resource_path='/api/ai/chats',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,
@@ -1168,7 +1152,8 @@ class AiChatControllerApi:
         self,
         chat_id: UUID,
         x_authorization: StrictStr,
-        body: StrictStr,
+        body: Optional[Any],
+        accept_language: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1190,7 +1175,9 @@ class AiChatControllerApi:
         :param x_authorization: (required)
         :type x_authorization: str
         :param body: (required)
-        :type body: str
+        :type body: object
+        :param accept_language:
+        :type accept_language: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1217,6 +1204,7 @@ class AiChatControllerApi:
             chat_id=chat_id,
             x_authorization=x_authorization,
             body=body,
+            accept_language=accept_language,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1247,7 +1235,8 @@ class AiChatControllerApi:
         self,
         chat_id: UUID,
         x_authorization: StrictStr,
-        body: StrictStr,
+        body: Optional[Any],
+        accept_language: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1269,7 +1258,9 @@ class AiChatControllerApi:
         :param x_authorization: (required)
         :type x_authorization: str
         :param body: (required)
-        :type body: str
+        :type body: object
+        :param accept_language:
+        :type accept_language: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1296,6 +1287,7 @@ class AiChatControllerApi:
             chat_id=chat_id,
             x_authorization=x_authorization,
             body=body,
+            accept_language=accept_language,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1326,7 +1318,8 @@ class AiChatControllerApi:
         self,
         chat_id: UUID,
         x_authorization: StrictStr,
-        body: StrictStr,
+        body: Optional[Any],
+        accept_language: Optional[StrictStr] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1348,7 +1341,9 @@ class AiChatControllerApi:
         :param x_authorization: (required)
         :type x_authorization: str
         :param body: (required)
-        :type body: str
+        :type body: object
+        :param accept_language:
+        :type accept_language: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1375,6 +1370,7 @@ class AiChatControllerApi:
             chat_id=chat_id,
             x_authorization=x_authorization,
             body=body,
+            accept_language=accept_language,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1401,6 +1397,7 @@ class AiChatControllerApi:
         chat_id,
         x_authorization,
         body,
+        accept_language,
         _request_auth,
         _content_type,
         _headers,
@@ -1428,6 +1425,8 @@ class AiChatControllerApi:
         # process the header parameters
         if x_authorization is not None:
             _header_params['X-Authorization'] = x_authorization
+        if accept_language is not None:
+            _header_params['Accept-Language'] = accept_language
         # process the form parameters
         # process the body parameter
         if body is not None:
@@ -1450,7 +1449,7 @@ class AiChatControllerApi:
             _default_content_type = (
                 self.api_client.select_header_content_type(
                     [
-                        'text/plain'
+                        'application/json'
                     ]
                 )
             )

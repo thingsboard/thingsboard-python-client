@@ -45,6 +45,8 @@ class DefaultTenantProfileConfiguration(TenantProfileConfiguration):
     max_integrations: Optional[StrictInt] = Field(default=None, serialization_alias="maxIntegrations")
     max_converters: Optional[StrictInt] = Field(default=None, serialization_alias="maxConverters")
     max_scheduler_events: Optional[StrictInt] = Field(default=None, serialization_alias="maxSchedulerEvents")
+    max_agents: Optional[StrictInt] = Field(default=None, serialization_alias="maxAgents")
+    max_agent_applications: Optional[StrictInt] = Field(default=None, serialization_alias="maxAgentApplications")
     transport_tenant_msg_rate_limit: Optional[StrictStr] = Field(default=None, serialization_alias="transportTenantMsgRateLimit")
     transport_tenant_telemetry_msg_rate_limit: Optional[StrictStr] = Field(default=None, serialization_alias="transportTenantTelemetryMsgRateLimit")
     transport_tenant_telemetry_data_points_rate_limit: Optional[StrictStr] = Field(default=None, serialization_alias="transportTenantTelemetryDataPointsRateLimit")
@@ -77,6 +79,7 @@ class DefaultTenantProfileConfiguration(TenantProfileConfiguration):
     max_sms: Optional[StrictInt] = Field(default=None, serialization_alias="maxSms")
     max_created_alarms: Optional[StrictInt] = Field(default=None, serialization_alias="maxCreatedAlarms")
     max_generated_reports: Optional[StrictInt] = Field(default=None, serialization_alias="maxGeneratedReports")
+    max_ai_credits: Optional[StrictInt] = Field(default=None, serialization_alias="maxAiCredits")
     tenant_server_rest_limits_configuration: Optional[StrictStr] = Field(default=None, serialization_alias="tenantServerRestLimitsConfiguration")
     customer_server_rest_limits_configuration: Optional[StrictStr] = Field(default=None, serialization_alias="customerServerRestLimitsConfiguration")
     max_ws_sessions_per_tenant: Optional[StrictInt] = Field(default=None, serialization_alias="maxWsSessionsPerTenant")
@@ -97,6 +100,10 @@ class DefaultTenantProfileConfiguration(TenantProfileConfiguration):
     edge_event_rate_limits_per_edge: Optional[StrictStr] = Field(default=None, serialization_alias="edgeEventRateLimitsPerEdge")
     edge_uplink_messages_rate_limits: Optional[StrictStr] = Field(default=None, serialization_alias="edgeUplinkMessagesRateLimits")
     edge_uplink_messages_rate_limits_per_edge: Optional[StrictStr] = Field(default=None, serialization_alias="edgeUplinkMessagesRateLimitsPerEdge")
+    agent_event_rate_limits: Optional[StrictStr] = Field(default=None, serialization_alias="agentEventRateLimits")
+    agent_event_rate_limits_per_agent: Optional[StrictStr] = Field(default=None, serialization_alias="agentEventRateLimitsPerAgent")
+    agent_log_chunk_rate_limits: Optional[StrictStr] = Field(default=None, serialization_alias="agentLogChunkRateLimits")
+    agent_log_chunk_rate_limits_per_agent: Optional[StrictStr] = Field(default=None, serialization_alias="agentLogChunkRateLimitsPerAgent")
     default_storage_ttl_days: Optional[StrictInt] = Field(default=None, serialization_alias="defaultStorageTtlDays")
     alarms_ttl_days: Optional[StrictInt] = Field(default=None, serialization_alias="alarmsTtlDays")
     rpc_ttl_days: Optional[StrictInt] = Field(default=None, serialization_alias="rpcTtlDays")
@@ -118,7 +125,8 @@ class DefaultTenantProfileConfiguration(TenantProfileConfiguration):
     intermediate_aggregation_interval_in_sec_for_cf: Optional[StrictInt] = Field(default=None, serialization_alias="intermediateAggregationIntervalInSecForCF")
     cf_reevaluation_check_interval: Optional[StrictInt] = Field(default=None, serialization_alias="cfReevaluationCheckInterval")
     alarms_reevaluation_interval: Optional[StrictInt] = Field(default=None, serialization_alias="alarmsReevaluationInterval")
-    __properties: ClassVar[List[str]] = ["type", "maxDevices", "maxAssets", "maxCustomers", "maxUsers", "maxDashboards", "maxRuleChains", "maxEdges", "maxResourcesInBytes", "maxOtaPackagesInBytes", "maxResourceSize", "maxReportSizeInBytes", "maxIntegrations", "maxConverters", "maxSchedulerEvents", "transportTenantMsgRateLimit", "transportTenantTelemetryMsgRateLimit", "transportTenantTelemetryDataPointsRateLimit", "transportDeviceMsgRateLimit", "transportDeviceTelemetryMsgRateLimit", "transportDeviceTelemetryDataPointsRateLimit", "transportGatewayMsgRateLimit", "transportGatewayTelemetryMsgRateLimit", "transportGatewayTelemetryDataPointsRateLimit", "transportGatewayDeviceMsgRateLimit", "transportGatewayDeviceTelemetryMsgRateLimit", "transportGatewayDeviceTelemetryDataPointsRateLimit", "integrationMsgsPerTenantRateLimit", "integrationMsgsPerDeviceRateLimit", "integrationMsgsPerAssetRateLimit", "tenantEntityExportRateLimit", "tenantEntityImportRateLimit", "tenantNotificationRequestsRateLimit", "tenantNotificationRequestsPerRuleRateLimit", "maxTransportMessages", "maxTransportDataPoints", "maxREExecutions", "maxJSExecutions", "maxTbelExecutions", "maxDPStorageDays", "maxRuleNodeExecutionsPerMessage", "maxDebugModeDurationMinutes", "maxEmails", "smsEnabled", "maxSms", "maxCreatedAlarms", "maxGeneratedReports", "tenantServerRestLimitsConfiguration", "customerServerRestLimitsConfiguration", "maxWsSessionsPerTenant", "maxWsSessionsPerCustomer", "maxWsSessionsPerRegularUser", "maxWsSessionsPerPublicUser", "wsMsgQueueLimitPerSession", "maxWsSubscriptionsPerTenant", "maxWsSubscriptionsPerCustomer", "maxWsSubscriptionsPerRegularUser", "maxWsSubscriptionsPerPublicUser", "wsUpdatesPerSessionRateLimit", "cassandraReadQueryTenantCoreRateLimits", "cassandraWriteQueryTenantCoreRateLimits", "cassandraReadQueryTenantRuleEngineRateLimits", "cassandraWriteQueryTenantRuleEngineRateLimits", "edgeEventRateLimits", "edgeEventRateLimitsPerEdge", "edgeUplinkMessagesRateLimits", "edgeUplinkMessagesRateLimitsPerEdge", "defaultStorageTtlDays", "alarmsTtlDays", "rpcTtlDays", "queueStatsTtlDays", "ruleEngineExceptionsTtlDays", "blobEntityTtlDays", "reportTtlDays", "warnThreshold", "maxCalculatedFieldsPerEntity", "maxArgumentsPerCF", "minAllowedScheduledUpdateIntervalInSecForCF", "maxRelationLevelPerCfArgument", "maxRelatedEntitiesToReturnPerCfArgument", "maxDataPointsPerRollingArg", "maxStateSizeInKBytes", "maxSingleValueArgumentSizeInKBytes", "minAllowedDeduplicationIntervalInSecForCF", "minAllowedAggregationIntervalInSecForCF", "intermediateAggregationIntervalInSecForCF", "cfReevaluationCheckInterval", "alarmsReevaluationInterval"]
+    ai_chat_requests_per_tenant_rate_limit: Optional[StrictStr] = Field(default=None, serialization_alias="aiChatRequestsPerTenantRateLimit")
+    __properties: ClassVar[List[str]] = ["type", "maxDevices", "maxAssets", "maxCustomers", "maxUsers", "maxDashboards", "maxRuleChains", "maxEdges", "maxResourcesInBytes", "maxOtaPackagesInBytes", "maxResourceSize", "maxReportSizeInBytes", "maxIntegrations", "maxConverters", "maxSchedulerEvents", "maxAgents", "maxAgentApplications", "transportTenantMsgRateLimit", "transportTenantTelemetryMsgRateLimit", "transportTenantTelemetryDataPointsRateLimit", "transportDeviceMsgRateLimit", "transportDeviceTelemetryMsgRateLimit", "transportDeviceTelemetryDataPointsRateLimit", "transportGatewayMsgRateLimit", "transportGatewayTelemetryMsgRateLimit", "transportGatewayTelemetryDataPointsRateLimit", "transportGatewayDeviceMsgRateLimit", "transportGatewayDeviceTelemetryMsgRateLimit", "transportGatewayDeviceTelemetryDataPointsRateLimit", "integrationMsgsPerTenantRateLimit", "integrationMsgsPerDeviceRateLimit", "integrationMsgsPerAssetRateLimit", "tenantEntityExportRateLimit", "tenantEntityImportRateLimit", "tenantNotificationRequestsRateLimit", "tenantNotificationRequestsPerRuleRateLimit", "maxTransportMessages", "maxTransportDataPoints", "maxREExecutions", "maxJSExecutions", "maxTbelExecutions", "maxDPStorageDays", "maxRuleNodeExecutionsPerMessage", "maxDebugModeDurationMinutes", "maxEmails", "smsEnabled", "maxSms", "maxCreatedAlarms", "maxGeneratedReports", "maxAiCredits", "tenantServerRestLimitsConfiguration", "customerServerRestLimitsConfiguration", "maxWsSessionsPerTenant", "maxWsSessionsPerCustomer", "maxWsSessionsPerRegularUser", "maxWsSessionsPerPublicUser", "wsMsgQueueLimitPerSession", "maxWsSubscriptionsPerTenant", "maxWsSubscriptionsPerCustomer", "maxWsSubscriptionsPerRegularUser", "maxWsSubscriptionsPerPublicUser", "wsUpdatesPerSessionRateLimit", "cassandraReadQueryTenantCoreRateLimits", "cassandraWriteQueryTenantCoreRateLimits", "cassandraReadQueryTenantRuleEngineRateLimits", "cassandraWriteQueryTenantRuleEngineRateLimits", "edgeEventRateLimits", "edgeEventRateLimitsPerEdge", "edgeUplinkMessagesRateLimits", "edgeUplinkMessagesRateLimitsPerEdge", "agentEventRateLimits", "agentEventRateLimitsPerAgent", "agentLogChunkRateLimits", "agentLogChunkRateLimitsPerAgent", "defaultStorageTtlDays", "alarmsTtlDays", "rpcTtlDays", "queueStatsTtlDays", "ruleEngineExceptionsTtlDays", "blobEntityTtlDays", "reportTtlDays", "warnThreshold", "maxCalculatedFieldsPerEntity", "maxArgumentsPerCF", "minAllowedScheduledUpdateIntervalInSecForCF", "maxRelationLevelPerCfArgument", "maxRelatedEntitiesToReturnPerCfArgument", "maxDataPointsPerRollingArg", "maxStateSizeInKBytes", "maxSingleValueArgumentSizeInKBytes", "minAllowedDeduplicationIntervalInSecForCF", "minAllowedAggregationIntervalInSecForCF", "intermediateAggregationIntervalInSecForCF", "cfReevaluationCheckInterval", "alarmsReevaluationInterval", "aiChatRequestsPerTenantRateLimit"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -191,6 +199,8 @@ class DefaultTenantProfileConfiguration(TenantProfileConfiguration):
             "max_integrations": obj.get("maxIntegrations"),
             "max_converters": obj.get("maxConverters"),
             "max_scheduler_events": obj.get("maxSchedulerEvents"),
+            "max_agents": obj.get("maxAgents"),
+            "max_agent_applications": obj.get("maxAgentApplications"),
             "transport_tenant_msg_rate_limit": obj.get("transportTenantMsgRateLimit"),
             "transport_tenant_telemetry_msg_rate_limit": obj.get("transportTenantTelemetryMsgRateLimit"),
             "transport_tenant_telemetry_data_points_rate_limit": obj.get("transportTenantTelemetryDataPointsRateLimit"),
@@ -223,6 +233,7 @@ class DefaultTenantProfileConfiguration(TenantProfileConfiguration):
             "max_sms": obj.get("maxSms"),
             "max_created_alarms": obj.get("maxCreatedAlarms"),
             "max_generated_reports": obj.get("maxGeneratedReports"),
+            "max_ai_credits": obj.get("maxAiCredits"),
             "tenant_server_rest_limits_configuration": obj.get("tenantServerRestLimitsConfiguration"),
             "customer_server_rest_limits_configuration": obj.get("customerServerRestLimitsConfiguration"),
             "max_ws_sessions_per_tenant": obj.get("maxWsSessionsPerTenant"),
@@ -243,6 +254,10 @@ class DefaultTenantProfileConfiguration(TenantProfileConfiguration):
             "edge_event_rate_limits_per_edge": obj.get("edgeEventRateLimitsPerEdge"),
             "edge_uplink_messages_rate_limits": obj.get("edgeUplinkMessagesRateLimits"),
             "edge_uplink_messages_rate_limits_per_edge": obj.get("edgeUplinkMessagesRateLimitsPerEdge"),
+            "agent_event_rate_limits": obj.get("agentEventRateLimits"),
+            "agent_event_rate_limits_per_agent": obj.get("agentEventRateLimitsPerAgent"),
+            "agent_log_chunk_rate_limits": obj.get("agentLogChunkRateLimits"),
+            "agent_log_chunk_rate_limits_per_agent": obj.get("agentLogChunkRateLimitsPerAgent"),
             "default_storage_ttl_days": obj.get("defaultStorageTtlDays"),
             "alarms_ttl_days": obj.get("alarmsTtlDays"),
             "rpc_ttl_days": obj.get("rpcTtlDays"),
@@ -263,7 +278,8 @@ class DefaultTenantProfileConfiguration(TenantProfileConfiguration):
             "min_allowed_aggregation_interval_in_sec_for_cf": obj.get("minAllowedAggregationIntervalInSecForCF"),
             "intermediate_aggregation_interval_in_sec_for_cf": obj.get("intermediateAggregationIntervalInSecForCF"),
             "cf_reevaluation_check_interval": obj.get("cfReevaluationCheckInterval"),
-            "alarms_reevaluation_interval": obj.get("alarmsReevaluationInterval")
+            "alarms_reevaluation_interval": obj.get("alarmsReevaluationInterval"),
+            "ai_chat_requests_per_tenant_rate_limit": obj.get("aiChatRequestsPerTenantRateLimit")
         })
         return _obj
 

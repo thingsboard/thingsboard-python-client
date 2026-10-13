@@ -11,10 +11,12 @@ A JSON value representing the alarm data query. See API call notes above for mor
 |------------ | ------------- | ------------- | -------------|
 | **entity_filter** | [**EntityFilter**](EntityFilter.md) |  | [optional] |
 | **key_filters** | [**List[KeyFilter]**](KeyFilter.md) |  | [optional] |
+| **key_filters_operation** | [**AlarmRuleComplexOperation**](AlarmRuleComplexOperation.md) |  | [optional] |
 | **page_link** | [**AlarmDataPageLink**](AlarmDataPageLink.md) |  | [optional] |
 | **entity_fields** | [**List[EntityKey]**](EntityKey.md) |  | [optional] |
 | **latest_values** | [**List[EntityKey]**](EntityKey.md) |  | [optional] |
 | **alarm_fields** | [**List[EntityKey]**](EntityKey.md) |  | [optional] |
+| **key_filters_operation_or_default** | [**AlarmRuleComplexOperation**](AlarmRuleComplexOperation.md) |  | [optional] |
 
 
 
@@ -152,6 +154,9 @@ A JSON value representing the alarm data query. See API call notes above for mor
 | value_type | EntityKeyValueType |  | [optional] |
 | predicate | KeyFilterPredicate |  | [optional] |
 
+#### AlarmRuleComplexOperation (enum)
+`AND` | `OR`
+
 #### AlarmDataPageLink
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
@@ -192,7 +197,7 @@ A JSON value representing the alarm data query. See API call notes above for mor
 #### ComplexFilterPredicate  *(extends KeyFilterPredicate, type=`COMPLEX`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| operation | ComplexOperation |  | [optional] |
+| operation | AlarmRuleComplexOperation |  | [optional] |
 | predicates | List[KeyFilterPredicate] |  | [optional] |
 
 #### NumericFilterPredicate  *(extends KeyFilterPredicate, type=`NUMERIC`)*
@@ -278,9 +283,6 @@ A JSON value representing the alarm data query. See API call notes above for mor
 | default_value | bool |  | [optional] |
 | user_value | bool |  | [optional] |
 | dynamic_value | DynamicValueBoolean |  | [optional] |
-
-#### ComplexOperation (enum)
-`AND` | `OR`
 
 #### DynamicValueString
 | Name | Type | Description | Notes |

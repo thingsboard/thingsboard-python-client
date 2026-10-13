@@ -14,7 +14,7 @@
 
 ## Referenced Types
 
-> **EntityId types** (`AdminSettingsId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+> **EntityId types** (`AdminSettingsId`, `AgentAppEventId`, `AgentAppProfileId`, `AgentAppUnitId`, `AgentApplicationId`, `AgentBulkActionId`, `AgentId`, `AgentProfileId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
 
 #### EntityExportData
 | Name | Type | Description | Notes |
@@ -54,9 +54,10 @@
 #### EntityGroupExportData  *(extends EntityExportData, entity_type=`ENTITY_GROUP`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| permissions | List[GroupPermission] |  | [optional] |
-| group_ota_packages | List[DeviceGroupOtaPackage] |  | [optional] |
-| group_entities | bool |  | [optional] |
+| permissions | List[GroupPermission] | Group permissions to apply to this group on import. Meaningful only for USER groups; ignored for groups of any other type. Each entry's userGroupId, roleId, and entityGroupId may use the external IDs of other entities in this payload or the IDs of entities that already exist on the target tenant; the importer resolves them against the target tenant. System-tenant roles are not allowed and will be rejected. Leave null to skip permission management for this group. | [optional] |
+| group_ota_packages | List[DeviceGroupOtaPackage] | OTA package assignments to apply to this group on import. Meaningful only for DEVICE groups; ignored for groups of any other type. Each entry's otaPackageId and groupId may reference external IDs of entities in this payload or IDs of entities that already exist on the target tenant. Leave null to skip OTA assignment management for this group. | [optional] |
+| group_entities | bool | Marker indicating that the group's member entities are intended to be transported alongside this payload. Used by flows that convey members through a side channel (notably the version control flow, which stores members in a separate git index). The solution import API does not consume this flag and does not require it to be set. Safe to leave false (default). | [optional] |
+| member_ids | List[UUID] | External IDs of the entities that should be members of this group after import. Each ID is resolved against the target tenant — by other entity in this payload, by external ID, or by existing internal ID — and the matching entities are added to the group. The import fails if any listed member cannot be resolved. Must be null for the special 'All' group (whose membership is implicit and managed by the platform). Leave null to skip membership wiring; existing membership on the target tenant is left untouched. | [optional] |
 
 #### EntityViewExportData  *(extends EntityExportData, entity_type=`ENTITY_VIEW`)*
 *See EntityExportData for properties.*
@@ -93,10 +94,13 @@
 #### TbResourceExportData  *(extends EntityExportData, entity_type=`TB_RESOURCE`)*
 *See EntityExportData for properties.*
 
+#### UserExportData  *(extends EntityExportData, entity_type=`USER`)*
+*See EntityExportData for properties.*
+
 #### WidgetsBundleExportData  *(extends EntityExportData, entity_type=`WIDGETS_BUNDLE`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| widgets | List[object] |  | [optional] |
+| widgets | List[object] | List of widgets in the bundle | [optional] |
 | fqns | List[str] |  | [optional] |
 
 #### WidgetTypeExportData  *(extends EntityExportData, entity_type=`WIDGET_TYPE`)*
@@ -137,10 +141,10 @@
 | debug_mode | bool |  | [optional] |
 
 #### EntityType (enum)
-`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (46 values total)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (53 values total)
 
 #### RelationTypeGroup (enum)
-`COMMON` | `DASHBOARD` | `FROM_ENTITY_GROUP` | `RULE_CHAIN` | `RULE_NODE` | `EDGE` | `EDGE_AUTO_ASSIGN_RULE_CHAIN`
+`COMMON` | `DASHBOARD` | `FROM_ENTITY_GROUP` | `RULE_CHAIN` | `RULE_NODE` | `EDGE` | `EDGE_AUTO_ASSIGN_RULE_CHAIN` | `AGENT`
 
 #### CalculatedFieldType (enum)
 `SIMPLE` | `SCRIPT` | `GEOFENCING` | `ALARM` | `PROPAGATION` | `RELATED_ENTITIES_AGGREGATION` | `ENTITY_AGGREGATION`
@@ -239,6 +243,7 @@
 | nodes | List[RuleNode] | List of rule node JSON objects |  |
 | connections | List[NodeConnectionInfo] | List of JSON objects that represent connections between rule nodes |  |
 | rule_chain_connections | List[RuleChainConnectionInfo] | List of JSON objects that represent connections between rule nodes and other rule chains. |  |
+| notes | List[RuleChainNote] | List of sticky notes placed on the rule chain canvas | [optional] |
 
 #### GroupPermission
 | Name | Type | Description | Notes |
@@ -321,6 +326,21 @@
 | target_rule_chain_id | RuleChainId | JSON object with the Rule Chain Id. |  |
 | additional_info | object | JSON object with the additional information about the connection. |  |
 | type | str | Type of the relation. Typically indicated the result of processing by the 'from' rule node. For example, 'Success' or 'Failure' |  |
+
+#### RuleChainNote
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | str | Unique identifier of the note on the canvas | [optional] |
+| x | int | Horizontal position of the note on the canvas, in pixels | [optional] |
+| y | int | Vertical position of the note on the canvas, in pixels | [optional] |
+| width | int | Width of the note, in pixels | [optional] |
+| height | int | Height of the note, in pixels | [optional] |
+| content | str | Markdown or HTML content of the note | [optional] |
+| background_color | str | Background color of the note in CSS hex format, e.g. '#FFF9C4' | [optional] |
+| border_color | str | Border color of the note in CSS hex format, e.g. '#E6C800' | [optional] |
+| border_width | int | Border width of the note in pixels | [optional] |
+| apply_default_markdown_style | bool | Whether to apply the default markdown stylesheet to the note content | [optional] |
+| markdown_css | str | Custom CSS styles applied to the note content | [optional] |
 
 #### OtaPackageType (enum)
 `FIRMWARE` | `SOFTWARE`

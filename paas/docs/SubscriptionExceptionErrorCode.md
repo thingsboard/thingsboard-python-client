@@ -20,8 +20,6 @@ Subscription error code
 
 * `NUMBER_6` (value: `6`)
 
-* `NUMBER_7` (value: `7`)
-
 
 
 ---

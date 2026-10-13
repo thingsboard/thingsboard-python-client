@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from tb_pe_client.models.customer_id import CustomerId
@@ -46,8 +46,10 @@ class Report(BaseModel):
     format: TbReportFormat
     name: Annotated[str, Field(min_length=1, strict=True)]
     user_id: UserId = Field(serialization_alias="userId")
+    public_key: Optional[StrictStr] = Field(default=None, serialization_alias="publicKey")
     owner_id: Optional[EntityId] = Field(default=None, description="JSON object with Customer or Tenant Id", serialization_alias="ownerId")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "customerId", "templateId", "format", "name", "userId", "ownerId"]
+    public: Optional[StrictBool] = None
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "customerId", "templateId", "format", "name", "userId", "publicKey", "ownerId", "public"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -135,7 +137,9 @@ class Report(BaseModel):
             "format": obj.get("format"),
             "name": obj.get("name"),
             "user_id": UserId.from_dict(obj["userId"]) if obj.get("userId") is not None else None,
-            "owner_id": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None
+            "public_key": obj.get("publicKey"),
+            "owner_id": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None,
+            "public": obj.get("public")
         })
         return _obj
 

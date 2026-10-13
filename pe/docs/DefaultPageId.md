@@ -24,6 +24,8 @@
 
 * `DASHBOARDS` (value: `'DASHBOARDS'`)
 
+* `LIVE_LOCATION_TRACKING` (value: `'LIVE_LOCATION_TRACKING'`)
+
 
 
 ---

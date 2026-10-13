@@ -30,11 +30,11 @@ class CustomTimeScheduleItem(BaseModel):
     """
     CustomTimeScheduleItem
     """ # noqa: E501
-    day_of_week: Optional[StrictInt] = Field(default=None, serialization_alias="dayOfWeek")
     enabled: Optional[StrictBool] = None
-    ends_on: Optional[StrictInt] = Field(default=None, serialization_alias="endsOn")
+    day_of_week: Optional[StrictInt] = Field(default=None, serialization_alias="dayOfWeek")
     starts_on: Optional[StrictInt] = Field(default=None, serialization_alias="startsOn")
-    __properties: ClassVar[List[str]] = ["dayOfWeek", "enabled", "endsOn", "startsOn"]
+    ends_on: Optional[StrictInt] = Field(default=None, serialization_alias="endsOn")
+    __properties: ClassVar[List[str]] = ["enabled", "dayOfWeek", "startsOn", "endsOn"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -92,10 +92,10 @@ class CustomTimeScheduleItem(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "day_of_week": obj.get("dayOfWeek"),
             "enabled": obj.get("enabled"),
-            "ends_on": obj.get("endsOn"),
-            "starts_on": obj.get("startsOn")
+            "day_of_week": obj.get("dayOfWeek"),
+            "starts_on": obj.get("startsOn"),
+            "ends_on": obj.get("endsOn")
         })
         return _obj
 

@@ -24,6 +24,7 @@ import json
 from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_pe_client.models.alarm_data_page_link import AlarmDataPageLink
+from tb_pe_client.models.alarm_rule_complex_operation import AlarmRuleComplexOperation
 from tb_pe_client.models.entity_filter import EntityFilter
 from tb_pe_client.models.entity_key import EntityKey
 from tb_pe_client.models.key_filter import KeyFilter
@@ -36,11 +37,13 @@ class AlarmDataQuery(BaseModel):
     """ # noqa: E501
     entity_filter: Optional[EntityFilter] = Field(default=None, serialization_alias="entityFilter")
     key_filters: Optional[List[KeyFilter]] = Field(default=None, serialization_alias="keyFilters")
+    key_filters_operation: Optional[AlarmRuleComplexOperation] = Field(default=None, serialization_alias="keyFiltersOperation")
     page_link: Optional[AlarmDataPageLink] = Field(default=None, serialization_alias="pageLink")
     entity_fields: Optional[List[EntityKey]] = Field(default=None, serialization_alias="entityFields")
     latest_values: Optional[List[EntityKey]] = Field(default=None, serialization_alias="latestValues")
     alarm_fields: Optional[List[EntityKey]] = Field(default=None, serialization_alias="alarmFields")
-    __properties: ClassVar[List[str]] = ["entityFilter", "keyFilters", "pageLink", "entityFields", "latestValues", "alarmFields"]
+    key_filters_operation_or_default: Optional[AlarmRuleComplexOperation] = Field(default=None, serialization_alias="keyFiltersOperationOrDefault")
+    __properties: ClassVar[List[str]] = ["entityFilter", "keyFilters", "keyFiltersOperation", "pageLink", "entityFields", "latestValues", "alarmFields", "keyFiltersOperationOrDefault"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -134,10 +137,12 @@ class AlarmDataQuery(BaseModel):
         _obj = cls.model_validate({
             "entity_filter": EntityFilter.from_dict(obj["entityFilter"]) if obj.get("entityFilter") is not None else None,
             "key_filters": [KeyFilter.from_dict(_item) for _item in obj["keyFilters"]] if obj.get("keyFilters") is not None else None,
+            "key_filters_operation": obj.get("keyFiltersOperation"),
             "page_link": AlarmDataPageLink.from_dict(obj["pageLink"]) if obj.get("pageLink") is not None else None,
             "entity_fields": [EntityKey.from_dict(_item) for _item in obj["entityFields"]] if obj.get("entityFields") is not None else None,
             "latest_values": [EntityKey.from_dict(_item) for _item in obj["latestValues"]] if obj.get("latestValues") is not None else None,
-            "alarm_fields": [EntityKey.from_dict(_item) for _item in obj["alarmFields"]] if obj.get("alarmFields") is not None else None
+            "alarm_fields": [EntityKey.from_dict(_item) for _item in obj["alarmFields"]] if obj.get("alarmFields") is not None else None,
+            "key_filters_operation_or_default": obj.get("keyFiltersOperationOrDefault")
         })
         return _obj
 

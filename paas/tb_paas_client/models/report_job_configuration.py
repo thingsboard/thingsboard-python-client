@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import ConfigDict, Field, StrictStr
+from pydantic import ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from uuid import UUID
 from tb_paas_client.models.entity_id import EntityId
@@ -43,6 +43,7 @@ class ReportJobConfiguration(JobConfiguration):
     report_template_id: Optional[ReportTemplateId] = Field(default=None, serialization_alias="reportTemplateId")
     user_id: Optional[UserId] = Field(default=None, serialization_alias="userId")
     timezone: Optional[StrictStr] = None
+    make_public: Optional[StrictBool] = Field(default=None, serialization_alias="makePublic")
     targets: Optional[List[UUID]] = None
     notification_template_id: Optional[NotificationTemplateId] = Field(default=None, serialization_alias="notificationTemplateId")
     notification_requests: Optional[List[NotificationRequest]] = Field(default=None, serialization_alias="notificationRequests")
@@ -51,7 +52,7 @@ class ReportJobConfiguration(JobConfiguration):
     output_tb_msg_proto: Optional[StrictStr] = Field(default=None, serialization_alias="outputTbMsgProto")
     queue_name: Optional[StrictStr] = Field(default=None, serialization_alias="queueName")
     scheduler_event_info: Optional[EntityInfo] = Field(default=None, serialization_alias="schedulerEventInfo")
-    __properties: ClassVar[List[str]] = ["tasksKey", "toReprocess", "type", "reportTemplateId", "userId", "timezone", "targets", "notificationTemplateId", "notificationRequests", "originator", "ruleNode", "outputTbMsgProto", "queueName", "schedulerEventInfo"]
+    __properties: ClassVar[List[str]] = ["tasksKey", "toReprocess", "type", "reportTemplateId", "userId", "timezone", "makePublic", "targets", "notificationTemplateId", "notificationRequests", "originator", "ruleNode", "outputTbMsgProto", "queueName", "schedulerEventInfo"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -147,6 +148,7 @@ class ReportJobConfiguration(JobConfiguration):
             "report_template_id": ReportTemplateId.from_dict(obj["reportTemplateId"]) if obj.get("reportTemplateId") is not None else None,
             "user_id": UserId.from_dict(obj["userId"]) if obj.get("userId") is not None else None,
             "timezone": obj.get("timezone"),
+            "make_public": obj.get("makePublic"),
             "targets": obj.get("targets"),
             "notification_template_id": NotificationTemplateId.from_dict(obj["notificationTemplateId"]) if obj.get("notificationTemplateId") is not None else None,
             "notification_requests": [NotificationRequest.from_dict(_item) for _item in obj["notificationRequests"]] if obj.get("notificationRequests") is not None else None,

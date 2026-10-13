@@ -991,7 +991,7 @@ class RpcV2ControllerApi:
     def handle_one_way_device_rpc_request_v2(
         self,
         device_id: Annotated[StrictStr, Field(description="A string value representing the device id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")],
-        body: StrictStr,
+        body: Annotated[StrictStr, Field(description="A JSON object representing the RPC request.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1011,7 +1011,7 @@ class RpcV2ControllerApi:
 
         :param device_id: A string value representing the device id. For example, '784f394c-42b6-435a-983c-b7beff2784f9' (required)
         :type device_id: str
-        :param body: (required)
+        :param body: A JSON object representing the RPC request. (required)
         :type body: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1069,7 +1069,7 @@ class RpcV2ControllerApi:
     def handle_one_way_device_rpc_request_v2_with_http_info(
         self,
         device_id: Annotated[StrictStr, Field(description="A string value representing the device id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")],
-        body: StrictStr,
+        body: Annotated[StrictStr, Field(description="A JSON object representing the RPC request.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1089,7 +1089,7 @@ class RpcV2ControllerApi:
 
         :param device_id: A string value representing the device id. For example, '784f394c-42b6-435a-983c-b7beff2784f9' (required)
         :type device_id: str
-        :param body: (required)
+        :param body: A JSON object representing the RPC request. (required)
         :type body: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1147,7 +1147,7 @@ class RpcV2ControllerApi:
     def handle_one_way_device_rpc_request_v2_without_preload_content(
         self,
         device_id: Annotated[StrictStr, Field(description="A string value representing the device id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")],
-        body: StrictStr,
+        body: Annotated[StrictStr, Field(description="A JSON object representing the RPC request.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1167,7 +1167,7 @@ class RpcV2ControllerApi:
 
         :param device_id: A string value representing the device id. For example, '784f394c-42b6-435a-983c-b7beff2784f9' (required)
         :type device_id: str
-        :param body: (required)
+        :param body: A JSON object representing the RPC request. (required)
         :type body: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1267,7 +1267,7 @@ class RpcV2ControllerApi:
             _default_content_type = (
                 self.api_client.select_header_content_type(
                     [
-                        'application/json'
+                        'text/plain'
                     ]
                 )
             )
@@ -1302,7 +1302,7 @@ class RpcV2ControllerApi:
     def handle_two_way_device_rpc_request_v2(
         self,
         device_id: Annotated[StrictStr, Field(description="A string value representing the device id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")],
-        body: StrictStr,
+        body: Annotated[StrictStr, Field(description="A JSON object representing the RPC request.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1322,7 +1322,7 @@ class RpcV2ControllerApi:
 
         :param device_id: A string value representing the device id. For example, '784f394c-42b6-435a-983c-b7beff2784f9' (required)
         :type device_id: str
-        :param body: (required)
+        :param body: A JSON object representing the RPC request. (required)
         :type body: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1380,7 +1380,7 @@ class RpcV2ControllerApi:
     def handle_two_way_device_rpc_request_v2_with_http_info(
         self,
         device_id: Annotated[StrictStr, Field(description="A string value representing the device id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")],
-        body: StrictStr,
+        body: Annotated[StrictStr, Field(description="A JSON object representing the RPC request.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1400,7 +1400,7 @@ class RpcV2ControllerApi:
 
         :param device_id: A string value representing the device id. For example, '784f394c-42b6-435a-983c-b7beff2784f9' (required)
         :type device_id: str
-        :param body: (required)
+        :param body: A JSON object representing the RPC request. (required)
         :type body: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1458,7 +1458,7 @@ class RpcV2ControllerApi:
     def handle_two_way_device_rpc_request_v2_without_preload_content(
         self,
         device_id: Annotated[StrictStr, Field(description="A string value representing the device id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")],
-        body: StrictStr,
+        body: Annotated[StrictStr, Field(description="A JSON object representing the RPC request.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1478,7 +1478,7 @@ class RpcV2ControllerApi:
 
         :param device_id: A string value representing the device id. For example, '784f394c-42b6-435a-983c-b7beff2784f9' (required)
         :type device_id: str
-        :param body: (required)
+        :param body: A JSON object representing the RPC request. (required)
         :type body: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1578,7 +1578,7 @@ class RpcV2ControllerApi:
             _default_content_type = (
                 self.api_client.select_header_content_type(
                     [
-                        'application/json'
+                        'text/plain'
                     ]
                 )
             )

@@ -10,15 +10,15 @@ Contains unique time series and attribute key names discovered from entities mat
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
 | **entity_types** | [**List[EntityType]**](EntityType.md) | Set of entity types found among the matched entities. | |
-| **timeseries** | **List[str]** |  | |
-| **attribute** | **List[str]** |  | |
+| **timeseries** | **List[str]** | List of unique time series key names available on the matched entities. | |
+| **attribute** | **List[str]** | List of unique attribute key names available on the matched entities. | |
 
 
 
 ## Referenced Types
 
 #### EntityType (enum)
-`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (46 values total)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (53 values total)
 
 ---
 

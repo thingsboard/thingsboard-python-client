@@ -900,6 +900,283 @@ class ReportControllerApi:
 
 
     @validate_call
+    def download_report_by_public_key(
+        self,
+        public_key: Annotated[StrictStr, Field(description="The random public key of the report")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> bytearray:
+        """Download report by public key (downloadReportByPublicKey)
+
+        Downloads the report identified by its public key. This endpoint is intentionally public: it requires no authentication and is accessible to anyone in possession of the report's random public key. It only returns data for reports that have been explicitly made public (see updateReportPublicStatus).
+
+        :param public_key: The random public key of the report (required)
+        :type public_key: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._download_report_by_public_key_serialize(
+            public_key=public_key,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "bytearray",
+            '400': "ThingsboardErrorResponse",
+            '401': "ThingsboardErrorResponse",
+            '403': "ThingsboardErrorResponse",
+            '404': "ThingsboardErrorResponse",
+            '429': "ThingsboardErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def download_report_by_public_key_with_http_info(
+        self,
+        public_key: Annotated[StrictStr, Field(description="The random public key of the report")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[bytearray]:
+        """Download report by public key (downloadReportByPublicKey)
+
+        Downloads the report identified by its public key. This endpoint is intentionally public: it requires no authentication and is accessible to anyone in possession of the report's random public key. It only returns data for reports that have been explicitly made public (see updateReportPublicStatus).
+
+        :param public_key: The random public key of the report (required)
+        :type public_key: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._download_report_by_public_key_serialize(
+            public_key=public_key,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "bytearray",
+            '400': "ThingsboardErrorResponse",
+            '401': "ThingsboardErrorResponse",
+            '403': "ThingsboardErrorResponse",
+            '404': "ThingsboardErrorResponse",
+            '429': "ThingsboardErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def download_report_by_public_key_without_preload_content(
+        self,
+        public_key: Annotated[StrictStr, Field(description="The random public key of the report")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Download report by public key (downloadReportByPublicKey)
+
+        Downloads the report identified by its public key. This endpoint is intentionally public: it requires no authentication and is accessible to anyone in possession of the report's random public key. It only returns data for reports that have been explicitly made public (see updateReportPublicStatus).
+
+        :param public_key: The random public key of the report (required)
+        :type public_key: str
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._download_report_by_public_key_serialize(
+            public_key=public_key,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "bytearray",
+            '400': "ThingsboardErrorResponse",
+            '401': "ThingsboardErrorResponse",
+            '403': "ThingsboardErrorResponse",
+            '404': "ThingsboardErrorResponse",
+            '429': "ThingsboardErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _download_report_by_public_key_serialize(
+        self,
+        public_key,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if public_key is not None:
+            _path_params['publicKey'] = public_key
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'ApiKeyForm', 
+            'HttpLoginForm'
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/api/v2/report/public/{publicKey}/download',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
     def get_report_by_id(
         self,
         report_id: Annotated[StrictStr, Field(description="A string value representing the report id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")],
@@ -918,7 +1195,7 @@ class ReportControllerApi:
     ) -> Report:
         """Get Report (getReportById)
 
-        Fetch the Report object based on the provided report Id. The platform uses Report to store generated reports information.Referencing non-existing Report Id will cause 'Not Found' error.  Available for users with 'TENANT_ADMIN' authority.   Security check is performed to verify that the user has 'READ' permission for the entity (entities).
+        Fetch the Report object based on the provided report Id. The platform uses Report to store generated reports information.Referencing non-existing Report Id will cause 'Not Found' error.  Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.   Security check is performed to verify that the user has 'READ' permission for the entity (entities).
 
         :param report_id: A string value representing the report id. For example, '784f394c-42b6-435a-983c-b7beff2784f9' (required)
         :type report_id: str
@@ -990,7 +1267,7 @@ class ReportControllerApi:
     ) -> ApiResponse[Report]:
         """Get Report (getReportById)
 
-        Fetch the Report object based on the provided report Id. The platform uses Report to store generated reports information.Referencing non-existing Report Id will cause 'Not Found' error.  Available for users with 'TENANT_ADMIN' authority.   Security check is performed to verify that the user has 'READ' permission for the entity (entities).
+        Fetch the Report object based on the provided report Id. The platform uses Report to store generated reports information.Referencing non-existing Report Id will cause 'Not Found' error.  Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.   Security check is performed to verify that the user has 'READ' permission for the entity (entities).
 
         :param report_id: A string value representing the report id. For example, '784f394c-42b6-435a-983c-b7beff2784f9' (required)
         :type report_id: str
@@ -1062,7 +1339,7 @@ class ReportControllerApi:
     ) -> RESTResponseType:
         """Get Report (getReportById)
 
-        Fetch the Report object based on the provided report Id. The platform uses Report to store generated reports information.Referencing non-existing Report Id will cause 'Not Found' error.  Available for users with 'TENANT_ADMIN' authority.   Security check is performed to verify that the user has 'READ' permission for the entity (entities).
+        Fetch the Report object based on the provided report Id. The platform uses Report to store generated reports information.Referencing non-existing Report Id will cause 'Not Found' error.  Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.   Security check is performed to verify that the user has 'READ' permission for the entity (entities).
 
         :param report_id: A string value representing the report id. For example, '784f394c-42b6-435a-983c-b7beff2784f9' (required)
         :type report_id: str
@@ -1183,7 +1460,7 @@ class ReportControllerApi:
         page: Annotated[StrictInt, Field(description="Sequence number of page starting from 0")],
         report_template_id: Annotated[Optional[UUID], Field(description="Report template id")] = None,
         user_id: Annotated[Optional[UUID], Field(description="The user used for report generation.")] = None,
-        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities")] = None,
+        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.")] = None,
         text_search: Annotated[Optional[StrictStr], Field(description="Case-insensitive 'substring' filter based on report's name or customer title")] = None,
         sort_property: Annotated[Optional[StrictStr], Field(description="Property of entity to sort by")] = None,
         sort_order: Annotated[Optional[StrictStr], Field(description="Sort order. ASC (ASCENDING) or DESC (DESCENDING)")] = None,
@@ -1211,7 +1488,7 @@ class ReportControllerApi:
         :type report_template_id: UUID
         :param user_id: The user used for report generation.
         :type user_id: UUID
-        :param include_customers: Include customer or sub-customer entities
+        :param include_customers: Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.
         :type include_customers: bool
         :param text_search: Case-insensitive 'substring' filter based on report's name or customer title
         :type text_search: str
@@ -1282,7 +1559,7 @@ class ReportControllerApi:
         page: Annotated[StrictInt, Field(description="Sequence number of page starting from 0")],
         report_template_id: Annotated[Optional[UUID], Field(description="Report template id")] = None,
         user_id: Annotated[Optional[UUID], Field(description="The user used for report generation.")] = None,
-        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities")] = None,
+        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.")] = None,
         text_search: Annotated[Optional[StrictStr], Field(description="Case-insensitive 'substring' filter based on report's name or customer title")] = None,
         sort_property: Annotated[Optional[StrictStr], Field(description="Property of entity to sort by")] = None,
         sort_order: Annotated[Optional[StrictStr], Field(description="Sort order. ASC (ASCENDING) or DESC (DESCENDING)")] = None,
@@ -1310,7 +1587,7 @@ class ReportControllerApi:
         :type report_template_id: UUID
         :param user_id: The user used for report generation.
         :type user_id: UUID
-        :param include_customers: Include customer or sub-customer entities
+        :param include_customers: Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.
         :type include_customers: bool
         :param text_search: Case-insensitive 'substring' filter based on report's name or customer title
         :type text_search: str
@@ -1381,7 +1658,7 @@ class ReportControllerApi:
         page: Annotated[StrictInt, Field(description="Sequence number of page starting from 0")],
         report_template_id: Annotated[Optional[UUID], Field(description="Report template id")] = None,
         user_id: Annotated[Optional[UUID], Field(description="The user used for report generation.")] = None,
-        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities")] = None,
+        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.")] = None,
         text_search: Annotated[Optional[StrictStr], Field(description="Case-insensitive 'substring' filter based on report's name or customer title")] = None,
         sort_property: Annotated[Optional[StrictStr], Field(description="Property of entity to sort by")] = None,
         sort_order: Annotated[Optional[StrictStr], Field(description="Sort order. ASC (ASCENDING) or DESC (DESCENDING)")] = None,
@@ -1409,7 +1686,7 @@ class ReportControllerApi:
         :type report_template_id: UUID
         :param user_id: The user used for report generation.
         :type user_id: UUID
-        :param include_customers: Include customer or sub-customer entities
+        :param include_customers: Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.
         :type include_customers: bool
         :param text_search: Case-insensitive 'substring' filter based on report's name or customer title
         :type text_search: str
@@ -1856,6 +2133,7 @@ class ReportControllerApi:
         text_search: Annotated[Optional[StrictStr], Field(description="Case-insensitive 'substring' filter based on report's name or customer title")] = None,
         sort_property: Annotated[Optional[StrictStr], Field(description="Property of entity to sort by")] = None,
         sort_order: Annotated[Optional[StrictStr], Field(description="Sort order. ASC (ASCENDING) or DESC (DESCENDING)")] = None,
+        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1882,6 +2160,8 @@ class ReportControllerApi:
         :type sort_property: str
         :param sort_order: Sort order. ASC (ASCENDING) or DESC (DESCENDING)
         :type sort_order: str
+        :param include_customers: Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.
+        :type include_customers: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1910,6 +2190,7 @@ class ReportControllerApi:
             text_search=text_search,
             sort_property=sort_property,
             sort_order=sort_order,
+            include_customers=include_customers,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -1943,6 +2224,7 @@ class ReportControllerApi:
         text_search: Annotated[Optional[StrictStr], Field(description="Case-insensitive 'substring' filter based on report's name or customer title")] = None,
         sort_property: Annotated[Optional[StrictStr], Field(description="Property of entity to sort by")] = None,
         sort_order: Annotated[Optional[StrictStr], Field(description="Sort order. ASC (ASCENDING) or DESC (DESCENDING)")] = None,
+        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1969,6 +2251,8 @@ class ReportControllerApi:
         :type sort_property: str
         :param sort_order: Sort order. ASC (ASCENDING) or DESC (DESCENDING)
         :type sort_order: str
+        :param include_customers: Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.
+        :type include_customers: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -1997,6 +2281,7 @@ class ReportControllerApi:
             text_search=text_search,
             sort_property=sort_property,
             sort_order=sort_order,
+            include_customers=include_customers,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2030,6 +2315,7 @@ class ReportControllerApi:
         text_search: Annotated[Optional[StrictStr], Field(description="Case-insensitive 'substring' filter based on report's name or customer title")] = None,
         sort_property: Annotated[Optional[StrictStr], Field(description="Property of entity to sort by")] = None,
         sort_order: Annotated[Optional[StrictStr], Field(description="Sort order. ASC (ASCENDING) or DESC (DESCENDING)")] = None,
+        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.")] = None,
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -2056,6 +2342,8 @@ class ReportControllerApi:
         :type sort_property: str
         :param sort_order: Sort order. ASC (ASCENDING) or DESC (DESCENDING)
         :type sort_order: str
+        :param include_customers: Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.
+        :type include_customers: bool
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
@@ -2084,6 +2372,7 @@ class ReportControllerApi:
             text_search=text_search,
             sort_property=sort_property,
             sort_order=sort_order,
+            include_customers=include_customers,
             _request_auth=_request_auth,
             _content_type=_content_type,
             _headers=_headers,
@@ -2112,6 +2401,7 @@ class ReportControllerApi:
         text_search,
         sort_property,
         sort_order,
+        include_customers,
         _request_auth,
         _content_type,
         _headers,
@@ -2153,6 +2443,10 @@ class ReportControllerApi:
         if sort_order is not None:
             
             _query_params.append(('sortOrder', sort_order))
+            
+        if include_customers is not None:
+            
+            _query_params.append(('includeCustomers', include_customers))
             
         # process the header parameters
         # process the form parameters
@@ -2498,7 +2792,7 @@ class ReportControllerApi:
     ) -> bytearray:
         """Download test report (testReportAndDownload)
 
-        Generate and download test report.  Available for users with 'TENANT_ADMIN' authority.
+        Generate and download test report.  Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
 
         :param report_request: (required)
         :type report_request: ReportRequest
@@ -2570,7 +2864,7 @@ class ReportControllerApi:
     ) -> ApiResponse[bytearray]:
         """Download test report (testReportAndDownload)
 
-        Generate and download test report.  Available for users with 'TENANT_ADMIN' authority.
+        Generate and download test report.  Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
 
         :param report_request: (required)
         :type report_request: ReportRequest
@@ -2642,7 +2936,7 @@ class ReportControllerApi:
     ) -> RESTResponseType:
         """Download test report (testReportAndDownload)
 
-        Generate and download test report.  Available for users with 'TENANT_ADMIN' authority.
+        Generate and download test report.  Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
 
         :param report_request: (required)
         :type report_request: ReportRequest
@@ -2754,6 +3048,298 @@ class ReportControllerApi:
         return self.api_client.param_serialize(
             method='POST',
             resource_path='/api/v2/report/test',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def update_report_public_status(
+        self,
+        report_id: Annotated[UUID, Field(description="A string value representing the report id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")],
+        is_public: Annotated[StrictBool, Field(description="Whether the report should be publicly downloadable without authentication")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> Report:
+        """Update Report public status (updateReportPublicStatus)
+
+        Updates the public status of the report. When public, the report can be downloaded without authentication via the public link.   Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
+
+        :param report_id: A string value representing the report id. For example, '784f394c-42b6-435a-983c-b7beff2784f9' (required)
+        :type report_id: UUID
+        :param is_public: Whether the report should be publicly downloadable without authentication (required)
+        :type is_public: bool
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._update_report_public_status_serialize(
+            report_id=report_id,
+            is_public=is_public,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "Report",
+            '400': "ThingsboardErrorResponse",
+            '401': "ThingsboardErrorResponse",
+            '403': "ThingsboardErrorResponse",
+            '404': "ThingsboardErrorResponse",
+            '429': "ThingsboardErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def update_report_public_status_with_http_info(
+        self,
+        report_id: Annotated[UUID, Field(description="A string value representing the report id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")],
+        is_public: Annotated[StrictBool, Field(description="Whether the report should be publicly downloadable without authentication")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[Report]:
+        """Update Report public status (updateReportPublicStatus)
+
+        Updates the public status of the report. When public, the report can be downloaded without authentication via the public link.   Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
+
+        :param report_id: A string value representing the report id. For example, '784f394c-42b6-435a-983c-b7beff2784f9' (required)
+        :type report_id: UUID
+        :param is_public: Whether the report should be publicly downloadable without authentication (required)
+        :type is_public: bool
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._update_report_public_status_serialize(
+            report_id=report_id,
+            is_public=is_public,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "Report",
+            '400': "ThingsboardErrorResponse",
+            '401': "ThingsboardErrorResponse",
+            '403': "ThingsboardErrorResponse",
+            '404': "ThingsboardErrorResponse",
+            '429': "ThingsboardErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def update_report_public_status_without_preload_content(
+        self,
+        report_id: Annotated[UUID, Field(description="A string value representing the report id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")],
+        is_public: Annotated[StrictBool, Field(description="Whether the report should be publicly downloadable without authentication")],
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Update Report public status (updateReportPublicStatus)
+
+        Updates the public status of the report. When public, the report can be downloaded without authentication via the public link.   Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
+
+        :param report_id: A string value representing the report id. For example, '784f394c-42b6-435a-983c-b7beff2784f9' (required)
+        :type report_id: UUID
+        :param is_public: Whether the report should be publicly downloadable without authentication (required)
+        :type is_public: bool
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._update_report_public_status_serialize(
+            report_id=report_id,
+            is_public=is_public,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "Report",
+            '400': "ThingsboardErrorResponse",
+            '401': "ThingsboardErrorResponse",
+            '403': "ThingsboardErrorResponse",
+            '404': "ThingsboardErrorResponse",
+            '429': "ThingsboardErrorResponse",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _update_report_public_status_serialize(
+        self,
+        report_id,
+        is_public,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        if report_id is not None:
+            _path_params['reportId'] = report_id
+        if is_public is not None:
+            _path_params['isPublic'] = is_public
+        # process the query parameters
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'ApiKeyForm', 
+            'HttpLoginForm'
+        ]
+
+        return self.api_client.param_serialize(
+            method='PUT',
+            resource_path='/api/v2/report/{reportId}/public/{isPublic}',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from tb_paas_client.models.customer_id import CustomerId
@@ -47,11 +47,13 @@ class ReportInfo(BaseModel):
     format: TbReportFormat
     name: Annotated[str, Field(min_length=1, strict=True)]
     user_id: UserId = Field(serialization_alias="userId")
+    public_key: Optional[StrictStr] = Field(default=None, serialization_alias="publicKey")
     template_info: Optional[EntityInfo] = Field(default=None, serialization_alias="templateInfo")
     customer_title: Optional[StrictStr] = Field(default=None, serialization_alias="customerTitle")
     user_name: Optional[StrictStr] = Field(default=None, serialization_alias="userName")
     owner_id: Optional[EntityId] = Field(default=None, description="JSON object with Customer or Tenant Id", serialization_alias="ownerId")
-    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "customerId", "templateId", "format", "name", "userId", "templateInfo", "customerTitle", "userName", "ownerId"]
+    public: Optional[StrictBool] = None
+    __properties: ClassVar[List[str]] = ["id", "createdTime", "tenantId", "customerId", "templateId", "format", "name", "userId", "publicKey", "templateInfo", "customerTitle", "userName", "ownerId", "public"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -142,10 +144,12 @@ class ReportInfo(BaseModel):
             "format": obj.get("format"),
             "name": obj.get("name"),
             "user_id": UserId.from_dict(obj["userId"]) if obj.get("userId") is not None else None,
+            "public_key": obj.get("publicKey"),
             "template_info": EntityInfo.from_dict(obj["templateInfo"]) if obj.get("templateInfo") is not None else None,
             "customer_title": obj.get("customerTitle"),
             "user_name": obj.get("userName"),
-            "owner_id": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None
+            "owner_id": EntityId.from_dict(obj["ownerId"]) if obj.get("ownerId") is not None else None,
+            "public": obj.get("public")
         })
         return _obj
 

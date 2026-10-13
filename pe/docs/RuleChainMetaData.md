@@ -15,12 +15,13 @@ A JSON value representing the rule chain metadata.
 | **nodes** | [**List[RuleNode]**](RuleNode.md) | List of rule node JSON objects | |
 | **connections** | [**List[NodeConnectionInfo]**](NodeConnectionInfo.md) | List of JSON objects that represent connections between rule nodes | |
 | **rule_chain_connections** | [**List[RuleChainConnectionInfo]**](RuleChainConnectionInfo.md) | List of JSON objects that represent connections between rule nodes and other rule chains. | |
+| **notes** | [**List[RuleChainNote]**](RuleChainNote.md) | List of sticky notes placed on the rule chain canvas | [optional] |
 
 
 
 ## Referenced Types
 
-> **EntityId types** (`AdminSettingsId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+> **EntityId types** (`AdminSettingsId`, `AgentAppEventId`, `AgentAppProfileId`, `AgentAppUnitId`, `AgentApplicationId`, `AgentBulkActionId`, `AgentId`, `AgentProfileId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
 
 #### RuleNode
 | Name | Type | Description | Notes |
@@ -54,6 +55,21 @@ A JSON value representing the rule chain metadata.
 | additional_info | object | JSON object with the additional information about the connection. |  |
 | type | str | Type of the relation. Typically indicated the result of processing by the 'from' rule node. For example, 'Success' or 'Failure' |  |
 
+#### RuleChainNote
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | str | Unique identifier of the note on the canvas | [optional] |
+| x | int | Horizontal position of the note on the canvas, in pixels | [optional] |
+| y | int | Vertical position of the note on the canvas, in pixels | [optional] |
+| width | int | Width of the note, in pixels | [optional] |
+| height | int | Height of the note, in pixels | [optional] |
+| content | str | Markdown or HTML content of the note | [optional] |
+| background_color | str | Background color of the note in CSS hex format, e.g. '#FFF9C4' | [optional] |
+| border_color | str | Border color of the note in CSS hex format, e.g. '#E6C800' | [optional] |
+| border_width | int | Border width of the note in pixels | [optional] |
+| apply_default_markdown_style | bool | Whether to apply the default markdown stylesheet to the note content | [optional] |
+| markdown_css | str | Custom CSS styles applied to the note content | [optional] |
+
 #### DebugSettings
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
@@ -62,7 +78,7 @@ A JSON value representing the rule chain metadata.
 | all_enabled_until | int | Timestamp of the end time for the processing debug events. | [optional] |
 
 #### EntityType (enum)
-`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (46 values total)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (53 values total)
 
 ---
 

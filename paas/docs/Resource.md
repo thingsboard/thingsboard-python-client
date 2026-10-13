@@ -74,6 +74,8 @@
 
 * `DASHBOARD_GROUP` (value: `'DASHBOARD_GROUP'`)
 
+* `AGENT_GROUP` (value: `'AGENT_GROUP'`)
+
 * `ROLE` (value: `'ROLE'`)
 
 * `GROUP_PERMISSION` (value: `'GROUP_PERMISSION'`)
@@ -111,6 +113,12 @@
 * `REPORT` (value: `'REPORT'`)
 
 * `AI_MODEL` (value: `'AI_MODEL'`)
+
+* `AGENT` (value: `'AGENT'`)
+
+* `AGENT_APP_PROFILE` (value: `'AGENT_APP_PROFILE'`)
+
+* `AGENT_PROFILE` (value: `'AGENT_PROFILE'`)
 
 * `AI` (value: `'AI'`)
 

@@ -20,6 +20,8 @@
 
 * `EDGE_AUTO_ASSIGN_RULE_CHAIN` (value: `'EDGE_AUTO_ASSIGN_RULE_CHAIN'`)
 
+* `AGENT` (value: `'AGENT'`)
+
 
 
 ---

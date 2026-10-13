@@ -24,8 +24,8 @@ import json
 from pydantic import ConfigDict
 from typing import Any, ClassVar, Dict, List
 from tb_paas_client.models.alarm_condition_value_boolean import AlarmConditionValueBoolean
+from tb_paas_client.models.alarm_rule_boolean_operation import AlarmRuleBooleanOperation
 from tb_paas_client.models.alarm_rule_key_filter_predicate import AlarmRuleKeyFilterPredicate
-from tb_paas_client.models.boolean_operation import BooleanOperation
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -33,7 +33,7 @@ class AlarmRuleBooleanFilterPredicate(AlarmRuleKeyFilterPredicate):
     """
     AlarmRuleBooleanFilterPredicate
     """ # noqa: E501
-    operation: BooleanOperation
+    operation: AlarmRuleBooleanOperation
     value: AlarmConditionValueBoolean
     __properties: ClassVar[List[str]] = ["type", "operation", "value"]
 

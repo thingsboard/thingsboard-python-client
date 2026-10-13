@@ -48,9 +48,10 @@ Base export container for ThingsBoard entities
 #### EntityGroupExportData  *(entity_type=`ENTITY_GROUP`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| permissions | List[GroupPermission] |  | [optional] |
-| group_ota_packages | List[DeviceGroupOtaPackage] |  | [optional] |
-| group_entities | bool |  | [optional] |
+| permissions | List[GroupPermission] | Group permissions to apply to this group on import. Meaningful only for USER groups; ignored for groups of any other type. Each entry's userGroupId, roleId, and entityGroupId may use the external IDs of other entities in this payload or the IDs of entities that already exist on the target tenant; the importer resolves them against the target tenant. System-tenant roles are not allowed and will be rejected. Leave null to skip permission management for this group. | [optional] |
+| group_ota_packages | List[DeviceGroupOtaPackage] | OTA package assignments to apply to this group on import. Meaningful only for DEVICE groups; ignored for groups of any other type. Each entry's otaPackageId and groupId may reference external IDs of entities in this payload or IDs of entities that already exist on the target tenant. Leave null to skip OTA assignment management for this group. | [optional] |
+| group_entities | bool | Marker indicating that the group's member entities are intended to be transported alongside this payload. Used by flows that convey members through a side channel (notably the version control flow, which stores members in a separate git index). The solution import API does not consume this flag and does not require it to be set. Safe to leave false (default). | [optional] |
+| member_ids | List[UUID] | External IDs of the entities that should be members of this group after import. Each ID is resolved against the target tenant — by other entity in this payload, by external ID, or by existing internal ID — and the matching entities are added to the group. The import fails if any listed member cannot be resolved. Must be null for the special 'All' group (whose membership is implicit and managed by the platform). Leave null to skip membership wiring; existing membership on the target tenant is left untouched. | [optional] |
 
 #### EntityViewExportData  *(entity_type=`ENTITY_VIEW`)*
 *(no additional properties)*
@@ -87,10 +88,13 @@ Base export container for ThingsBoard entities
 #### TbResourceExportData  *(entity_type=`TB_RESOURCE`)*
 *(no additional properties)*
 
+#### UserExportData  *(entity_type=`USER`)*
+*(no additional properties)*
+
 #### WidgetsBundleExportData  *(entity_type=`WIDGETS_BUNDLE`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| widgets | List[object] |  | [optional] |
+| widgets | List[object] | List of widgets in the bundle | [optional] |
 | fqns | List[str] |  | [optional] |
 
 #### WidgetTypeExportData  *(entity_type=`WIDGET_TYPE`)*
@@ -98,13 +102,15 @@ Base export container for ThingsBoard entities
 
 ## Referenced Types
 
-> **EntityId types** (`AdminSettingsId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BillingCustomerId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CouponId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `ProductId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `SubscriptionAddonId`, `SubscriptionId`, `SubscriptionPlanId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+> **EntityId types** (`AdminSettingsId`, `AgentAppEventId`, `AgentAppProfileId`, `AgentAppUnitId`, `AgentApplicationId`, `AgentBulkActionId`, `AgentId`, `AgentProfileId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BillingCustomerId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CouponId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `ProductId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `SubscriptionAddonId`, `SubscriptionId`, `SubscriptionPlanId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
 
 #### ExportableEntity
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
+| created_time | int |  | [optional] |
 | id | EntityId |  | [optional] |
 | name | str |  | [optional] |
+| tenant_id | TenantId |  | [optional] |
 
 #### EntityRelation
 | Name | Type | Description | Notes |
@@ -133,7 +139,7 @@ Base export container for ThingsBoard entities
 | debug_mode | bool |  | [optional] |
 
 #### EntityType (enum)
-`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (59 values total)
 
 #### DeviceCredentials
 | Name | Type | Description | Notes |
@@ -181,7 +187,7 @@ Base export container for ThingsBoard entities
 | notes | List[RuleChainNote] | List of sticky notes placed on the rule chain canvas | [optional] |
 
 #### RelationTypeGroup (enum)
-`COMMON` | `DASHBOARD` | `FROM_ENTITY_GROUP` | `RULE_CHAIN` | `RULE_NODE` | `EDGE` | `EDGE_AUTO_ASSIGN_RULE_CHAIN`
+`COMMON` | `DASHBOARD` | `FROM_ENTITY_GROUP` | `RULE_CHAIN` | `RULE_NODE` | `EDGE` | `EDGE_AUTO_ASSIGN_RULE_CHAIN` | `AGENT`
 
 #### CalculatedFieldType (enum)
 `SIMPLE` | `SCRIPT` | `GEOFENCING` | `ALARM` | `PROPAGATION` | `RELATED_ENTITIES_AGGREGATION` | `ENTITY_AGGREGATION`
@@ -203,8 +209,8 @@ Base export container for ThingsBoard entities
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | arguments | Dict[str, Argument] |  |  |
-| clear_rule | AlarmRuleDefinition |  | [optional] |
-| create_rules | Dict[str, AlarmRuleDefinition] |  |  |
+| clear_rule | AlarmRule |  | [optional] |
+| create_rules | Dict[str, AlarmRule] |  |  |
 | propagate | bool |  | [optional] |
 | propagate_relation_types | List[str] |  | [optional] |
 | propagate_to_owner | bool |  | [optional] |
@@ -321,9 +327,9 @@ Base export container for ThingsBoard entities
 #### Output
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
+| decimals_by_default | int |  | [optional] |
 | name | str |  | [optional] |
 | scope | AttributeScope |  | [optional] |
-| decimals_by_default | int |  | [optional] |
 | strategy | object |  | [optional] |
 | type | str |  |  |
 
@@ -367,11 +373,11 @@ Base export container for ThingsBoard entities
 | relation_type | str |  | [optional] |
 | direction | EntitySearchDirection |  | [optional] |
 
-#### AlarmRuleDefinition
+#### AlarmRule
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
+| condition | AlarmCondition |  |  |
 | alarm_details | str |  | [optional] |
-| condition | AlarmRuleCondition |  |  |
 | dashboard_id | DashboardId |  | [optional] |
 
 #### RelationPathLevel
@@ -507,26 +513,26 @@ Base export container for ThingsBoard entities
 #### EntitySearchDirection (enum)
 `FROM` | `TO`
 
-#### AlarmRuleCondition
+#### AlarmCondition
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | expression | AlarmConditionExpression |  |  |
-| schedule | AlarmConditionValueAlarmRuleSchedule |  | [optional] |
+| schedule | AlarmConditionValueAlarmSchedule |  | [optional] |
 | type | str |  |  |
 
-#### AlarmRuleDurationCondition  *(extends AlarmRuleCondition, type=`DURATION`)*
+#### DurationAlarmCondition  *(extends AlarmCondition, type=`DURATION`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | unit | TimeUnit |  |  |
 | value | AlarmConditionValueLong |  |  |
 
-#### AlarmRuleRepeatingCondition  *(extends AlarmRuleCondition, type=`REPEATING`)*
+#### RepeatingAlarmCondition  *(extends AlarmCondition, type=`REPEATING`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | count | AlarmConditionValueInteger |  |  |
 
-#### AlarmRuleSimpleCondition  *(extends AlarmRuleCondition, type=`SIMPLE`)*
-*See AlarmRuleCondition for properties.*
+#### SimpleAlarmCondition  *(extends AlarmCondition, type=`SIMPLE`)*
+*See AlarmCondition for properties.*
 
 #### AggFunction (enum)
 `MIN` | `MAX` | `SUM` | `AVG` | `COUNT` | `COUNT_UNIQUE`
@@ -557,41 +563,41 @@ Base export container for ThingsBoard entities
 #### SimpleAlarmConditionExpression  *(extends AlarmConditionExpression, type=`SIMPLE`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| filters | List[AlarmRuleConditionFilter] |  |  |
-| operation | ComplexOperation |  | [optional] |
+| filters | List[AlarmConditionFilter] |  |  |
+| operation | AlarmRuleComplexOperation |  | [optional] |
 
 #### TbelAlarmConditionExpression  *(extends AlarmConditionExpression, type=`TBEL`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | expression | str |  |  |
 
-#### AlarmConditionValueAlarmRuleSchedule
+#### AlarmConditionValueAlarmSchedule
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
+| static_value | AlarmSchedule |  | [optional] |
 | dynamic_value_argument | str |  | [optional] |
-| static_value | AlarmRuleSchedule |  | [optional] |
 
-#### AlarmRuleSchedule
+#### AlarmSchedule
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | type | str |  |  |
 
-#### AlarmRuleAnyTimeSchedule  *(extends AlarmRuleSchedule, type=`ANY_TIME`)*
-*See AlarmRuleSchedule for properties.*
+#### AnyTimeSchedule  *(extends AlarmSchedule, type=`ANY_TIME`)*
+*See AlarmSchedule for properties.*
 
-#### AlarmRuleCustomTimeSchedule  *(extends AlarmRuleSchedule, type=`CUSTOM`)*
+#### CustomTimeSchedule  *(extends AlarmSchedule, type=`CUSTOM`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| items | List[AlarmRuleCustomTimeScheduleItem] |  | [optional] |
 | timezone | str |  | [optional] |
+| items | List[CustomTimeScheduleItem] |  | [optional] |
 
-#### AlarmRuleSpecificTimeSchedule  *(extends AlarmRuleSchedule, type=`SPECIFIC_TIME`)*
+#### SpecificTimeSchedule  *(extends AlarmSchedule, type=`SPECIFIC_TIME`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
+| timezone | str |  | [optional] |
 | days_of_week | List[int] |  | [optional] |
-| ends_on | int |  | [optional] |
 | starts_on | int |  | [optional] |
-| timezone | str |  | [optional] |
+| ends_on | int |  | [optional] |
 
 #### TimeUnit (enum)
 `NANOSECONDS` | `MICROSECONDS` | `MILLISECONDS` | `SECONDS` | `MINUTES` | `HOURS` | `DAYS`
@@ -608,16 +614,19 @@ Base export container for ThingsBoard entities
 | static_value | int |  | [optional] |
 | dynamic_value_argument | str |  | [optional] |
 
-#### AlarmRuleConditionFilter
+#### AlarmConditionFilter
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | argument | str |  |  |
-| operation | ComplexOperation |  | [optional] |
-| predicates | List[AlarmRuleKeyFilterPredicate] |  |  |
 | value_type | EntityKeyValueType |  |  |
+| operation | AlarmRuleComplexOperation |  | [optional] |
+| predicates | List[AlarmRuleKeyFilterPredicate] |  |  |
 
-#### ComplexOperation (enum)
+#### AlarmRuleComplexOperation (enum)
 `AND` | `OR`
+
+#### EntityKeyValueType (enum)
+`STRING` | `NUMERIC` | `BOOLEAN` | `DATE_TIME`
 
 #### AlarmRuleKeyFilterPredicate
 | Name | Type | Description | Notes |
@@ -627,46 +636,43 @@ Base export container for ThingsBoard entities
 #### AlarmRuleBooleanFilterPredicate  *(extends AlarmRuleKeyFilterPredicate, type=`BOOLEAN`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| operation | BooleanOperation |  |  |
+| operation | AlarmRuleBooleanOperation |  |  |
 | value | AlarmConditionValueBoolean |  |  |
 
 #### AlarmRuleComplexFilterPredicate  *(extends AlarmRuleKeyFilterPredicate, type=`COMPLEX`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| operation | ComplexOperation |  | [optional] |
+| operation | AlarmRuleComplexOperation |  | [optional] |
 | predicates | List[AlarmRuleKeyFilterPredicate] |  | [optional] |
 
-#### AlarmRuleNoDataFilterPredicate  *(extends AlarmRuleKeyFilterPredicate, type=`NO_DATA`)*
+#### NoDataFilterPredicate  *(extends AlarmRuleKeyFilterPredicate, type=`NO_DATA`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| duration | AlarmConditionValueLong |  |  |
 | unit | TimeUnit |  |  |
+| duration | AlarmConditionValueLong |  |  |
 
 #### AlarmRuleNumericFilterPredicate  *(extends AlarmRuleKeyFilterPredicate, type=`NUMERIC`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| operation | NumericOperation |  |  |
+| operation | AlarmRuleNumericOperation |  |  |
 | value | AlarmConditionValueDouble |  |  |
 
 #### AlarmRuleStringFilterPredicate  *(extends AlarmRuleKeyFilterPredicate, type=`STRING`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| ignore_case | bool |  | [optional] |
-| operation | StringOperation |  |  |
+| operation | AlarmRuleStringOperation |  |  |
 | value | AlarmConditionValueString |  |  |
+| ignore_case | bool |  | [optional] |
 
-#### EntityKeyValueType (enum)
-`STRING` | `NUMERIC` | `BOOLEAN` | `DATE_TIME`
-
-#### AlarmRuleCustomTimeScheduleItem
+#### CustomTimeScheduleItem
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| day_of_week | int |  | [optional] |
 | enabled | bool |  | [optional] |
-| ends_on | int |  | [optional] |
+| day_of_week | int |  | [optional] |
 | starts_on | int |  | [optional] |
+| ends_on | int |  | [optional] |
 
-#### StringOperation (enum)
+#### AlarmRuleStringOperation (enum)
 `EQUAL` | `NOT_EQUAL` | `STARTS_WITH` | `ENDS_WITH` | `CONTAINS` | `NOT_CONTAINS` | `IN` | `NOT_IN`
 
 #### AlarmConditionValueString
@@ -675,7 +681,7 @@ Base export container for ThingsBoard entities
 | static_value | str |  | [optional] |
 | dynamic_value_argument | str |  | [optional] |
 
-#### NumericOperation (enum)
+#### AlarmRuleNumericOperation (enum)
 `EQUAL` | `NOT_EQUAL` | `GREATER` | `LESS` | `GREATER_OR_EQUAL` | `LESS_OR_EQUAL`
 
 #### AlarmConditionValueDouble
@@ -684,7 +690,7 @@ Base export container for ThingsBoard entities
 | static_value | float |  | [optional] |
 | dynamic_value_argument | str |  | [optional] |
 
-#### BooleanOperation (enum)
+#### AlarmRuleBooleanOperation (enum)
 `EQUAL` | `NOT_EQUAL`
 
 #### AlarmConditionValueBoolean

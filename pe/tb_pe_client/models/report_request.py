@@ -21,7 +21,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from uuid import UUID
 from tb_pe_client.models.entity_id import EntityId
@@ -39,10 +39,11 @@ class ReportRequest(BaseModel):
     report_template_config: Optional[ReportTemplateConfig] = Field(default=None, description="Json object representing the report template config.", serialization_alias="reportTemplateConfig")
     timezone: Optional[StrictStr] = Field(default=None, description="Timezone used for report generation.")
     user_id: Optional[StrictStr] = Field(default=None, description="A string value representing the user id.", serialization_alias="userId")
+    make_public: Optional[StrictBool] = Field(default=None, description="A boolean value indicating whether the generated report should be made public.", serialization_alias="makePublic")
     originator: Optional[EntityId] = Field(default=None, description="Json object representing the originator id.")
     targets: Optional[List[UUID]] = None
     notification_template_id: Optional[NotificationTemplateId] = Field(default=None, serialization_alias="notificationTemplateId")
-    __properties: ClassVar[List[str]] = ["reportTemplateId", "reportTemplateConfig", "timezone", "userId", "originator", "targets", "notificationTemplateId"]
+    __properties: ClassVar[List[str]] = ["reportTemplateId", "reportTemplateConfig", "timezone", "userId", "makePublic", "originator", "targets", "notificationTemplateId"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -116,6 +117,7 @@ class ReportRequest(BaseModel):
             "report_template_config": ReportTemplateConfig.from_dict(obj["reportTemplateConfig"]) if obj.get("reportTemplateConfig") is not None else None,
             "timezone": obj.get("timezone"),
             "user_id": obj.get("userId"),
+            "make_public": obj.get("makePublic"),
             "originator": EntityId.from_dict(obj["originator"]) if obj.get("originator") is not None else None,
             "targets": obj.get("targets"),
             "notification_template_id": NotificationTemplateId.from_dict(obj["notificationTemplateId"]) if obj.get("notificationTemplateId") is not None else None

@@ -11,6 +11,8 @@ A JSON value representing the entity count query. See API call notes above for m
 |------------ | ------------- | ------------- | -------------|
 | **entity_filter** | [**EntityFilter**](EntityFilter.md) |  | [optional] |
 | **key_filters** | [**List[KeyFilter]**](KeyFilter.md) |  | [optional] |
+| **key_filters_operation** | [**AlarmRuleComplexOperation**](AlarmRuleComplexOperation.md) |  | [optional] |
+| **key_filters_operation_or_default** | [**AlarmRuleComplexOperation**](AlarmRuleComplexOperation.md) |  | [optional] |
 
 
 
@@ -148,6 +150,9 @@ A JSON value representing the entity count query. See API call notes above for m
 | value_type | EntityKeyValueType |  | [optional] |
 | predicate | KeyFilterPredicate |  | [optional] |
 
+#### AlarmRuleComplexOperation (enum)
+`AND` | `OR`
+
 #### EntityKey
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
@@ -171,7 +176,7 @@ A JSON value representing the entity count query. See API call notes above for m
 #### ComplexFilterPredicate  *(extends KeyFilterPredicate, type=`COMPLEX`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| operation | ComplexOperation |  | [optional] |
+| operation | AlarmRuleComplexOperation |  | [optional] |
 | predicates | List[KeyFilterPredicate] |  | [optional] |
 
 #### NumericFilterPredicate  *(extends KeyFilterPredicate, type=`NUMERIC`)*
@@ -242,9 +247,6 @@ A JSON value representing the entity count query. See API call notes above for m
 | default_value | bool |  | [optional] |
 | user_value | bool |  | [optional] |
 | dynamic_value | DynamicValueBoolean |  | [optional] |
-
-#### ComplexOperation (enum)
-`AND` | `OR`
 
 #### DynamicValueString
 | Name | Type | Description | Notes |

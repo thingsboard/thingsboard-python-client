@@ -27,7 +27,7 @@
 
 ## Referenced Types
 
-> **EntityId types** (`AdminSettingsId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BillingCustomerId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CouponId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `ProductId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `SubscriptionAddonId`, `SubscriptionId`, `SubscriptionPlanId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+> **EntityId types** (`AdminSettingsId`, `AgentAppEventId`, `AgentAppProfileId`, `AgentAppUnitId`, `AgentApplicationId`, `AgentBulkActionId`, `AgentId`, `AgentProfileId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BillingCustomerId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CouponId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `ProductId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `SubscriptionAddonId`, `SubscriptionId`, `SubscriptionPlanId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
 
 #### ReportComponent
 | Name | Type | Description | Notes |
@@ -97,35 +97,6 @@
 | legend_config | LegendConfig |  | [optional] |
 | xaxis | TimeSeriesChartXAxisSettings |  | [optional] |
 | yaxes | Dict[str, TimeSeriesChartYAxisSettings] |  | [optional] |
-
-#### ReportBarChartWithLabelsSettings  *(extends ReportTimeSeriesChartSettings, sub_type=`barChartWithLabels`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| show_bar_label | bool |  | [optional] |
-| bar_label_font | Font |  | [optional] |
-| bar_label_color | str |  | [optional] |
-| show_bar_value | bool |  | [optional] |
-| bar_value_font | Font |  | [optional] |
-| bar_value_color | str |  | [optional] |
-| show_bar_border | bool |  | [optional] |
-| bar_border_width | float |  | [optional] |
-| bar_border_radius | float |  | [optional] |
-| bar_background_settings | ChartFillSettings |  | [optional] |
-| bar_units | str |  | [optional] |
-| bar_decimals | int |  | [optional] |
-
-#### ReportRangeChartSettings  *(extends ReportTimeSeriesChartSettings, sub_type=`rangeChart`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| range_colors | List[ColorRange] |  | [optional] |
-| out_of_range_color | str |  | [optional] |
-| show_range_thresholds | bool |  | [optional] |
-| range_threshold | TimeSeriesChartThreshold |  | [optional] |
-| fill_area | bool |  | [optional] |
-| fill_area_opacity | float |  | [optional] |
-| line_settings | LineSeriesSettings |  | [optional] |
-| range_units | str |  | [optional] |
-| range_decimals | int |  | [optional] |
 
 #### ReportComponentSubType (enum)
 `DOUGHNUTCHART` | `HORIZONTALDOUGHNUTCHART` | `POINTCHART` | `BARCHART` | `PIECHART` | `LINECHART` | `LATESTBARCHART` | `RANGECHART` | `BARCHARTWITHLABELS` | `STATECHART` | … (11 values total)
@@ -245,8 +216,8 @@
 | decimals | int |  | [optional] |
 | interval | float |  | [optional] |
 | split_number | int |  | [optional] |
-| min | float |  | [optional] |
-| max | float |  | [optional] |
+| min | SimpleValueSourceConfig |  | [optional] |
+| max | SimpleValueSourceConfig |  | [optional] |
 
 #### TimeSeriesChartXAxisSettings
 | Name | Type | Description | Notes |
@@ -376,6 +347,17 @@
 #### AxisPosition (enum)
 `LEFT` | `RIGHT` | `TOP` | `BOTTOM`
 
+#### SimpleValueSourceConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | ValueSourceType |  | [optional] |
+| value | float |  | [optional] |
+| latest_key_type | str |  | [optional] |
+| latest_key | str |  | [optional] |
+| entity_key_type | str |  | [optional] |
+| entity_alias | str |  | [optional] |
+| entity_key | str |  | [optional] |
+
 #### TimeSeriesChartNoAggregationBarWidthStrategy (enum)
 `GROUP` | `SEPARATE`
 
@@ -392,19 +374,23 @@
 #### LegendPosition (enum)
 `TOP` | `BOTTOM` | `LEFT` | `RIGHT`
 
-#### ChartFillSettings
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| type | ChartFillType |  | [optional] |
-| opacity | float |  | [optional] |
-| gradient | ChartFillSettingsGradient |  | [optional] |
+#### DataKeySettingsType (enum)
+`COLUMN` | `TIME_SERIES_CHART` | `DEFAULT`
 
-#### ColorRange
+#### IntervalType (enum)
+`MILLISECONDS` | `WEEK` | `WEEK_ISO` | `MONTH` | `QUARTER`
+
+#### CellSettings
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| var_from | float |  | [optional] |
-| to | float |  | [optional] |
+| font | Font |  | [optional] |
 | color | str |  | [optional] |
+| background_color | str |  | [optional] |
+| text_alignment | TextAlignment |  | [optional] |
+| vertical_alignment | VerticalAlignment |  | [optional] |
+
+#### TimeSeriesChartSeriesType (enum)
+`LINE` | `BAR`
 
 #### LineSeriesSettings
 | Name | Type | Description | Notes |
@@ -425,39 +411,6 @@
 | point_shape | ChartShape |  | [optional] |
 | point_size | float |  | [optional] |
 | fill_area_settings | ChartFillSettings |  | [optional] |
-
-#### DataKeySettingsType (enum)
-`COLUMN` | `TIME_SERIES_CHART` | `DEFAULT`
-
-#### IntervalType (enum)
-`MILLISECONDS` | `WEEK` | `WEEK_ISO` | `MONTH` | `QUARTER`
-
-#### ChartFillType (enum)
-`NONE` | `OPACITY` | `GRADIENT`
-
-#### ChartFillSettingsGradient
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| start | float |  | [optional] |
-| end | float |  | [optional] |
-
-#### LineSeriesStepType (enum)
-`START` | `MIDDLE` | `END`
-
-#### ChartLabelPosition (enum)
-`TOP` | `BOTTOM`
-
-#### CellSettings
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| font | Font |  | [optional] |
-| color | str |  | [optional] |
-| background_color | str |  | [optional] |
-| text_alignment | TextAlignment |  | [optional] |
-| vertical_alignment | VerticalAlignment |  | [optional] |
-
-#### TimeSeriesChartSeriesType (enum)
-`LINE` | `BAR`
 
 #### BarSeriesSettings
 | Name | Type | Description | Notes |
@@ -482,10 +435,32 @@
 | color | str |  | [optional] |
 
 #### EntityType (enum)
-`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (59 values total)
 
 #### VerticalAlignment (enum)
 `BOTTOM` | `TOP` | `MIDDLE`
+
+#### LineSeriesStepType (enum)
+`START` | `MIDDLE` | `END`
+
+#### ChartLabelPosition (enum)
+`TOP` | `BOTTOM`
+
+#### ChartFillSettings
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | ChartFillType |  | [optional] |
+| opacity | float |  | [optional] |
+| gradient | ChartFillSettingsGradient |  | [optional] |
+
+#### ChartFillType (enum)
+`NONE` | `OPACITY` | `GRADIENT`
+
+#### ChartFillSettingsGradient
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| start | float |  | [optional] |
+| end | float |  | [optional] |
 
 ---
 

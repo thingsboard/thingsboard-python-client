@@ -39,6 +39,7 @@ class ApiFeature(str, Enum):
     SMS = 'SMS'
     ALARM = 'ALARM'
     REPORT = 'REPORT'
+    AI = 'AI'
 
     @classmethod
     def from_json(cls, json_str: str) -> Self:

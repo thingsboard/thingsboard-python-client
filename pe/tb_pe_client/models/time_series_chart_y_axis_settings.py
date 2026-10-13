@@ -25,6 +25,7 @@ from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, Stri
 from typing import Any, ClassVar, Dict, List, Optional, Union
 from tb_pe_client.models.axis_position import AxisPosition
 from tb_pe_client.models.font import Font
+from tb_pe_client.models.simple_value_source_config import SimpleValueSourceConfig
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -52,8 +53,8 @@ class TimeSeriesChartYAxisSettings(BaseModel):
     decimals: Optional[StrictInt] = None
     interval: Optional[Union[StrictFloat, StrictInt]] = None
     split_number: Optional[StrictInt] = Field(default=None, serialization_alias="splitNumber")
-    min: Optional[Union[StrictFloat, StrictInt]] = None
-    max: Optional[Union[StrictFloat, StrictInt]] = None
+    min: Optional[SimpleValueSourceConfig] = None
+    max: Optional[SimpleValueSourceConfig] = None
     __properties: ClassVar[List[str]] = ["show", "label", "labelFont", "labelColor", "position", "showTickLabels", "tickLabelFont", "tickLabelColor", "showTicks", "ticksColor", "showLine", "lineColor", "showSplitLines", "splitLinesColor", "id", "order", "units", "decimals", "interval", "splitNumber", "min", "max"]
 
     model_config = ConfigDict(
@@ -106,6 +107,12 @@ class TimeSeriesChartYAxisSettings(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of tick_label_font
         if self.tick_label_font:
             _dict['tickLabelFont'] = self.tick_label_font.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of min
+        if self.min:
+            _dict['min'] = self.min.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of max
+        if self.max:
+            _dict['max'] = self.max.to_dict()
         return _dict
 
     @classmethod
@@ -138,8 +145,8 @@ class TimeSeriesChartYAxisSettings(BaseModel):
             "decimals": obj.get("decimals"),
             "interval": obj.get("interval"),
             "split_number": obj.get("splitNumber"),
-            "min": obj.get("min"),
-            "max": obj.get("max")
+            "min": SimpleValueSourceConfig.from_dict(obj["min"]) if obj.get("min") is not None else None,
+            "max": SimpleValueSourceConfig.from_dict(obj["max"]) if obj.get("max") is not None else None
         })
         return _obj
 

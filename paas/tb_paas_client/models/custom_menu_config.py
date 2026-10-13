@@ -29,7 +29,7 @@ from typing_extensions import Self
 
 class CustomMenuConfig(BaseModel):
     """
-    A JSON value representing the custom menu configuration
+    CustomMenuConfig
     """ # noqa: E501
     items: Optional[List[MenuItem]] = None
     __properties: ClassVar[List[str]] = ["items"]

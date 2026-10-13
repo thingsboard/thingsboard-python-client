@@ -9,7 +9,6 @@
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-| **model_type** | [**AiModelType**](AiModelType.md) |  | [optional] [readonly] |
 | **provider_config** | [**OllamaProviderConfig**](OllamaProviderConfig.md) |  | |
 | **model_id** | **str** |  | |
 | **temperature** | **float** |  | [optional] |
@@ -19,6 +18,7 @@
 | **max_output_tokens** | **int** |  | [optional] |
 | **timeout_seconds** | **int** |  | [optional] |
 | **max_retries** | **int** |  | [optional] |
+| **model_type** | [**AiModelType**](AiModelType.md) |  | [optional] [readonly] |
 
 
 
@@ -29,14 +29,14 @@
 |------|------|-------------|-------|
 | provider | str |  |  |
 
-#### AiModelType (enum)
-`CHAT`
-
 #### OllamaProviderConfig
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | base_url | str |  |  |
 | auth | OllamaAuth |  |  |
+
+#### AiModelType (enum)
+`CHAT`
 
 #### OllamaAuth
 | Name | Type | Description | Notes |
@@ -62,7 +62,7 @@
 ### Conventions
 
 - **Package:** `tb_paas_client.models`
-- **Attribute access:** `obj.model_type`, `obj.name`, etc.
+- **Attribute access:** `obj.provider_config`, `obj.name`, etc.
 - **Serialize:** `obj.model_dump()` or `obj.model_dump(by_alias=True)` for camelCase JSON
 - **Deserialize:** `OllamaChatModelConfig.model_validate(data)` or `OllamaChatModelConfig.model_validate_json(json_str)`
 - **None fields:** Optional attributes default to `None`; accessing them never raises exceptions

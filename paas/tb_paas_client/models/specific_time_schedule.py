@@ -24,8 +24,6 @@ import json
 from pydantic import ConfigDict, Field, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from tb_paas_client.models.alarm_schedule import AlarmSchedule
-from tb_paas_client.models.alarm_schedule_type import AlarmScheduleType
-from tb_paas_client.models.dynamic_value_string import DynamicValueString
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -33,11 +31,11 @@ class SpecificTimeSchedule(AlarmSchedule):
     """
     SpecificTimeSchedule
     """ # noqa: E501
-    days_of_week: Optional[List[StrictInt]] = Field(default=None, serialization_alias="daysOfWeek")
-    ends_on: Optional[StrictInt] = Field(default=None, serialization_alias="endsOn")
-    starts_on: Optional[StrictInt] = Field(default=None, serialization_alias="startsOn")
     timezone: Optional[StrictStr] = None
-    __properties: ClassVar[List[str]] = ["dynamicValue", "type", "daysOfWeek", "endsOn", "startsOn", "timezone"]
+    days_of_week: Optional[List[StrictInt]] = Field(default=None, serialization_alias="daysOfWeek")
+    starts_on: Optional[StrictInt] = Field(default=None, serialization_alias="startsOn")
+    ends_on: Optional[StrictInt] = Field(default=None, serialization_alias="endsOn")
+    __properties: ClassVar[List[str]] = ["type", "timezone", "daysOfWeek", "startsOn", "endsOn"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -83,9 +81,6 @@ class SpecificTimeSchedule(AlarmSchedule):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of dynamic_value
-        if self.dynamic_value:
-            _dict['dynamicValue'] = self.dynamic_value.to_dict()
         return _dict
 
     @classmethod
@@ -98,12 +93,11 @@ class SpecificTimeSchedule(AlarmSchedule):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "dynamic_value": DynamicValueString.from_dict(obj["dynamicValue"]) if obj.get("dynamicValue") is not None else None,
             "type": obj.get("type"),
+            "timezone": obj.get("timezone"),
             "days_of_week": obj.get("daysOfWeek"),
-            "ends_on": obj.get("endsOn"),
             "starts_on": obj.get("startsOn"),
-            "timezone": obj.get("timezone")
+            "ends_on": obj.get("endsOn")
         })
         return _obj
 

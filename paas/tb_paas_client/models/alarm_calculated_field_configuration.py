@@ -23,7 +23,7 @@ import json
 
 from pydantic import ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
-from tb_paas_client.models.alarm_rule_definition import AlarmRuleDefinition
+from tb_paas_client.models.alarm_rule import AlarmRule
 from tb_paas_client.models.argument import Argument
 from tb_paas_client.models.calculated_field_configuration import CalculatedFieldConfiguration
 from tb_paas_client.models.output import Output
@@ -35,8 +35,8 @@ class AlarmCalculatedFieldConfiguration(CalculatedFieldConfiguration):
     AlarmCalculatedFieldConfiguration
     """ # noqa: E501
     arguments: Dict[str, Argument]
-    clear_rule: Optional[AlarmRuleDefinition] = Field(default=None, serialization_alias="clearRule")
-    create_rules: Dict[str, AlarmRuleDefinition] = Field(serialization_alias="createRules")
+    clear_rule: Optional[AlarmRule] = Field(default=None, serialization_alias="clearRule")
+    create_rules: Dict[str, AlarmRule] = Field(serialization_alias="createRules")
     propagate: Optional[StrictBool] = None
     propagate_relation_types: Optional[List[StrictStr]] = Field(default=None, serialization_alias="propagateRelationTypes")
     propagate_to_owner: Optional[StrictBool] = Field(default=None, serialization_alias="propagateToOwner")
@@ -128,9 +128,9 @@ class AlarmCalculatedFieldConfiguration(CalculatedFieldConfiguration):
             )
             if obj.get("arguments") is not None
             else None,
-            "clear_rule": AlarmRuleDefinition.from_dict(obj["clearRule"]) if obj.get("clearRule") is not None else None,
+            "clear_rule": AlarmRule.from_dict(obj["clearRule"]) if obj.get("clearRule") is not None else None,
             "create_rules": dict(
-                (_k, AlarmRuleDefinition.from_dict(_v))
+                (_k, AlarmRule.from_dict(_v))
                 for _k, _v in obj["createRules"].items()
             )
             if obj.get("createRules") is not None

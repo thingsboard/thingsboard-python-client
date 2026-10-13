@@ -1849,7 +1849,7 @@ class DeviceControllerApi:
         self,
         page_size: Annotated[StrictInt, Field(description="Maximum amount of entities in a one page")],
         page: Annotated[StrictInt, Field(description="Sequence number of page starting from 0")],
-        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities")] = None,
+        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.")] = None,
         device_profile_id: Annotated[Optional[StrictStr], Field(description="A string value representing the device profile id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")] = None,
         active: Annotated[Optional[StrictBool], Field(description="A boolean value representing the device active flag.")] = None,
         text_search: Annotated[Optional[StrictStr], Field(description="The case insensitive 'substring' filter based on the device name.")] = None,
@@ -1876,7 +1876,7 @@ class DeviceControllerApi:
         :type page_size: int
         :param page: Sequence number of page starting from 0 (required)
         :type page: int
-        :param include_customers: Include customer or sub-customer entities
+        :param include_customers: Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.
         :type include_customers: bool
         :param device_profile_id: A string value representing the device profile id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'
         :type device_profile_id: str
@@ -1949,7 +1949,7 @@ class DeviceControllerApi:
         self,
         page_size: Annotated[StrictInt, Field(description="Maximum amount of entities in a one page")],
         page: Annotated[StrictInt, Field(description="Sequence number of page starting from 0")],
-        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities")] = None,
+        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.")] = None,
         device_profile_id: Annotated[Optional[StrictStr], Field(description="A string value representing the device profile id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")] = None,
         active: Annotated[Optional[StrictBool], Field(description="A boolean value representing the device active flag.")] = None,
         text_search: Annotated[Optional[StrictStr], Field(description="The case insensitive 'substring' filter based on the device name.")] = None,
@@ -1976,7 +1976,7 @@ class DeviceControllerApi:
         :type page_size: int
         :param page: Sequence number of page starting from 0 (required)
         :type page: int
-        :param include_customers: Include customer or sub-customer entities
+        :param include_customers: Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.
         :type include_customers: bool
         :param device_profile_id: A string value representing the device profile id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'
         :type device_profile_id: str
@@ -2049,7 +2049,7 @@ class DeviceControllerApi:
         self,
         page_size: Annotated[StrictInt, Field(description="Maximum amount of entities in a one page")],
         page: Annotated[StrictInt, Field(description="Sequence number of page starting from 0")],
-        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities")] = None,
+        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.")] = None,
         device_profile_id: Annotated[Optional[StrictStr], Field(description="A string value representing the device profile id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")] = None,
         active: Annotated[Optional[StrictBool], Field(description="A boolean value representing the device active flag.")] = None,
         text_search: Annotated[Optional[StrictStr], Field(description="The case insensitive 'substring' filter based on the device name.")] = None,
@@ -2076,7 +2076,7 @@ class DeviceControllerApi:
         :type page_size: int
         :param page: Sequence number of page starting from 0 (required)
         :type page: int
-        :param include_customers: Include customer or sub-customer entities
+        :param include_customers: Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.
         :type include_customers: bool
         :param device_profile_id: A string value representing the device profile id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'
         :type device_profile_id: str
@@ -2248,7 +2248,7 @@ class DeviceControllerApi:
         customer_id: Annotated[StrictStr, Field(description="A string value representing the customer id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")],
         page_size: Annotated[StrictInt, Field(description="Maximum amount of entities in a one page")],
         page: Annotated[StrictInt, Field(description="Sequence number of page starting from 0")],
-        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities")] = None,
+        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.")] = None,
         device_profile_id: Annotated[Optional[StrictStr], Field(description="A string value representing the device profile id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")] = None,
         active: Annotated[Optional[StrictBool], Field(description="A boolean value representing the device active flag.")] = None,
         text_search: Annotated[Optional[StrictStr], Field(description="The case insensitive 'substring' filter based on the device name.")] = None,
@@ -2277,7 +2277,7 @@ class DeviceControllerApi:
         :type page_size: int
         :param page: Sequence number of page starting from 0 (required)
         :type page: int
-        :param include_customers: Include customer or sub-customer entities
+        :param include_customers: Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.
         :type include_customers: bool
         :param device_profile_id: A string value representing the device profile id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'
         :type device_profile_id: str
@@ -2352,7 +2352,7 @@ class DeviceControllerApi:
         customer_id: Annotated[StrictStr, Field(description="A string value representing the customer id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")],
         page_size: Annotated[StrictInt, Field(description="Maximum amount of entities in a one page")],
         page: Annotated[StrictInt, Field(description="Sequence number of page starting from 0")],
-        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities")] = None,
+        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.")] = None,
         device_profile_id: Annotated[Optional[StrictStr], Field(description="A string value representing the device profile id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")] = None,
         active: Annotated[Optional[StrictBool], Field(description="A boolean value representing the device active flag.")] = None,
         text_search: Annotated[Optional[StrictStr], Field(description="The case insensitive 'substring' filter based on the device name.")] = None,
@@ -2381,7 +2381,7 @@ class DeviceControllerApi:
         :type page_size: int
         :param page: Sequence number of page starting from 0 (required)
         :type page: int
-        :param include_customers: Include customer or sub-customer entities
+        :param include_customers: Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.
         :type include_customers: bool
         :param device_profile_id: A string value representing the device profile id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'
         :type device_profile_id: str
@@ -2456,7 +2456,7 @@ class DeviceControllerApi:
         customer_id: Annotated[StrictStr, Field(description="A string value representing the customer id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")],
         page_size: Annotated[StrictInt, Field(description="Maximum amount of entities in a one page")],
         page: Annotated[StrictInt, Field(description="Sequence number of page starting from 0")],
-        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities")] = None,
+        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.")] = None,
         device_profile_id: Annotated[Optional[StrictStr], Field(description="A string value representing the device profile id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")] = None,
         active: Annotated[Optional[StrictBool], Field(description="A boolean value representing the device active flag.")] = None,
         text_search: Annotated[Optional[StrictStr], Field(description="The case insensitive 'substring' filter based on the device name.")] = None,
@@ -2485,7 +2485,7 @@ class DeviceControllerApi:
         :type page_size: int
         :param page: Sequence number of page starting from 0 (required)
         :type page: int
-        :param include_customers: Include customer or sub-customer entities
+        :param include_customers: Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.
         :type include_customers: bool
         :param device_profile_id: A string value representing the device profile id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'
         :type device_profile_id: str

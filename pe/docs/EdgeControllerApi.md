@@ -171,7 +171,7 @@ Returns a page of edge info objects owned by the tenant or the customer of a cur
 |------------- | ------------- | ------------- | -------------|
 | **page_size** | **int** | Maximum amount of entities in a one page | |
 | **page** | **int** | Sequence number of page starting from 0 | |
-| **include_customers** | **bool** | Include customer or sub-customer entities | [optional] |
+| **include_customers** | **bool** | Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers. | [optional] |
 | **type** | **str** | A string value representing the edge type. For example, 'default' | [optional] |
 | **text_search** | **str** | The case insensitive 'substring' filter based on the edge name. | [optional] |
 | **sort_property** | **str** | Property of entity to sort by | [optional] [enum: createdTime, name, type, label, customerTitle] |
@@ -202,7 +202,7 @@ Returns a page of edge info objects owned by the specified customer. You can spe
 | **customer_id** | **str** | A string value representing the customer id. For example, '784f394c-42b6-435a-983c-b7beff2784f9' | |
 | **page_size** | **int** | Maximum amount of entities in a one page | |
 | **page** | **int** | Sequence number of page starting from 0 | |
-| **include_customers** | **bool** | Include customer or sub-customer entities | [optional] |
+| **include_customers** | **bool** | Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers. | [optional] |
 | **type** | **str** | A string value representing the edge type. For example, 'default' | [optional] |
 | **text_search** | **str** | The case insensitive 'substring' filter based on the edge name. | [optional] |
 | **sort_property** | **str** | Property of entity to sort by | [optional] [enum: createdTime, name, type, label, customerTitle] |
@@ -572,7 +572,7 @@ BulkImportResultEdge client.process_edges_bulk_import(bulk_import_request: BulkI
 
 Import the bulk of edges (processEdgesBulkImport)
 
-There's an ability to import the bulk of edges using the only .csv file.  Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
+There's an ability to import the bulk of edges using the only .csv file.  Available for users with 'TENANT_ADMIN' authority.
 
 
 ### Parameters

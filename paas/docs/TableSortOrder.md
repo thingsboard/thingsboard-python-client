@@ -8,13 +8,13 @@
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
 | **column** | **str** |  | [optional] |
-| **direction** | [**Direction**](Direction.md) |  | [optional] |
+| **direction** | [**TableSortDirection**](TableSortDirection.md) |  | [optional] |
 
 
 
 ## Referenced Types
 
-#### Direction (enum)
+#### TableSortDirection (enum)
 `ASC` | `DESC`
 
 ---

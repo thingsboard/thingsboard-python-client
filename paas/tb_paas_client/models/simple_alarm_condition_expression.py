@@ -25,8 +25,8 @@ from pydantic import ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
 from tb_paas_client.models.alarm_condition_expression import AlarmConditionExpression
-from tb_paas_client.models.alarm_rule_condition_filter import AlarmRuleConditionFilter
-from tb_paas_client.models.complex_operation import ComplexOperation
+from tb_paas_client.models.alarm_condition_filter import AlarmConditionFilter
+from tb_paas_client.models.alarm_rule_complex_operation import AlarmRuleComplexOperation
 from typing import Optional, Set
 from typing_extensions import Self
 
@@ -34,8 +34,8 @@ class SimpleAlarmConditionExpression(AlarmConditionExpression):
     """
     SimpleAlarmConditionExpression
     """ # noqa: E501
-    filters: Annotated[List[AlarmRuleConditionFilter], Field(min_length=1)]
-    operation: Optional[ComplexOperation] = None
+    filters: Annotated[List[AlarmConditionFilter], Field(min_length=1)]
+    operation: Optional[AlarmRuleComplexOperation] = None
     __properties: ClassVar[List[str]] = ["type", "filters", "operation"]
 
     model_config = ConfigDict(
@@ -102,7 +102,7 @@ class SimpleAlarmConditionExpression(AlarmConditionExpression):
 
         _obj = cls.model_validate({
             "type": obj.get("type"),
-            "filters": [AlarmRuleConditionFilter.from_dict(_item) for _item in obj["filters"]] if obj.get("filters") is not None else None,
+            "filters": [AlarmConditionFilter.from_dict(_item) for _item in obj["filters"]] if obj.get("filters") is not None else None,
             "operation": obj.get("operation")
         })
         return _obj

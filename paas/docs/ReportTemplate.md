@@ -12,7 +12,7 @@ A JSON value representing the Report Template.
 | **id** | [**ReportTemplateId**](ReportTemplateId.md) | JSON object with the report template Id. Specify this field to update the report. Referencing non-existing report template Id will cause error. Omit this field to create new report template | [optional] |
 | **created_time** | **int** | Timestamp of the report template creation, in milliseconds | [optional] [readonly] |
 | **tenant_id** | [**TenantId**](TenantId.md) | JSON object with Tenant Id. Tenant Id of the report template can't be changed. | [optional] [readonly] |
-| **customer_id** | [**CustomerId**](CustomerId.md) | JSON object with Customer Id | [optional] [readonly] |
+| **customer_id** | [**CustomerId**](CustomerId.md) | JSON object with Customer Id. Optional: when omitted the Report Template is owned by the tenant. When the request is made by a Customer user, the value is forced to the user's own Customer Id. | [optional] |
 | **name** | **str** | Report name | |
 | **format** | [**TbReportFormat**](TbReportFormat.md) | Report format | |
 | **type** | [**ReportTemplateType**](ReportTemplateType.md) | Report template type | |
@@ -25,7 +25,7 @@ A JSON value representing the Report Template.
 
 ## Referenced Types
 
-> **EntityId types** (`AdminSettingsId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BillingCustomerId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CouponId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `ProductId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `SubscriptionAddonId`, `SubscriptionId`, `SubscriptionPlanId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
+> **EntityId types** (`AdminSettingsId`, `AgentAppEventId`, `AgentAppProfileId`, `AgentAppUnitId`, `AgentApplicationId`, `AgentBulkActionId`, `AgentId`, `AgentProfileId`, `AiModelId`, `AlarmId`, `ApiKeyId`, `ApiUsageStateId`, `AssetId`, `AssetProfileId`, `BillingCustomerId`, `BlobEntityId`, `CalculatedFieldId`, `ConverterId`, `CouponId`, `CustomerId`, `DashboardId`, `DeviceId`, `DeviceProfileId`, `DomainId`, `EdgeId`, `EntityGroupId`, `EntityViewId`, `GroupPermissionId`, `IntegrationId`, `JobId`, `MobileAppBundleId`, `MobileAppId`, `NotificationId`, `NotificationRequestId`, `NotificationRuleId`, `NotificationTargetId`, `NotificationTemplateId`, `OAuth2ClientId`, `OtaPackageId`, `ProductId`, `QueueId`, `QueueStatsId`, `ReportId`, `ReportTemplateId`, `RoleId`, `RpcId`, `RuleChainId`, `RuleNodeId`, `SchedulerEventId`, `SecretId`, `SubscriptionAddonId`, `SubscriptionId`, `SubscriptionPlanId`, `TbResourceId`, `TenantId`, `TenantProfileId`, `UserId`, `WidgetTypeId`, `WidgetsBundleId`, etc.): `{entity_type: EntityType, id: UUID}` — all EntityId subtypes share this structure.
 
 #### TbReportFormat (enum)
 `PDF` | `CSV`
@@ -264,7 +264,7 @@ A JSON value representing the Report Template.
 | timestamp_column_settings | ColumnSettings |  | [optional] |
 
 #### EntityType (enum)
-`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (52 values total)
+`TENANT` | `CUSTOMER` | `USER` | `DASHBOARD` | `ASSET` | `DEVICE` | `ALARM` | `ENTITY_GROUP` | `CONVERTER` | `INTEGRATION` | … (59 values total)
 
 #### EntityFilter
 | Name | Type | Description | Notes |
@@ -495,7 +495,7 @@ A JSON value representing the Report Template.
 #### ComplexFilterPredicate  *(extends KeyFilterPredicate, type=`COMPLEX`)*
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| operation | ComplexOperation |  | [optional] |
+| operation | AlarmRuleComplexOperation |  | [optional] |
 | predicates | List[KeyFilterPredicate] |  | [optional] |
 
 #### NumericFilterPredicate  *(extends KeyFilterPredicate, type=`NUMERIC`)*
@@ -550,7 +550,7 @@ A JSON value representing the Report Template.
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
 | column | str |  | [optional] |
-| direction | Direction |  | [optional] |
+| direction | TableSortDirection |  | [optional] |
 
 #### TimeWindowConfiguration
 | Name | Type | Description | Notes |
@@ -596,35 +596,6 @@ A JSON value representing the Report Template.
 | xaxis | TimeSeriesChartXAxisSettings |  | [optional] |
 | yaxes | Dict[str, TimeSeriesChartYAxisSettings] |  | [optional] |
 
-#### ReportBarChartWithLabelsSettings  *(extends ReportTimeSeriesChartSettings, sub_type=`barChartWithLabels`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| show_bar_label | bool |  | [optional] |
-| bar_label_font | Font |  | [optional] |
-| bar_label_color | str |  | [optional] |
-| show_bar_value | bool |  | [optional] |
-| bar_value_font | Font |  | [optional] |
-| bar_value_color | str |  | [optional] |
-| show_bar_border | bool |  | [optional] |
-| bar_border_width | float |  | [optional] |
-| bar_border_radius | float |  | [optional] |
-| bar_background_settings | ChartFillSettings |  | [optional] |
-| bar_units | str |  | [optional] |
-| bar_decimals | int |  | [optional] |
-
-#### ReportRangeChartSettings  *(extends ReportTimeSeriesChartSettings, sub_type=`rangeChart`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| range_colors | List[ColorRange] |  | [optional] |
-| out_of_range_color | str |  | [optional] |
-| show_range_thresholds | bool |  | [optional] |
-| range_threshold | TimeSeriesChartThreshold |  | [optional] |
-| fill_area | bool |  | [optional] |
-| fill_area_opacity | float |  | [optional] |
-| line_settings | LineSeriesSettings |  | [optional] |
-| range_units | str |  | [optional] |
-| range_decimals | int |  | [optional] |
-
 #### ReportLatestChartSettings
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
@@ -645,35 +616,6 @@ A JSON value representing the Report Template.
 | legend_value_font | Font |  | [optional] |
 | legend_value_color | str |  | [optional] |
 | legend_show_total | bool |  | [optional] |
-
-#### ReportDoughnutChartSettings  *(extends ReportLatestChartSettings, sub_type=`horizontalDoughnutChart`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| layout | DoughnutLayout |  | [optional] |
-| clockwise | bool |  | [optional] |
-| total_value_font | Font |  | [optional] |
-| total_value_color | str |  | [optional] |
-
-#### ReportBarChartSettings  *(extends ReportLatestChartSettings, sub_type=`latestBarChart`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| axis_min | float |  | [optional] |
-| axis_max | float |  | [optional] |
-| axis_tick_label_font | Font |  | [optional] |
-| axis_tick_label_color | str |  | [optional] |
-| bar_settings | BarSeriesSettings |  | [optional] |
-
-#### ReportPieChartSettings  *(extends ReportLatestChartSettings, sub_type=`pieChart`)*
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| show_label | bool |  | [optional] |
-| label_position | PieChartLabelPosition |  | [optional] |
-| label_font | Font |  | [optional] |
-| label_color | str |  | [optional] |
-| border_width | float |  | [optional] |
-| border_color | str |  | [optional] |
-| radius | float |  | [optional] |
-| clockwise | bool |  | [optional] |
 
 #### DashboardReportConfig
 | Name | Type | Description | Notes |
@@ -760,7 +702,7 @@ A JSON value representing the Report Template.
 #### FontStyle (enum)
 `NORMAL` | `ITALIC`
 
-#### Direction (enum)
+#### TableSortDirection (enum)
 `ASC` | `DESC`
 
 #### History
@@ -849,8 +791,8 @@ A JSON value representing the Report Template.
 | decimals | int |  | [optional] |
 | interval | float |  | [optional] |
 | split_number | int |  | [optional] |
-| min | float |  | [optional] |
-| max | float |  | [optional] |
+| min | SimpleValueSourceConfig |  | [optional] |
+| max | SimpleValueSourceConfig |  | [optional] |
 
 #### TimeSeriesChartXAxisSettings
 | Name | Type | Description | Notes |
@@ -963,7 +905,7 @@ A JSON value representing the Report Template.
 | user_value | bool |  | [optional] |
 | dynamic_value | DynamicValueBoolean |  | [optional] |
 
-#### ComplexOperation (enum)
+#### AlarmRuleComplexOperation (enum)
 `AND` | `OR`
 
 #### Aggregation (enum)
@@ -1032,6 +974,17 @@ A JSON value representing the Report Template.
 #### AxisPosition (enum)
 `LEFT` | `RIGHT` | `TOP` | `BOTTOM`
 
+#### SimpleValueSourceConfig
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | ValueSourceType |  | [optional] |
+| value | float |  | [optional] |
+| latest_key_type | str |  | [optional] |
+| latest_key | str |  | [optional] |
+| entity_key_type | str |  | [optional] |
+| entity_alias | str |  | [optional] |
+| entity_key | str |  | [optional] |
+
 #### TimeSeriesChartNoAggregationBarWidthStrategy (enum)
 `GROUP` | `SEPARATE`
 
@@ -1045,19 +998,38 @@ A JSON value representing the Report Template.
 #### TimeSeriesChartStateSourceType (enum)
 `CONSTANT` | `RANGE`
 
-#### ChartFillSettings
+#### DynamicValueString
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| type | ChartFillType |  | [optional] |
-| opacity | float |  | [optional] |
-| gradient | ChartFillSettingsGradient |  | [optional] |
+| resolved_value | str |  | [optional] |
+| source_type | DynamicValueSourceType |  | [optional] |
+| source_attribute | str |  | [optional] |
+| inherit | bool |  | [optional] |
 
-#### ColorRange
+#### DynamicValueDouble
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| var_from | float |  | [optional] |
-| to | float |  | [optional] |
-| color | str |  | [optional] |
+| resolved_value | float |  | [optional] |
+| source_type | DynamicValueSourceType |  | [optional] |
+| source_attribute | str |  | [optional] |
+| inherit | bool |  | [optional] |
+
+#### DynamicValueBoolean
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| resolved_value | bool |  | [optional] |
+| source_type | DynamicValueSourceType |  | [optional] |
+| source_attribute | str |  | [optional] |
+| inherit | bool |  | [optional] |
+
+#### IntervalType (enum)
+`MILLISECONDS` | `WEEK` | `WEEK_ISO` | `MONTH` | `QUARTER`
+
+#### DynamicValueSourceType (enum)
+`CURRENT_TENANT` | `CURRENT_CUSTOMER` | `CURRENT_USER` | `CURRENT_DEVICE`
+
+#### TimeSeriesChartSeriesType (enum)
+`LINE` | `BAR`
 
 #### LineSeriesSettings
 | Name | Type | Description | Notes |
@@ -1094,38 +1066,25 @@ A JSON value representing the Report Template.
 | label_background | str |  | [optional] |
 | background_settings | ChartFillSettings |  | [optional] |
 
-#### PieChartLabelPosition (enum)
-`INSIDE` | `OUTSIDE`
-
-#### DoughnutLayout (enum)
-`DEFAULT` | `WITH_TOTAL`
-
-#### DynamicValueString
+#### DataKeyComparisonSettings
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| resolved_value | str |  | [optional] |
-| source_type | DynamicValueSourceType |  | [optional] |
-| source_attribute | str |  | [optional] |
-| inherit | bool |  | [optional] |
+| show_values_for_comparison | bool |  | [optional] |
+| comparison_values_label | str |  | [optional] |
+| color | str |  | [optional] |
 
-#### DynamicValueDouble
+#### LineSeriesStepType (enum)
+`START` | `MIDDLE` | `END`
+
+#### ChartLabelPosition (enum)
+`TOP` | `BOTTOM`
+
+#### ChartFillSettings
 | Name | Type | Description | Notes |
 |------|------|-------------|-------|
-| resolved_value | float |  | [optional] |
-| source_type | DynamicValueSourceType |  | [optional] |
-| source_attribute | str |  | [optional] |
-| inherit | bool |  | [optional] |
-
-#### DynamicValueBoolean
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| resolved_value | bool |  | [optional] |
-| source_type | DynamicValueSourceType |  | [optional] |
-| source_attribute | str |  | [optional] |
-| inherit | bool |  | [optional] |
-
-#### IntervalType (enum)
-`MILLISECONDS` | `WEEK` | `WEEK_ISO` | `MONTH` | `QUARTER`
+| type | ChartFillType |  | [optional] |
+| opacity | float |  | [optional] |
+| gradient | ChartFillSettingsGradient |  | [optional] |
 
 #### ChartFillType (enum)
 `NONE` | `OPACITY` | `GRADIENT`
@@ -1135,25 +1094,6 @@ A JSON value representing the Report Template.
 |------|------|-------------|-------|
 | start | float |  | [optional] |
 | end | float |  | [optional] |
-
-#### LineSeriesStepType (enum)
-`START` | `MIDDLE` | `END`
-
-#### ChartLabelPosition (enum)
-`TOP` | `BOTTOM`
-
-#### DynamicValueSourceType (enum)
-`CURRENT_TENANT` | `CURRENT_CUSTOMER` | `CURRENT_USER` | `CURRENT_DEVICE`
-
-#### TimeSeriesChartSeriesType (enum)
-`LINE` | `BAR`
-
-#### DataKeyComparisonSettings
-| Name | Type | Description | Notes |
-|------|------|-------------|-------|
-| show_values_for_comparison | bool |  | [optional] |
-| comparison_values_label | str |  | [optional] |
-| color | str |  | [optional] |
 
 ---
 

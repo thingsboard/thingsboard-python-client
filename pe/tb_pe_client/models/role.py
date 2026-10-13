@@ -39,11 +39,11 @@ class Role(BaseModel):
     created_time: Optional[StrictInt] = Field(default=None, description="Timestamp of the role creation, in milliseconds", serialization_alias="createdTime")
     additional_info: Optional[Any] = Field(default=None, description="Additional parameters of the role. May include: 'description' (string).", serialization_alias="additionalInfo")
     tenant_id: Optional[TenantId] = Field(default=None, description="JSON object with Tenant Id.", serialization_alias="tenantId")
-    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id. ", serialization_alias="customerId")
+    customer_id: Optional[CustomerId] = Field(default=None, description="JSON object with Customer Id. Optional: when omitted the Role is owned by the tenant. When the request is made by a Customer user, the value is forced to the user's own Customer Id.", serialization_alias="customerId")
     name: StrictStr = Field(description="Role Name")
     type: RoleType = Field(description="Type of the role: generic or group")
-    permissions: Optional[Any] = Field(description="JSON object with the set of permissions. Structure is specific for role type")
-    excluded_permissions: Optional[Any] = Field(default=None, description="JSON object with the set of excluded permissions. Only applicable for generic roles. Structure is the same as permissions", serialization_alias="excludedPermissions")
+    permissions: Optional[Any] = Field(description="Set of permissions granted by this role. The JSON shape depends on the role 'type':  * GENERIC — JSON object mapping `Resource` enum names to arrays of `Operation` enum names allowed on that resource. The wildcard entry `{\"ALL\":[\"ALL\"]}` grants every operation on every resource.  * GROUP — JSON array of `Operation` enum names that apply to the entity group this role is bound to via `GroupPermission.entityGroupId`. Only operations with `allowedForGroupRole=true` may appear (see `Operation` enum). The wildcard entry `[\"ALL\"]` grants every supported operation on the bound entity group.")
+    excluded_permissions: Optional[Any] = Field(default=None, description="Operations to subtract from those granted by `permissions`. Only applicable to GENERIC roles — setting this on a GROUP role is rejected by validation. Same shape as the GENERIC variant of `permissions`: a JSON object mapping `Resource` enum names to non-empty arrays of `Operation` enum names. At evaluation time, for each resource the listed operations are removed from the resolved permission set (e.g. `permissions={\"ALL\":[\"ALL\"]}` combined with `excludedPermissions={\"DEVICE\":[\"DELETE\"]}` grants everything except deleting devices). May be null or an empty object when no exclusions apply.", serialization_alias="excludedPermissions")
     version: Optional[StrictInt] = None
     owner_id: Optional[EntityId] = Field(default=None, description="JSON object with Customer or Tenant Id", serialization_alias="ownerId")
     __properties: ClassVar[List[str]] = ["id", "createdTime", "additionalInfo", "tenantId", "customerId", "name", "type", "permissions", "excludedPermissions", "version", "ownerId"]
@@ -86,12 +86,10 @@ class Role(BaseModel):
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
         * OpenAPI `readOnly` fields are excluded.
-        * OpenAPI `readOnly` fields are excluded.
         """
         excluded_fields: Set[str] = set([
             "created_time",
             "tenant_id",
-            "customer_id",
             "owner_id",
         ])
 

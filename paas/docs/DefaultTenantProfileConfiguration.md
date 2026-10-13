@@ -16,6 +16,8 @@
 | **max_dashboards** | **int** |  | [optional] |
 | **max_rule_chains** | **int** |  | [optional] |
 | **max_edges** | **int** |  | [optional] |
+| **max_agents** | **int** |  | [optional] |
+| **max_agent_applications** | **int** |  | [optional] |
 | **max_resources_in_bytes** | **int** |  | [optional] |
 | **max_ota_packages_in_bytes** | **int** |  | [optional] |
 | **max_resource_size** | **int** |  | [optional] |
@@ -79,6 +81,10 @@
 | **edge_event_rate_limits_per_edge** | **str** |  | [optional] |
 | **edge_uplink_messages_rate_limits** | **str** |  | [optional] |
 | **edge_uplink_messages_rate_limits_per_edge** | **str** |  | [optional] |
+| **agent_event_rate_limits** | **str** |  | [optional] |
+| **agent_event_rate_limits_per_agent** | **str** |  | [optional] |
+| **agent_log_chunk_rate_limits** | **str** |  | [optional] |
+| **agent_log_chunk_rate_limits_per_agent** | **str** |  | [optional] |
 | **default_storage_ttl_days** | **int** |  | [optional] |
 | **alarms_ttl_days** | **int** |  | [optional] |
 | **rpc_ttl_days** | **int** |  | [optional] |

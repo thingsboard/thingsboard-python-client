@@ -98,6 +98,20 @@
 
 * `API_KEY` (value: `'API_KEY'`)
 
+* `AGENT` (value: `'AGENT'`)
+
+* `AGENT_APPLICATION` (value: `'AGENT_APPLICATION'`)
+
+* `AGENT_APP_EVENT` (value: `'AGENT_APP_EVENT'`)
+
+* `AGENT_APP_UNIT` (value: `'AGENT_APP_UNIT'`)
+
+* `AGENT_APP_PROFILE` (value: `'AGENT_APP_PROFILE'`)
+
+* `AGENT_PROFILE` (value: `'AGENT_PROFILE'`)
+
+* `AGENT_BULK_ACTION` (value: `'AGENT_BULK_ACTION'`)
+
 * `BILLING_CUSTOMER` (value: `'BILLING_CUSTOMER'`)
 
 * `SUBSCRIPTION_PLAN` (value: `'SUBSCRIPTION_PLAN'`)

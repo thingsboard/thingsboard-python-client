@@ -36,6 +36,7 @@ from typing import List, Optional
 from typing_extensions import Annotated
 from tb_paas_client.models.dashboard import Dashboard
 from tb_paas_client.models.dashboard_info import DashboardInfo
+from tb_paas_client.models.home_dashboard import HomeDashboard
 from tb_paas_client.models.home_dashboard_info import HomeDashboardInfo
 from tb_paas_client.models.page_data_dashboard_info import PageDataDashboardInfo
 
@@ -648,7 +649,7 @@ class DashboardControllerApi:
         self,
         page_size: Annotated[StrictInt, Field(description="Maximum amount of entities in a one page")],
         page: Annotated[StrictInt, Field(description="Sequence number of page starting from 0")],
-        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities")] = None,
+        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.")] = None,
         text_search: Annotated[Optional[StrictStr], Field(description="The case insensitive 'substring' filter based on the dashboard title.")] = None,
         sort_property: Annotated[Optional[StrictStr], Field(description="Property of entity to sort by")] = None,
         sort_order: Annotated[Optional[StrictStr], Field(description="Sort order. ASC (ASCENDING) or DESC (DESCENDING)")] = None,
@@ -673,7 +674,7 @@ class DashboardControllerApi:
         :type page_size: int
         :param page: Sequence number of page starting from 0 (required)
         :type page: int
-        :param include_customers: Include customer or sub-customer entities
+        :param include_customers: Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.
         :type include_customers: bool
         :param text_search: The case insensitive 'substring' filter based on the dashboard title.
         :type text_search: str
@@ -740,7 +741,7 @@ class DashboardControllerApi:
         self,
         page_size: Annotated[StrictInt, Field(description="Maximum amount of entities in a one page")],
         page: Annotated[StrictInt, Field(description="Sequence number of page starting from 0")],
-        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities")] = None,
+        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.")] = None,
         text_search: Annotated[Optional[StrictStr], Field(description="The case insensitive 'substring' filter based on the dashboard title.")] = None,
         sort_property: Annotated[Optional[StrictStr], Field(description="Property of entity to sort by")] = None,
         sort_order: Annotated[Optional[StrictStr], Field(description="Sort order. ASC (ASCENDING) or DESC (DESCENDING)")] = None,
@@ -765,7 +766,7 @@ class DashboardControllerApi:
         :type page_size: int
         :param page: Sequence number of page starting from 0 (required)
         :type page: int
-        :param include_customers: Include customer or sub-customer entities
+        :param include_customers: Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.
         :type include_customers: bool
         :param text_search: The case insensitive 'substring' filter based on the dashboard title.
         :type text_search: str
@@ -832,7 +833,7 @@ class DashboardControllerApi:
         self,
         page_size: Annotated[StrictInt, Field(description="Maximum amount of entities in a one page")],
         page: Annotated[StrictInt, Field(description="Sequence number of page starting from 0")],
-        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities")] = None,
+        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.")] = None,
         text_search: Annotated[Optional[StrictStr], Field(description="The case insensitive 'substring' filter based on the dashboard title.")] = None,
         sort_property: Annotated[Optional[StrictStr], Field(description="Property of entity to sort by")] = None,
         sort_order: Annotated[Optional[StrictStr], Field(description="Sort order. ASC (ASCENDING) or DESC (DESCENDING)")] = None,
@@ -857,7 +858,7 @@ class DashboardControllerApi:
         :type page_size: int
         :param page: Sequence number of page starting from 0 (required)
         :type page: int
-        :param include_customers: Include customer or sub-customer entities
+        :param include_customers: Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.
         :type include_customers: bool
         :param text_search: The case insensitive 'substring' filter based on the dashboard title.
         :type text_search: str
@@ -1013,7 +1014,7 @@ class DashboardControllerApi:
         customer_id: Annotated[StrictStr, Field(description="A string value representing the customer id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")],
         page_size: Annotated[StrictInt, Field(description="Maximum amount of entities in a one page")],
         page: Annotated[StrictInt, Field(description="Sequence number of page starting from 0")],
-        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities")] = None,
+        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.")] = None,
         text_search: Annotated[Optional[StrictStr], Field(description="The case insensitive 'substring' filter based on the dashboard title.")] = None,
         sort_property: Annotated[Optional[StrictStr], Field(description="Property of entity to sort by")] = None,
         sort_order: Annotated[Optional[StrictStr], Field(description="Sort order. ASC (ASCENDING) or DESC (DESCENDING)")] = None,
@@ -1040,7 +1041,7 @@ class DashboardControllerApi:
         :type page_size: int
         :param page: Sequence number of page starting from 0 (required)
         :type page: int
-        :param include_customers: Include customer or sub-customer entities
+        :param include_customers: Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.
         :type include_customers: bool
         :param text_search: The case insensitive 'substring' filter based on the dashboard title.
         :type text_search: str
@@ -1109,7 +1110,7 @@ class DashboardControllerApi:
         customer_id: Annotated[StrictStr, Field(description="A string value representing the customer id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")],
         page_size: Annotated[StrictInt, Field(description="Maximum amount of entities in a one page")],
         page: Annotated[StrictInt, Field(description="Sequence number of page starting from 0")],
-        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities")] = None,
+        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.")] = None,
         text_search: Annotated[Optional[StrictStr], Field(description="The case insensitive 'substring' filter based on the dashboard title.")] = None,
         sort_property: Annotated[Optional[StrictStr], Field(description="Property of entity to sort by")] = None,
         sort_order: Annotated[Optional[StrictStr], Field(description="Sort order. ASC (ASCENDING) or DESC (DESCENDING)")] = None,
@@ -1136,7 +1137,7 @@ class DashboardControllerApi:
         :type page_size: int
         :param page: Sequence number of page starting from 0 (required)
         :type page: int
-        :param include_customers: Include customer or sub-customer entities
+        :param include_customers: Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.
         :type include_customers: bool
         :param text_search: The case insensitive 'substring' filter based on the dashboard title.
         :type text_search: str
@@ -1205,7 +1206,7 @@ class DashboardControllerApi:
         customer_id: Annotated[StrictStr, Field(description="A string value representing the customer id. For example, '784f394c-42b6-435a-983c-b7beff2784f9'")],
         page_size: Annotated[StrictInt, Field(description="Maximum amount of entities in a one page")],
         page: Annotated[StrictInt, Field(description="Sequence number of page starting from 0")],
-        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities")] = None,
+        include_customers: Annotated[Optional[StrictBool], Field(description="Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.")] = None,
         text_search: Annotated[Optional[StrictStr], Field(description="The case insensitive 'substring' filter based on the dashboard title.")] = None,
         sort_property: Annotated[Optional[StrictStr], Field(description="Property of entity to sort by")] = None,
         sort_order: Annotated[Optional[StrictStr], Field(description="Sort order. ASC (ASCENDING) or DESC (DESCENDING)")] = None,
@@ -1232,7 +1233,7 @@ class DashboardControllerApi:
         :type page_size: int
         :param page: Sequence number of page starting from 0 (required)
         :type page: int
-        :param include_customers: Include customer or sub-customer entities
+        :param include_customers: Include customer or sub-customer entities. For tenant administrator: when true, includes entities for all customers; when false (default), only own entities are returned. For customer user: when true, includes entities for all sub-customers.
         :type include_customers: bool
         :param text_search: The case insensitive 'substring' filter based on the dashboard title.
         :type text_search: str
@@ -1666,7 +1667,7 @@ class DashboardControllerApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> None:
+    ) -> Dashboard:
         """Get Dashboard (getDashboardById)
 
         Get the dashboard based on 'dashboardId' parameter. The Dashboard object is a heavyweight object that contains information about the dashboard (e.g. title, image, assigned customers) and also configuration JSON (e.g. layouts, widgets, entity aliases).  Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
@@ -1710,7 +1711,7 @@ class DashboardControllerApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': None,
+            '200': "Dashboard",
             '400': "ThingsboardErrorResponse",
             '401': "ThingsboardErrorResponse",
             '403': "ThingsboardErrorResponse",
@@ -1746,7 +1747,7 @@ class DashboardControllerApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[None]:
+    ) -> ApiResponse[Dashboard]:
         """Get Dashboard (getDashboardById)
 
         Get the dashboard based on 'dashboardId' parameter. The Dashboard object is a heavyweight object that contains information about the dashboard (e.g. title, image, assigned customers) and also configuration JSON (e.g. layouts, widgets, entity aliases).  Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
@@ -1790,7 +1791,7 @@ class DashboardControllerApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': None,
+            '200': "Dashboard",
             '400': "ThingsboardErrorResponse",
             '401': "ThingsboardErrorResponse",
             '403': "ThingsboardErrorResponse",
@@ -1870,7 +1871,7 @@ class DashboardControllerApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': None,
+            '200': "Dashboard",
             '400': "ThingsboardErrorResponse",
             '401': "ThingsboardErrorResponse",
             '403': "ThingsboardErrorResponse",
@@ -2892,7 +2893,7 @@ class DashboardControllerApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> None:
+    ) -> HomeDashboard:
         """Get Home Dashboard (getHomeDashboard)
 
         Returns the home dashboard object that is configured as 'homeDashboardId' parameter in the 'additionalInfo' of the User. If 'homeDashboardId' parameter is not set on the User level and the User has authority 'CUSTOMER_USER', check the same parameter for the corresponding Customer. If 'homeDashboardId' parameter is not set on the User and Customer levels then checks the same parameter for the Tenant that owns the user. The Dashboard object is a heavyweight object that contains information about the dashboard (e.g. title, image, assigned customers) and also configuration JSON (e.g. layouts, widgets, entity aliases).  Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
@@ -2930,7 +2931,7 @@ class DashboardControllerApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': None,
+            '200': "HomeDashboard",
             '400': "ThingsboardErrorResponse",
             '401': "ThingsboardErrorResponse",
             '403': "ThingsboardErrorResponse",
@@ -2964,7 +2965,7 @@ class DashboardControllerApi:
         _content_type: Optional[StrictStr] = None,
         _headers: Optional[Dict[StrictStr, Any]] = None,
         _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[None]:
+    ) -> ApiResponse[HomeDashboard]:
         """Get Home Dashboard (getHomeDashboard)
 
         Returns the home dashboard object that is configured as 'homeDashboardId' parameter in the 'additionalInfo' of the User. If 'homeDashboardId' parameter is not set on the User level and the User has authority 'CUSTOMER_USER', check the same parameter for the corresponding Customer. If 'homeDashboardId' parameter is not set on the User and Customer levels then checks the same parameter for the Tenant that owns the user. The Dashboard object is a heavyweight object that contains information about the dashboard (e.g. title, image, assigned customers) and also configuration JSON (e.g. layouts, widgets, entity aliases).  Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
@@ -3002,7 +3003,7 @@ class DashboardControllerApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': None,
+            '200': "HomeDashboard",
             '400': "ThingsboardErrorResponse",
             '401': "ThingsboardErrorResponse",
             '403': "ThingsboardErrorResponse",
@@ -3074,7 +3075,7 @@ class DashboardControllerApi:
         )
 
         _response_types_map: Dict[str, Optional[str]] = {
-            '200': None,
+            '200': "HomeDashboard",
             '400': "ThingsboardErrorResponse",
             '401': "ThingsboardErrorResponse",
             '403': "ThingsboardErrorResponse",

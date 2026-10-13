@@ -4144,7 +4144,7 @@ class TelemetryControllerApi:
             _default_content_type = (
                 self.api_client.select_header_content_type(
                     [
-                        'application/json'
+                        'text/plain'
                     ]
                 )
             )
@@ -4482,7 +4482,7 @@ class TelemetryControllerApi:
             _default_content_type = (
                 self.api_client.select_header_content_type(
                     [
-                        'application/json'
+                        'text/plain'
                     ]
                 )
             )
@@ -4820,7 +4820,7 @@ class TelemetryControllerApi:
             _default_content_type = (
                 self.api_client.select_header_content_type(
                     [
-                        'application/json'
+                        'text/plain'
                     ]
                 )
             )
@@ -5158,7 +5158,7 @@ class TelemetryControllerApi:
             _default_content_type = (
                 self.api_client.select_header_content_type(
                     [
-                        'application/json'
+                        'text/plain'
                     ]
                 )
             )
@@ -5511,7 +5511,7 @@ class TelemetryControllerApi:
             _default_content_type = (
                 self.api_client.select_header_content_type(
                     [
-                        'application/json'
+                        'text/plain'
                     ]
                 )
             )

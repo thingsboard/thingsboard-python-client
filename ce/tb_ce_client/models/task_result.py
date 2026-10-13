@@ -55,7 +55,7 @@ class TaskResult(BaseModel):
 
     # discriminator mappings
     __discriminator_value_class_map: ClassVar[Dict[str, str]] = {
-        'DummyTaskResult': 'DummyTaskResult'
+        'DUMMY': 'DummyTaskResult'
     }
 
     @classmethod

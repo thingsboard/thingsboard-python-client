@@ -24,10 +24,10 @@
 `NUMBER_2` | `NUMBER_10` | `NUMBER_11` | `NUMBER_15` | `NUMBER_20` | `NUMBER_30` | `NUMBER_31` | `NUMBER_32` | `NUMBER_33` | `NUMBER_34` | … (16 values total)
 
 #### SubscriptionEntry (enum)
-`NUMBER_1` | `NUMBER_2` | `NUMBER_3` | `NUMBER_4` | `NUMBER_5` | `NUMBER_6` | `NUMBER_7` | `NUMBER_8` | `NUMBER_9` | `NUMBER_10` | … (13 values total)
+`NUMBER_1` | `NUMBER_2` | `NUMBER_3` | `NUMBER_4` | `NUMBER_5` | `NUMBER_6` | `NUMBER_7` | `NUMBER_8` | `NUMBER_9` | `NUMBER_10` | … (15 values total)
 
 #### SubscriptionExceptionErrorCode (enum)
-`NUMBER_1` | `NUMBER_2` | `NUMBER_3` | `NUMBER_4` | `NUMBER_5` | `NUMBER_6` | `NUMBER_7`
+`NUMBER_1` | `NUMBER_2` | `NUMBER_3` | `NUMBER_4` | `NUMBER_5` | `NUMBER_6`
 
 ---
 

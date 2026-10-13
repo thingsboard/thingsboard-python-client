@@ -26,6 +26,52 @@ __all__ = [
     "AdminSettingsId",
     "AffectedTenantAdministratorsFilter",
     "AffectedUserFilter",
+    "Agent",
+    "AgentAppArgument",
+    "AgentAppArgumentFormat",
+    "AgentAppArgumentSource",
+    "AgentAppArgumentValueType",
+    "AgentAppConfig",
+    "AgentAppConfigType",
+    "AgentAppEvent",
+    "AgentAppEventActionType",
+    "AgentAppEventId",
+    "AgentAppEventInfo",
+    "AgentAppEventRequest",
+    "AgentAppEventStepStatesValue",
+    "AgentAppInstallResponse",
+    "AgentAppProfile",
+    "AgentAppProfileId",
+    "AgentAppProfileInfo",
+    "AgentAppProfileRelationInfo",
+    "AgentAppStep",
+    "AgentAppStepState",
+    "AgentAppStepType",
+    "AgentAppTemplate",
+    "AgentAppTemplateStartStepsInner",
+    "AgentAppUnit",
+    "AgentAppUnitId",
+    "AgentAppUnitType",
+    "AgentApplication",
+    "AgentApplicationId",
+    "AgentApplicationInfo",
+    "AgentApplicationOrigin",
+    "AgentApplicationType",
+    "AgentBulkAction",
+    "AgentBulkActionEventStats",
+    "AgentBulkActionId",
+    "AgentBulkActionStatus",
+    "AgentFinalizeStep",
+    "AgentId",
+    "AgentInfo",
+    "AgentInstructions",
+    "AgentPrepareStep",
+    "AgentProcessingStatus",
+    "AgentProfile",
+    "AgentProfileId",
+    "AgentProfileInfo",
+    "AgentProvisionType",
+    "AgentUpgradeRequest",
     "AggFunction",
     "AggFunctionInput",
     "AggInput",
@@ -140,6 +186,9 @@ __all__ = [
     "AzureOpenAiProviderConfig",
     "BackupCodeTwoFaAccountConfig",
     "BackupCodeTwoFaProviderConfig",
+    "BackupVolumesRemoveStep",
+    "BackupVolumesStep",
+    "BackupVolumesStepState",
     "BadgePosition",
     "BarSeriesSettings",
     "BaseReadTsKvQuery",
@@ -157,6 +206,8 @@ __all__ = [
     "BulkImportResultAsset",
     "BulkImportResultDevice",
     "BulkImportResultEdge",
+    "BulkOperationPreview",
+    "BulkOperationRequest",
     "Button",
     "CMAssigneeType",
     "CMItemLinkType",
@@ -197,7 +248,6 @@ __all__ = [
     "ComparisonDuration",
     "ComparisonTsValue",
     "ComplexFilterPredicate",
-    "ComplexOperation",
     "ComplexVersionCreateRequest",
     "ComponentClusteringMode",
     "ComponentDescriptor",
@@ -205,6 +255,13 @@ __all__ = [
     "ComponentLifecycleEvent",
     "ComponentScope",
     "ComponentType",
+    "ComposeDownStep",
+    "ComposeDownStepState",
+    "ComposeRestartStep",
+    "ComposeStartStep",
+    "ComposeStep",
+    "ComposeStepState",
+    "ComposeTypeChoiceStep",
     "ContactBasedObject",
     "Converter",
     "ConverterExportData",
@@ -291,6 +348,7 @@ __all__ = [
     "Direction",
     "DisabledDeviceProfileProvisionConfiguration",
     "DividerComponent",
+    "DockerComposeConfig",
     "Domain",
     "DomainId",
     "DomainInfo",
@@ -407,6 +465,7 @@ __all__ = [
     "FontWeight",
     "GeofencingCalculatedFieldConfiguration",
     "GeofencingReportStrategy",
+    "GetManagedRelatedEntityIds200ResponseInner",
     "GitHubModelsChatModelConfig",
     "GitHubModelsProviderConfig",
     "GoogleAiGeminiChatModelConfig",
@@ -576,6 +635,16 @@ __all__ = [
     "Output",
     "PSKLwM2MBootstrapServerCredential",
     "PageBreakComponent",
+    "PageDataAgent",
+    "PageDataAgentAppEvent",
+    "PageDataAgentAppEventInfo",
+    "PageDataAgentAppProfile",
+    "PageDataAgentAppUnit",
+    "PageDataAgentApplicationInfo",
+    "PageDataAgentBulkAction",
+    "PageDataAgentInfo",
+    "PageDataAgentProfile",
+    "PageDataAgentProfileInfo",
     "PageDataAiModel",
     "PageDataAlarmCommentInfo",
     "PageDataAlarmData",
@@ -660,6 +729,7 @@ __all__ = [
     "PowerMode",
     "PowerSavingConfiguration",
     "PrivacyProtocol",
+    "ProcessingStartStatus",
     "ProcessingStrategy",
     "ProcessingStrategyType",
     "PropagationCalculatedFieldConfiguration",
@@ -727,6 +797,8 @@ __all__ = [
     "RoleExportData",
     "RoleId",
     "RoleType",
+    "RollBackStep",
+    "RollBackStepState",
     "Rpc",
     "RpcId",
     "RpcStatus",
@@ -738,6 +810,7 @@ __all__ = [
     "RuleChainId",
     "RuleChainImportResult",
     "RuleChainMetaData",
+    "RuleChainNote",
     "RuleChainOutputLabelsUsage",
     "RuleChainType",
     "RuleEngineComponentLifecycleEventNotificationRuleTriggerConfig",
@@ -745,6 +818,8 @@ __all__ = [
     "RuleNode",
     "RuleNodeDebugEventFilter",
     "RuleNodeId",
+    "RunJobStep",
+    "RunJobStepState",
     "SaveDeviceWithCredentialsRequest",
     "SaveOtaPackageInfoRequest",
     "ScheduledReportInfo",
@@ -776,9 +851,12 @@ __all__ = [
     "SimpleAlarmConditionExpression",
     "SimpleCalculatedFieldConfiguration",
     "SimpleEntity",
+    "SimpleValueSourceConfig",
     "SingleEntityFilter",
     "SingleEntityVersionCreateRequest",
     "SingleEntityVersionLoadRequest",
+    "SkipReason",
+    "SkippedApp",
     "SlackConversation",
     "SlackConversationType",
     "SlackDeliveryMethodNotificationTemplate",
@@ -800,8 +878,7 @@ __all__ = [
     "SolutionExportRequest",
     "SolutionExportResponse",
     "SolutionImportResult",
-    "SolutionInstallResponse",
-    "SolutionTemplateLevel",
+    "SolutionStep",
     "SolutionValidationResult",
     "SpecificTimeSchedule",
     "SplitViewComponent",
@@ -809,6 +886,11 @@ __all__ = [
     "StateEntityFilter",
     "StateEntityOwnerFilter",
     "StatisticsEventFilter",
+    "StepFieldAgentAppEventId",
+    "StepFieldBoolean",
+    "StepFieldInteger",
+    "StepFieldListString",
+    "StepFieldString",
     "StoreInfo",
     "StringFilterPredicate",
     "StringOperation",
@@ -853,9 +935,6 @@ __all__ = [
     "TenantProfileData",
     "TenantProfileId",
     "TenantProfileQueueConfiguration",
-    "TenantSolutionTemplateDetails",
-    "TenantSolutionTemplateInfo",
-    "TenantSolutionTemplateInstructions",
     "TestSmsRequest",
     "TextAlignment",
     "ThingsboardCredentialsExpiredResponse",
@@ -915,6 +994,7 @@ __all__ = [
     "UserActivationLink",
     "UserDashboardsInfo",
     "UserEmailInfo",
+    "UserExportData",
     "UserGroupListFilter",
     "UserId",
     "UserInfo",
@@ -972,6 +1052,52 @@ if TYPE_CHECKING:
     from tb_pe_client.models.admin_settings_id import AdminSettingsId
     from tb_pe_client.models.affected_tenant_administrators_filter import AffectedTenantAdministratorsFilter
     from tb_pe_client.models.affected_user_filter import AffectedUserFilter
+    from tb_pe_client.models.agent import Agent
+    from tb_pe_client.models.agent_app_argument import AgentAppArgument
+    from tb_pe_client.models.agent_app_argument_format import AgentAppArgumentFormat
+    from tb_pe_client.models.agent_app_argument_source import AgentAppArgumentSource
+    from tb_pe_client.models.agent_app_argument_value_type import AgentAppArgumentValueType
+    from tb_pe_client.models.agent_app_config import AgentAppConfig
+    from tb_pe_client.models.agent_app_config_type import AgentAppConfigType
+    from tb_pe_client.models.agent_app_event import AgentAppEvent
+    from tb_pe_client.models.agent_app_event_action_type import AgentAppEventActionType
+    from tb_pe_client.models.agent_app_event_id import AgentAppEventId
+    from tb_pe_client.models.agent_app_event_info import AgentAppEventInfo
+    from tb_pe_client.models.agent_app_event_request import AgentAppEventRequest
+    from tb_pe_client.models.agent_app_event_step_states_value import AgentAppEventStepStatesValue
+    from tb_pe_client.models.agent_app_install_response import AgentAppInstallResponse
+    from tb_pe_client.models.agent_app_profile import AgentAppProfile
+    from tb_pe_client.models.agent_app_profile_id import AgentAppProfileId
+    from tb_pe_client.models.agent_app_profile_info import AgentAppProfileInfo
+    from tb_pe_client.models.agent_app_profile_relation_info import AgentAppProfileRelationInfo
+    from tb_pe_client.models.agent_app_step import AgentAppStep
+    from tb_pe_client.models.agent_app_step_state import AgentAppStepState
+    from tb_pe_client.models.agent_app_step_type import AgentAppStepType
+    from tb_pe_client.models.agent_app_template import AgentAppTemplate
+    from tb_pe_client.models.agent_app_template_start_steps_inner import AgentAppTemplateStartStepsInner
+    from tb_pe_client.models.agent_app_unit import AgentAppUnit
+    from tb_pe_client.models.agent_app_unit_id import AgentAppUnitId
+    from tb_pe_client.models.agent_app_unit_type import AgentAppUnitType
+    from tb_pe_client.models.agent_application import AgentApplication
+    from tb_pe_client.models.agent_application_id import AgentApplicationId
+    from tb_pe_client.models.agent_application_info import AgentApplicationInfo
+    from tb_pe_client.models.agent_application_origin import AgentApplicationOrigin
+    from tb_pe_client.models.agent_application_type import AgentApplicationType
+    from tb_pe_client.models.agent_bulk_action import AgentBulkAction
+    from tb_pe_client.models.agent_bulk_action_event_stats import AgentBulkActionEventStats
+    from tb_pe_client.models.agent_bulk_action_id import AgentBulkActionId
+    from tb_pe_client.models.agent_bulk_action_status import AgentBulkActionStatus
+    from tb_pe_client.models.agent_finalize_step import AgentFinalizeStep
+    from tb_pe_client.models.agent_id import AgentId
+    from tb_pe_client.models.agent_info import AgentInfo
+    from tb_pe_client.models.agent_instructions import AgentInstructions
+    from tb_pe_client.models.agent_prepare_step import AgentPrepareStep
+    from tb_pe_client.models.agent_processing_status import AgentProcessingStatus
+    from tb_pe_client.models.agent_profile import AgentProfile
+    from tb_pe_client.models.agent_profile_id import AgentProfileId
+    from tb_pe_client.models.agent_profile_info import AgentProfileInfo
+    from tb_pe_client.models.agent_provision_type import AgentProvisionType
+    from tb_pe_client.models.agent_upgrade_request import AgentUpgradeRequest
     from tb_pe_client.models.agg_function import AggFunction
     from tb_pe_client.models.agg_function_input import AggFunctionInput
     from tb_pe_client.models.agg_input import AggInput
@@ -1086,6 +1212,9 @@ if TYPE_CHECKING:
     from tb_pe_client.models.azure_open_ai_provider_config import AzureOpenAiProviderConfig
     from tb_pe_client.models.backup_code_two_fa_account_config import BackupCodeTwoFaAccountConfig
     from tb_pe_client.models.backup_code_two_fa_provider_config import BackupCodeTwoFaProviderConfig
+    from tb_pe_client.models.backup_volumes_remove_step import BackupVolumesRemoveStep
+    from tb_pe_client.models.backup_volumes_step import BackupVolumesStep
+    from tb_pe_client.models.backup_volumes_step_state import BackupVolumesStepState
     from tb_pe_client.models.badge_position import BadgePosition
     from tb_pe_client.models.bar_series_settings import BarSeriesSettings
     from tb_pe_client.models.base_read_ts_kv_query import BaseReadTsKvQuery
@@ -1103,6 +1232,8 @@ if TYPE_CHECKING:
     from tb_pe_client.models.bulk_import_result_asset import BulkImportResultAsset
     from tb_pe_client.models.bulk_import_result_device import BulkImportResultDevice
     from tb_pe_client.models.bulk_import_result_edge import BulkImportResultEdge
+    from tb_pe_client.models.bulk_operation_preview import BulkOperationPreview
+    from tb_pe_client.models.bulk_operation_request import BulkOperationRequest
     from tb_pe_client.models.button import Button
     from tb_pe_client.models.cm_assignee_type import CMAssigneeType
     from tb_pe_client.models.cm_item_link_type import CMItemLinkType
@@ -1143,7 +1274,6 @@ if TYPE_CHECKING:
     from tb_pe_client.models.comparison_duration import ComparisonDuration
     from tb_pe_client.models.comparison_ts_value import ComparisonTsValue
     from tb_pe_client.models.complex_filter_predicate import ComplexFilterPredicate
-    from tb_pe_client.models.complex_operation import ComplexOperation
     from tb_pe_client.models.complex_version_create_request import ComplexVersionCreateRequest
     from tb_pe_client.models.component_clustering_mode import ComponentClusteringMode
     from tb_pe_client.models.component_descriptor import ComponentDescriptor
@@ -1151,6 +1281,13 @@ if TYPE_CHECKING:
     from tb_pe_client.models.component_lifecycle_event import ComponentLifecycleEvent
     from tb_pe_client.models.component_scope import ComponentScope
     from tb_pe_client.models.component_type import ComponentType
+    from tb_pe_client.models.compose_down_step import ComposeDownStep
+    from tb_pe_client.models.compose_down_step_state import ComposeDownStepState
+    from tb_pe_client.models.compose_restart_step import ComposeRestartStep
+    from tb_pe_client.models.compose_start_step import ComposeStartStep
+    from tb_pe_client.models.compose_step import ComposeStep
+    from tb_pe_client.models.compose_step_state import ComposeStepState
+    from tb_pe_client.models.compose_type_choice_step import ComposeTypeChoiceStep
     from tb_pe_client.models.contact_based_object import ContactBasedObject
     from tb_pe_client.models.converter import Converter
     from tb_pe_client.models.converter_export_data import ConverterExportData
@@ -1237,6 +1374,7 @@ if TYPE_CHECKING:
     from tb_pe_client.models.direction import Direction
     from tb_pe_client.models.disabled_device_profile_provision_configuration import DisabledDeviceProfileProvisionConfiguration
     from tb_pe_client.models.divider_component import DividerComponent
+    from tb_pe_client.models.docker_compose_config import DockerComposeConfig
     from tb_pe_client.models.domain import Domain
     from tb_pe_client.models.domain_id import DomainId
     from tb_pe_client.models.domain_info import DomainInfo
@@ -1353,6 +1491,7 @@ if TYPE_CHECKING:
     from tb_pe_client.models.font_weight import FontWeight
     from tb_pe_client.models.geofencing_calculated_field_configuration import GeofencingCalculatedFieldConfiguration
     from tb_pe_client.models.geofencing_report_strategy import GeofencingReportStrategy
+    from tb_pe_client.models.get_managed_related_entity_ids200_response_inner import GetManagedRelatedEntityIds200ResponseInner
     from tb_pe_client.models.git_hub_models_chat_model_config import GitHubModelsChatModelConfig
     from tb_pe_client.models.git_hub_models_provider_config import GitHubModelsProviderConfig
     from tb_pe_client.models.google_ai_gemini_chat_model_config import GoogleAiGeminiChatModelConfig
@@ -1522,6 +1661,16 @@ if TYPE_CHECKING:
     from tb_pe_client.models.output import Output
     from tb_pe_client.models.psklw_m2_m_bootstrap_server_credential import PSKLwM2MBootstrapServerCredential
     from tb_pe_client.models.page_break_component import PageBreakComponent
+    from tb_pe_client.models.page_data_agent import PageDataAgent
+    from tb_pe_client.models.page_data_agent_app_event import PageDataAgentAppEvent
+    from tb_pe_client.models.page_data_agent_app_event_info import PageDataAgentAppEventInfo
+    from tb_pe_client.models.page_data_agent_app_profile import PageDataAgentAppProfile
+    from tb_pe_client.models.page_data_agent_app_unit import PageDataAgentAppUnit
+    from tb_pe_client.models.page_data_agent_application_info import PageDataAgentApplicationInfo
+    from tb_pe_client.models.page_data_agent_bulk_action import PageDataAgentBulkAction
+    from tb_pe_client.models.page_data_agent_info import PageDataAgentInfo
+    from tb_pe_client.models.page_data_agent_profile import PageDataAgentProfile
+    from tb_pe_client.models.page_data_agent_profile_info import PageDataAgentProfileInfo
     from tb_pe_client.models.page_data_ai_model import PageDataAiModel
     from tb_pe_client.models.page_data_alarm_comment_info import PageDataAlarmCommentInfo
     from tb_pe_client.models.page_data_alarm_data import PageDataAlarmData
@@ -1606,6 +1755,7 @@ if TYPE_CHECKING:
     from tb_pe_client.models.power_mode import PowerMode
     from tb_pe_client.models.power_saving_configuration import PowerSavingConfiguration
     from tb_pe_client.models.privacy_protocol import PrivacyProtocol
+    from tb_pe_client.models.processing_start_status import ProcessingStartStatus
     from tb_pe_client.models.processing_strategy import ProcessingStrategy
     from tb_pe_client.models.processing_strategy_type import ProcessingStrategyType
     from tb_pe_client.models.propagation_calculated_field_configuration import PropagationCalculatedFieldConfiguration
@@ -1673,6 +1823,8 @@ if TYPE_CHECKING:
     from tb_pe_client.models.role_export_data import RoleExportData
     from tb_pe_client.models.role_id import RoleId
     from tb_pe_client.models.role_type import RoleType
+    from tb_pe_client.models.roll_back_step import RollBackStep
+    from tb_pe_client.models.roll_back_step_state import RollBackStepState
     from tb_pe_client.models.rpc import Rpc
     from tb_pe_client.models.rpc_id import RpcId
     from tb_pe_client.models.rpc_status import RpcStatus
@@ -1684,6 +1836,7 @@ if TYPE_CHECKING:
     from tb_pe_client.models.rule_chain_id import RuleChainId
     from tb_pe_client.models.rule_chain_import_result import RuleChainImportResult
     from tb_pe_client.models.rule_chain_meta_data import RuleChainMetaData
+    from tb_pe_client.models.rule_chain_note import RuleChainNote
     from tb_pe_client.models.rule_chain_output_labels_usage import RuleChainOutputLabelsUsage
     from tb_pe_client.models.rule_chain_type import RuleChainType
     from tb_pe_client.models.rule_engine_component_lifecycle_event_notification_rule_trigger_config import RuleEngineComponentLifecycleEventNotificationRuleTriggerConfig
@@ -1691,6 +1844,8 @@ if TYPE_CHECKING:
     from tb_pe_client.models.rule_node import RuleNode
     from tb_pe_client.models.rule_node_debug_event_filter import RuleNodeDebugEventFilter
     from tb_pe_client.models.rule_node_id import RuleNodeId
+    from tb_pe_client.models.run_job_step import RunJobStep
+    from tb_pe_client.models.run_job_step_state import RunJobStepState
     from tb_pe_client.models.save_device_with_credentials_request import SaveDeviceWithCredentialsRequest
     from tb_pe_client.models.save_ota_package_info_request import SaveOtaPackageInfoRequest
     from tb_pe_client.models.scheduled_report_info import ScheduledReportInfo
@@ -1722,9 +1877,12 @@ if TYPE_CHECKING:
     from tb_pe_client.models.simple_alarm_condition_expression import SimpleAlarmConditionExpression
     from tb_pe_client.models.simple_calculated_field_configuration import SimpleCalculatedFieldConfiguration
     from tb_pe_client.models.simple_entity import SimpleEntity
+    from tb_pe_client.models.simple_value_source_config import SimpleValueSourceConfig
     from tb_pe_client.models.single_entity_filter import SingleEntityFilter
     from tb_pe_client.models.single_entity_version_create_request import SingleEntityVersionCreateRequest
     from tb_pe_client.models.single_entity_version_load_request import SingleEntityVersionLoadRequest
+    from tb_pe_client.models.skip_reason import SkipReason
+    from tb_pe_client.models.skipped_app import SkippedApp
     from tb_pe_client.models.slack_conversation import SlackConversation
     from tb_pe_client.models.slack_conversation_type import SlackConversationType
     from tb_pe_client.models.slack_delivery_method_notification_template import SlackDeliveryMethodNotificationTemplate
@@ -1746,8 +1904,7 @@ if TYPE_CHECKING:
     from tb_pe_client.models.solution_export_request import SolutionExportRequest
     from tb_pe_client.models.solution_export_response import SolutionExportResponse
     from tb_pe_client.models.solution_import_result import SolutionImportResult
-    from tb_pe_client.models.solution_install_response import SolutionInstallResponse
-    from tb_pe_client.models.solution_template_level import SolutionTemplateLevel
+    from tb_pe_client.models.solution_step import SolutionStep
     from tb_pe_client.models.solution_validation_result import SolutionValidationResult
     from tb_pe_client.models.specific_time_schedule import SpecificTimeSchedule
     from tb_pe_client.models.split_view_component import SplitViewComponent
@@ -1755,6 +1912,11 @@ if TYPE_CHECKING:
     from tb_pe_client.models.state_entity_filter import StateEntityFilter
     from tb_pe_client.models.state_entity_owner_filter import StateEntityOwnerFilter
     from tb_pe_client.models.statistics_event_filter import StatisticsEventFilter
+    from tb_pe_client.models.step_field_agent_app_event_id import StepFieldAgentAppEventId
+    from tb_pe_client.models.step_field_boolean import StepFieldBoolean
+    from tb_pe_client.models.step_field_integer import StepFieldInteger
+    from tb_pe_client.models.step_field_list_string import StepFieldListString
+    from tb_pe_client.models.step_field_string import StepFieldString
     from tb_pe_client.models.store_info import StoreInfo
     from tb_pe_client.models.string_filter_predicate import StringFilterPredicate
     from tb_pe_client.models.string_operation import StringOperation
@@ -1799,9 +1961,6 @@ if TYPE_CHECKING:
     from tb_pe_client.models.tenant_profile_data import TenantProfileData
     from tb_pe_client.models.tenant_profile_id import TenantProfileId
     from tb_pe_client.models.tenant_profile_queue_configuration import TenantProfileQueueConfiguration
-    from tb_pe_client.models.tenant_solution_template_details import TenantSolutionTemplateDetails
-    from tb_pe_client.models.tenant_solution_template_info import TenantSolutionTemplateInfo
-    from tb_pe_client.models.tenant_solution_template_instructions import TenantSolutionTemplateInstructions
     from tb_pe_client.models.test_sms_request import TestSmsRequest
     from tb_pe_client.models.text_alignment import TextAlignment
     from tb_pe_client.models.thingsboard_credentials_expired_response import ThingsboardCredentialsExpiredResponse
@@ -1861,6 +2020,7 @@ if TYPE_CHECKING:
     from tb_pe_client.models.user_activation_link import UserActivationLink
     from tb_pe_client.models.user_dashboards_info import UserDashboardsInfo
     from tb_pe_client.models.user_email_info import UserEmailInfo
+    from tb_pe_client.models.user_export_data import UserExportData
     from tb_pe_client.models.user_group_list_filter import UserGroupListFilter
     from tb_pe_client.models.user_id import UserId
     from tb_pe_client.models.user_info import UserInfo
@@ -1917,6 +2077,52 @@ _MODEL_CLASSES = {
     "AdminSettingsId": "tb_pe_client.models.admin_settings_id",
     "AffectedTenantAdministratorsFilter": "tb_pe_client.models.affected_tenant_administrators_filter",
     "AffectedUserFilter": "tb_pe_client.models.affected_user_filter",
+    "Agent": "tb_pe_client.models.agent",
+    "AgentAppArgument": "tb_pe_client.models.agent_app_argument",
+    "AgentAppArgumentFormat": "tb_pe_client.models.agent_app_argument_format",
+    "AgentAppArgumentSource": "tb_pe_client.models.agent_app_argument_source",
+    "AgentAppArgumentValueType": "tb_pe_client.models.agent_app_argument_value_type",
+    "AgentAppConfig": "tb_pe_client.models.agent_app_config",
+    "AgentAppConfigType": "tb_pe_client.models.agent_app_config_type",
+    "AgentAppEvent": "tb_pe_client.models.agent_app_event",
+    "AgentAppEventActionType": "tb_pe_client.models.agent_app_event_action_type",
+    "AgentAppEventId": "tb_pe_client.models.agent_app_event_id",
+    "AgentAppEventInfo": "tb_pe_client.models.agent_app_event_info",
+    "AgentAppEventRequest": "tb_pe_client.models.agent_app_event_request",
+    "AgentAppEventStepStatesValue": "tb_pe_client.models.agent_app_event_step_states_value",
+    "AgentAppInstallResponse": "tb_pe_client.models.agent_app_install_response",
+    "AgentAppProfile": "tb_pe_client.models.agent_app_profile",
+    "AgentAppProfileId": "tb_pe_client.models.agent_app_profile_id",
+    "AgentAppProfileInfo": "tb_pe_client.models.agent_app_profile_info",
+    "AgentAppProfileRelationInfo": "tb_pe_client.models.agent_app_profile_relation_info",
+    "AgentAppStep": "tb_pe_client.models.agent_app_step",
+    "AgentAppStepState": "tb_pe_client.models.agent_app_step_state",
+    "AgentAppStepType": "tb_pe_client.models.agent_app_step_type",
+    "AgentAppTemplate": "tb_pe_client.models.agent_app_template",
+    "AgentAppTemplateStartStepsInner": "tb_pe_client.models.agent_app_template_start_steps_inner",
+    "AgentAppUnit": "tb_pe_client.models.agent_app_unit",
+    "AgentAppUnitId": "tb_pe_client.models.agent_app_unit_id",
+    "AgentAppUnitType": "tb_pe_client.models.agent_app_unit_type",
+    "AgentApplication": "tb_pe_client.models.agent_application",
+    "AgentApplicationId": "tb_pe_client.models.agent_application_id",
+    "AgentApplicationInfo": "tb_pe_client.models.agent_application_info",
+    "AgentApplicationOrigin": "tb_pe_client.models.agent_application_origin",
+    "AgentApplicationType": "tb_pe_client.models.agent_application_type",
+    "AgentBulkAction": "tb_pe_client.models.agent_bulk_action",
+    "AgentBulkActionEventStats": "tb_pe_client.models.agent_bulk_action_event_stats",
+    "AgentBulkActionId": "tb_pe_client.models.agent_bulk_action_id",
+    "AgentBulkActionStatus": "tb_pe_client.models.agent_bulk_action_status",
+    "AgentFinalizeStep": "tb_pe_client.models.agent_finalize_step",
+    "AgentId": "tb_pe_client.models.agent_id",
+    "AgentInfo": "tb_pe_client.models.agent_info",
+    "AgentInstructions": "tb_pe_client.models.agent_instructions",
+    "AgentPrepareStep": "tb_pe_client.models.agent_prepare_step",
+    "AgentProcessingStatus": "tb_pe_client.models.agent_processing_status",
+    "AgentProfile": "tb_pe_client.models.agent_profile",
+    "AgentProfileId": "tb_pe_client.models.agent_profile_id",
+    "AgentProfileInfo": "tb_pe_client.models.agent_profile_info",
+    "AgentProvisionType": "tb_pe_client.models.agent_provision_type",
+    "AgentUpgradeRequest": "tb_pe_client.models.agent_upgrade_request",
     "AggFunction": "tb_pe_client.models.agg_function",
     "AggFunctionInput": "tb_pe_client.models.agg_function_input",
     "AggInput": "tb_pe_client.models.agg_input",
@@ -2031,6 +2237,9 @@ _MODEL_CLASSES = {
     "AzureOpenAiProviderConfig": "tb_pe_client.models.azure_open_ai_provider_config",
     "BackupCodeTwoFaAccountConfig": "tb_pe_client.models.backup_code_two_fa_account_config",
     "BackupCodeTwoFaProviderConfig": "tb_pe_client.models.backup_code_two_fa_provider_config",
+    "BackupVolumesRemoveStep": "tb_pe_client.models.backup_volumes_remove_step",
+    "BackupVolumesStep": "tb_pe_client.models.backup_volumes_step",
+    "BackupVolumesStepState": "tb_pe_client.models.backup_volumes_step_state",
     "BadgePosition": "tb_pe_client.models.badge_position",
     "BarSeriesSettings": "tb_pe_client.models.bar_series_settings",
     "BaseReadTsKvQuery": "tb_pe_client.models.base_read_ts_kv_query",
@@ -2048,6 +2257,8 @@ _MODEL_CLASSES = {
     "BulkImportResultAsset": "tb_pe_client.models.bulk_import_result_asset",
     "BulkImportResultDevice": "tb_pe_client.models.bulk_import_result_device",
     "BulkImportResultEdge": "tb_pe_client.models.bulk_import_result_edge",
+    "BulkOperationPreview": "tb_pe_client.models.bulk_operation_preview",
+    "BulkOperationRequest": "tb_pe_client.models.bulk_operation_request",
     "Button": "tb_pe_client.models.button",
     "CMAssigneeType": "tb_pe_client.models.cm_assignee_type",
     "CMItemLinkType": "tb_pe_client.models.cm_item_link_type",
@@ -2088,7 +2299,6 @@ _MODEL_CLASSES = {
     "ComparisonDuration": "tb_pe_client.models.comparison_duration",
     "ComparisonTsValue": "tb_pe_client.models.comparison_ts_value",
     "ComplexFilterPredicate": "tb_pe_client.models.complex_filter_predicate",
-    "ComplexOperation": "tb_pe_client.models.complex_operation",
     "ComplexVersionCreateRequest": "tb_pe_client.models.complex_version_create_request",
     "ComponentClusteringMode": "tb_pe_client.models.component_clustering_mode",
     "ComponentDescriptor": "tb_pe_client.models.component_descriptor",
@@ -2096,6 +2306,13 @@ _MODEL_CLASSES = {
     "ComponentLifecycleEvent": "tb_pe_client.models.component_lifecycle_event",
     "ComponentScope": "tb_pe_client.models.component_scope",
     "ComponentType": "tb_pe_client.models.component_type",
+    "ComposeDownStep": "tb_pe_client.models.compose_down_step",
+    "ComposeDownStepState": "tb_pe_client.models.compose_down_step_state",
+    "ComposeRestartStep": "tb_pe_client.models.compose_restart_step",
+    "ComposeStartStep": "tb_pe_client.models.compose_start_step",
+    "ComposeStep": "tb_pe_client.models.compose_step",
+    "ComposeStepState": "tb_pe_client.models.compose_step_state",
+    "ComposeTypeChoiceStep": "tb_pe_client.models.compose_type_choice_step",
     "ContactBasedObject": "tb_pe_client.models.contact_based_object",
     "Converter": "tb_pe_client.models.converter",
     "ConverterExportData": "tb_pe_client.models.converter_export_data",
@@ -2182,6 +2399,7 @@ _MODEL_CLASSES = {
     "Direction": "tb_pe_client.models.direction",
     "DisabledDeviceProfileProvisionConfiguration": "tb_pe_client.models.disabled_device_profile_provision_configuration",
     "DividerComponent": "tb_pe_client.models.divider_component",
+    "DockerComposeConfig": "tb_pe_client.models.docker_compose_config",
     "Domain": "tb_pe_client.models.domain",
     "DomainId": "tb_pe_client.models.domain_id",
     "DomainInfo": "tb_pe_client.models.domain_info",
@@ -2298,6 +2516,7 @@ _MODEL_CLASSES = {
     "FontWeight": "tb_pe_client.models.font_weight",
     "GeofencingCalculatedFieldConfiguration": "tb_pe_client.models.geofencing_calculated_field_configuration",
     "GeofencingReportStrategy": "tb_pe_client.models.geofencing_report_strategy",
+    "GetManagedRelatedEntityIds200ResponseInner": "tb_pe_client.models.get_managed_related_entity_ids200_response_inner",
     "GitHubModelsChatModelConfig": "tb_pe_client.models.git_hub_models_chat_model_config",
     "GitHubModelsProviderConfig": "tb_pe_client.models.git_hub_models_provider_config",
     "GoogleAiGeminiChatModelConfig": "tb_pe_client.models.google_ai_gemini_chat_model_config",
@@ -2467,6 +2686,16 @@ _MODEL_CLASSES = {
     "Output": "tb_pe_client.models.output",
     "PSKLwM2MBootstrapServerCredential": "tb_pe_client.models.psklw_m2_m_bootstrap_server_credential",
     "PageBreakComponent": "tb_pe_client.models.page_break_component",
+    "PageDataAgent": "tb_pe_client.models.page_data_agent",
+    "PageDataAgentAppEvent": "tb_pe_client.models.page_data_agent_app_event",
+    "PageDataAgentAppEventInfo": "tb_pe_client.models.page_data_agent_app_event_info",
+    "PageDataAgentAppProfile": "tb_pe_client.models.page_data_agent_app_profile",
+    "PageDataAgentAppUnit": "tb_pe_client.models.page_data_agent_app_unit",
+    "PageDataAgentApplicationInfo": "tb_pe_client.models.page_data_agent_application_info",
+    "PageDataAgentBulkAction": "tb_pe_client.models.page_data_agent_bulk_action",
+    "PageDataAgentInfo": "tb_pe_client.models.page_data_agent_info",
+    "PageDataAgentProfile": "tb_pe_client.models.page_data_agent_profile",
+    "PageDataAgentProfileInfo": "tb_pe_client.models.page_data_agent_profile_info",
     "PageDataAiModel": "tb_pe_client.models.page_data_ai_model",
     "PageDataAlarmCommentInfo": "tb_pe_client.models.page_data_alarm_comment_info",
     "PageDataAlarmData": "tb_pe_client.models.page_data_alarm_data",
@@ -2551,6 +2780,7 @@ _MODEL_CLASSES = {
     "PowerMode": "tb_pe_client.models.power_mode",
     "PowerSavingConfiguration": "tb_pe_client.models.power_saving_configuration",
     "PrivacyProtocol": "tb_pe_client.models.privacy_protocol",
+    "ProcessingStartStatus": "tb_pe_client.models.processing_start_status",
     "ProcessingStrategy": "tb_pe_client.models.processing_strategy",
     "ProcessingStrategyType": "tb_pe_client.models.processing_strategy_type",
     "PropagationCalculatedFieldConfiguration": "tb_pe_client.models.propagation_calculated_field_configuration",
@@ -2618,6 +2848,8 @@ _MODEL_CLASSES = {
     "RoleExportData": "tb_pe_client.models.role_export_data",
     "RoleId": "tb_pe_client.models.role_id",
     "RoleType": "tb_pe_client.models.role_type",
+    "RollBackStep": "tb_pe_client.models.roll_back_step",
+    "RollBackStepState": "tb_pe_client.models.roll_back_step_state",
     "Rpc": "tb_pe_client.models.rpc",
     "RpcId": "tb_pe_client.models.rpc_id",
     "RpcStatus": "tb_pe_client.models.rpc_status",
@@ -2629,6 +2861,7 @@ _MODEL_CLASSES = {
     "RuleChainId": "tb_pe_client.models.rule_chain_id",
     "RuleChainImportResult": "tb_pe_client.models.rule_chain_import_result",
     "RuleChainMetaData": "tb_pe_client.models.rule_chain_meta_data",
+    "RuleChainNote": "tb_pe_client.models.rule_chain_note",
     "RuleChainOutputLabelsUsage": "tb_pe_client.models.rule_chain_output_labels_usage",
     "RuleChainType": "tb_pe_client.models.rule_chain_type",
     "RuleEngineComponentLifecycleEventNotificationRuleTriggerConfig": "tb_pe_client.models.rule_engine_component_lifecycle_event_notification_rule_trigger_config",
@@ -2636,6 +2869,8 @@ _MODEL_CLASSES = {
     "RuleNode": "tb_pe_client.models.rule_node",
     "RuleNodeDebugEventFilter": "tb_pe_client.models.rule_node_debug_event_filter",
     "RuleNodeId": "tb_pe_client.models.rule_node_id",
+    "RunJobStep": "tb_pe_client.models.run_job_step",
+    "RunJobStepState": "tb_pe_client.models.run_job_step_state",
     "SaveDeviceWithCredentialsRequest": "tb_pe_client.models.save_device_with_credentials_request",
     "SaveOtaPackageInfoRequest": "tb_pe_client.models.save_ota_package_info_request",
     "ScheduledReportInfo": "tb_pe_client.models.scheduled_report_info",
@@ -2667,9 +2902,12 @@ _MODEL_CLASSES = {
     "SimpleAlarmConditionExpression": "tb_pe_client.models.simple_alarm_condition_expression",
     "SimpleCalculatedFieldConfiguration": "tb_pe_client.models.simple_calculated_field_configuration",
     "SimpleEntity": "tb_pe_client.models.simple_entity",
+    "SimpleValueSourceConfig": "tb_pe_client.models.simple_value_source_config",
     "SingleEntityFilter": "tb_pe_client.models.single_entity_filter",
     "SingleEntityVersionCreateRequest": "tb_pe_client.models.single_entity_version_create_request",
     "SingleEntityVersionLoadRequest": "tb_pe_client.models.single_entity_version_load_request",
+    "SkipReason": "tb_pe_client.models.skip_reason",
+    "SkippedApp": "tb_pe_client.models.skipped_app",
     "SlackConversation": "tb_pe_client.models.slack_conversation",
     "SlackConversationType": "tb_pe_client.models.slack_conversation_type",
     "SlackDeliveryMethodNotificationTemplate": "tb_pe_client.models.slack_delivery_method_notification_template",
@@ -2691,8 +2929,7 @@ _MODEL_CLASSES = {
     "SolutionExportRequest": "tb_pe_client.models.solution_export_request",
     "SolutionExportResponse": "tb_pe_client.models.solution_export_response",
     "SolutionImportResult": "tb_pe_client.models.solution_import_result",
-    "SolutionInstallResponse": "tb_pe_client.models.solution_install_response",
-    "SolutionTemplateLevel": "tb_pe_client.models.solution_template_level",
+    "SolutionStep": "tb_pe_client.models.solution_step",
     "SolutionValidationResult": "tb_pe_client.models.solution_validation_result",
     "SpecificTimeSchedule": "tb_pe_client.models.specific_time_schedule",
     "SplitViewComponent": "tb_pe_client.models.split_view_component",
@@ -2700,6 +2937,11 @@ _MODEL_CLASSES = {
     "StateEntityFilter": "tb_pe_client.models.state_entity_filter",
     "StateEntityOwnerFilter": "tb_pe_client.models.state_entity_owner_filter",
     "StatisticsEventFilter": "tb_pe_client.models.statistics_event_filter",
+    "StepFieldAgentAppEventId": "tb_pe_client.models.step_field_agent_app_event_id",
+    "StepFieldBoolean": "tb_pe_client.models.step_field_boolean",
+    "StepFieldInteger": "tb_pe_client.models.step_field_integer",
+    "StepFieldListString": "tb_pe_client.models.step_field_list_string",
+    "StepFieldString": "tb_pe_client.models.step_field_string",
     "StoreInfo": "tb_pe_client.models.store_info",
     "StringFilterPredicate": "tb_pe_client.models.string_filter_predicate",
     "StringOperation": "tb_pe_client.models.string_operation",
@@ -2744,9 +2986,6 @@ _MODEL_CLASSES = {
     "TenantProfileData": "tb_pe_client.models.tenant_profile_data",
     "TenantProfileId": "tb_pe_client.models.tenant_profile_id",
     "TenantProfileQueueConfiguration": "tb_pe_client.models.tenant_profile_queue_configuration",
-    "TenantSolutionTemplateDetails": "tb_pe_client.models.tenant_solution_template_details",
-    "TenantSolutionTemplateInfo": "tb_pe_client.models.tenant_solution_template_info",
-    "TenantSolutionTemplateInstructions": "tb_pe_client.models.tenant_solution_template_instructions",
     "TestSmsRequest": "tb_pe_client.models.test_sms_request",
     "TextAlignment": "tb_pe_client.models.text_alignment",
     "ThingsboardCredentialsExpiredResponse": "tb_pe_client.models.thingsboard_credentials_expired_response",
@@ -2806,6 +3045,7 @@ _MODEL_CLASSES = {
     "UserActivationLink": "tb_pe_client.models.user_activation_link",
     "UserDashboardsInfo": "tb_pe_client.models.user_dashboards_info",
     "UserEmailInfo": "tb_pe_client.models.user_email_info",
+    "UserExportData": "tb_pe_client.models.user_export_data",
     "UserGroupListFilter": "tb_pe_client.models.user_group_list_filter",
     "UserId": "tb_pe_client.models.user_id",
     "UserInfo": "tb_pe_client.models.user_info",

@@ -15,6 +15,7 @@ A JSON value representing the rule chain metadata.
 | **nodes** | [**List[RuleNode]**](RuleNode.md) | List of rule node JSON objects | |
 | **connections** | [**List[NodeConnectionInfo]**](NodeConnectionInfo.md) | List of JSON objects that represent connections between rule nodes | |
 | **rule_chain_connections** | [**List[RuleChainConnectionInfo]**](RuleChainConnectionInfo.md) | List of JSON objects that represent connections between rule nodes and other rule chains. | |
+| **notes** | [**List[RuleChainNote]**](RuleChainNote.md) | List of sticky notes placed on the rule chain canvas | [optional] |
 
 
 
@@ -53,6 +54,21 @@ A JSON value representing the rule chain metadata.
 | target_rule_chain_id | RuleChainId | JSON object with the Rule Chain Id. |  |
 | additional_info | object | JSON object with the additional information about the connection. |  |
 | type | str | Type of the relation. Typically indicated the result of processing by the 'from' rule node. For example, 'Success' or 'Failure' |  |
+
+#### RuleChainNote
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| id | str | Unique identifier of the note on the canvas | [optional] |
+| x | int | Horizontal position of the note on the canvas, in pixels | [optional] |
+| y | int | Vertical position of the note on the canvas, in pixels | [optional] |
+| width | int | Width of the note, in pixels | [optional] |
+| height | int | Height of the note, in pixels | [optional] |
+| content | str | Markdown or HTML content of the note | [optional] |
+| background_color | str | Background color of the note in CSS hex format, e.g. '#FFF9C4' | [optional] |
+| border_color | str | Border color of the note in CSS hex format, e.g. '#E6C800' | [optional] |
+| border_width | int | Border width of the note in pixels | [optional] |
+| apply_default_markdown_style | bool | Whether to apply the default markdown stylesheet to the note content | [optional] |
+| markdown_css | str | Custom CSS styles applied to the note content | [optional] |
 
 #### DebugSettings
 | Name | Type | Description | Notes |

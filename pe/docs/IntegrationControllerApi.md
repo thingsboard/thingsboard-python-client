@@ -6,6 +6,7 @@
 Integration client.assign_integration_to_edge(edge_id: str, integration_id: str)  # Assign integration to edge (assignIntegrationToEdge)
 None client.check_integration_connection(integration: Integration)  # Check integration connectivity (checkIntegrationConnection)
 None client.delete_integration(integration_id: str)  # Delete integration (deleteIntegration)
+bytearray client.export_integration_package(integration_id: str)  # Export integration as IoT Hub package
 str client.find_all_related_edges_missing_attributes(integration_id: str)  # Find missing attributes for all related edges (findAllRelatedEdgesMissingAttributes)
 str client.find_edge_missing_attributes(edge_id: str, integration_ids: List[str])  # Find edge missing attributes for assigned integrations (findEdgeMissingAttributes)
 PageDataIntegrationInfo client.get_edge_integration_infos(edge_id: str, page_size: int, page: int, text_search: Optional[str] = None, sort_property: Optional[str] = None, sort_order: Optional[str] = None)  # Get Edge Integrations (getEdgeIntegrationInfos)
@@ -92,6 +93,30 @@ Deletes the integration and all the relations (from and to the integration). Ref
 ### Return type
 
 None (empty response body)
+
+
+## export_integration_package
+
+```python
+bytearray client.export_integration_package(integration_id: str)
+```
+
+**GET** `/api/integration/{integrationId}/export-package`
+
+Export integration as IoT Hub package
+
+Returns a ZIP containing integration.json, uplink.json, optional downlink.json, and form.json. Sensitive fields are tokenized via @TemplateField annotations on the integration's runtime POJO.
+
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **integration_id** | **str** |  | |
+
+### Return type
+
+**bytearray**
 
 
 ## find_all_related_edges_missing_attributes

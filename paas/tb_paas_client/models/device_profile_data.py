@@ -23,7 +23,6 @@ import json
 
 from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
-from tb_paas_client.models.device_profile_alarm import DeviceProfileAlarm
 from tb_paas_client.models.device_profile_configuration import DeviceProfileConfiguration
 from tb_paas_client.models.device_profile_provision_configuration import DeviceProfileProvisionConfiguration
 from tb_paas_client.models.device_profile_transport_configuration import DeviceProfileTransportConfiguration
@@ -37,8 +36,7 @@ class DeviceProfileData(BaseModel):
     configuration: Optional[DeviceProfileConfiguration] = Field(default=None, description="JSON object of device profile configuration")
     transport_configuration: Optional[DeviceProfileTransportConfiguration] = Field(default=None, description="JSON object of device profile transport configuration", serialization_alias="transportConfiguration")
     provision_configuration: Optional[DeviceProfileProvisionConfiguration] = Field(default=None, description="JSON object of provisioning strategy type per device profile", serialization_alias="provisionConfiguration")
-    alarms: Optional[List[DeviceProfileAlarm]] = None
-    __properties: ClassVar[List[str]] = ["configuration", "transportConfiguration", "provisionConfiguration", "alarms"]
+    __properties: ClassVar[List[str]] = ["configuration", "transportConfiguration", "provisionConfiguration"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -93,13 +91,6 @@ class DeviceProfileData(BaseModel):
         # override the default output from pydantic by calling `to_dict()` of provision_configuration
         if self.provision_configuration:
             _dict['provisionConfiguration'] = self.provision_configuration.to_dict()
-        # override the default output from pydantic by calling `to_dict()` of each item in alarms (list)
-        _items = []
-        if self.alarms:
-            for _item_alarms in self.alarms:
-                if _item_alarms:
-                    _items.append(_item_alarms.to_dict())
-            _dict['alarms'] = _items
         return _dict
 
     @classmethod
@@ -114,8 +105,7 @@ class DeviceProfileData(BaseModel):
         _obj = cls.model_validate({
             "configuration": DeviceProfileConfiguration.from_dict(obj["configuration"]) if obj.get("configuration") is not None else None,
             "transport_configuration": DeviceProfileTransportConfiguration.from_dict(obj["transportConfiguration"]) if obj.get("transportConfiguration") is not None else None,
-            "provision_configuration": DeviceProfileProvisionConfiguration.from_dict(obj["provisionConfiguration"]) if obj.get("provisionConfiguration") is not None else None,
-            "alarms": [DeviceProfileAlarm.from_dict(_item) for _item in obj["alarms"]] if obj.get("alarms") is not None else None
+            "provision_configuration": DeviceProfileProvisionConfiguration.from_dict(obj["provisionConfiguration"]) if obj.get("provisionConfiguration") is not None else None
         })
         return _obj
 

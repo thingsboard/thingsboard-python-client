@@ -1,0 +1,48 @@
+
+# ComposeStepState
+
+`tb_pe_client.models.ComposeStepState`
+
+**Extends:** **AgentAppStepState**
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+| **service_image_regex_patterns** | [**StepFieldListString**](StepFieldListString.md) |  | [optional] |
+| **pull_images** | [**StepFieldBoolean**](StepFieldBoolean.md) |  | [optional] |
+
+
+
+## Referenced Types
+
+#### AgentAppStepState
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| type | AgentAppStepType |  | [optional] |
+
+#### StepFieldListString
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| user_choice | bool |  | [optional] |
+| value | List[str] |  | [optional] |
+
+#### StepFieldBoolean
+| Name | Type | Description | Notes |
+|------|------|-------------|-------|
+| value | bool |  | [optional] |
+| user_choice | bool |  | [optional] |
+
+#### AgentAppStepType (enum)
+`COMPOSE_TEMPLATE` | `COMPOSE` | `COMPOSE_START` | `COMPOSE_DOWN` | `ROLLBACK` | `BACKUP_VOLUME` | `BACKUP_VOLUME_REMOVE` | `COMPOSE_RESTART` | `RUN_JOB` | `AGENT_PREPARE` | … (11 values total)
+
+---
+
+### Conventions
+
+- **Package:** `tb_pe_client.models`
+- **Attribute access:** `obj.service_image_regex_patterns`, `obj.name`, etc.
+- **Serialize:** `obj.model_dump()` or `obj.model_dump(by_alias=True)` for camelCase JSON
+- **Deserialize:** `ComposeStepState.model_validate(data)` or `ComposeStepState.model_validate_json(json_str)`
+- **None fields:** Optional attributes default to `None`; accessing them never raises exceptions
+
