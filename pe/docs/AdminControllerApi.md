@@ -141,7 +141,7 @@ Get the Administration Settings object using specified string key. Referencing n
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **key** | **str** | A string value of the key (e.g. 'general' or 'mail'). | |
-| **system_by_default** | **bool** | Use system settings if settings are not defined on tenant level. | [optional] [default to False] |
+| **system_by_default** | **bool** | Deprecated, not used. | [optional] [default to False] |
 
 ### Return type
 

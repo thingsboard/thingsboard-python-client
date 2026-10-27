@@ -6,7 +6,7 @@
 object client.create_chat(body: object)  # createChat
 None client.delete_chat(chat_id: UUID)  # deleteChat
 object client.get_chat_messages(chat_id: UUID)  # getChatMessages
-object client.list_chats(chat_type: ChatType)  # listChats
+object client.list_chats()  # listChats
 List[object] client.send_chat_message(chat_id: UUID, x_authorization: str, body: object, accept_language: Optional[str] = None)  # sendChatMessage
 None client.update_chat(chat_id: UUID, body: object)  # updateChat
 ```
@@ -81,19 +81,12 @@ getChatMessages
 ## list_chats
 
 ```python
-object client.list_chats(chat_type: ChatType)
+object client.list_chats()
 ```
 
-**GET** `/api/ai/chats/{chatType}`
+**GET** `/api/ai/chats`
 
 listChats
-
-
-### Parameters
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **chat_type** | **ChatType** |  | [enum: GENERIC, SOLUTION_BUILDER] |
 
 ### Return type
 

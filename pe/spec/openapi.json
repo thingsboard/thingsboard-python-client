@@ -12,11 +12,11 @@
       "name": "Apache License Version 2.0",
       "url": "https://github.com/thingsboard/thingsboard/blob/master/LICENSE"
     },
-    "version": "4.3.1.5PE"
+    "version": "4.3.1.8PE"
   },
   "servers": [
     {
-      "url": "http://localhost:40717",
+      "url": "http://localhost:42001",
       "description": "Generated server url"
     }
   ],
@@ -3397,7 +3397,7 @@
           {
             "name": "systemByDefault",
             "in": "query",
-            "description": "Use system settings if settings are not defined on tenant level.",
+            "description": "Deprecated, not used.",
             "required": false,
             "schema": {
               "type": "boolean",
@@ -3803,6 +3803,138 @@
       }
     },
     "/api/ai/chats": {
+      "get": {
+        "tags": [
+          "ai-chat-controller"
+        ],
+        "summary": "listChats",
+        "operationId": "listChats",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonNode"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
+                },
+                "examples": {
+                  "error-code-400": {
+                    "summary": "Bad Request",
+                    "value": {
+                      "status": 400,
+                      "message": "Invalid UUID string: 123",
+                      "errorCode": 31,
+                      "timestamp": 1609459200000
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
+                },
+                "examples": {
+                  "error-code-401": {
+                    "summary": "Unauthorized",
+                    "value": {
+                      "status": 401,
+                      "message": "Authentication failed",
+                      "errorCode": 10,
+                      "timestamp": 1609459200000
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
+                },
+                "examples": {
+                  "error-code-403": {
+                    "summary": "Forbidden",
+                    "value": {
+                      "status": 403,
+                      "message": "You don't have permission to perform this operation!",
+                      "errorCode": 20,
+                      "timestamp": 1609459200000
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
+                },
+                "examples": {
+                  "error-code-404": {
+                    "summary": "Not Found",
+                    "value": {
+                      "status": 404,
+                      "message": "Requested item wasn't found!",
+                      "errorCode": 32,
+                      "timestamp": 1609459200000
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
+                },
+                "examples": {
+                  "error-code-429": {
+                    "summary": "Too Many Requests",
+                    "value": {
+                      "status": 429,
+                      "message": "Too many requests for current tenant!",
+                      "errorCode": 33,
+                      "timestamp": 1609459200000
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HttpLoginForm": []
+          },
+          {
+            "ApiKeyForm": []
+          }
+        ]
+      },
       "post": {
         "tags": [
           "ai-chat-controller"
@@ -4444,150 +4576,6 @@
                     "value": {
                       "status": 400,
                       "message": "Invalid request body",
-                      "errorCode": 31,
-                      "timestamp": 1609459200000
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
-                },
-                "examples": {
-                  "error-code-401": {
-                    "summary": "Unauthorized",
-                    "value": {
-                      "status": 401,
-                      "message": "Authentication failed",
-                      "errorCode": 10,
-                      "timestamp": 1609459200000
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
-                },
-                "examples": {
-                  "error-code-403": {
-                    "summary": "Forbidden",
-                    "value": {
-                      "status": 403,
-                      "message": "You don't have permission to perform this operation!",
-                      "errorCode": 20,
-                      "timestamp": 1609459200000
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
-                },
-                "examples": {
-                  "error-code-404": {
-                    "summary": "Not Found",
-                    "value": {
-                      "status": 404,
-                      "message": "Requested item wasn't found!",
-                      "errorCode": 32,
-                      "timestamp": 1609459200000
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too Many Requests",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
-                },
-                "examples": {
-                  "error-code-429": {
-                    "summary": "Too Many Requests",
-                    "value": {
-                      "status": 429,
-                      "message": "Too many requests for current tenant!",
-                      "errorCode": 33,
-                      "timestamp": 1609459200000
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "HttpLoginForm": []
-          },
-          {
-            "ApiKeyForm": []
-          }
-        ]
-      }
-    },
-    "/api/ai/chats/{chatType}": {
-      "get": {
-        "tags": [
-          "ai-chat-controller"
-        ],
-        "summary": "listChats",
-        "operationId": "listChats",
-        "parameters": [
-          {
-            "name": "chatType",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/ChatType"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonNode"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ThingsboardErrorResponse"
-                },
-                "examples": {
-                  "error-code-400": {
-                    "summary": "Bad Request",
-                    "value": {
-                      "status": 400,
-                      "message": "Invalid UUID string: 123",
                       "errorCode": 31,
                       "timestamp": 1609459200000
                     }
@@ -41610,7 +41598,7 @@
           "edge-controller"
         ],
         "summary": "Import the bulk of edges (processEdgesBulkImport)",
-        "description": "There's an ability to import the bulk of edges using the only .csv file.\n\nAvailable for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.",
+        "description": "There's an ability to import the bulk of edges using the only .csv file.\n\nAvailable for users with 'TENANT_ADMIN' authority.",
         "operationId": "processEdgesBulkImport",
         "requestBody": {
           "content": {
@@ -122353,13 +122341,6 @@
           "none"
         ]
       },
-      "ChatType": {
-        "type": "string",
-        "enum": [
-          "GENERIC",
-          "SOLUTION_BUILDER"
-        ]
-      },
       "CheckPreProvisionedDevicesDeviceProfileProvisionConfiguration": {
         "allOf": [
           {
@@ -131609,7 +131590,7 @@
         },
         "example": {
           "securityMode": "NO_SEC",
-          "shortServerId": 123,
+          "shortServerId": 1,
           "bootstrapServerIs": true,
           "host": "0.0.0.0",
           "port": "'5685' or '5687'",
@@ -131637,8 +131618,8 @@
           "shortServerId": {
             "type": "integer",
             "format": "int32",
-            "description": "Server short Id. Used as link to associate server Object Instance. This identifier uniquely identifies each LwM2M Server configured for the LwM2M Client. This Resource MUST be set when the Bootstrap-Server Resource has a value of 'false'. The values ID:0 and ID:65535 values MUST NOT be used for identifying the LwM2M Server.",
-            "example": 123,
+            "description": "Server short Id. Used as link to associate server Object Instance. This identifier uniquely identifies each LwM2M Server configured for the LwM2M Client. This Resource MUST be set when the Bootstrap-Server Resource has a value of 'false' and MUST be null when Bootstrap-Server is 'true'. The values 0 and 65535 MUST NOT be used for identifying the LwM2M Server.",
+            "example": 1,
             "readOnly": true
           },
           "bootstrapServerIs": {
@@ -132887,8 +132868,8 @@
               "shortServerId": {
                 "type": "integer",
                 "format": "int32",
-                "description": "Server short Id. Used as link to associate server Object Instance. This identifier uniquely identifies each LwM2M Server configured for the LwM2M Client. This Resource MUST be set when the Bootstrap-Server Resource has a value of 'false'. The values ID:0 and ID:65535 values MUST NOT be used for identifying the LwM2M Server.",
-                "example": 123,
+                "description": "Server short Id. Used as link to associate server Object Instance. This identifier uniquely identifies each LwM2M Server configured for the LwM2M Client. This Resource MUST be set when the Bootstrap-Server Resource has a value of 'false' and MUST be null when Bootstrap-Server is 'true'. The values 0 and 65535 MUST NOT be used for identifying the LwM2M Server.",
+                "example": 1,
                 "readOnly": true
               },
               "bootstrapServerIs": {
@@ -132967,7 +132948,7 @@
         ],
         "example": {
           "securityMode": "NO_SEC",
-          "shortServerId": 123,
+          "shortServerId": 1,
           "bootstrapServerIs": true,
           "host": "0.0.0.0",
           "port": "'5685' or '5687'",
@@ -134944,8 +134925,8 @@
               "shortServerId": {
                 "type": "integer",
                 "format": "int32",
-                "description": "Server short Id. Used as link to associate server Object Instance. This identifier uniquely identifies each LwM2M Server configured for the LwM2M Client. This Resource MUST be set when the Bootstrap-Server Resource has a value of 'false'. The values ID:0 and ID:65535 values MUST NOT be used for identifying the LwM2M Server.",
-                "example": 123,
+                "description": "Server short Id. Used as link to associate server Object Instance. This identifier uniquely identifies each LwM2M Server configured for the LwM2M Client. This Resource MUST be set when the Bootstrap-Server Resource has a value of 'false' and MUST be null when Bootstrap-Server is 'true'. The values 0 and 65535 MUST NOT be used for identifying the LwM2M Server.",
+                "example": 1,
                 "readOnly": true
               },
               "bootstrapServerIs": {
@@ -135024,7 +135005,7 @@
         ],
         "example": {
           "securityMode": "PSK",
-          "shortServerId": 123,
+          "shortServerId": 1,
           "bootstrapServerIs": true,
           "host": "0.0.0.0",
           "port": "'5685' or '5687'",
@@ -137836,8 +137817,8 @@
               "shortServerId": {
                 "type": "integer",
                 "format": "int32",
-                "description": "Server short Id. Used as link to associate server Object Instance. This identifier uniquely identifies each LwM2M Server configured for the LwM2M Client. This Resource MUST be set when the Bootstrap-Server Resource has a value of 'false'. The values ID:0 and ID:65535 values MUST NOT be used for identifying the LwM2M Server.",
-                "example": 123,
+                "description": "Server short Id. Used as link to associate server Object Instance. This identifier uniquely identifies each LwM2M Server configured for the LwM2M Client. This Resource MUST be set when the Bootstrap-Server Resource has a value of 'false' and MUST be null when Bootstrap-Server is 'true'. The values 0 and 65535 MUST NOT be used for identifying the LwM2M Server.",
+                "example": 1,
                 "readOnly": true
               },
               "bootstrapServerIs": {
@@ -137916,7 +137897,7 @@
         ],
         "example": {
           "securityMode": "RPK",
-          "shortServerId": 123,
+          "shortServerId": 1,
           "bootstrapServerIs": true,
           "host": "0.0.0.0",
           "port": "'5685' or '5687'",
@@ -147028,8 +147009,8 @@
               "shortServerId": {
                 "type": "integer",
                 "format": "int32",
-                "description": "Server short Id. Used as link to associate server Object Instance. This identifier uniquely identifies each LwM2M Server configured for the LwM2M Client. This Resource MUST be set when the Bootstrap-Server Resource has a value of 'false'. The values ID:0 and ID:65535 values MUST NOT be used for identifying the LwM2M Server.",
-                "example": 123,
+                "description": "Server short Id. Used as link to associate server Object Instance. This identifier uniquely identifies each LwM2M Server configured for the LwM2M Client. This Resource MUST be set when the Bootstrap-Server Resource has a value of 'false' and MUST be null when Bootstrap-Server is 'true'. The values 0 and 65535 MUST NOT be used for identifying the LwM2M Server.",
+                "example": 1,
                 "readOnly": true
               },
               "bootstrapServerIs": {
@@ -147108,7 +147089,7 @@
         ],
         "example": {
           "securityMode": "X509",
-          "shortServerId": 123,
+          "shortServerId": 1,
           "bootstrapServerIs": true,
           "host": "0.0.0.0",
           "port": "'5685' or '5687'",

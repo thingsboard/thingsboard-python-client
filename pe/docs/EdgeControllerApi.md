@@ -572,7 +572,7 @@ BulkImportResultEdge client.process_edges_bulk_import(bulk_import_request: BulkI
 
 Import the bulk of edges (processEdgesBulkImport)
 
-There's an ability to import the bulk of edges using the only .csv file.  Available for users with 'TENANT_ADMIN' or 'CUSTOMER_USER' authority.
+There's an ability to import the bulk of edges using the only .csv file.  Available for users with 'TENANT_ADMIN' authority.
 
 
 ### Parameters

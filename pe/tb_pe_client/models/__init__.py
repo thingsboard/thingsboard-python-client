@@ -183,7 +183,6 @@ __all__ = [
     "ChartLabelPosition",
     "ChartLineType",
     "ChartShape",
-    "ChatType",
     "CheckPreProvisionedDevicesDeviceProfileProvisionConfiguration",
     "ChecksumAlgorithm",
     "ClaimRequest",
@@ -1127,7 +1126,6 @@ if TYPE_CHECKING:
     from tb_pe_client.models.chart_label_position import ChartLabelPosition
     from tb_pe_client.models.chart_line_type import ChartLineType
     from tb_pe_client.models.chart_shape import ChartShape
-    from tb_pe_client.models.chat_type import ChatType
     from tb_pe_client.models.check_pre_provisioned_devices_device_profile_provision_configuration import CheckPreProvisionedDevicesDeviceProfileProvisionConfiguration
     from tb_pe_client.models.checksum_algorithm import ChecksumAlgorithm
     from tb_pe_client.models.claim_request import ClaimRequest
@@ -2070,7 +2068,6 @@ _MODEL_CLASSES = {
     "ChartLabelPosition": "tb_pe_client.models.chart_label_position",
     "ChartLineType": "tb_pe_client.models.chart_line_type",
     "ChartShape": "tb_pe_client.models.chart_shape",
-    "ChatType": "tb_pe_client.models.chat_type",
     "CheckPreProvisionedDevicesDeviceProfileProvisionConfiguration": "tb_pe_client.models.check_pre_provisioned_devices_device_profile_provision_configuration",
     "ChecksumAlgorithm": "tb_pe_client.models.checksum_algorithm",
     "ClaimRequest": "tb_pe_client.models.claim_request",
